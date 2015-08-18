@@ -1,0 +1,279 @@
+﻿@model Giqci.PublicWeb.Models.Application.ApplicationViewModel
+@{
+    ViewBag.Title = "证书申请表格";
+}
+
+<style type="text/css">
+    input[type="date"] {
+        width: 180px;
+    }
+</style>
+<h2>证书申请表格</h2>
+
+@if (Model.ErrorMessage.Count > 0)
+{
+    <div>
+        <ul>
+            @foreach (var item in Model.ErrorMessage)
+            {
+                <li>@item</li>
+            }
+        </ul>
+    </div>
+}
+<form class="form-horizontal" method="POST">
+    @Html.HiddenFor(i => i.Application.ApplicantCode)
+    <div class="form-group">
+        <label class="col-sm-2 control-label">证书类别</label>
+        <div class="col-sm-10">
+            <div class="radio">
+                @Html.EditorFor(i => i.Application.CertType, "Enum")
+            </div>
+            @*<div class="checkbox">
+                    @foreach (CertType value in Enum.GetValues(typeof (CertType)))
+                    {
+                        if (value != CertType.C104)
+                        {
+                            <label>
+                                @Html.CheckBox("CertType", new {value = value})
+                                @value.ToDescription()
+                            </label>
+                        }
+                    }
+                </div>*@
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">商业目的</label>
+        <div class="col-sm-10">
+            <div class="radio">
+                @Html.EditorFor(i => i.Application.TradeType, "Enum")
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">申请企业备案号</label>
+        <div class="col-sm-10">
+            <p class="form-control-static">@Model.Application.ApplicantCode</p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">申请人</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.Application.Applicant, new { @class = "form-control", placeholder = "全称" })
+            @Html.TextBoxFor(m => m.Application.ApplicantAddr, new { @class = "form-control", placeholder = "地址" })
+            @Html.TextBoxFor(m => m.Application.ApplicantContact, new { @class = "form-control", placeholder = "联系人" })
+            @Html.TextBoxFor(m => m.Application.ApplicantPhone, new { @class = "form-control", placeholder = "联系电话" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">出口商</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.Application.Exporter, new { @class = "form-control", placeholder = "全称" })
+            @Html.TextBoxFor(m => m.Application.ExporterAddr, new { @class = "form-control", placeholder = "地址" })
+            @Html.TextBoxFor(m => m.Application.ExporterContact, new { @class = "form-control", placeholder = "联系人" })
+            @Html.TextBoxFor(m => m.Application.ExporterPhone, new { @class = "form-control", placeholder = "联系电话" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">进口商</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.Application.Importer, new { @class = "form-control", placeholder = "全称" })
+            @Html.TextBoxFor(m => m.Application.ImporterAddr, new { @class = "form-control", placeholder = "地址" })
+            @Html.TextBoxFor(m => m.Application.ImporterContact, new { @class = "form-control", placeholder = "联系人" })
+            @Html.TextBoxFor(m => m.Application.ImporterPhone, new { @class = "form-control", placeholder = "联系电话" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">进口商代理</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.Application.ImBroker, new { @class = "form-control", placeholder = "全称" })
+            @Html.TextBoxFor(m => m.Application.ImBrokerAddr, new { @class = "form-control", placeholder = "地址" })
+            @Html.TextBoxFor(m => m.Application.ImBrokerContact, new { @class = "form-control", placeholder = "联系人" })
+            @Html.TextBoxFor(m => m.Application.ImBrokerPhone, new { @class = "form-control", placeholder = "联系电话" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">商品资料</label>
+        <div class="col-sm-10">
+            <table class="table table-striped">
+                @for (var i = 0; i < Model.Application.Goods.Count; i++)
+                {
+                    var item = Model.Application.Goods[i];
+                    <tr>
+                        <th>商品@(i + 1)</th>
+                        <td colspan="3"><button onclick="deleteitem()"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span></button></td>
+                    </tr>
+                    <tr>
+                        <th>品牌</th>
+                        <td>@item.Brand</td>
+                        <th>商品名称</th>
+                        <td>
+                            @Html.Hidden("Application.Goods[" + i + "].Guid", item.Guid)
+                            @Html.Hidden("Application.Goods[" + i + "].Description", item.Description)
+                            @Html.Hidden("Application.Goods[" + i + "].Code", item.Code)
+                            @Html.Hidden("Application.Goods[" + i + "].HSCode", item.HSCode)
+                            @Html.Hidden("Application.Goods[" + i + "].Manufacturer", item.Manufacturer)
+                            @Html.Hidden("Application.Goods[" + i + "].ManufacturerCountry", item.ManufacturerCountry)
+                            @Html.Hidden("Application.Goods[" + i + "].ManufacturerDate", item.ManufacturerDate)
+                            @Html.Hidden("Application.Goods[" + i + "].ExpiryDate", item.ExpiryDate)
+                            @Html.Hidden("Application.Goods[" + i + "].BatchNo", item.BatchNo)
+                            @Html.Hidden("Application.Goods[" + i + "].Brand", item.Brand)
+                            @Html.Hidden("Application.Goods[" + i + "].Quantity", item.Quantity)
+                            @Html.Hidden("Application.Goods[" + i + "].Package", item.Package)
+                            @item.Description
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>商品货号</th>
+                        <td>@item.Code</td>
+                        <th>HS编码</th>
+                        <td>@item.HSCode</td>
+                    </tr>
+                    <tr>
+                        <th>制造工厂</th>
+                        <td>@item.Manufacturer</td>
+                        <th>制造国</th>
+                        <td>@item.ManufacturerCountry</td>
+                    </tr>
+                    <tr>
+                        <th>生产日期</th>
+                        <td>@item.ManufacturerDate</td>
+                        <th>保质期</th>
+                        <td>@item.ExpiryDate</td>
+                    </tr>
+                    <tr>
+                        <th>批次号</th>
+                        <td>@item.BatchNo</td>
+                        <th>数量/重量</th>
+                        <td>@item.Quantity.ToString("0.##") @item.Package</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"></td>
+                    </tr>
+                }
+                <tr>
+                    <th>品牌</th>
+                    <td>@Html.TextBox("Application.Goods[" + Model.Application.Goods.Count + "].Brand", null, new { @class = "form-control" })</td>
+                    <th>商品名称</th>
+                    <td>@Html.TextBox("Application.Goods[" + Model.Application.Goods.Count + "].Description", null, new { @class = "form-control" })</td>
+                  
+                </tr>
+                <tr>
+                    <th>商品货号</th>
+                    <td>@Html.TextBox("Application.Goods[" + Model.Application.Goods.Count + "].Code", null, new { @class = "form-control" })</td>
+                    <th>HS编码</th>
+                    <td>@Html.TextBox("Application.Goods[" + Model.Application.Goods.Count + "].HSCode", null, new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <th>制造工厂</th>
+                    <td>@Html.TextBox("Application.Goods[" + Model.Application.Goods.Count + "].Manufacturer", null, new { @class = "form-control" })</td>
+                    <th>制造国</th>
+                    <td>@Html.TextBox("Application.Goods[" + Model.Application.Goods.Count + "].ManufacturerCountry", null, new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <th>生产日期</th>
+                    <td>@Html.TextBox("Application.Goods[" + Model.Application.Goods.Count + "].ManufacturerDate", null, new { @class = "form-control", type = "Date" })</td>
+                    <th>保质期</th>
+                    <td>@Html.TextBox("Application.Goods[" + Model.Application.Goods.Count + "].ExpiryDate", null, new { @class = "form-control", type = "Date" })</td>
+                </tr>
+                <tr>
+                    <th>批次号</th>
+                    <td>@Html.TextBox("Application.Goods[" + Model.Application.Goods.Count + "].BatchNo", null, new {@class = "form-control"})</td>
+                    <th>数(重)量/(包装)单位</th>
+                    <td>
+                        @Html.TextBox("Application.Goods[" + Model.Application.Goods.Count + "].Quantity", null, new {@class = "form-control half-form-control"})
+                        @Html.TextBox("Application.Goods[" + Model.Application.Goods.Count + "].Package", null, new {@class = "form-control half-form-control", placeholder = "例如：箱"})
+                    </td>
+                </tr>
+                <tr>
+                    <th>添加新商品</th>
+                    <td colspan="3"><button type="submit" name="submit" value="additem"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></button></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">计划发货日期</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.Application.ShippingDate, new { @class = "form-control", placeholder = "计划发货日期" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">检验地点</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.Application.InspectionAddr, new { @class = "form-control", placeholder = "检验地点" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">运输方式</label>
+        <div class="col-sm-10">
+            <div class="radio">
+                @Html.EditorFor(i => i.Application.ShippingMethod, "ShippingMethod")
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">发货港口</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.Application.LoadingPort, new { @class = "form-control form-control-inline", placeholder = "发货港口" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">目的港口</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.Application.DestPort, new { @class = "form-control form-control-inline", placeholder = "目的港口" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">提货单</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.Application.Billno, new { @class = "form-control", placeholder = "提货单" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">船名</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.Application.Vesselcn, new { @class = "form-control", placeholder = "船名" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">船次</label>
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.Application.Voyage, new { @class = "form-control", placeholder = "船次" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-default" name="submit" value="submit">
+                <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 保存
+            </button>
+        </div>
+    </div>
+</form>
+@*@Html.Partial("_ViewDocs", Model.AttachedDocs)
+    <form class="form-horizontal" action="/apps/@(Model.Id)/uploaddoc" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">上传附件</label>
+            <div class="col-sm-10">
+                <input type="text" name="desc" placeholder="描述" />
+                <input type="file" name="file" />
+                <button type="submit" class="btn btn-default">上传附件</button>
+            </div>
+        </div>
+    </form>
+    <form class="form-horizontal" action="/apps/@(Model.Id)/complete" method="POST">
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default" onclick="return confirm('一旦下发，证书将无法再修改，确认下发？');">证书下发</button>
+            </div>
+        </div>
+    </form>*@
+
+<script type="text/javascript">
+    function deleteitem() {
+        alert($(this));
+        alert($(this).parent.parent);
+        $(this).parent.parent.remove();
+    }
+</script>

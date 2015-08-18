@@ -1,0 +1,13 @@
+﻿<div class="above-nav">
+    <div class="row">
+        <div class="col-md-6">
+            Call Us +61 (02) 9580 5750 | <a href="mailto:info@giqci.com">info@giqci.com</a>
+        </div>
+        <div class="col-md-6 text-right">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <text>Welcome @User.Identity.Name <a href="/account/signoff">Logout</a></text>
+            }
+        </div>
+    </div>
+</div>

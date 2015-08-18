@@ -1,0 +1,10 @@
+﻿@using Giqci.Enums
+@using Ktech.Extensions
+@model ShippingMethod?
+@foreach (ShippingMethod value in Enum.GetValues(typeof(ShippingMethod)))
+{
+    <label>
+        @Html.RadioButtonFor(m => m, value, value.Equals(Model) ? new { @checked = "checked" } : null)
+        @value.ToDescription()
+    </label>
+}

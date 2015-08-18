@@ -1,0 +1,19 @@
+﻿@model Giqci.PublicWeb.Models.Account.LoginViewModel
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<h1>Login</h1>
+@using (Html.BeginForm())
+{
+    <fieldset>
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div>@Model.ErrorMessage</div>
+        }
+        <div>Username: @Html.TextBoxFor(m => m.Username)</div>
+        <div>Password: @Html.PasswordFor(m => m.Password)</div>
+        <button type="submit">Submit</button>
+    </fieldset>
+}

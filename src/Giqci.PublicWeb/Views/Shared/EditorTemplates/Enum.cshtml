@@ -1,0 +1,9 @@
+﻿@using Ktech.Extensions
+@model Enum
+@foreach (Enum value in Enum.GetValues(Model.GetType()))
+{
+    <label>
+        @Html.RadioButtonFor(m => m, value, value.Equals(Model) ? new { @checked = "checked" } : null)
+        @value.ToDescription()
+    </label>
+}
