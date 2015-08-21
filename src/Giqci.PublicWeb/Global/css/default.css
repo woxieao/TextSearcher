@@ -1,5 +1,5 @@
 ﻿body {
-    font-family: 'Trebuchet MS', Helvetica, sans-serif;
+    font-family: 'Trebuchet MS', Microsoft YaHei, Helvetica, sans-serif;
     margin: 0;
     padding: 0;
     background-image: url("http://giqci.com/wp-content/themes/giqci/images/backgrounds/free.jpg");
@@ -36,10 +36,52 @@
 .navbar {
     margin: 0 auto;
 }
+.navbar-nav {
+    padding: 20px 30px;
+}
 .half-form-control {
     width: 45%;
     display: inline-block;
 }
 .body-content {
     padding: 20px;
+}
+/************ footer **************/
+footer {
+    color: #efefef;
+    font-weight: 400;
+}
+.footer-widget {
+    background-color: #555;
+    padding: 40px 15px;
+    margin: 0;
+    font-size: 15px;
+}
+.footer {
+    background-color: #444;
+    font-size: 12px;
+    padding: 20px 30px;
+    margin-top: 10px;
+}
+h6 {
+    font-weight: 400;
+    font-size: 18px;
+    color: #fff;
+}
+.footer-widget ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;    
+}
+.footer-widget ul li {
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(239, 239, 239, 0.247059);
+}
+.footer-widget ul a {
+    color: #efefef;
+    padding-bottom: 10px;
+}
+.footer-widget ul a:hover {
+    text-decoration: none;
+    color: #222; 
 }

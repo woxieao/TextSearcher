@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Giqci.Enums;
 using Giqci.Models;
 using Giqci.PublicWeb.Models.Application;
 using Giqci.Repositories;
@@ -35,36 +37,85 @@ namespace Giqci.PublicWeb.Controllers
         [HttpPost]
         public ActionResult SubmitApplication(ApplicationViewModel model)
         {
-            if (validateApplication(model) && Request.Form["submit"] == "submit")
+            //var deleteitem = Request.Form["delete"];
+            //if (!string.IsNullOrEmpty(deleteitem))
+            //{
+            //    model.Application.Goods.RemoveAt(int.Parse(deleteitem));
+            //}
+            if (Request.Form["submit"] == "additem")
+            {
+                addItem(model);
+            }
+            validateApplication(model);
+            if (model.ErrorMessage.Count == 0 && Request.Form["submit"] == "submit")
             {
                 // submit
-                _repo.CreateApplication(new[] { model.Application }, null);
+                _repo.CreateApplication(model.Application);
                 return View("Created");
             }
             return View("Application", model);
         }
 
-        private bool validateApplication(ApplicationViewModel model)
+        private void validateApplication(ApplicationViewModel model)
         {
-            for (var i = model.Application.Goods.Count - 1; i >= 0; i--)
+            for (int i = model.Application.Goods.Count - 1; i > 0; i--)
             {
-                if (string.IsNullOrEmpty(model.Application.Goods[i].Description))
-                    model.Application.Goods.RemoveAt(i);
-                else if (string.IsNullOrEmpty(model.Application.Goods[i].Code)
-                    || string.IsNullOrEmpty(model.Application.Goods[i].HSCode)
-                    || string.IsNullOrEmpty(model.Application.Goods[i].BatchNo)
-                    || string.IsNullOrEmpty(model.Application.Goods[i].ExpiryDate)
-                    || string.IsNullOrEmpty(model.Application.Goods[i].Manufacturer)
-                    || string.IsNullOrEmpty(model.Application.Goods[i].ManufacturerDate)
-                    || string.IsNullOrEmpty(model.Application.Goods[i].Brand)
-                    || model.Application.Goods[i].Quantity <= 0
-                    || string.IsNullOrEmpty(model.Application.Goods[i].Package))
+                if (string.IsNullOrEmpty(model.Application.Goods[i].DescriptionEn))
                 {
-                    model.ErrorMessage.Add("请填写完整商品资料");
                     model.Application.Goods.RemoveAt(i);
                 }
             }
-            return !model.ErrorMessage.Any();
+
+            if (model.Application.Goods.Count == 0)
+            {
+                model.ErrorMessage.Add("请至少填写一个商品");
+            }
+            if (!Enum.IsDefined(typeof(CertType), model.Application.CertType))
+            {
+                model.ErrorMessage.Add("请选择证书类型");
+            }
+            if (!Enum.IsDefined(typeof(TradeType), model.Application.TradeType))
+            {
+                model.ErrorMessage.Add("请选择商业目的");
+            }
+            if (string.IsNullOrEmpty(model.Application.Billno))
+            {
+                model.ErrorMessage.Add("请填写提货单");
+            }
+            if (string.IsNullOrEmpty(model.Application.Vesselcn))
+            {
+                model.ErrorMessage.Add("请填写船名");
+            }
+            if (string.IsNullOrEmpty(model.Application.Voyage))
+            {
+                model.ErrorMessage.Add("请填写船次");
+            }
+        }
+
+        private void addItem(ApplicationViewModel model)
+        {
+            var item = model.Application.Goods[0];
+            if (!string.IsNullOrEmpty(item.DescriptionEn))
+            {
+                if (string.IsNullOrEmpty(item.HSCode)
+                || string.IsNullOrEmpty(item.Spec)
+                || string.IsNullOrEmpty(item.ManufacturerCountry)
+                || string.IsNullOrEmpty(item.Brand))
+                {
+                    model.ErrorMessage.Add("请填写完整商品资料");
+                }
+                else
+                {
+                    if (!_repo.IsValidCountry(item.ManufacturerCountry))
+                    {
+                        model.ErrorMessage.Add("制造国家代码错误");
+                    }
+                    else
+                    {
+                        model.Application.Goods.Insert(0, new GoodsItem());
+                    }
+                }
+            }
         }
     }
 }

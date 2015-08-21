@@ -7,7 +7,8 @@ namespace Giqci.PublicWeb.Controllers
         [Route("")]
         public ActionResult Index()
         {
-            return View();
+            return Redirect("/forms/app");
+            //return View();
         }
     }
 }
