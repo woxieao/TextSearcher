@@ -167,43 +167,43 @@
                 }
                 <tr>
                     <th>名称(英文) *</th>
-                    <td>@Html.TextBox("Application.Goods[0].DescriptionEn", Model.Application.Goods[0].DescriptionEn, new { @class = "form-control" })</td>
+                    <td>@Html.TextBox("Application.Goods[0].DescriptionEn", null, new { @class = "form-control" })</td>
                     <th>名称(中文)</th>
-                    <td>@Html.TextBox("Application.Goods[0].Description", Model.Application.Goods[0].Description, new { @class = "form-control" })</td>
+                    <td>@Html.TextBox("Application.Goods[0].Description", null, new { @class = "form-control" })</td>
                 </tr>
                 <tr>
                     <th>品牌 *</th>
-                    <td>@Html.TextBox("Application.Goods[0].Brand", Model.Application.Goods[0].Brand, new { @class = "form-control" })</td>
+                    <td>@Html.TextBox("Application.Goods[0].Brand", null, new { @class = "form-control" })</td>
                     <th>HS编码 *</th>
-                    <td>@Html.TextBox("Application.Goods[0].HSCode", Model.Application.Goods[0].HSCode, new { @class = "form-control" })</td>
+                    <td>@Html.TextBox("Application.Goods[0].HSCode", null, new { @class = "form-control" })</td>
                 </tr>
                 <tr>
                     <th>规格型号 *</th>
-                    <td>@Html.TextBox("Application.Goods[0].Spec", Model.Application.Goods[0].Spec, new { @class = "form-control" })</td>
+                    <td>@Html.TextBox("Application.Goods[0].Spec", null, new { @class = "form-control" })</td>
                     @*<th>制造工厂</th>
                         <td>@Html.TextBox("Application.Goods[" + Model.Application.Goods.Count + "].Manufacturer", null, new { @class = "form-control" })</td>*@
                     <th>制造国代码 *</th>
-                    <td>@Html.TextBox("Application.Goods[0].ManufacturerCountry", Model.Application.Goods[0].ManufacturerCountry, new { @class = "form-control", placeholder="例如：036 (Australia)" })</td>
+                    <td>@Html.TextBox("Application.Goods[0].ManufacturerCountry", null, new { @class = "form-control", placeholder = "例如：036 (Australia)" })</td>
                 </tr>
                 <tr>
                     <th>商品货号</th>
-                    <td>@Html.TextBox("Application.Goods[0].Code", Model.Application.Goods[0].Code, new { @class = "form-control" })</td>
+                    <td>@Html.TextBox("Application.Goods[0].Code", null, new { @class = "form-control" })</td>
                     <th>商品备案号</th>
-                    <td>@Html.TextBox("Application.Goods[0].CiqCode", Model.Application.Goods[0].CiqCode, new { @class = "form-control" })</td>
+                    <td>@Html.TextBox("Application.Goods[0].CiqCode", null, new { @class = "form-control" })</td>
                 </tr>
                 <tr>
                     <th>生产日期</th>
-                    <td>@Html.TextBox("Application.Goods[0].ManufacturerDate", Model.Application.Goods[0].ManufacturerDate, new { @class = "form-control", type = "Date" })</td>
+                    <td>@Html.TextBox("Application.Goods[0].ManufacturerDate", null, new { @class = "form-control", type = "Date" })</td>
                     <th>保质期</th>
-                    <td>@Html.TextBox("Application.Goods[0].ExpiryDate", Model.Application.Goods[0].ExpiryDate, new { @class = "form-control", type = "Date" })</td>
+                    <td>@Html.TextBox("Application.Goods[0].ExpiryDate", null, new { @class = "form-control", type = "Date" })</td>
                 </tr>
                 <tr>
                     <th>批次号</th>
-                    <td>@Html.TextBox("Application.Goods[0].BatchNo", Model.Application.Goods[0].BatchNo, new { @class = "form-control" })</td>
+                    <td>@Html.TextBox("Application.Goods[0].BatchNo", null, new { @class = "form-control" })</td>
                     <th>数(重)量/(包装)单位</th>
                     <td>
-                        @Html.TextBox("Application.Goods[0].Quantity", Model.Application.Goods[0].Quantity, new { @class = "form-control half-form-control" })
-                        @Html.TextBox("Application.Goods[0].Package", Model.Application.Goods[0].Package, new { @class = "form-control half-form-control", placeholder = "例如：箱" })
+                        @Html.TextBox("Application.Goods[0].Quantity", null, new { @class = "form-control half-form-control" })
+                        @Html.TextBox("Application.Goods[0].Package", null, new { @class = "form-control half-form-control", placeholder = "例如：箱" })
                     </td>
                 </tr>
                 <tr>
