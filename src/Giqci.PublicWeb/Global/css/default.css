@@ -44,7 +44,7 @@
     display: inline-block;
 }
 .body-content {
-    padding: 20px;
+    padding: 20px 40px;
 }
 /************ footer **************/
 footer {
@@ -84,4 +84,10 @@ h6 {
 .footer-widget ul a:hover {
     text-decoration: none;
     color: #222; 
+}
+.termblock {
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    height: 300px;
+    font-size: 12px;
 }

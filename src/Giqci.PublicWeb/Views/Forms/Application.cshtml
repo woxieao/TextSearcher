@@ -183,7 +183,7 @@
                     @*<th>制造工厂</th>
                         <td>@Html.TextBox("Application.Goods[" + Model.Application.Goods.Count + "].Manufacturer", null, new { @class = "form-control" })</td>*@
                     <th>制造国代码 *</th>
-                    <td>@Html.TextBox("Application.Goods[0].ManufacturerCountry", null, new { @class = "form-control", placeholder = "例如：036 (Australia)" })</td>
+                    <td>@Html.DropDownList("Application.Goods[0].ManufacturerCountry", Model.Countries, new { @class = "form-control" })</td>
                 </tr>
                 <tr>
                     <th>商品货号</th>
@@ -236,13 +236,13 @@
     <div class="form-group">
         <label class="col-sm-2 control-label">发货港口</label>
         <div class="col-sm-10">
-            @Html.TextBoxFor(m => m.Application.LoadingPort, new { @class = "form-control form-control-inline", placeholder = "发货港口" })
+            @Html.TextBoxFor(m => m.Application.LoadingPort, new { @class = "form-control form-control-inline", placeholder = "例如：036225 (悉尼港口)" })
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-2 control-label">目的港口</label>
         <div class="col-sm-10">
-            @Html.TextBoxFor(m => m.Application.DestPort, new { @class = "form-control form-control-inline", placeholder = "目的港口" })
+            @Html.TextBoxFor(m => m.Application.DestPort, new { @class = "form-control form-control-inline", placeholder = "例如：156752 (广州港口)" })
         </div>
     </div>
     <div class="form-group">
@@ -264,9 +264,113 @@
         </div>
     </div>
     <div class="form-group">
+        <div class="col-sm-10 col-sm-offset-2">
+            <div class="termblock">
+                <h5>委托检验申请单/协议书合同条款</h5>
+                <p>
+                    一、环球质量检验公正有限公司（以下简称检验方）接受委托方书面检验委托。委托检
+                    验申请单（以下简称委托单）作为本协议的附件。本协议以委托方代表人在委托单上签
+                    名盖章，检验方加盖受理骑缝章后生效。<br />
+                    1,Global Independent QC and Inspection Pty Ltd (GIQCI) operate inspection(s) in accordance
+                    with a written delegation agreement, to which an application form is attached. The agreement
+                    shall become effective upon the signature and seal from the entrusting party, together with the
+                    seal on the perforation from GIQCI.
+                </p>
+                <p>
+                    二、委托方应如实填写委托单，如有必要，还应根据检验方的要求提供必要的单据及相
+                    关资料。<br />
+                    2,The details in application form shall be filled carefully. Additional documents and information
+                    may be required.
+                </p>
+                <p>
+                    三、检验方按委托方在委托单上填明的检验要求进行检验，并出具检验报告。<br />
+                    3,GIQCI give report in accordance with the application form, on which details shall be filled by
+                    the entrusting party.
+                </p>
+                <p>
+                    四、委托方必须注明要求使用的检验方法。<br />
+                    4,The inspection method(s) shall be specified by the entrusting party.
+                </p>
+                <p>
+                    五、检验方的检验时间根据检验内容而定，原则上以检验方公布的时间为准，特殊情况
+                    双方协商确定，并在委托单上注明。<br />
+                    5,The length of inspection period is made according to the inspection subject, which shall be
+                    published by GIQCI. For special cases, the inspection period shall be negotiated by both parties
+                    and noted on the application form.
+                </p>
+                <p>
+                    六、检验方检验收费按有关规定计价。对于批量样品如需减免检验费用的，委托方应在
+                    委托时与检验方协商确定，并在委托单上“备注”栏内注明。要求加急服务的，需支付加急
+                    费。<br />
+                    6,Fees will be charged. Waiver can be applied for bulk samples, which shall be negotiated by
+                    both parties and noted on the application form. For express service, an additional charge will be
+                    applied.
+                </p>
+                <p>
+                    七、检验方接受委托方自送样品的检验，检验报告仅对样品负责。<br />
+                    7,The inspection report is issued based on the sample(s) offered from the entrusting party.
+                </p>
+                <p>
+                    八、检验方在接受委托时，须详细审核委托单内容。在确认委托方的委托及要求后，应
+                    填写委托单同一页上的领证凭条交付委托方，委托人凭此查询及索取检验报告。<br />
+                    8,Details on the application form shall be confirmed by GIQCI. The collection slip shall be kept
+                    by the entrusting party to make inquiry and collect inspection report.
+                </p>
+                <p>
+                    九、检验方的检验报告有固定的格式，并仅提供唯一正本。如对检验报告有特殊要求，
+                    委托方应在委托单上“备注”栏内注明。<br />
+                    9,Only one formal report shall be available, which has fixed format. Special requirements need
+                    to be noted by the entrusting party.
+                </p>
+                <p>
+                    十、请确保上述资料填写正确，报告完成后如需修改报告内容，将收取报告修改费，每
+                    份澳币：50。<br />
+                    10,Please ensure the accuracy of the information. Revision fee of AUS$50 per report will be
+                    charged after report issuance.
+                </p>
+                <p>
+                    十一、委托方如对检验结果有异议的，须在一个月内凭检验证书原件向检验方要求复检，
+                    检验方应在三日内给予答复。如同意复检，检验方应于十日内安排。<br />
+                    11,After the report is issued, review can be applied within one month, if the entrusting party
+                    objects to the inspection result. GIQCI shall give reply within three days. If GIQCI agree to carry
+                    out a review, a new inspection shall be given in then days.
+                </p>
+                <p>
+                    十二、复检结果维持原检验结果的，委托方须按规定向检验方支付复检费。复检结果确
+                    认原检验结果有误的，检验方不再收取复检费。<br />
+                    12,If the outcome remains unchanged, review fee will be charged. Otherwise, no fee occurs.
+                </p>
+                <p>
+                    十三、委托方对复检结果仍有异议，双方协商不成时，应与检验方书面协议，委托仲裁
+                    机构仲裁。<br />
+                    13,In case the entrusting party disagrees with the review result, the entrusting party shall make
+                    written agreement with GIQCI to send claim to arbitration.
+                </p>
+                <p>
+                    十四、委托方对本协议及委托单有不明之处，应在填写委托单时，向检验方工作人员咨
+                    询。协议自填单之日起生效。<br />
+                    14,Please fill up the application form carefully with the relevant and required details. Assistance
+                    is available from GIQCI.
+                </p>
+                <p>
+                    十五、此表信息可能在实验室评审过程中被评审机构接触。<br />
+                    15,Information of the application form may be reviewed by the accredit organization.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10 col-sm-offset-2">
+            <label>
+                @Html.CheckBoxFor(m => m.AcceptTerms)
+                我接受以上合同条款
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
             <button type="submit" class="btn btn-default" name="submit" value="submit">
-                <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 保存
+                <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
             </button>
         </div>
     </div>
@@ -291,8 +395,8 @@
     </form>*@
 
 <script type="text/javascript">
-        $(".deleteitem").click(function () {
-            var key = $(this).attr('datakey');
-            $("." + key).remove();
-        });
-    </script>
+    $(".deleteitem").click(function () {
+        var key = $(this).attr('datakey');
+        $("." + key).remove();
+    });
+</script>

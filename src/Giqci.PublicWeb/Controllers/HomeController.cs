@@ -10,5 +10,11 @@ namespace Giqci.PublicWeb.Controllers
             return Redirect("/forms/app");
             //return View();
         }
+
+        [Route("terms")]
+        public ActionResult Terms()
+        {
+            return View();
+        }
     }
 }
