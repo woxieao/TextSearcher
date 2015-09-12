@@ -59,16 +59,20 @@
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Contract, Version=1.0.44.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.Contract.1.0.44\lib\net45\Giqci.Contract.dll</HintPath>
+    <Reference Include="Giqci.Contract, Version=1.0.58.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.Contract.1.0.58\lib\net45\Giqci.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Repository, Version=1.0.70.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.Repository.1.0.70\lib\net45\Giqci.Repository.dll</HintPath>
+    <Reference Include="Giqci.Repository, Version=1.0.91.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.Repository.1.0.91\lib\net45\Giqci.Repository.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Ktech.Contract, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ktech.Contract.1.0.9\lib\net45\Ktech.Contract.dll</HintPath>
+    <Reference Include="Ktech.Contract, Version=1.0.10.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ktech.Contract.1.0.10\lib\net45\Ktech.Contract.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ktech.Membership, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ktech.Membership.1.0.3\lib\net45\Ktech.Membership.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
@@ -137,12 +141,13 @@
     <Compile Include="App_Start\RegisterComponent.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\ApplicationController.cs" />
+    <Compile Include="Controllers\FormsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Extensions\HtmlExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ModelBuilder.cs" />
     <Compile Include="Models\Account\LoginViewModel.cs" />
     <Compile Include="Models\Account\RegistrationViewModel.cs" />
     <Compile Include="Models\Application\ApplicationViewModel.cs" />
@@ -165,7 +170,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
-    <None Include="HtmlPage1.html" />
     <Content Include="Global\js\npm.js" />
     <Content Include="connectionStrings.config" />
     <None Include="Global\js\jquery-2.1.4.intellisense.js" />
@@ -192,6 +196,7 @@
     <Content Include="Views\Forms\Created.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
     <Content Include="Views\Home\Terms.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\CertType.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

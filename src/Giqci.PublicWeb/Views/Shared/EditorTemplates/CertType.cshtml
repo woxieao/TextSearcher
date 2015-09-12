@@ -1,0 +1,10 @@
+﻿@using Giqci.Enums
+@using Giqci.Extensions
+@model CertType
+@foreach (CertType value in Enum.GetValues(typeof(CertType)))
+{
+    <label>
+        @Html.RadioButtonFor(m => m, value, value.Equals(Model) ? new { @checked = "checked" } : null)
+        @value.CertInfo().Description
+    </label>
+}

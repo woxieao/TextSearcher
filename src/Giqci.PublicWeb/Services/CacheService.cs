@@ -1,19 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web.Caching;
-using Giqci.Entities.Core;
 
 using System.Runtime.Caching;
+using Giqci.Models.Dict;
 using Giqci.Repositories;
 
 namespace Giqci.PublicWeb.Services
 {
     public class CacheService : ICacheService
     {
-        private readonly IGiqciRepository _repo;
+        private readonly IDictionaryRepository _repo;
         private readonly CacheItemPolicy _policy;
 
-        public CacheService(IGiqciRepository repo)
+        public CacheService(IDictionaryRepository repo)
         {
             _repo = repo;
             _policy = new CacheItemPolicy { SlidingExpiration = new TimeSpan(0, 2, 0) };
@@ -22,6 +21,21 @@ namespace Giqci.PublicWeb.Services
         public KeyValuePair<string, string>[] GetCountries()
         {
             return GetCache("COUNTRIES", () => _repo.GetCountryDictionary());
+        }
+
+        public HSCode[] GetCommonHSCodes()
+        {
+            return GetCache("HSCODES", () => _repo.GetCommonHSCodes());
+        }
+
+        public Port[] GetDestPorts()
+        {
+            return GetCache("DESTPORTS", () => _repo.GetDestPorts());
+        }
+
+        public Port[] GetLoadingPorts()
+        {
+            return GetCache("LOADINGPORTS", () => _repo.GetLoadingPorts());
         }
 
         private T GetCache<T>(string key, Func<T> func) where T : class
@@ -39,5 +53,11 @@ namespace Giqci.PublicWeb.Services
     public interface ICacheService
     {
         KeyValuePair<string, string>[] GetCountries();
+
+        HSCode[] GetCommonHSCodes();
+
+        Port[] GetDestPorts();
+
+        Port[] GetLoadingPorts();
     }
 }

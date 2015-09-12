@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Giqci.Enums;
 using Giqci.Models;
+using Giqci.PublicWeb.Helpers;
 using Giqci.PublicWeb.Models.Application;
 using Giqci.PublicWeb.Services;
 using Giqci.Repositories;
@@ -12,12 +13,14 @@ namespace Giqci.PublicWeb.Controllers
 {
     public class FormsController : Controller
     {
-        private IGiqciRepository _repo;
-        private ICacheService _cache;
+        private readonly IGiqciRepository _coreRepo;
+        private readonly IDictionaryRepository _dictRepo;
+        private readonly ICacheService _cache;
 
-        public FormsController(IGiqciRepository repo, ICacheService cache)
+        public FormsController(IGiqciRepository coreRepo, IDictionaryRepository dictRepo, ICacheService cache)
         {
-            _repo = repo;
+            _coreRepo = coreRepo;
+            _dictRepo = dictRepo;
             _cache = cache;
         }
 
@@ -25,17 +28,15 @@ namespace Giqci.PublicWeb.Controllers
         [HttpGet]
         public ActionResult Application(string applicantCode)
         {
-            var countries = _repo.GetCountryDictionary();
-
             var model = new ApplicationViewModel
             {
                 Application = new Application
                 {
                     ApplicantCode = applicantCode,
                     Goods = new List<GoodsItem>()
-                },
-                Countries = _cache.GetCountries().Select(i => new SelectListItem { Text = i.Value, Value = i.Key, Selected = i.Key == "036" }).ToList()
+                }
             };
+            ModelBuilder.SetHelperFields(_cache, model);
             return View(model);
         }
 
@@ -52,14 +53,17 @@ namespace Giqci.PublicWeb.Controllers
             {
                 addItem(model);
             }
-            validateApplication(model);
-            if (model.ErrorMessage.Count == 0 && Request.Form["submit"] == "submit")
+            else if (Request.Form["submit"] == "submit")
             {
-                // submit
-                _repo.CreateApplication(model.Application);
-                return View("Created");
+                validateApplication(model);
+                if (model.ErrorMessage.Count == 0)
+                {
+                    // submit
+                    var appNo = _coreRepo.CreateApplication(model.Application);
+                    return View("Created", model: appNo);
+                }
             }
-            model.Countries = _cache.GetCountries().Select(i => new SelectListItem { Text = i.Value, Value = i.Key, Selected = i.Key == "036" }).ToList();
+            ModelBuilder.SetHelperFields(_cache, model);
             return View("Application", model);
         }
 
@@ -85,38 +89,51 @@ namespace Giqci.PublicWeb.Controllers
             {
                 model.ErrorMessage.Add("请选择商业目的");
             }
-            if (string.IsNullOrEmpty(model.Application.Billno))
-            {
-                model.ErrorMessage.Add("请填写提货单");
-            }
-            if (string.IsNullOrEmpty(model.Application.Vesselcn))
-            {
-                model.ErrorMessage.Add("请填写船名");
-            }
-            if (string.IsNullOrEmpty(model.Application.Voyage))
-            {
-                model.ErrorMessage.Add("请填写船次");
-            }
+            // 可以后补
+            //if (string.IsNullOrEmpty(model.Application.Billno))
+            //{
+            //    model.ErrorMessage.Add("请填写提货单");
+            //}
+            //if (string.IsNullOrEmpty(model.Application.Vesselcn))
+            //{
+            //    model.ErrorMessage.Add("请填写船名");
+            //}
+            //if (string.IsNullOrEmpty(model.Application.Voyage))
+            //{
+            //    model.ErrorMessage.Add("请填写船次");
+            //}
             if (!model.AcceptTerms)
             {
                 model.ErrorMessage.Add("你必须接受我们的条款协议");
             }
-            if (!string.IsNullOrEmpty(model.Application.DestPort) && !_repo.IsValidPort(model.Application.DestPort))
+            if (string.IsNullOrEmpty(model.Application.DestPort) &&
+                string.IsNullOrEmpty(model.Application.OtherDestPort))
             {
-                model.ErrorMessage.Add("无效目标港口代码");
+                model.ErrorMessage.Add("请填写目标港口");
             }
-            if (!string.IsNullOrEmpty(model.Application.LoadingPort) && !_repo.IsValidPort(model.Application.LoadingPort))
+            if (string.IsNullOrEmpty(model.Application.LoadingPort) &&
+                string.IsNullOrEmpty(model.Application.OtherLoadingPort))
             {
-                model.ErrorMessage.Add("无效发货港口代码");
+                model.ErrorMessage.Add("请填写发货港口");
             }
+            //if (!string.IsNullOrEmpty(model.Application.DestPort) && !_dictRepo.IsValidPort(model.Application.DestPort))
+            //{
+            //    model.ErrorMessage.Add("无效目标港口代码");
+            //}
+            //if (!string.IsNullOrEmpty(model.Application.LoadingPort) && !_dictRepo.IsValidPort(model.Application.LoadingPort))
+            //{
+            //    model.ErrorMessage.Add("无效发货港口代码");
+            //}
         }
 
         private void addItem(ApplicationViewModel model)
         {
-            var item = model.Application.Goods[0];
+            var item = model.NewItem;
             if (!string.IsNullOrEmpty(item.DescriptionEn))
             {
-                if (string.IsNullOrEmpty(item.HSCode)
+                if (string.IsNullOrEmpty(item.DescriptionEn)
+                || (string.IsNullOrEmpty(item.HSCode) && string.IsNullOrEmpty(item.OtherHSCode))
+                || string.IsNullOrEmpty(item.CiqCode)
                 || string.IsNullOrEmpty(item.Spec)
                 || string.IsNullOrEmpty(item.ManufacturerCountry)
                 || string.IsNullOrEmpty(item.Brand))
@@ -131,7 +148,14 @@ namespace Giqci.PublicWeb.Controllers
                     //}
                     //else
                     //{
-                    model.Application.Goods.Insert(0, new GoodsItem());
+                    if (!string.IsNullOrEmpty(item.HSCode))
+                    {
+                        var hscode = _dictRepo.GetHSCode(item.HSCode);
+                        item.Package = hscode.Unit;
+                    }
+                    item.ManufacturerCountryName = _cache.GetCountries().First(i => i.Key == item.ManufacturerCountry).Value;
+                    model.Application.Goods.Add(item);
+                    model.NewItem = new GoodsItem();
                 }
             }
         }

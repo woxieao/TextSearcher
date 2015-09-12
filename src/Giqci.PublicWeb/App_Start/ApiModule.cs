@@ -14,6 +14,7 @@ namespace Giqci.PublicWeb
             var connStr = WebConfigurationManager.AppSettings["connStr"];
             builder.Register<Func<GiqciDbContext>>(x => () => new GiqciDbContext(connStr));
             builder.RegisterType<GiqciRepository>().As<IGiqciRepository>().InstancePerDependency();
+            builder.RegisterType<DictionaryRepository>().As<IDictionaryRepository>().InstancePerDependency();
             builder.RegisterType<LoggerRepository>().As<ILoggerRepository>().InstancePerDependency();
             builder.RegisterType<CacheService>().As<ICacheService>().InstancePerDependency();
         }

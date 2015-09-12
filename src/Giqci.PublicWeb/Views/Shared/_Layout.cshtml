@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html>
+<html ng-app="giqci">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,9 +7,11 @@
     <link rel="shortcut icon" href="http://www.giqci.com.au/favicon.png" />
     <link href="/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="/Global/css/default.css" rel="stylesheet" />
-    <link rel="stylesheet" id="ls-google-fonts-css" href='http://fonts.useso.com/css?family=Lato:100,300,regular,700,900%7COpen+Sans:300%7CIndie+Flower:regular%7COswald:300,regular,700&#038;subset=latin%2Clatin-ext' type='text/css' media='all' />
-    <link rel="stylesheet" id="redux-google-fonts-css" href='http://fonts.useso.com/css?family=Raleway%3A400&#038;subset=latin&#038;ver=1432745489' type='text/css' media='all'/>
+    @*<link rel="stylesheet" id="ls-google-fonts-css" href='http://fonts.useso.com/css?family=Lato:100,300,regular,700,900%7COpen+Sans:300%7CIndie+Flower:regular%7COswald:300,regular,700&#038;subset=latin%2Clatin-ext' type='text/css' media='all' />
+    <link rel="stylesheet" id="redux-google-fonts-css" href='http://fonts.useso.com/css?family=Raleway%3A400&#038;subset=latin&#038;ver=1432745489' type='text/css' media='all' />*@
     <script src="/Global/js/jquery-2.1.4.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    @RenderSection("Header", false)
 </head>
 <body>
     <div class="container">
