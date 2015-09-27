@@ -2,6 +2,12 @@
 @model Giqci.PublicWeb.Models.Application.ApplicationViewModel
 @{
     ViewBag.Title = "证书申请表格";
+    var packages = new List<SelectListItem>();
+    packages.Add(new SelectListItem { Text = "罐装", Value = "罐装" });
+    packages.Add(new SelectListItem { Text = "瓶装", Value = "瓶装" }); 
+    packages.Add(new SelectListItem { Text = "袋装", Value = "袋装" }); 
+    packages.Add(new SelectListItem { Text = "盒装", Value = "盒装" });
+    
 }
 @section Header
 {
@@ -15,11 +21,6 @@
         app.controller("GlobalController", [
             '$http', '$scope', function ($http, $scope) {
                 $scope.model = @Html.Raw(JsonConvert.SerializeObject(Model));
-                $scope.submit = function() {
-                };
-                $scope.changeHSCode = function() {
-                    $scope.model.NewItem.OtherHSCode = $scope.model.NewItem.HSCode ? $scope.model.NewItem.HSCode : "";
-                }
             }
         ]);
     </script>
@@ -193,7 +194,7 @@
                     <td>@Html.TextBoxFor(m => m.NewItem.Brand, new { @class = "form-control" })</td>
                     <th>HS编码 *</th>
                     <td>
-                        @Html.DropDownListFor(m => m.NewItem.HSCode, Model.CommonHSCodes, "< - 其他HS编码 - >", new { @class = "form-control half-form-control", ng_model = "model.NewItem.HSCode", ng_change="changeHSCode()" })
+                        @Html.DropDownListFor(m => m.NewItem.HSCode, Model.CommonHSCodes, "< - 其他HS编码 - >", new { @class = "form-control half-form-control", ng_model = "model.NewItem.HSCode" })
                         @Html.TextBoxFor(m => m.NewItem.OtherHSCode, new { @class = "form-control half-form-control", placeholder = "其他HS编码，必填", ng_model = "model.NewItem.OtherHSCode" })
                     </td>
                 </tr>
@@ -220,10 +221,10 @@
                 <tr>
                     <th>批次号</th>
                     <td>@Html.TextBoxFor(m => m.NewItem.BatchNo, new { @class = "form-control" })</td>
-                    <th>数(重)量/(包装)单位</th>
+                    <th>数(重)量/包装</th>
                     <td>
                         @Html.TextBoxFor(m => m.NewItem.Quantity, new { @class = "form-control half-form-control" })
-                        @Html.TextBoxFor(m => m.NewItem.Package, new { @class = "form-control half-form-control", placeholder = "包装，例如：箱", ng_model = "model.NewItem.Package", ng_show = "!model.NewItem.HSCode" })
+                        @Html.DropDownListFor(m => m.NewItem.Package, packages, new { @class = "form-control half-form-control" })
                     </td>
                 </tr>
                 <tr>

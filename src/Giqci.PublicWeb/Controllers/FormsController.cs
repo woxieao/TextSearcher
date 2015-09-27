@@ -49,6 +49,7 @@ namespace Giqci.PublicWeb.Controllers
             //{
             //    model.Application.Goods.RemoveAt(int.Parse(deleteitem));
             //}
+            resetGoods(model);
             if (Request.Form["submit"] == "additem")
             {
                 addItem(model);
@@ -67,16 +68,19 @@ namespace Giqci.PublicWeb.Controllers
             return View("Application", model);
         }
 
-        private void validateApplication(ApplicationViewModel model)
+        private void resetGoods(ApplicationViewModel model)
         {
-            for (int i = model.Application.Goods.Count - 1; i > 0; i--)
+            for (int i = 0; i < model.Application.Goods.Count; i++)
             {
                 if (string.IsNullOrEmpty(model.Application.Goods[i].DescriptionEn))
                 {
                     model.Application.Goods.RemoveAt(i);
                 }
             }
+        }
 
+        private void validateApplication(ApplicationViewModel model)
+        {
             if (model.Application.Goods.Count == 0)
             {
                 model.ErrorMessage.Add("请至少填写一个商品");
@@ -132,11 +136,11 @@ namespace Giqci.PublicWeb.Controllers
             if (!string.IsNullOrEmpty(item.DescriptionEn))
             {
                 if (string.IsNullOrEmpty(item.DescriptionEn)
-                || (string.IsNullOrEmpty(item.HSCode) && string.IsNullOrEmpty(item.OtherHSCode))
-                || string.IsNullOrEmpty(item.CiqCode)
-                || string.IsNullOrEmpty(item.Spec)
-                || string.IsNullOrEmpty(item.ManufacturerCountry)
-                || string.IsNullOrEmpty(item.Brand))
+                    || (string.IsNullOrEmpty(item.HSCode) && string.IsNullOrEmpty(item.OtherHSCode))
+                    || string.IsNullOrEmpty(item.CiqCode)
+                    || string.IsNullOrEmpty(item.Spec)
+                    || string.IsNullOrEmpty(item.ManufacturerCountry)
+                    || string.IsNullOrEmpty(item.Brand))
                 {
                     model.ErrorMessage.Add("请填写完整商品资料");
                 }
@@ -151,7 +155,7 @@ namespace Giqci.PublicWeb.Controllers
                     if (!string.IsNullOrEmpty(item.HSCode))
                     {
                         var hscode = _dictRepo.GetHSCode(item.HSCode);
-                        item.Package = hscode.Unit;
+                        //item.Package = hscode.Unit;
                     }
                     item.ManufacturerCountryName = _cache.GetCountries().First(i => i.Key == item.ManufacturerCountry).Value;
                     model.Application.Goods.Add(item);
