@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
-using Giqci.Models;
+﻿using Giqci.Entities.Dict;
+using HSCode = Giqci.Models.Dict.HSCode;
+using Port = Giqci.Models.Dict.Port;
 
 namespace Giqci.PublicWeb.Models.Application
 {
@@ -10,21 +10,12 @@ namespace Giqci.PublicWeb.Models.Application
 
         public bool AcceptTerms { get; set; }
 
-        public GoodsItem NewItem { get; set; }
+        public Country[] Countries { get; set; }
 
-        public List<string> ErrorMessage { get; set; }
+        public HSCode[] CommonHSCodes { get; set; }
 
-        public IEnumerable<SelectListItem> Countries { get; set; }
+        public Port[] DestPorts { get; set; }
 
-        public List<SelectListItem> CommonHSCodes { get; set; }
-
-        public List<SelectListItem> DestPorts { get; set; }
-
-        public List<SelectListItem> LoadingPorts { get; set; }
-        
-        public ApplicationViewModel()
-        {
-            ErrorMessage = new List<string>();
-        }
+        public Port[] LoadingPorts { get; set; }
     }
 }

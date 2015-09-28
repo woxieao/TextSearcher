@@ -2,12 +2,6 @@
 @model Giqci.PublicWeb.Models.Application.ApplicationViewModel
 @{
     ViewBag.Title = "证书申请表格";
-    var packages = new List<SelectListItem>();
-    packages.Add(new SelectListItem { Text = "罐装", Value = "罐装" });
-    packages.Add(new SelectListItem { Text = "瓶装", Value = "瓶装" }); 
-    packages.Add(new SelectListItem { Text = "袋装", Value = "袋装" }); 
-    packages.Add(new SelectListItem { Text = "盒装", Value = "盒装" });
-    
 }
 @section Header
 {
@@ -19,414 +13,352 @@
     <script type="text/javascript">
         var app = angular.module("giqci", []);
         app.controller("GlobalController", [
-            '$http', '$scope', function ($http, $scope) {
+            '$http', '$scope', '$log', '$location', '$anchorScroll', function($http, $scope, $log, $location, $anchorScroll) {
                 $scope.model = @Html.Raw(JsonConvert.SerializeObject(Model));
+                $scope.errors = [];
+                $scope.additem = function() {
+                    $scope.model.Application.Goods.push({ ManufacturerCountry: "036" });
+                    $log.log($scope.model);
+                };
+                $scope.removeitem = function(index) {
+                    $scope.model.Application.Goods.splice(index, 1);
+                    $log.log($scope.model);
+                };
+                $scope.submit = function() {
+                    if (!$scope.model.AcceptTerms) {
+                        alert("你必须接受我们的条款协议");
+                        return;
+                    }
+                    $http.post('/forms/app', $scope.model.Application)
+                        .then(function(response) {
+                            $log.log(response);
+                            if (response.data.appNo) {
+                                $scope.appNo = response.data.appNo;
+                            } else {
+                                $scope.errors = response.data.errors;
+                                $location.hash("h1");
+                                $anchorScroll();
+                            }
+                        }, function(response) {
+                            $log.warn(response);
+                        });
+                };
             }
         ]);
     </script>
 }
-<h2>证书申请表格</h2>
 
-@if (Model.ErrorMessage.Count > 0)
-{
-    <div class="has-error">
-        <ul class="help-block">
-            @foreach (var item in Model.ErrorMessage)
-            {
-                <li>@item</li>
-            }
-        </ul>
-    </div>
-}
-    <form name="appform" class="form-horizontal" method="POST" action="" novalidate ng-controller="GlobalController">
-    @Html.HiddenFor(i => i.Application.ApplicantCode)
-    <div class="form-group">
-        <label class="col-sm-2 control-label">证书类别 *</label>
-        <div class="col-sm-10">
-            <div class="radio">
-                @Html.EditorFor(i => i.Application.CertType, "CertType")
-            </div>
-            @*<div class="checkbox">
-                    @foreach (CertType value in Enum.GetValues(typeof (CertType)))
-                    {
-                        if (value != CertType.C104)
-                        {
-                            <label>
-                                @Html.CheckBox("CertType", new {value = value})
-                                @value.ToDescription()
-                            </label>
-                        }
-                    }
-                </div>*@
+<div ng-controller="GlobalController">
+<h1 ng-show="appNo">证书申请成功！申请编号为{{appNo}}</h1>
+    <div ng-show="!appNo">
+        <h1 id="h1">证书申请表格</h1>
+        <div class="has-error" ng-show="errors.length > 0">
+            <ul class="help-block">
+                <li ng-repeat="err in errors">{{err}}</li>
+            </ul>
         </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">商业目的 *</label>
-        <div class="col-sm-10">
-            <div class="radio">
-                @Html.EditorFor(i => i.Application.TradeType, "Enum")
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">申请企业备案号</label>
-        <div class="col-sm-10">
-            <p class="form-control-static">@Model.Application.ApplicantCode</p>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">申请人</label>
-        <div class="col-sm-10">
-            @Html.TextBoxFor(m => m.Application.Applicant, new { @class = "form-control", placeholder = "全称" })
-            @Html.TextBoxFor(m => m.Application.ApplicantAddr, new { @class = "form-control", placeholder = "地址" })
-            @Html.TextBoxFor(m => m.Application.ApplicantContact, new { @class = "form-control", placeholder = "联系人" })
-            @Html.TextBoxFor(m => m.Application.ApplicantPhone, new { @class = "form-control", placeholder = "联系电话" })
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">出口商</label>
-        <div class="col-sm-10">
-            @Html.TextBoxFor(m => m.Application.Exporter, new { @class = "form-control", placeholder = "全称" })
-            @Html.TextBoxFor(m => m.Application.ExporterAddr, new { @class = "form-control", placeholder = "地址" })
-            @Html.TextBoxFor(m => m.Application.ExporterContact, new { @class = "form-control", placeholder = "联系人" })
-            @Html.TextBoxFor(m => m.Application.ExporterPhone, new { @class = "form-control", placeholder = "联系电话" })
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">进口商</label>
-        <div class="col-sm-10">
-            @Html.TextBoxFor(m => m.Application.Importer, new { @class = "form-control", placeholder = "全称" })
-            @Html.TextBoxFor(m => m.Application.ImporterAddr, new { @class = "form-control", placeholder = "地址" })
-            @Html.TextBoxFor(m => m.Application.ImporterContact, new { @class = "form-control", placeholder = "联系人" })
-            @Html.TextBoxFor(m => m.Application.ImporterPhone, new { @class = "form-control", placeholder = "联系电话" })
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">进口商代理</label>
-        <div class="col-sm-10">
-            @Html.TextBoxFor(m => m.Application.ImBroker, new { @class = "form-control", placeholder = "全称" })
-            @Html.TextBoxFor(m => m.Application.ImBrokerAddr, new { @class = "form-control", placeholder = "地址" })
-            @Html.TextBoxFor(m => m.Application.ImBrokerContact, new { @class = "form-control", placeholder = "联系人" })
-            @Html.TextBoxFor(m => m.Application.ImBrokerPhone, new { @class = "form-control", placeholder = "联系电话" })
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">商品资料</label>
-        <div class="col-sm-10">
-            <table class="table table-striped goodsItems">
-                @for (var i = 0; i < Model.Application.Goods.Count; i++)
-                {
-                    var item = Model.Application.Goods[i];
-                    @Html.Hidden("Application.Goods[" + i + "].Guid", item.Guid)
-                    <tr class="item@(i)">
-                        <th>商品@(i + 1)</th>
-                        <td colspan="3">
-                            @Html.Hidden("Application.Goods[" + i + "].Description", item.Description)
-                            @Html.Hidden("Application.Goods[" + i + "].DescriptionEn", item.DescriptionEn)
-                            @Html.Hidden("Application.Goods[" + i + "].Code", item.Code)
-                            @Html.Hidden("Application.Goods[" + i + "].CiqCode", item.CiqCode)
-                            @Html.Hidden("Application.Goods[" + i + "].HSCode", item.HSCode)
-                            @Html.Hidden("Application.Goods[" + i + "].OtherHSCode", item.OtherHSCode)
-                            @Html.Hidden("Application.Goods[" + i + "].ManufacturerCountry", item.ManufacturerCountry)
-                            @Html.Hidden("Application.Goods[" + i + "].ManufacturerCountryName", item.ManufacturerCountryName)
-                            @Html.Hidden("Application.Goods[" + i + "].ManufacturerDate", item.ManufacturerDate)
-                            @Html.Hidden("Application.Goods[" + i + "].ExpiryDate", item.ExpiryDate)
-                            @Html.Hidden("Application.Goods[" + i + "].BatchNo", item.BatchNo)
-                            @Html.Hidden("Application.Goods[" + i + "].Brand", item.Brand)
-                            @Html.Hidden("Application.Goods[" + i + "].Spec", item.Spec)
-                            @Html.Hidden("Application.Goods[" + i + "].Manufacturer", item.Manufacturer)
-                            @Html.Hidden("Application.Goods[" + i + "].Quantity", item.Quantity)
-                            @Html.Hidden("Application.Goods[" + i + "].Package", item.Package)
-
-                            <button type="button" datakey="item@(i)" class="deleteitem"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button>
-                        </td>
-                    </tr>
-                    <tr class="item@(i)">
-                        <th>名称(英文)</th>
-                        <td>@item.DescriptionEn</td>
-                        <th>名称(中文)</th>
-                        <td>@item.Description</td>
-                    </tr>
-                    <tr class="item@(i)">
-                        <th>品牌</th>
-                        <td>@item.Brand</td>
-                        <th>HS编码</th>
-                        <td>@(item.HSCode ?? item.OtherHSCode)</td>
-                    </tr>
-                    <tr class="item@(i)">
-                        <th>规格型号</th>
-                        <td>@item.Spec</td>
-                        @*<th>制造工厂</th>
-                            <td>@item.Manufacturer</td>*@
-                        <th>制造国</th>
-                        <td>@item.ManufacturerCountryName</td>
-                    </tr>
-                    <tr class="item@(i)">
-                        <th>商品货号</th>
-                        <td>@item.Code</td>
-                        <th>商品备案号</th>
-                        <td>@item.CiqCode</td>
-                    </tr>
-                    <tr class="item@(i)">
-                        <th>生产日期</th>
-                        <td>@item.ManufacturerDate</td>
-                        <th>保质期</th>
-                        <td>@item.ExpiryDate</td>
-                    </tr>
-                    <tr class="item@(i)">
-                        <th>批次号</th>
-                        <td>@item.BatchNo</td>
-                        <th>数量/重量</th>
-                        <td>@item.Quantity.ToString("0.##") @item.Package</td>
-                    </tr>
-                    <tr class="item@(i)">
-                        <td colspan="4"></td>
-                    </tr>
-                }
-                <tr>
-                    <th>名称(英文) *</th>
-                    <td>@Html.TextBoxFor(m => m.NewItem.DescriptionEn, new { @class = "form-control" })</td>
-                    <th>名称(中文)</th>
-                    <td>@Html.TextBoxFor(m => m.NewItem.Description, new { @class = "form-control" })</td>
-                </tr>
-                <tr>
-                    <th>品牌 *</th>
-                    <td>@Html.TextBoxFor(m => m.NewItem.Brand, new { @class = "form-control" })</td>
-                    <th>HS编码 *</th>
-                    <td>
-                        @Html.DropDownListFor(m => m.NewItem.HSCode, Model.CommonHSCodes, "< - 其他HS编码 - >", new { @class = "form-control half-form-control", ng_model = "model.NewItem.HSCode" })
-                        @Html.TextBoxFor(m => m.NewItem.OtherHSCode, new { @class = "form-control half-form-control", placeholder = "其他HS编码，必填", ng_model = "model.NewItem.OtherHSCode" })
-                    </td>
-                </tr>
-                <tr>
-                    <th>规格型号 *</th>
-                    <td>@Html.TextBoxFor(m => m.NewItem.Spec, new { @class = "form-control" })</td>
-                    @*<th>制造工厂</th>
-                        <td>@Html.TextBox("Application.Goods[" + Model.Application.Goods.Count + "].Manufacturer", null, new { @class = "form-control" })</td>*@
-                    <th>制造国代码 *</th>
-                    <td>@Html.DropDownListFor(m => m.NewItem.ManufacturerCountry, Model.Countries, new { @class = "form-control" })</td>
-                </tr>
-                <tr>
-                    <th>商品货号</th>
-                    <td>@Html.TextBoxFor(m => m.NewItem.Code, new { @class = "form-control" })</td>
-                    <th>商品备案号 *</th>
-                    <td>@Html.TextBoxFor(m => m.NewItem.CiqCode, new { @class = "form-control" })</td>
-                </tr>
-                <tr>
-                    <th>生产日期</th>
-                    <td>@Html.TextBoxFor(m => m.NewItem.ManufacturerDate, new { @class = "form-control", type = "Date" })</td>
-                    <th>保质期</th>
-                    <td>@Html.TextBoxFor(m => m.NewItem.ExpiryDate, new { @class = "form-control", type = "Date" })</td>
-                </tr>
-                <tr>
-                    <th>批次号</th>
-                    <td>@Html.TextBoxFor(m => m.NewItem.BatchNo, new { @class = "form-control" })</td>
-                    <th>数(重)量/包装</th>
-                    <td>
-                        @Html.TextBoxFor(m => m.NewItem.Quantity, new { @class = "form-control half-form-control" })
-                        @Html.DropDownListFor(m => m.NewItem.Package, packages, new { @class = "form-control half-form-control" })
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="4"><button type="submit" name="submit" value="additem"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加商品</button></td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">计划发货日期</label>
-        <div class="col-sm-10">
-            @Html.TextBoxFor(m => m.Application.ShippingDate, new { @class = "form-control", placeholder = "计划发货日期" })
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">检验地点</label>
-        <div class="col-sm-10">
-            @Html.TextBoxFor(m => m.Application.InspectionAddr, new { @class = "form-control", placeholder = "检验地点" })
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">运输方式</label>
-        <div class="col-sm-10">
-            <div class="radio">
-                @Html.EditorFor(i => i.Application.ShippingMethod, "ShippingMethod")
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">发货港口 *</label>
-        <div class="col-sm-10">
-            @Html.DropDownListFor(m => m.Application.LoadingPort, Model.LoadingPorts, "< - 其他港口 - >", new { @class = "form-control half-form-control", ng_model = "model.Application.LoadingPort" })
-            @Html.TextBoxFor(m => m.Application.OtherLoadingPort, new { @class = "form-control  half-form-control", placeholder = "其他港口，必填", ng_model = "model.Application.OtherLoadingPort", ng_show = "!model.Application.LoadingPort" })
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">目的港口 *</label>
-        <div class="col-sm-10">
-            @Html.DropDownListFor(m => m.Application.DestPort, Model.DestPorts, "< - 其他港口 - >", new { @class = "form-control half-form-control", ng_model = "model.Application.DestPort" })
-            @Html.TextBoxFor(m => m.Application.OtherDestPort, new { @class = "form-control  half-form-control", placeholder = "其他港口，必填", ng_model = "model.Application.OtherDestPort", ng_show = "!model.Application.DestPort" })
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">提货单</label>
-        <div class="col-sm-10">
-            @Html.TextBoxFor(m => m.Application.Billno, new { @class = "form-control", placeholder = "提货单" })
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">副提货单</label>
-        <div class="col-sm-10">
-            @Html.TextBoxFor(m => m.Application.OtherBillno, new { @class = "form-control", placeholder = "副提货单" })
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">船名</label>
-        <div class="col-sm-10">
-            @Html.TextBoxFor(m => m.Application.Vesselcn, new { @class = "form-control", placeholder = "船名" })
-        </div>
-    </div>
-    <div class="form-group">
-        <label class="col-sm-2 control-label">船次</label>
-        <div class="col-sm-10">
-            @Html.TextBoxFor(m => m.Application.Voyage, new { @class = "form-control", placeholder = "船次" })
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-10 col-sm-offset-2">
-            <div class="termblock">
-                <h5>委托检验申请单/协议书合同条款</h5>
-                <p>
-                    一、环球质量检验公正有限公司（以下简称检验方）接受委托方书面检验委托。委托检
-                    验申请单（以下简称委托单）作为本协议的附件。本协议以委托方代表人在委托单上签
-                    名盖章，检验方加盖受理骑缝章后生效。<br />
-                    1,Global Independent QC and Inspection Pty Ltd (GIQCI) operate inspection(s) in accordance
-                    with a written delegation agreement, to which an application form is attached. The agreement
-                    shall become effective upon the signature and seal from the entrusting party, together with the
-                    seal on the perforation from GIQCI.
-                </p>
-                <p>
-                    二、委托方应如实填写委托单，如有必要，还应根据检验方的要求提供必要的单据及相
-                    关资料。<br />
-                    2,The details in application form shall be filled carefully. Additional documents and information
-                    may be required.
-                </p>
-                <p>
-                    三、检验方按委托方在委托单上填明的检验要求进行检验，并出具检验报告。<br />
-                    3,GIQCI give report in accordance with the application form, on which details shall be filled by
-                    the entrusting party.
-                </p>
-                <p>
-                    四、委托方必须注明要求使用的检验方法。<br />
-                    4,The inspection method(s) shall be specified by the entrusting party.
-                </p>
-                <p>
-                    五、检验方的检验时间根据检验内容而定，原则上以检验方公布的时间为准，特殊情况
-                    双方协商确定，并在委托单上注明。<br />
-                    5,The length of inspection period is made according to the inspection subject, which shall be
-                    published by GIQCI. For special cases, the inspection period shall be negotiated by both parties
-                    and noted on the application form.
-                </p>
-                <p>
-                    六、检验方检验收费按有关规定计价。对于批量样品如需减免检验费用的，委托方应在
-                    委托时与检验方协商确定，并在委托单上“备注”栏内注明。要求加急服务的，需支付加急
-                    费。<br />
-                    6,Fees will be charged. Waiver can be applied for bulk samples, which shall be negotiated by
-                    both parties and noted on the application form. For express service, an additional charge will be
-                    applied.
-                </p>
-                <p>
-                    七、检验方接受委托方自送样品的检验，检验报告仅对样品负责。<br />
-                    7,The inspection report is issued based on the sample(s) offered from the entrusting party.
-                </p>
-                <p>
-                    八、检验方在接受委托时，须详细审核委托单内容。在确认委托方的委托及要求后，应
-                    填写委托单同一页上的领证凭条交付委托方，委托人凭此查询及索取检验报告。<br />
-                    8,Details on the application form shall be confirmed by GIQCI. The collection slip shall be kept
-                    by the entrusting party to make inquiry and collect inspection report.
-                </p>
-                <p>
-                    九、检验方的检验报告有固定的格式，并仅提供唯一正本。如对检验报告有特殊要求，
-                    委托方应在委托单上“备注”栏内注明。<br />
-                    9,Only one formal report shall be available, which has fixed format. Special requirements need
-                    to be noted by the entrusting party.
-                </p>
-                <p>
-                    十、请确保上述资料填写正确，报告完成后如需修改报告内容，将收取报告修改费，每
-                    份澳币：50。<br />
-                    10,Please ensure the accuracy of the information. Revision fee of AUS$50 per report will be
-                    charged after report issuance.
-                </p>
-                <p>
-                    十一、委托方如对检验结果有异议的，须在一个月内凭检验证书原件向检验方要求复检，
-                    检验方应在三日内给予答复。如同意复检，检验方应于十日内安排。<br />
-                    11,After the report is issued, review can be applied within one month, if the entrusting party
-                    objects to the inspection result. GIQCI shall give reply within three days. If GIQCI agree to carry
-                    out a review, a new inspection shall be given in then days.
-                </p>
-                <p>
-                    十二、复检结果维持原检验结果的，委托方须按规定向检验方支付复检费。复检结果确
-                    认原检验结果有误的，检验方不再收取复检费。<br />
-                    12,If the outcome remains unchanged, review fee will be charged. Otherwise, no fee occurs.
-                </p>
-                <p>
-                    十三、委托方对复检结果仍有异议，双方协商不成时，应与检验方书面协议，委托仲裁
-                    机构仲裁。<br />
-                    13,In case the entrusting party disagrees with the review result, the entrusting party shall make
-                    written agreement with GIQCI to send claim to arbitration.
-                </p>
-                <p>
-                    十四、委托方对本协议及委托单有不明之处，应在填写委托单时，向检验方工作人员咨
-                    询。协议自填单之日起生效。<br />
-                    14,Please fill up the application form carefully with the relevant and required details. Assistance
-                    is available from GIQCI.
-                </p>
-                <p>
-                    十五、此表信息可能在实验室评审过程中被评审机构接触。<br />
-                    15,Information of the application form may be reviewed by the accredit organization.
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-10 col-sm-offset-2">
-            <label>
-                @Html.CheckBoxFor(m => m.AcceptTerms)
-                我接受以上合同条款
-            </label>
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-default" name="submit" value="submit">
-                <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
-            </button>
-        </div>
-    </div>
-</form>
-
-
-
-    @*@Html.Partial("_ViewDocs", Model.AttachedDocs)
-        <form class="form-horizontal" action="/apps/@(Model.Id)/uploaddoc" method="POST" enctype="multipart/form-data">
+        <form name="appform" class="form-horizontal" method="POST" novalidate>
             <div class="form-group">
-                <label class="col-sm-2 control-label">上传附件</label>
+                <label class="col-sm-2 control-label">证书类别 *</label>
                 <div class="col-sm-10">
-                    <input type="text" name="desc" placeholder="描述" />
-                    <input type="file" name="file" />
-                    <button type="submit" class="btn btn-default">上传附件</button>
+                    <div class="radio">
+                        <label><input type="radio" name="Application.CertType" ng-model="model.Application.CertType" value="C101" /> 溯源证书</label>
+                        <label><input type="radio" name="Application.CertType" ng-model="model.Application.CertType" value="C102" /> 品质证书</label>
+                        <label><input type="radio" name="Application.CertType" ng-model="model.Application.CertType" value="C103" /> 标签证书</label>
+                        <label><input type="radio" name="Application.CertType" ng-model="model.Application.CertType" value="C104" /> 个人代购(私人)物品报告</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">商业目的 *</label>
+                <div class="col-sm-10">
+                    <div class="radio">
+                        <label><input type="radio" name="Application.TradeType" ng-model="model.Application.TradeType" value="C" /> 电商贸易</label>
+                        <label><input type="radio" name="Application.TradeType" ng-model="model.Application.TradeType" value="P" /> 私人物品</label>
+                        <label><input type="radio" name="Application.TradeType" ng-model="model.Application.TradeType" value="B" /> 个人代购</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">申请企业备案号</label>
+                <div class="col-sm-10">
+                    <p class="form-control-static"><input type="hidden" name="Application.ApplicantCode" ng-model="model.Application.ApplicantCode" />{{model.Application.ApplicantCode}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">申请人</label>
+                <div class="col-sm-10">
+                    <input type="text" name="Application.Applicant" ng-model="model.Application.Applicant" class="form-control" placeholder="全称" />
+                    <input type="text" name="Application.ApplicantAddr" ng-model="model.Application.ApplicantAddr" class="form-control" placeholder="地址" />
+                    <input type="text" name="Application.ApplicantContact" ng-model="model.Application.ApplicantContact" class="form-control" placeholder="联系人" />
+                    <input type="text" name="Application.ApplicantPhone" ng-model="model.Application.ApplicantPhone" class="form-control" placeholder="联系电话" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">出口商</label>
+                <div class="col-sm-10">
+                    <input type="text" name="Application.Exporter" ng-model="model.Application.Exporter" class="form-control" placeholder="全称" />
+                    <input type="text" name="Application.ExporterAddr" ng-model="model.Application.ExporterAddr" class="form-control" placeholder="地址" />
+                    <input type="text" name="Application.ExporterContact" ng-model="model.Application.ExporterContact" class="form-control" placeholder="联系人" />
+                    <input type="text" name="Application.ExporterPhone" ng-model="model.Application.ExporterPhone" class="form-control" placeholder="联系电话" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">进口商</label>
+                <div class="col-sm-10">
+                    <input type="text" name="Application.Importer" ng-model="model.Application.Importer" class="form-control" placeholder="全称" />
+                    <input type="text" name="Application.ImporterAddr" ng-model="model.Application.ImporterAddr" class="form-control" placeholder="地址" />
+                    <input type="text" name="Application.ImporterContact" ng-model="model.Application.ImporterContact" class="form-control" placeholder="联系人" />
+                    <input type="text" name="Application.ImporterPhone" ng-model="model.Application.ImporterPhone" class="form-control" placeholder="联系电话" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">进口商代理</label>
+                <div class="col-sm-10">
+                    <input type="text" name="Application.ImBroker" ng-model="model.Application.ImBroker" class="form-control" placeholder="全称" />
+                    <input type="text" name="Application.ImBrokerAddr" ng-model="model.Application.ImBrokerAddr" class="form-control" placeholder="地址" />
+                    <input type="text" name="Application.ImBrokerContact" ng-model="model.Application.ImBrokerContact" class="form-control" placeholder="联系人" />
+                    <input type="text" name="Application.ImBrokerPhone" ng-model="model.Application.ImBrokerPhone" class="form-control" placeholder="联系电话" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">商品资料</label>
+                <div class="col-sm-10">
+                    <div ng-repeat="item in model.Application.Goods">
+                        <table class="table table-striped goodsItems">
+                            <tr>
+                                <th>商品 {{$index+1}}</th>
+                                <td colspan="3"><button type="button" ng-click="removeitem($index)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button></td>
+                            </tr>
+                            <tr>
+                                <th>名称(英文) *</th>
+                                <td><input type="text" ng-model="item.DescriptionEn" class="form-control" /></td>
+                                <th>名称(中文)</th>
+                                <td><input type="text" ng-model="item.Description" class="form-control" /></td>
+                            </tr>
+                            <tr>
+                                <th>品牌 *</th>
+                                <td><input type="text" ng-model="item.Brand" class="form-control" /></td>
+                                <th>HS编码 *</th>
+                                <td>
+                                    <select ng-model="item.HSCode" ng-options="i.Code as i.Name group by i.Category for i in model.CommonHSCodes" class="form-control" ng-class="(item.HSCode?'':'half-form-control')">
+                                        <option value="">< - 其他HS编码 - ></option>
+                                    </select>
+                                    <input type="text" ng-model="item.OtherHSCode" class="form-control half-form-control" placeholder="其他HS编码，必填" ng-show="!item.HSCode" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>规格型号 *</th>
+                                <td><input type="text" class="form-control" ng-model="item.Spec" /></td>
+                                <th>制造国代码 *</th>
+                                <td>
+                                    <select ng-model="item.ManufacturerCountry" ng-options="c.Code as c.CnName for c in model.Countries" class="form-control"></select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>商品货号</th>
+                                <td><input type="text" ng-model="item.Code" class="form-control" /></td>
+                                <th>商品备案号 *</th>
+                                <td><input type="text" ng-model="item.CiqCode" class="form-control" /></td>
+                            </tr>
+                            <tr>
+                                <th>生产日期</th>
+                                <td><input type="date" ng-model="item.ManufacturerDate" class="form-control" /></td>
+                                <th>保质期</th>
+                                <td><input type="date" ng-model="item.ExpiryDate" class="form-control" /></td>
+                            </tr>
+                            <tr>
+                                <th>批次号</th>
+                                <td><input type="text" ng-model="item.BatchNo" class="form-control" /></td>
+                                <th>数量/包装 *</th>
+                                <td>
+                                    <input type="number" ng-model="item.Quantity" class="form-control half-form-control" />
+                                    <select ng-model="item.Package" class="form-control half-form-control">
+                                        <option value="罐装">罐装</option>
+                                        <option value="瓶装">瓶装</option>
+                                        <option value="袋装">袋装</option>
+                                        <option value="盒装">盒装</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <button type="button" ng-click="additem()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加商品</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">计划发货日期</label>
+                <div class="col-sm-10">
+                    <input type="text" ng-model="model.Application.ShippingDate" class="form-control" placeholder="计划发货日期" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">检验地点</label>
+                <div class="col-sm-10">
+                    <input type="text" ng-model="model.Application.InspectionAddr" class="form-control" placeholder="检验地点" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">运输方式</label>
+                <div class="col-sm-10">
+                    <div class="radio">
+                        <label><input type="radio" ng-model="model.Application.ShippingMethod" value="A" /> 空运</label>
+                        <label><input type="radio" ng-model="model.Application.ShippingMethod" value="O" /> 海运</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">发货港口 *</label>
+                <div class="col-sm-10">
+                    <select ng-model="model.Application.LoadingPort" ng-options="i.Code as i.Name group by i.Country for i in model.LoadingPorts" class="form-control" ng-class="(model.Application.LoadingPort?'':'half-form-control')">
+                        <option value="">< - 其他港口 - ></option>
+                    </select>
+                    <input type="text" ng-model="model.Application.OtherLoadingPort" class="form-control half-form-control" placeholder="其他港口，必填" ng-show="!model.Application.LoadingPort" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">目的港口 *</label>
+                <div class="col-sm-10">
+                    <select ng-model="model.Application.DestPort" ng-options="i.Code as i.Name group by i.Country for i in model.DestPorts" class="form-control" ng-class="(model.Application.DestPort?'':'half-form-control')">
+                        <option value="">< - 其他港口 - ></option>
+                    </select>
+                    <input type="text" ng-model="model.Application.OtherDestPort" class="form-control half-form-control" placeholder="其他港口，必填" ng-show="!model.Application.DestPort" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">航空运单号/提单号</label>
+                <div class="col-sm-10">
+                    <input type="text" ng-model="model.Application.Billno" class="form-control" placeholder="提货单" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">副提货单</label>
+                <div class="col-sm-10">
+                    <input type="text" ng-model="model.Application.OtherBillno" class="form-control" placeholder="副提货单" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">船舶/航班/火车/汽车号</label>
+                <div class="col-sm-10">
+                    <input type="text" ng-model="model.Application.Vesselcn" class="form-control" placeholder="船名" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">船次</label>
+                <div class="col-sm-10">
+                    <input type="text" ng-model="model.Application.Voyage" class="form-control" placeholder="船次" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-10 col-sm-offset-2">
+                    <div class="termblock">
+                        <h5>委托检验申请单/协议书合同条款</h5>
+                        <p>
+                            一、环球质量检验公正有限公司（以下简称检验方）接受委托方书面检验委托。委托检
+                            验申请单（以下简称委托单）作为本协议的附件。本协议以委托方代表人在委托单上签
+                            名盖章，检验方加盖受理骑缝章后生效。<br />
+                            1,Global Independent QC and Inspection Pty Ltd (GIQCI) operate inspection(s) in accordance
+                            with a written delegation agreement, to which an application form is attached. The agreement
+                            shall become effective upon the signature and seal from the entrusting party, together with the
+                            seal on the perforation from GIQCI.
+                        </p>
+                        <p>
+                            二、委托方应如实填写委托单，如有必要，还应根据检验方的要求提供必要的单据及相
+                            关资料。<br />
+                            2,The details in application form shall be filled carefully. Additional documents and information
+                            may be required.
+                        </p>
+                        <p>
+                            三、检验方按委托方在委托单上填明的检验要求进行检验，并出具检验报告。<br />
+                            3,GIQCI give report in accordance with the application form, on which details shall be filled by
+                            the entrusting party.
+                        </p>
+                        <p>
+                            四、委托方必须注明要求使用的检验方法。<br />
+                            4,The inspection method(s) shall be specified by the entrusting party.
+                        </p>
+                        <p>
+                            五、检验方的检验时间根据检验内容而定，原则上以检验方公布的时间为准，特殊情况
+                            双方协商确定，并在委托单上注明。<br />
+                            5,The length of inspection period is made according to the inspection subject, which shall be
+                            published by GIQCI. For special cases, the inspection period shall be negotiated by both parties
+                            and noted on the application form.
+                        </p>
+                        <p>
+                            六、检验方检验收费按有关规定计价。对于批量样品如需减免检验费用的，委托方应在
+                            委托时与检验方协商确定，并在委托单上“备注”栏内注明。要求加急服务的，需支付加急
+                            费。<br />
+                            6,Fees will be charged. Waiver can be applied for bulk samples, which shall be negotiated by
+                            both parties and noted on the application form. For express service, an additional charge will be
+                            applied.
+                        </p>
+                        <p>
+                            七、检验方接受委托方自送样品的检验，检验报告仅对样品负责。<br />
+                            7,The inspection report is issued based on the sample(s) offered from the entrusting party.
+                        </p>
+                        <p>
+                            八、检验方在接受委托时，须详细审核委托单内容。在确认委托方的委托及要求后，应
+                            填写委托单同一页上的领证凭条交付委托方，委托人凭此查询及索取检验报告。<br />
+                            8,Details on the application form shall be confirmed by GIQCI. The collection slip shall be kept
+                            by the entrusting party to make inquiry and collect inspection report.
+                        </p>
+                        <p>
+                            九、检验方的检验报告有固定的格式，并仅提供唯一正本。如对检验报告有特殊要求，
+                            委托方应在委托单上“备注”栏内注明。<br />
+                            9,Only one formal report shall be available, which has fixed format. Special requirements need
+                            to be noted by the entrusting party.
+                        </p>
+                        <p>
+                            十、请确保上述资料填写正确，报告完成后如需修改报告内容，将收取报告修改费<br />
+                            10,Please ensure the accuracy of the information. Revision fee will be
+                            charged after report issuance.
+                        </p>
+                        <p>
+                            十一、委托方如对检验结果有异议的，须在一个月内凭检验证书原件向检验方要求复检，
+                            检验方应在三日内给予答复。如同意复检，检验方应于十日内安排。<br />
+                            11,After the report is issued, review can be applied within one month, if the entrusting party
+                            objects to the inspection result. GIQCI shall give reply within three days. If GIQCI agree to carry
+                            out a review, a new inspection shall be given in then days.
+                        </p>
+                        <p>
+                            十二、复检结果维持原检验结果的，委托方须按规定向检验方支付复检费。复检结果确
+                            认原检验结果有误的，检验方不再收取复检费。<br />
+                            12,If the outcome remains unchanged, review fee will be charged. Otherwise, no fee occurs.
+                        </p>
+                        <p>
+                            十三、委托方对复检结果仍有异议，双方协商不成时，应与检验方书面协议，委托仲裁
+                            机构仲裁。<br />
+                            13,In case the entrusting party disagrees with the review result, the entrusting party shall make
+                            written agreement with GIQCI to send claim to arbitration.
+                        </p>
+                        <p>
+                            十四、委托方对本协议及委托单有不明之处，应在填写委托单时，向检验方工作人员咨
+                            询。协议自填单之日起生效。<br />
+                            14,Please fill up the application form carefully with the relevant and required details. Assistance
+                            is available from GIQCI.
+                        </p>
+                        <p>
+                            十五、此表信息可能在实验室评审过程中被评审机构接触。<br />
+                            15,Information of the application form may be reviewed by the accredit organization.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-10 col-sm-offset-2">
+                    <label>
+                        <input type="checkbox" ng-model="model.AcceptTerms" />
+                        我接受以上合同条款
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button class="btn btn-default" ng-click="submit()">
+                        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
+                    </button>
                 </div>
             </div>
         </form>
-        <form class="form-horizontal" action="/apps/@(Model.Id)/complete" method="POST">
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <button type="submit" class="btn btn-default" onclick="return confirm('一旦下发，证书将无法再修改，确认下发？');">证书下发</button>
-                </div>
-            </div>
-        </form>*@
-<script type="text/javascript">
-    $(".deleteitem").click(function () {
-        var key = $(this).attr('datakey');
-        $("." + key).remove();
-    });
-</script>
+    </div>
+</div>

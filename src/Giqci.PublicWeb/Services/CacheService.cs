@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using System.Runtime.Caching;
-using Giqci.Models.Dict;
+using Giqci.Entities.Dict;
 using Giqci.Repositories;
+using HSCode = Giqci.Models.Dict.HSCode;
+using Port = Giqci.Models.Dict.Port;
 
 namespace Giqci.PublicWeb.Services
 {
@@ -18,7 +19,7 @@ namespace Giqci.PublicWeb.Services
             _policy = new CacheItemPolicy { SlidingExpiration = new TimeSpan(0, 2, 0) };
         }
 
-        public KeyValuePair<string, string>[] GetCountries()
+        public Country[] GetCountries()
         {
             return GetCache("COUNTRIES", () => _repo.GetCountryDictionary());
         }
@@ -52,7 +53,7 @@ namespace Giqci.PublicWeb.Services
 
     public interface ICacheService
     {
-        KeyValuePair<string, string>[] GetCountries();
+        Country[] GetCountries();
 
         HSCode[] GetCommonHSCodes();
 

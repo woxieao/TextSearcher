@@ -63,8 +63,8 @@
       <HintPath>..\..\packages\Giqci.Contract.1.0.58\lib\net45\Giqci.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Repository, Version=1.0.92.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.Repository.1.0.92\lib\net45\Giqci.Repository.dll</HintPath>
+    <Reference Include="Giqci.Repository, Version=1.0.93.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.Repository.1.0.93\lib\net45\Giqci.Repository.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ktech.Contract, Version=1.0.10.0, Culture=neutral, processorArchitecture=MSIL">
@@ -73,6 +73,10 @@
     </Reference>
     <Reference Include="Ktech.Membership, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Ktech.Membership.1.0.3\lib\net45\Ktech.Membership.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ktech.Mvc, Version=2.0.11.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ktech.Mvc.2.0.11\lib\net45\Ktech.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
