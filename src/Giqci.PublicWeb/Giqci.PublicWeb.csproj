@@ -47,8 +47,8 @@
       <HintPath>..\..\packages\Autofac.Mvc5.3.3.4\lib\net45\Autofac.Integration.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\AutoMapper.4.0.4\lib\net45\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=4.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.4.1.1\lib\net45\AutoMapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -59,12 +59,12 @@
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Contract, Version=1.0.58.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.Contract.1.0.58\lib\net45\Giqci.Contract.dll</HintPath>
+    <Reference Include="Giqci.Contract, Version=1.0.69.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.Contract.1.0.69\lib\net45\Giqci.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Repository, Version=1.0.93.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.Repository.1.0.93\lib\net45\Giqci.Repository.dll</HintPath>
+    <Reference Include="Giqci.Repository, Version=1.0.125.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.Repository.1.0.125\lib\net45\Giqci.Repository.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ktech.Contract, Version=1.0.10.0, Culture=neutral, processorArchitecture=MSIL">
@@ -174,6 +174,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Global\js\angular-1.4.7.min.js" />
     <Content Include="Global\js\npm.js" />
     <Content Include="connectionStrings.config" />
     <None Include="Global\js\jquery-2.1.4.intellisense.js" />

@@ -6,9 +6,17 @@
 @section Header
 {
     <style type="text/css">
-        input[type="date"] { width: 180px; }
-        .goodsItems th { width: 15%; }
-        .goodsItems td { width: 35%; }
+        input[type="date"] {
+            width: 180px;
+        }
+
+        .goodsItems th {
+            width: 15%;
+        }
+
+        .goodsItems td {
+            width: 35%;
+        }
     </style>
     <script type="text/javascript">
         var app = angular.module("giqci", []);
@@ -28,6 +36,9 @@
                     if (!$scope.model.AcceptTerms) {
                         alert("你必须接受我们的条款协议");
                         return;
+                    }
+                    for (var i = 0; i < $scope.model.Application.Goods.length; i++) {
+                        $scope.model.Application.Goods[i].Index = i;
                     }
                     $http.post('/forms/app', $scope.model.Application)
                         .then(function(response) {
@@ -49,7 +60,7 @@
 }
 
 <div ng-controller="GlobalController">
-<h1 ng-show="appNo">证书申请成功！申请编号为{{appNo}}</h1>
+    <h1 ng-show="appNo">证书申请成功！申请编号为{{appNo}}</h1>
     <div ng-show="!appNo">
         <h1 id="h1">证书申请表格</h1>
         <div class="has-error" ng-show="errors.length > 0">
@@ -57,6 +68,7 @@
                 <li ng-repeat="err in errors">{{err}}</li>
             </ul>
         </div>
+        <div>* 带星号的为必填项</div>
         <form name="appform" class="form-horizontal" method="POST" novalidate>
             <div class="form-group">
                 <label class="col-sm-2 control-label">证书类别 *</label>
@@ -169,7 +181,7 @@
                             </tr>
                             <tr>
                                 <th>批次号</th>
-                                <td><input type="text" ng-model="item.BatchNo" class="form-control" /></td>
+                                <td><input type="text" ng-model="item.BatchNo" class="form-control" maxlength="100" /></td>
                                 <th>数量/包装 *</th>
                                 <td>
                                     <input type="number" ng-model="item.Quantity" class="form-control half-form-control" />
@@ -187,9 +199,27 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="col-sm-2 control-label">运输总数量</label>
+                <div class="col-sm-10">
+                    <input type="number" ng-model="model.Application.TotalPallets" class="form-control half-form-control" placeholder="运输总数量" /> Pallets
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">运输总重量</label>
+                <div class="col-sm-10">
+                    <input type="number" ng-model="model.Application.TotalWeight" class="form-control half-form-control" placeholder="运输总重量" /> KG
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="col-sm-2 control-label">计划发货日期</label>
                 <div class="col-sm-10">
                     <input type="text" ng-model="model.Application.ShippingDate" class="form-control" placeholder="计划发货日期" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">预约检查日期 *</label>
+                <div class="col-sm-10">
+                    <input type="date" ng-model="model.Application.InspectionDate" class="form-control" placeholder="预约检查日期" />
                 </div>
             </div>
             <div class="form-group">

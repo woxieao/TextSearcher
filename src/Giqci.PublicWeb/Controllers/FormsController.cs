@@ -93,6 +93,14 @@ namespace Giqci.PublicWeb.Controllers
             {
                 errors.Add("请填写发货港口");
             }
+            if (model.InspectionDate < DateTime.Today)
+            {
+                errors.Add("请填写正确预约发货日期");
+            }
+            if (model.TotalPallets <= 0)
+                errors.Add("运输总数量必须大于0");
+            if (model.TotalWeight <= 0)
+                errors.Add("运输总重量必须大于0");
             //if (!string.IsNullOrEmpty(model.Application.DestPort) && !_dictRepo.IsValidPort(model.Application.DestPort))
             //{
             //    model.ErrorMessage.Add("无效目标港口代码");
