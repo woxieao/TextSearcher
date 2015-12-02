@@ -176,6 +176,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global\css\default.css" />
     <Content Include="Global.asax" />
+    <Content Include="Global\images\cnas-small.jpg" />
+    <Content Include="Global\images\giqci-logo-finalised-withC.png" />
+    <Content Include="Global\images\iqtc-footer.jpg" />
     <Content Include="Global\js\angular-1.4.7.min.js" />
     <Content Include="Global\js\npm.js" />
     <Content Include="connectionStrings.config" />
