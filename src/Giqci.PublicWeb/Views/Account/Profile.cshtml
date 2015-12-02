@@ -1,0 +1,18 @@
+﻿@model Giqci.Models.MerchantViewModel
+
+@{
+    ViewBag.Title = "商家资料";
+}
+
+<h1>Registration</h1>
+@using (Html.BeginForm())
+{
+    <fieldset>
+        <div>用户名: @Model.Username</div>
+        <div>公司名: @Html.TextBoxFor(m=>m.Name)</div>
+        <div>公司地址: @Html.TextBoxFor(m=>m.Address)</div>
+        <div>联系人: @Html.TextBoxFor(m => m.Contact)</div>
+        <div>电话:　@Html.TextBoxFor(m => m.Phone)</div>
+        <button type="submit">保存</button>
+</fieldset>
+}

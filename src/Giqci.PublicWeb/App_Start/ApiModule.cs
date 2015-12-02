@@ -1,4 +1,3 @@
-using System;
 using System.Web.Configuration;
 using Autofac;
 using Giqci.Interfaces;
@@ -12,8 +11,9 @@ namespace Giqci.PublicWeb
         protected override void Load(ContainerBuilder builder)
         {
             var connStr = WebConfigurationManager.AppSettings["connStr"];
-            builder.Register<Func<GiqciDbContext>>(x => () => new GiqciDbContext(connStr));
+            builder.Register(context => new DatabaseSetting(connStr)).SingleInstance();
             builder.RegisterType<GiqciRepository>().As<IGiqciRepository>().InstancePerDependency();
+            builder.RegisterType<MerchantRepository>().As<IMerchantRepository>().InstancePerDependency();
             builder.RegisterType<DictionaryRepository>().As<IDictionaryRepository>().InstancePerDependency();
             builder.RegisterType<LoggerRepository>().As<ILoggerRepository>().InstancePerDependency();
             builder.RegisterType<CacheService>().As<ICacheService>().InstancePerDependency();

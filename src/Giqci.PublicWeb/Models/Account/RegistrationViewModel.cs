@@ -2,7 +2,7 @@
 
 namespace Giqci.PublicWeb.Models.Account
 {
-    public class RegistrationViewModel : Merchant
+    public class RegistrationViewModel : MerchantReg
     {
         public string ConfirmPassword { get; set; }
 

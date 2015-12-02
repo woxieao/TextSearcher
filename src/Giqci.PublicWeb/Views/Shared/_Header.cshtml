@@ -6,7 +6,7 @@
         <div class="col-md-6 text-right">
             @if (User.Identity.IsAuthenticated)
             {
-                <text>Welcome @User.Identity.Name <a href="/account/signoff">Logout</a></text>
+                <a href="/account/profile">Welcome @User.Identity.Name</a> <a href="/account/signoff">Logout</a>
             }
         </div>
     </div>
