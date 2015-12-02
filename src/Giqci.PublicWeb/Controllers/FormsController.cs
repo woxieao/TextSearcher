@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
+using Giqci.Entities.Core;
 using Giqci.Enums;
 using Giqci.Models;
 using Giqci.PublicWeb.Helpers;
@@ -10,17 +11,22 @@ using Giqci.PublicWeb.Models.Application;
 using Giqci.PublicWeb.Services;
 using Giqci.Repositories;
 using Ktech.Mvc.ActionResults;
+using Application = Giqci.Models.Application;
+using GoodsItem = Giqci.Models.GoodsItem;
 
 namespace Giqci.PublicWeb.Controllers
 {
+    //[Authorize]
     public class FormsController : Ktech.Mvc.ControllerBase
     {
         private readonly IGiqciRepository _coreRepo;
+        private readonly IMerchantRepository _merchantRepo;
         private readonly ICacheService _cache;
 
-        public FormsController(IGiqciRepository coreRepo, ICacheService cache)
+        public FormsController(IGiqciRepository coreRepo, ICacheService cache, IMerchantRepository merchantRepo)
         {
             _coreRepo = coreRepo;
+            _merchantRepo = merchantRepo;
             _cache = cache;
         }
 
@@ -28,11 +34,17 @@ namespace Giqci.PublicWeb.Controllers
         [HttpGet]
         public ActionResult Application(string applicantCode)
         {
+            //var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
+            var merchant = new MerchantViewModel();
             var model = new ApplicationViewModel
             {
                 Application = new Application
                 {
                     ApplicantCode = applicantCode,
+                    Applicant = merchant.Name,
+                    ApplicantAddr = merchant.Address,
+                    ApplicantContact = merchant.Contact,
+                    ApplicantPhone = merchant.Phone,
                     Goods = new List<GoodsItem> { new GoodsItem { ManufacturerCountry = "036" } }
                 }
             };

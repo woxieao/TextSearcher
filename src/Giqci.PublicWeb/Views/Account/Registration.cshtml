@@ -1,7 +1,7 @@
 ﻿@model Giqci.PublicWeb.Models.Account.RegistrationViewModel
 
 @{
-    ViewBag.Title = "Registration";
+    ViewBag.Title = "商家注册";
 }
 
 <h1>Registration</h1>
@@ -12,13 +12,13 @@
         {
             <div>@Model.ErrorMessage</div>
         }
-        <div>Username: @Html.TextBoxFor(m => m.Username)</div>
-        <div>Password: @Html.PasswordFor(m => m.Password)</div>
-        <div>Confirm Password: @Html.PasswordFor(m => m.ConfirmPassword)</div>
-        <div>Company Name: @Html.TextBox("Applicants[0].CompanyName", Model.Applicants[0].CompanyName)</div>
-        <div>Company Address: @Html.TextBox("Applicants[0].CompanyAddress", Model.Applicants[0].CompanyAddress)</div>
-        <div>Contact: @Html.TextBox("Applicants[0].Contact", Model.Applicants[0].Contact)</div>
-        <div>Phone:　@Html.TextBox("Applicants[0].Phone", Model.Applicants[0].Phone)</div>
-        <button type="submit">Register</button>
+        <div>用户名: @Html.TextBoxFor(m => m.Username)</div>
+        <div>密码: @Html.PasswordFor(m => m.Password)</div>
+        <div>确认密码: @Html.PasswordFor(m => m.ConfirmPassword)</div>
+        <div>公司名: @Html.TextBoxFor(m=>m.Name)</div>
+        <div>公司地址: @Html.TextBoxFor(m=>m.Address)</div>
+        <div>联系人: @Html.TextBoxFor(m => m.Contact)</div>
+        <div>电话:　@Html.TextBoxFor(m => m.Phone)</div>
+        <button type="submit">注册</button>
 </fieldset>
 }

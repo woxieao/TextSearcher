@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Security;
 using Giqci.Models;
 using Giqci.PublicWeb.Models.Account;
@@ -10,9 +9,9 @@ namespace Giqci.PublicWeb.Controllers
     [RoutePrefix("account")]
     public class AccountController : Controller
     {
-        private IGiqciRepository _repo;
+        private IMerchantRepository _repo;
 
-        public AccountController(IGiqciRepository repo)
+        public AccountController(IMerchantRepository repo)
         {
             _repo = repo;
         }
@@ -39,6 +38,7 @@ namespace Giqci.PublicWeb.Controllers
         }
 
         [Route("signoff")]
+        [Authorize]
         public ActionResult Logoff()
         {
             FormsAuthentication.SignOut();
@@ -49,7 +49,7 @@ namespace Giqci.PublicWeb.Controllers
         [HttpGet]
         public ActionResult Registration()
         {
-            var model = new RegistrationViewModel { Applicants = new List<Applicant> { new Applicant() } };
+            var model = new RegistrationViewModel();
             return View(model);
         }
 
@@ -72,14 +72,44 @@ namespace Giqci.PublicWeb.Controllers
                 input.ErrorMessage = "Two Password are not identical";
                 return View(input);
             }
-            if (input.Applicants.Count < 1)
-            {
-                input.ErrorMessage = "You need at least one applicant";
-                return View(input);
-            }
             _repo.RegMerchant(input);
             FormsAuthentication.SetAuthCookie(input.Username, true);
             return Redirect("/");
+        }
+
+        [Route("profile")]
+        [HttpGet]
+        [Authorize]
+        public ActionResult Profile()
+        {
+            var m = _repo.GetMerchant(User.Identity.Name);
+            return View(m);
+        }
+
+        [Route("profile")]
+        [HttpPost]
+        [Authorize]
+        public ActionResult UpdateProfile(MerchantViewModel model)
+        {
+            _repo.UpdateMerchant(User.Identity.Name, model);
+            return Redirect("/account/profile");
+        }
+
+        [Route("password")]
+        [HttpGet]
+        [Authorize]
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [Route("password")]
+        [HttpPost]
+        [Authorize]
+        public ActionResult ChangePassword(ChangePasswordPageModel model)
+        {
+            _repo.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
+            return Redirect("/account/password");
         }
     }
 }
