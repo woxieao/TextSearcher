@@ -107,7 +107,7 @@ namespace Giqci.PublicWeb.Controllers
             }
             if (model.InspectionDate < DateTime.Today)
             {
-                errors.Add("请填写正确预约发货日期");
+                errors.Add("请填写正确预约检查日期");
             }
             if (model.TotalPallets <= 0)
                 errors.Add("运输总数量必须大于0");
