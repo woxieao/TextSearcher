@@ -54,6 +54,13 @@
                             $log.warn(response);
                         });
                 };
+                $scope.unit = "Pallets";
+                $scope.check_A = function(){
+                    $scope.unit = "Pallets";
+                }
+                $scope.check_O = function(){
+                    $scope.unit = "Containers";
+                }
             }
         ]);
     </script>
@@ -199,9 +206,18 @@
                 </div>
             </div>
             <div class="form-group">
+                <label class="col-sm-2 control-label">运输方式</label>
+                <div class="col-sm-10">
+                    <div class="radio">
+                        <label><input type="radio" ng-model="model.Application.ShippingMethod" value="A" ng-click="check_A();"/> 空运</label>
+                        <label><input type="radio" ng-model="model.Application.ShippingMethod" value="O" ng-click="check_O();"/> 海运</label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="col-sm-2 control-label">运输总数量</label>
                 <div class="col-sm-10">
-                    <input type="number" ng-model="model.Application.TotalPallets" class="form-control half-form-control" placeholder="运输总数量" /> Pallets
+                    <input type="number" ng-model="model.Application.TotalPallets" class="form-control half-form-control" placeholder="运输总数量" /> {{unit}}
                 </div>
             </div>
             <div class="form-group">
@@ -226,15 +242,6 @@
                 <label class="col-sm-2 control-label">检验地点</label>
                 <div class="col-sm-10">
                     <input type="text" ng-model="model.Application.InspectionAddr" class="form-control" placeholder="检验地点" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">运输方式</label>
-                <div class="col-sm-10">
-                    <div class="radio">
-                        <label><input type="radio" ng-model="model.Application.ShippingMethod" value="A" /> 空运</label>
-                        <label><input type="radio" ng-model="model.Application.ShippingMethod" value="O" /> 海运</label>
-                    </div>
                 </div>
             </div>
             <div class="form-group">
