@@ -19,11 +19,11 @@ namespace Giqci.PublicWeb.Controllers
     //[Authorize]
     public class FormsController : Ktech.Mvc.ControllerBase
     {
-        private readonly IGiqciRepository _coreRepo;
+        private readonly IApplicationRepository _coreRepo;
         private readonly IMerchantRepository _merchantRepo;
         private readonly ICacheService _cache;
 
-        public FormsController(IGiqciRepository coreRepo, ICacheService cache, IMerchantRepository merchantRepo)
+        public FormsController(IApplicationRepository coreRepo, ICacheService cache, IMerchantRepository merchantRepo)
         {
             _coreRepo = coreRepo;
             _merchantRepo = merchantRepo;
@@ -36,7 +36,7 @@ namespace Giqci.PublicWeb.Controllers
         {
             //var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
             var merchant = new MerchantViewModel();
-            var model = new ApplicationViewModel
+            var model = new ApplicationPageModel
             {
                 Application = new Application
                 {
@@ -109,7 +109,7 @@ namespace Giqci.PublicWeb.Controllers
             {
                 errors.Add("请填写正确预约检查日期");
             }
-            if (model.TotalPallets <= 0)
+            if (model.TotalUnits <= 0)
                 errors.Add("运输总数量必须大于0");
             if (model.TotalWeight <= 0)
                 errors.Add("运输总重量必须大于0");

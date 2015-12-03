@@ -17,15 +17,25 @@ namespace Giqci.PublicWeb.Controllers.Api
             var msg = new FeedbackEmailTemplate
             {
                 FromEmail = WebConfigurationManager.AppSettings["FeedbackEmailFrom"],
-                Subject = WebConfigurationManager.AppSettings["FeedbackEmailFromDisplay"],
+                Subject = WebConfigurationManager.AppSettings["FeedbackEmailSubject"],
                 TextTemplate = string.Format(
-                    @"Firstname: {0}
-Lastname: {1}
-Email: {2}
-Subject: {3}
-Message: {4}", input.firstname, input.lastname, input.email, input.subject, input.message)
+                    @"Firstname:
+{0}
+
+Lastname:
+{1}
+
+Email:
+{2}
+
+Subject:
+{3}
+
+Message:
+{4}", input.firstname, input.lastname, input.email, input.subject, input.message)
             };
             var m = new SmartMail(msg);
+            m.To.Add(WebConfigurationManager.AppSettings["AdminEmail"]);
             m.SendEmail();
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }

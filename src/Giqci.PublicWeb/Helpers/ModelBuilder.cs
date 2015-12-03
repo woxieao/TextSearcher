@@ -5,7 +5,7 @@ namespace Giqci.PublicWeb.Helpers
 {
     public static class ModelBuilder
     {
-        public static void SetHelperFields(ICacheService cache, ApplicationViewModel model)
+        public static void SetHelperFields(ICacheService cache, ApplicationPageModel model)
         {
             model.Countries = cache.GetCountries();
 

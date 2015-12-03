@@ -12,7 +12,7 @@ namespace Giqci.PublicWeb
         {
             var connStr = WebConfigurationManager.AppSettings["connStr"];
             builder.Register(context => new DatabaseSetting(connStr)).SingleInstance();
-            builder.RegisterType<GiqciRepository>().As<IGiqciRepository>().InstancePerDependency();
+            builder.RegisterType<ApplicationRepository>().As<IApplicationRepository>().InstancePerDependency();
             builder.RegisterType<MerchantRepository>().As<IMerchantRepository>().InstancePerDependency();
             builder.RegisterType<DictionaryRepository>().As<IDictionaryRepository>().InstancePerDependency();
             builder.RegisterType<LoggerRepository>().As<ILoggerRepository>().InstancePerDependency();

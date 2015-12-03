@@ -4,7 +4,7 @@ using Port = Giqci.Models.Dict.Port;
 
 namespace Giqci.PublicWeb.Models.Application
 {
-    public class ApplicationViewModel
+    public class ApplicationPageModel
     {
         public Giqci.Models.Application Application { get; set; }
 

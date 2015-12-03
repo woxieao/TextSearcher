@@ -10,8 +10,6 @@ namespace Giqci.PublicWeb
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             
-            AutoMapperConfiguration.Configure();
-
             RegisterComponent.Register();
         }
     }
