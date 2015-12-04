@@ -1,10 +1,7 @@
 ﻿using System;
-
 using System.Runtime.Caching;
-using Giqci.Entities.Dict;
+using Giqci.Models.Dict;
 using Giqci.Repositories;
-using HSCode = Giqci.Models.Dict.HSCode;
-using Port = Giqci.Models.Dict.Port;
 
 namespace Giqci.PublicWeb.Services
 {
@@ -16,7 +13,7 @@ namespace Giqci.PublicWeb.Services
         public CacheService(IDictionaryRepository repo)
         {
             _repo = repo;
-            _policy = new CacheItemPolicy { SlidingExpiration = new TimeSpan(0, 2, 0) };
+            _policy = new CacheItemPolicy {  SlidingExpiration = new TimeSpan(0, 10, 0) };
         }
 
         public Country[] GetCountries()

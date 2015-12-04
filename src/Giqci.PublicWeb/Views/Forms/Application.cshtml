@@ -23,6 +23,7 @@
         app.controller("GlobalController", [
             '$http', '$scope', '$log', '$location', '$anchorScroll', function($http, $scope, $log, $location, $anchorScroll) {
                 $scope.model = @Html.Raw(JsonConvert.SerializeObject(Model));
+                $scope.model.Application.InspectionDate = null;
                 $scope.errors = [];
                 $scope.additem = function() {
                     $scope.model.Application.Goods.push({ ManufacturerCountry: "036" });
@@ -171,7 +172,7 @@
                                 <td><input type="text" class="form-control" ng-model="item.Spec" /></td>
                                 <th>制造国代码 *</th>
                                 <td>
-                                    <select ng-model="item.ManufacturerCountry" ng-options="c.Code as c.CnName for c in model.Countries" class="form-control"></select>
+                                    <select ng-model="item.ManufacturerCountry" ng-options="c.Code as c.Name for c in model.Countries" class="form-control"></select>
                                 </td>
                             </tr>
                             <tr>

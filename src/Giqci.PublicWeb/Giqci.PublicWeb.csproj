@@ -55,12 +55,12 @@
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Contract, Version=1.0.76.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.Contract.1.0.76\lib\net45\Giqci.Contract.dll</HintPath>
+    <Reference Include="Giqci.Contract, Version=1.0.78.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.Contract.1.0.78\lib\net45\Giqci.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Repository, Version=1.0.147.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.Repository.1.0.147\lib\net45\Giqci.Repository.dll</HintPath>
+    <Reference Include="Giqci.Repository, Version=1.0.153.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.Repository.1.0.153\lib\net45\Giqci.Repository.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ktech.Contract, Version=1.0.12.0, Culture=neutral, processorArchitecture=MSIL">

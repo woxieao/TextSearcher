@@ -1,6 +1,4 @@
-﻿using Giqci.Entities.Dict;
-using HSCode = Giqci.Models.Dict.HSCode;
-using Port = Giqci.Models.Dict.Port;
+﻿using Giqci.Models.Dict;
 
 namespace Giqci.PublicWeb.Models.Application
 {
