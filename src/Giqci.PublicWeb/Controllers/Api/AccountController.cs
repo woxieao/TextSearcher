@@ -1,14 +1,10 @@
 ﻿using System.Net;
-using System.Web.Configuration;
 using System.Web.Mvc;
-using Giqci.PublicWeb.Models;
-using Giqci.PublicWeb.Models.Api;
-using Ktech.Core.Mail;
 using Giqci.Repositories;
 using Ktech.Mvc.ActionResults;
-using Newtonsoft.Json;
 using System.Web.Security;
 using System;
+using Giqci.Models;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {
@@ -24,21 +20,17 @@ namespace Giqci.PublicWeb.Controllers.Api
 
         [Route("account/reg")]
         [HttpPost]
-        public ActionResult Register(string username, string password, string name, string address, string contact, string phone)
+        public ActionResult Register(MerchantReg input)
         {
-            Giqci.Models.MerchantReg reg = new Giqci.Models.MerchantReg();
-            reg.Username = username;
-            reg.Password = password;
-            reg.Name = name;
-            reg.Address = address;
-            reg.Contact = contact;
-            reg.Phone = phone;
-            var result = true;
-            var message = "";
+            bool result;
+            string message;
             try
             {
-                _repo.RegMerchant(reg);
-                FormsAuthentication.SetAuthCookie(reg.Username, true);
+                result = _repo.RegMerchant(input, out message);
+                if (result)
+                {
+                    FormsAuthentication.SetAuthCookie(input.Username, true);
+                }
             }
             catch (Exception ex)
             {
@@ -47,6 +39,5 @@ namespace Giqci.PublicWeb.Controllers.Api
             }
             return new KtechJsonResult(HttpStatusCode.OK, new { result = result, message = message });
         }
-
     }
 }

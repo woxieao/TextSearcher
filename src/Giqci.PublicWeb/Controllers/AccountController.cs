@@ -53,30 +53,6 @@ namespace Giqci.PublicWeb.Controllers
             return View(model);
         }
 
-        [Route("reg")]
-        [HttpPost]
-        public ActionResult Registration(RegistrationViewModel input)
-        {
-            if (string.IsNullOrEmpty(input.Username) || input.Username.Length < 3)
-            {
-                input.ErrorMessage = "Invalid Username";
-                return View(input);
-            }
-            if (string.IsNullOrEmpty(input.Password) || input.Password.Length < 3)
-            {
-                input.ErrorMessage = "Invalid Password";
-                return View(input);
-            }
-            if (!input.Password.Equals(input.ConfirmPassword))
-            {
-                input.ErrorMessage = "Two Password are not identical";
-                return View(input);
-            }
-            _repo.RegMerchant(input);
-            FormsAuthentication.SetAuthCookie(input.Username, true);
-            return Redirect("/");
-        }
-
         [Route("profile")]
         [HttpGet]
         [Authorize]
