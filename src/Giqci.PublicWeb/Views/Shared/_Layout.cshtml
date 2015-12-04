@@ -8,23 +8,20 @@
     <link href="/Content/bootstrap.min.css" rel="stylesheet" />
     <link href="/Global/css/default.css" rel="stylesheet" />
     @*<link rel="stylesheet" id="ls-google-fonts-css" href='http://fonts.useso.com/css?family=Lato:100,300,regular,700,900%7COpen+Sans:300%7CIndie+Flower:regular%7COswald:300,regular,700&#038;subset=latin%2Clatin-ext' type='text/css' media='all' />
-    <link rel="stylesheet" id="redux-google-fonts-css" href='http://fonts.useso.com/css?family=Raleway%3A400&#038;subset=latin&#038;ver=1432745489' type='text/css' media='all' />*@
+        <link rel="stylesheet" id="redux-google-fonts-css" href='http://fonts.useso.com/css?family=Raleway%3A400&#038;subset=latin&#038;ver=1432745489' type='text/css' media='all' />*@
     <script src="/Global/js/jquery-2.1.4.min.js" type="text/javascript"></script>
     <script type="text/javascript" src="/Global/js/angular-1.4.7.min.js"></script>
     @RenderSection("Header", false)
 </head>
 <body>
-    <div class="container">
-        <div class="wrap">
-            @Html.Partial("_Header")
-            @Html.Partial("_TopNav")
-            <div class="body-content">
-                @RenderBody()
-            </div>
-            @Html.Partial("_Footer")
+    @Html.Partial("_Header")
+    @Html.Partial("_TopNav")
+    <div class="wrap">
+        <div class="body-content">
+            @RenderBody()
         </div>
+        @Html.Partial("_Footer")
     </div>
-    <script type="text/javascript" href="/Global/js/jquery-2.1.4.min.js"></script>
-    <script type="text/javascript" href="/Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/Scripts/bootstrap.min.js"></script>
 </body>
 </html>
