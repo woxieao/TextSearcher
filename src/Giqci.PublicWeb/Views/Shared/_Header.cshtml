@@ -1,24 +1,20 @@
 ﻿<header class="row visible-md visible-lg lg-header">
     <div id="logo" class="col-md-4">
-        <a href="http://www.giqci.com/" class="navbar-brand"> <img src="/Global/images/giqci-logo-finalised-withC.png" alt="small logo"></a>
+        <a href="http://www.giqci.com/"> <img src="/Global/images/giqci-logo-finalised-withC.png" alt="small logo"></a>
     </div>
     <div id="lang-switch" class="col-md-4 text-center">
-
     </div>
     <div id="search-form" class="col-md-4">
-        <div class="row top-contact">
+
+        <div class="row top-contact nav">
             <p class="text-right">
                 <i class="glyphicon glyphicon-phone-alt"></i>&nbsp;&nbsp;Call Us +61 (02) 9580 5750
             </p>
             <p class="text-right">
                 <i class="glyphicon glyphicon-envelope"></i>&nbsp;&nbsp;<a href="mailto:info@giqci.com">info@giqci.com</a>
             </p>
-            <p class="text-right">
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <a href="/account/profile">Welcome @User.Identity.Name</a>
-                    <a href="/account/signoff">Logout</a>
-                }
+            <p class="text-right dropdown">
+                
             </p>
         </div>
     </div>

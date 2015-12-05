@@ -4,8 +4,8 @@
 
 body {
     margin: 0 auto;
-    /* font-size: 16px; */
-    /* line-height: 1.4; */
+    font-size: 16px;
+    line-height: 1.4;
     color: #666;
     font-family: Helvetica, Arial, "STHeiti", \534E\6587\9ED1\4F53, "Microsoft YaHei", \5FAE\8F6F\96C5\9ED1, "SimSun", \5B8B\4F53, "WenQuanYi Micro Hei", sans-serif;
     background: #EEE;
@@ -43,8 +43,6 @@ body {
     background: none;
     border-radius: 0;
     border: 0;
-    font-family: Raleway;
-    font-size: 14px;
 }
 
 .navbar-bg-col {
@@ -69,51 +67,40 @@ body {
     padding: 20px 40px;
 }
 /************ footer **************/
-footer {
-    color: #efefef;
-    font-weight: 400;
+/*
+* Page footer
+*/
+.page-footer {
+    margin-top: 2px;
+    padding: 20px 20px 0 20px;
+    color: #FFF;
+    background: #0b76b7;
+    line-height: 60px;
 }
 
-.footer-widget {
-    background-color: #555;
-    padding: 40px 15px;
-    margin: 0;
-    font-size: 15px;
-}
-
-.footer {
-    background-color: #0b76b7;
-    font-size: 12px;
-    padding: 20px 30px;
-    margin-top: 10px;
-}
-
-h6 {
-    font-weight: 400;
-    font-size: 18px;
-    color: #fff;
-}
-
-.footer-widget ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-
-    .footer-widget ul li {
-        padding: 10px 0;
-        border-bottom: 1px solid rgba(239, 239, 239, 0.247059);
+    .page-footer a, .page-footer a:visited {
+        color: #FFF;
     }
 
-    .footer-widget ul a {
-        color: #efefef;
-        padding-bottom: 10px;
-    }
-
-        .footer-widget ul a:hover {
-            text-decoration: none;
-            color: #222;
+        .page-footer a:hover, .page-footer a:visited:hover {
+            color: #CCC;
         }
+
+@media screen and (min-width: 992px) {
+    .page-footer {
+        margin-top: 30px;
+        padding: 0 30px;
+    }
+}
+
+.terms-button {
+    border: 2px solid #FFF;
+}
+
+    .terms-button:hover {
+        border-color: #CCC;
+    }
+
 
 .termblock {
     overflow-y: scroll;
@@ -214,3 +201,7 @@ h6 {
         padding: 0;
         margin: 0;
     }
+
+#search-form {
+    margin-top: 18px;
+}

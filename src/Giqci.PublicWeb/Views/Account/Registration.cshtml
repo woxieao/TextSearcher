@@ -6,104 +6,113 @@
 <link href="~/Global/css/ngDialog.min.css" rel="stylesheet" />
 <link href="~/Global/css/ngDialog-theme-default.min.css" rel="stylesheet" />
 <script src="~/Global/js/ngDialog.min.js"></script>
-<div class="panel panel-default">
+<div class="panel panel-default" ng-controller="RegController">
     <div class="panel-heading">
         <h1 class="panel-title">商户注册</h1>
     </div>
     <div class="panel-body">
-        <div class="has-error">
-            <ul class="help-block">
-                {{error.message}}
-            </ul>
-        </div>
-        <form name="appform" class="form-horizontal" method="POST" ng-controller="RegController" ng-submit="submitForm(appform.$valid,user.password != user.confirm_password,accept_check)" novalidate>
-            <div class="form-group" ng-class="{ 'has-error' : (appform.username.$error.minlength || appform.username.$error.required || appform.username.$error.maxlength) && !appform.username.$pristine}">
-                <label class="col-sm-2 control-label">用户名: </label>
-                <div class="col-sm-8">
-                    <input name="username" type="text" class="form-control" required ng-model="user.username" ng-minlength="2" ng-maxlength="20" />
-                    <small ng-show="appform.username.$error.minlength || appform.username.$error.required || appform.username.$error.maxlength" class="help-block">用户名不为空，且长度为2-20个字符</small>
-                </div>
-            </div>
-            <div class="form-group" ng-class="{ 'has-error' : (appform.name.$error.required || appform.password.$error.minlength || appform.password.$error.maxlength) && !appform.password.$pristine }">
-                <label class="col-sm-2 control-label">密码: </label>
-                <div class="col-sm-8">
-                    <input name="password" type="password" class="form-control" ng-model="user.password" required ng-minlength="6" ng-maxlength="20" />
-                    <small ng-show="appform.name.$error.required || appform.password.$error.minlength || appform.password.$error.maxlength" class="help-block">密码长度为6-20个字符</small>
-                </div>
-            </div>
-            <div class="form-group" ng-class="{ 'has-error' : user.password != user.confirm_password }">
-                <label class="col-sm-2 control-label">确认密码: </label>
-                <div class="col-sm-8">
-                    <input name="confirm_password" type="password" class="form-control" ng-model="user.confirm_password" required ng-minlength="6" ng-maxlength="20" />
-                    <small ng-show="user.password != user.confirm_password">两次密码输入不一致</small>
-                </div>
-            </div>
-            <div class="form-group" ng-class="{ 'has-error' : appform.name.$error.required && !appform.name.$pristine }">
-                <label class="col-sm-2 control-label">公司名:</label>
-                <div class="col-sm-8">
-                    <input name="name" type="text" class="form-control" ng-model="user.name" required />
-                    <small ng-show="appform.name.$error.required" class="help-block">公司名不能为空</small>
-                </div>
-            </div>
-            <div class="form-group" ng-class="{ 'has-error' : appform.address.$error.required && !appform.address.$pristine }">
-                <label class="col-sm-2 control-label">公司地址:</label>
-                <div class="col-sm-8">
-                    <input name="address" type="text" class="form-control" ng-model="user.address" required />
-                    <small ng-show="appform.address.$error.required" class="help-block">公司地址不能为空</small>
-                </div>
-            </div>
-            <div class="form-group" ng-class="{ 'has-error' : appform.contact.$error.required && !appform.contact.$pristine }">
-                <label class="col-sm-2 control-label">联系人: </label>
-                <div class="col-sm-8">
-                    <input name="contact" type="text" class="form-control" ng-model="user.contact" required />
-                    <small ng-show="appform.contact.$error.required" class="help-block">联系人不能为空</small>
-                </div>
-            </div>
-            <div class="form-group" ng-class="{ 'has-error' : appform.phone.$error.required  && !appform.phone.$pristine}">
-                <label class="col-sm-2 control-label">电话: </label>
-                <div class="col-sm-8">
-                    <input name="phone" type="text" class="form-control" ng-model="user.phone" required />
-                    <small ng-show="appform.phone.$error.required" class="help-block">电话不能为空</small>
-                </div>
-            </div>
-            <div class="form-group" ng-class="{ 'has-error' : !accept_check  && !appform.accept_check.$pristine}">
-                <div class="col-sm-offset-2 col-sm-8">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" name="accept_check" ng-click="accept();" ng-model="accept_check">已确认上述信息的正确性
-                        </label>
+        <div id="accept" ng-show="acceptshow">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-sm-offset-1 col-sm-10">
+                        <div class="termblock">
+                            <h2><center>对供货企业用户告示</center></h2>
+                            <p>为防止有害废物转运到中国，中国政府规定对所有的进口废物原料实行装运前检验。此装运前检验电子管理系统完全是简历在国家质检总局对进口物料检验管理相关法规基础上。</p>
+                            <p>只有获得国家质检总局注册的供货企业才能申请装运前检验。请供货企业严格遵守申请注册时所作的承诺。</p>
+                            <p>为便于装运前检验公司向你提供优良服务，申请装运前检验提供的信息应可能准确。</p>
+                        </div>
                     </div>
-                    <small ng-show="!accept_check" class="help-block">必须确认上述信息的正确性</small>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-8">
-                    <button class="btn btn-default" ng-click="submit()">
-                        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
-                    </button>
+                <div class="form-group">
+                    <div class="col-sm-offset-5 col-sm-4">
+                        <button class="btn btn-default" ng-click="accept()">
+                            <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 确认
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
+        <div id="reg" ng-show="regshow">
+            <div class="alert alert-danger" role="alert" ng-show="!error.result">{{error.message}}</div>
+            <form name="appform" class="form-horizontal" method="POST" ng-submit="submitForm(appform.$valid,user.password != user.confirm_password)" novalidate>
+                <div class="form-group" ng-class="{ 'has-error' : (appform.username.$error.minlength || appform.username.$error.required || appform.username.$error.maxlength) && !appform.username.$pristine}">
+                    <label class="col-sm-2 control-label">用户名: </label>
+                    <div class="col-sm-10">
+                        <input name="username" type="text" class="form-control" required ng-model="user.username" ng-minlength="4" ng-maxlength="20" />
+                        <small ng-show="appform.username.$error.minlength || appform.username.$error.required || appform.username.$error.maxlength" class="help-block">用户名不为空，且长度为4-20个字符</small>
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : (appform.password.$error.required || appform.password.$error.minlength || appform.password.$error.maxlength) && !appform.password.$pristine }">
+                    <label class="col-sm-2 control-label">密码: </label>
+                    <div class="col-sm-10">
+                        <input name="password" type="password" class="form-control" ng-model="user.password" required ng-minlength="6" ng-maxlength="20" />
+                        <small ng-show="appform.password.$error.required || appform.password.$error.minlength || appform.password.$error.maxlength" class="help-block">密码长度为6-20个字符</small>
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : user.password != user.confirm_password }">
+                    <label class="col-sm-2 control-label">确认密码: </label>
+                    <div class="col-sm-10">
+                        <input name="confirm_password" type="password" class="form-control" ng-model="user.confirm_password" required ng-minlength="6" ng-maxlength="20" />
+                        <small ng-show="user.password != user.confirm_password">两次密码输入不一致</small>
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : appform.name.$error.required && !appform.name.$pristine }">
+                    <label class="col-sm-2 control-label">公司名:</label>
+                    <div class="col-sm-10">
+                        <input name="name" type="text" class="form-control" ng-model="user.name" required />
+                        <small ng-show="appform.name.$error.required" class="help-block">公司名不能为空</small>
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : appform.address.$error.required && !appform.address.$pristine }">
+                    <label class="col-sm-2 control-label">公司地址:</label>
+                    <div class="col-sm-10">
+                        <input name="address" type="text" class="form-control" ng-model="user.address" required />
+                        <small ng-show="appform.address.$error.required" class="help-block">公司地址不能为空</small>
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : appform.contact.$error.required && !appform.contact.$pristine }">
+                    <label class="col-sm-2 control-label">联系人: </label>
+                    <div class="col-sm-10">
+                        <input name="contact" type="text" class="form-control" ng-model="user.contact" required />
+                        <small ng-show="appform.contact.$error.required" class="help-block">联系人不能为空</small>
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{ 'has-error' : appform.phone.$error.required  && !appform.phone.$pristine}">
+                    <label class="col-sm-2 control-label">电话: </label>
+                    <div class="col-sm-10">
+                        <input name="phone" type="text" class="form-control" ng-model="user.phone" required />
+                        <small ng-show="appform.phone.$error.required" class="help-block">电话不能为空</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-8">
+                        <button class="btn btn-default" ng-disabled="enableDisableButton">
+                            <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> {{submitButton}}
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 <script type="text/javascript">
     var app = angular.module("giqci", ["ngDialog"]);
     app.controller("RegController", ['$http', '$scope', '$location', "ngDialog", function ($http, $scope, $location, ngDialog) {
-        $scope.accept = function () {
-            if ($scope.accept_check) {
-                ngDialog.open({
-                    template: 'accept-template',
-                    closeByDocument: false,
-                    showClose: false,
-                });
-            }
-        }
+        $scope.acceptshow = true;
+        $scope.regshow = false;
+        $scope.submitButton = ' 提交 ';
         $scope.error = {
             result: true,
             message: ""
         }
-        $scope.submitForm = function (isValid, PasswordValid, accept_check) {
-            if (isValid && !PasswordValid && accept_check) {
+        $scope.accept = function () {
+            $scope.acceptshow = false;
+            $scope.regshow = true;
+        };
+        $scope.submitForm = function (isValid, PasswordValid) {
+            if (isValid && !PasswordValid) {
+                $scope.enableDisableButton = true;
+                $scope.submitButton = '正在提交...';
                 $scope.formData = {
                     username: $scope.user.username,
                     password: $scope.user.password,
@@ -112,26 +121,21 @@
                     contact: $scope.user.contact,
                     phone: $scope.user.phone
                 };
-                $http.post('/api/account/reg', $scope.formData)
-                    .success(function (data) {
+                $http.post('/api/account/reg', $scope.formData).then(function (response) {
+                    if (!response.data.result) {
                         $scope.error = {
-                            result: data.result,
-                            message: data.message
+                            result: response.data.result,
+                            message: response.data.message || "未知错误"
                         }
-                        if (data.result) {
-                            window.location.href = "/";
-                        }
-                    });
+                        $scope.enableDisableButton = false;
+                        $scope.submitButton = ' 提交 ';
+                    } else {
+                        window.location.href = "profile";
+                    }
+                });
             }
         };
         console.log($scope.error);
     }
     ]);
-</script>
-<script type="text/ng-template" id="accept-template">
-    <h2><center>对供货企业用户告示</center></h2>
-    <p>为防止有害废物转运到中国，中国政府规定对所有的进口废物原料实行装运前检验。此装运前检验电子管理系统完全是简历在国家质检总局对进口物料检验管理相关法规基础上。</p>
-    <p>只有获得国家质检总局注册的供货企业才能申请装运前检验。请供货企业严格遵守申请注册时所作的承诺。</p>
-    <p>为便于装运前检验公司向你提供优良服务，申请装运前检验提供的信息应可能准确。</p>
-    <center><button type="button" class="btn btn-primary" ng-click="closeThisDialog();">确认</button></center>
 </script>
