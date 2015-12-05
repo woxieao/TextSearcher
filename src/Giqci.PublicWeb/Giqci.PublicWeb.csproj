@@ -176,6 +176,7 @@
     <Content Include="Global\images\giqci-logo-finalised-withC.png" />
     <Content Include="Global\images\iqtc-footer.jpg" />
     <Content Include="Global\js\angular-1.4.7.min.js" />
+    <Content Include="Global\js\commalert.js" />
     <Content Include="Global\js\npm.js" />
     <Content Include="connectionStrings.config" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -214,7 +215,7 @@
     <Content Include="Views\Home\Terms.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\CertType.cshtml" />
     <Content Include="Views\Account\Profile.cshtml" />
-    <Content Include="Views\Account\Password.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
