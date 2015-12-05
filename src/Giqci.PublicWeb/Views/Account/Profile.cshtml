@@ -1,18 +1,94 @@
-﻿@model Giqci.Models.MerchantViewModel
+﻿@using Newtonsoft.Json
+@model Giqci.Models.MerchantViewModel
 
 @{
     ViewBag.Title = "商家资料";
 }
-
-<h1>Registration</h1>
-@using (Html.BeginForm())
-{
-    <fieldset>
-        <div>用户名: @Model.Username</div>
-        <div>公司名: @Html.TextBoxFor(m=>m.Name)</div>
-        <div>公司地址: @Html.TextBoxFor(m=>m.Address)</div>
-        <div>联系人: @Html.TextBoxFor(m => m.Contact)</div>
-        <div>电话:　@Html.TextBoxFor(m => m.Phone)</div>
-        <button type="submit">保存</button>
-</fieldset>
-}
+<div class="panel panel-default" ng-controller="ProfileController">
+    <div class="panel-heading">
+        <h1 class="panel-title">商家资料修改</h1>
+    </div>
+    <div class="panel-body">
+        <div class="alert alert-danger" role="alert" ng-show="!error.result">{{error.message}}</div>
+        <form name="appform" class="form-horizontal" method="POST" ng-submit="submitForm(appform.$valid)" novalidate>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">用户名: </label>
+                <div class="col-sm-10">
+                    <input name="username" type="text" class="form-control" required ng-model="user.Username" ng-minlength="2" ng-maxlength="20" readonly />
+                </div>
+            </div>
+            <div class="form-group" ng-class="{ 'has-error' : appform.name.$error.required && !appform.name.$pristine }">
+                <label class="col-sm-2 control-label">公司名:</label>
+                <div class="col-sm-10">
+                    <input name="name" type="text" class="form-control" ng-model="user.Name" required />
+                    <small ng-show="appform.name.$error.required" class="help-block">公司名不能为空</small>
+                </div>
+            </div>
+            <div class="form-group" ng-class="{ 'has-error' : appform.address.$error.required && !appform.address.$pristine }">
+                <label class="col-sm-2 control-label">公司地址:</label>
+                <div class="col-sm-10">
+                    <input name="address" type="text" class="form-control" ng-model="user.Address" required />
+                    <small ng-show="appform.address.$error.required" class="help-block">公司地址不能为空</small>
+                </div>
+            </div>
+            <div class="form-group" ng-class="{ 'has-error' : appform.contact.$error.required && !appform.contact.$pristine }">
+                <label class="col-sm-2 control-label">联系人: </label>
+                <div class="col-sm-10">
+                    <input name="contact" type="text" class="form-control" ng-model="user.Contact" required />
+                    <small ng-show="appform.contact.$error.required" class="help-block">联系人不能为空</small>
+                </div>
+            </div>
+            <div class="form-group" ng-class="{ 'has-error' : appform.phone.$error.required  && !appform.phone.$pristine}">
+                <label class="col-sm-2 control-label">电话: </label>
+                <div class="col-sm-10">
+                    <input name="phone" type="text" class="form-control" ng-model="user.Phone" required />
+                    <small ng-show="appform.phone.$error.required" class="help-block">电话不能为空</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-8">
+                    <button class="btn btn-default" ng-disabled="enableDisableButton">
+                        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> {{submitButton}}
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    var app = angular.module("giqci", []);
+    app.controller("ProfileController", ['$http', '$scope', '$location', function ($http, $scope, $location) {
+        $scope.user = @Html.Raw(JsonConvert.SerializeObject(Model));
+        $scope.submitButton = ' 提交 ';
+        $scope.error = {
+            result: true,
+            message: ""
+        }
+        $scope.submitForm = function (isValid, PasswordValid) {
+            if (isValid) {
+                $scope.enableDisableButton = true;
+                $scope.submitButton = '正在提交...';
+                $scope.formData = {
+                    username: $scope.user.Username,
+                    name: $scope.user.Name,
+                    address: $scope.user.Address,
+                    contact: $scope.user.Contact,
+                    phone: $scope.user.Phone
+                };
+                $http.post('/api/account/updateprofile', $scope.formData).then(function (response) {
+                    if (!response.data.result) {
+                        $scope.error = {
+                            result: response.data.result,
+                            message: response.data.message || "未知错误"
+                        }
+                        $scope.enableDisableButton = false;
+                        $scope.submitButton = ' 提交 ';
+                    }else{
+                        window.location.href = "profile";
+                    }
+                });
+            }
+        };
+    }
+    ]);
+</script>
