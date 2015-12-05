@@ -16,12 +16,10 @@
 <body>
     @Html.Partial("_Header")
     @Html.Partial("_TopNav")
-    <div class="wrap">
-        <div class="body-content">
-            @RenderBody()
-        </div>
-        @Html.Partial("_Footer")
+    <div class="row body-content">
+        @RenderBody()
     </div>
+    @Html.Partial("_Footer")
     <script type="text/javascript" src="/Scripts/bootstrap.min.js"></script>
 </body>
 </html>

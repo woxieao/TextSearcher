@@ -3,13 +3,10 @@
 @{
     ViewBag.Title = "Login";
 }
+<script src="~/Global/js/commalert.js"></script>
 <script type="text/javascript">
-    var app = angular.module("giqci", []);
-    app.controller("LoginController", ['$http', '$scope', '$location', function ($http, $scope, $location) {
-        $scope.error = {
-            result: true,
-            message: ""
-        }
+    var app = angular.module("giqci", ['commonAlert']);
+    app.controller("LoginController", ['$http', '$scope', '$location', 'commAlertService', function ($http, $scope, $location, commAlertService) {
         $scope.submitButton = ' 登录 ';
         $scope.submitForm = function (isValid) {
             if (isValid) {
@@ -23,10 +20,7 @@
                     if (response.data.result) {
                         window.location.href = "profile";
                     } else {
-                        $scope.error = {
-                            result: response.data.result,
-                            message: response.data.message || "未知错误"
-                        }
+                        commAlertService.alertService().add('danger', response.data.message || "未知错误");
                         $scope.enableDisableButton = false;
                         $scope.submitButton = ' 登录 ';
                     }
@@ -39,21 +33,24 @@
 
 <div class="panel panel-default" ng-controller="LoginController">
     <div class="panel-heading">
-        <h1 class="panel-title">Login</h1>
+        <h1 class="panel-title">商户登录</h1>
     </div>
     <div class="panel-body">
-        <div class="alert alert-danger" role="alert" ng-show="!error.result">{{error.message}}</div>
+        <div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
+            <button aria-label="Close" data-dismiss="alert" ng-click="alert.close()" class="close" type="button"><span aria-hidden="true">×</span></button>
+            <span ng-bind="alert.msg"></span>
+        </div>
         <form name="appform" class="form-horizontal" method="POST" ng-submit="submitForm(appform.$valid)" novalidate>
             <div class="form-group" ng-class="{ 'has-error' : appform.username.$error.required && !appform.username.$pristine }">
                 <label class="col-sm-2 control-label">用户名: </label>
-                <div class="col-sm-10">
+                <div class="col-sm-5">
                     <input name="username" type="text" class="form-control" required ng-model="user.username" />
                     <small ng-show="appform.username.$error.required" class="help-block">请输入您的用户名</small>
                 </div>
             </div>
             <div class="form-group" ng-class="{ 'has-error' : appform.password.$error.required && !appform.password.$pristine }">
                 <label class="col-sm-2 control-label">密码: </label>
-                <div class="col-sm-10">
+                <div class="col-sm-5">
                     <input name="password" type="password" class="form-control" required ng-model="user.password" />
                     <small ng-show="appform.password.$error.required" class="help-block">请输入您的密码</small>
                 </div>
@@ -64,7 +61,7 @@
                         <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> {{submitButton}}
                     </button>
                     &nbsp;
-                    <a href="reg" class="btn btn-link">Registration</a>
+                    <a href="reg" class="btn btn-link">商户注册</a>
                 </div>
             </div>
         </form>
