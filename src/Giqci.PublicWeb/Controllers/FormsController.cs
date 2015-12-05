@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using Giqci.Entities.Core;
 using Giqci.Enums;
-using Giqci.Models;
 using Giqci.PublicWeb.Helpers;
 using Giqci.PublicWeb.Models.Application;
 using Giqci.PublicWeb.Services;
@@ -16,7 +14,7 @@ using GoodsItem = Giqci.Models.GoodsItem;
 
 namespace Giqci.PublicWeb.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class FormsController : Ktech.Mvc.ControllerBase
     {
         private readonly IApplicationRepository _coreRepo;
@@ -34,8 +32,7 @@ namespace Giqci.PublicWeb.Controllers
         [HttpGet]
         public ActionResult Application(string applicantCode)
         {
-            //var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
-            var merchant = new MerchantViewModel();
+            var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
             var model = new ApplicationPageModel
             {
                 Application = new Application
@@ -82,19 +79,6 @@ namespace Giqci.PublicWeb.Controllers
             {
                 errors.Add("请选择商业目的");
             }
-            // 可以后补
-            //if (string.IsNullOrEmpty(model.Application.Billno))
-            //{
-            //    model.ErrorMessage.Add("请填写提货单");
-            //}
-            //if (string.IsNullOrEmpty(model.Application.Vesselcn))
-            //{
-            //    model.ErrorMessage.Add("请填写船名");
-            //}
-            //if (string.IsNullOrEmpty(model.Application.Voyage))
-            //{
-            //    model.ErrorMessage.Add("请填写船次");
-            //}
             if (string.IsNullOrEmpty(model.DestPort) &&
                 string.IsNullOrEmpty(model.OtherDestPort))
             {
@@ -113,14 +97,6 @@ namespace Giqci.PublicWeb.Controllers
                 errors.Add("运输总数量必须大于0");
             if (model.TotalWeight <= 0)
                 errors.Add("运输总重量必须大于0");
-            //if (!string.IsNullOrEmpty(model.Application.DestPort) && !_dictRepo.IsValidPort(model.Application.DestPort))
-            //{
-            //    model.ErrorMessage.Add("无效目标港口代码");
-            //}
-            //if (!string.IsNullOrEmpty(model.Application.LoadingPort) && !_dictRepo.IsValidPort(model.Application.LoadingPort))
-            //{
-            //    model.ErrorMessage.Add("无效发货港口代码");
-            //}
 
             for (var i = 0; i < model.Goods.Count; i++)
             {
