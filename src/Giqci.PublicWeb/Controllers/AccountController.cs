@@ -24,19 +24,6 @@ namespace Giqci.PublicWeb.Controllers
             return View(model);
         }
 
-        [Route("login")]
-        [HttpPost]
-        public ActionResult Login(LoginViewModel input)
-        {
-            if (_repo.MerchantLogin(input.Username, input.Password))
-            {
-                FormsAuthentication.SetAuthCookie(input.Username, true);
-                return Redirect("/");
-            }
-            input.ErrorMessage = "Invalid Username or Password!";
-            return View(input);
-        }
-
         [Route("signoff")]
         [Authorize]
         public ActionResult Logoff()
@@ -62,30 +49,12 @@ namespace Giqci.PublicWeb.Controllers
             return View(m);
         }
 
-        [Route("profile")]
-        [HttpPost]
-        [Authorize]
-        public ActionResult UpdateProfile(MerchantViewModel model)
-        {
-            _repo.UpdateMerchant(User.Identity.Name, model);
-            return Redirect("/account/profile");
-        }
-
         [Route("password")]
         [HttpGet]
         [Authorize]
         public ActionResult ChangePassword()
         {
             return View();
-        }
-
-        [Route("password")]
-        [HttpPost]
-        [Authorize]
-        public ActionResult ChangePassword(ChangePasswordPageModel model)
-        {
-            _repo.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
-            return Redirect("/account/password");
         }
     }
 }

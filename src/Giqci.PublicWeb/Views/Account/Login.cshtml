@@ -18,7 +18,7 @@
                 };
                 $http.post('/api/account/login', $scope.formData).then(function (response) {
                     if (response.data.result) {
-                        window.location.href = "profile";
+                        window.location.href = "/forms/app";
                     } else {
                         commAlertService.alertService().add('danger', response.data.message || "未知错误");
                         $scope.enableDisableButton = false;

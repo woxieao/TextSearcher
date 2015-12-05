@@ -1,12 +1,7 @@
 ﻿using System.Net;
-using System.Web.Configuration;
 using System.Web.Mvc;
-using Giqci.PublicWeb.Models;
-using Giqci.PublicWeb.Models.Api;
-using Ktech.Core.Mail;
 using Giqci.Repositories;
 using Ktech.Mvc.ActionResults;
-using Newtonsoft.Json;
 using System.Web.Security;
 using System;
 using Giqci.Models;

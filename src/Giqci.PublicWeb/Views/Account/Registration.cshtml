@@ -99,9 +99,11 @@
 <script type="text/javascript">
     var app = angular.module("giqci", ["commonAlert"]);
     app.controller("RegController", ['$http', '$scope', '$location', "commAlertService", function ($http, $scope, $location, commAlertService) {
-        $scope.acceptshow = true;
-        $scope.regshow = false;
+        //$scope.acceptshow = true; 暂时不显示
+        //$scope.regshow = false;
         $scope.submitButton = ' 提交 ';
+        $scope.acceptshow = false;
+        $scope.regshow = true;
         $scope.accept = function () {
             $scope.acceptshow = false;
             $scope.regshow = true;
@@ -124,7 +126,7 @@
                         $scope.enableDisableButton = false;
                         $scope.submitButton = ' 提交 ';
                     } else {
-                        window.location.href = "profile";
+                        window.location.href = "/forms/app";
                     }
                 });
             }
