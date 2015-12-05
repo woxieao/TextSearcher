@@ -78,7 +78,7 @@ namespace Giqci.PublicWeb.Controllers.Api
             else
             {
                 result = false;
-                message = "Invalid Username or Password!";
+                message = "用户名或密码错误!";
             }
             return new KtechJsonResult(HttpStatusCode.OK, new { result = result, message = message });
         }
