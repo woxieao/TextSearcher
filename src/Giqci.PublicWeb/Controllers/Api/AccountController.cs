@@ -6,6 +6,9 @@ using System.Web.Security;
 using System;
 using Giqci.Models;
 using Giqci.PublicWeb.Models.Account;
+using Giqci.PublicWeb.Models;
+using System.Web.Configuration;
+using Ktech.Core.Mail;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {
@@ -88,6 +91,34 @@ namespace Giqci.PublicWeb.Controllers.Api
             try
             {
                 result = _repo.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                message = ex.Message;
+            }
+            return new KtechJsonResult(HttpStatusCode.OK, new { result = result, message = message });
+
+        }
+        [Route("account/forgotpassword")]
+        [HttpPost]
+        public ActionResult ForgotPassword(ForgotPasswordViewModel model)
+        {
+            bool result = true;
+            string message = "";
+            string newpassword = "";
+            try
+            {
+                result = _repo.ResetPassword(model.Username, out newpassword);
+                var msg = new ForgotPasswordEmailTemplate
+                {
+                    FromEmail = WebConfigurationManager.AppSettings["FeedbackEmailFrom"],
+                    Subject = WebConfigurationManager.AppSettings["FeedbackEmailSubject"],
+                    TextTemplate = string.Format("您的密码已经重置，请及时更新，新密码为:{0}", newpassword)
+                };
+                var m = new SmartMail(msg);
+                m.To.Add(WebConfigurationManager.AppSettings["AdminEmail"]);
+                m.SendEmail();
             }
             catch (Exception ex)
             {

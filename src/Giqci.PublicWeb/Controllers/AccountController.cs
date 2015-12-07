@@ -56,5 +56,12 @@ namespace Giqci.PublicWeb.Controllers
         {
             return View();
         }
+
+        [Route("forgot")]
+        [HttpGet]
+        public ActionResult Forgot()
+        {
+            return View();
+        }
     }
 }
