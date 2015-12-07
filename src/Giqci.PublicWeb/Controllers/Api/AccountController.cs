@@ -35,7 +35,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                 if (result)
                 {
                     FormsAuthentication.SetAuthCookie(input.Email, true);
-                    var msg = new SendEmailTemplate
+                    var msg = new NoReplyEmail
                     {
                         FromEmail = WebConfigurationManager.AppSettings["SendEmailFrom"],
                         Subject = WebConfigurationManager.AppSettings["RegMerchantEmailSubject"],
@@ -124,7 +124,7 @@ input.Email)
             try
             {
                 result = _repo.ResetPassword(model.Email, out newpassword);
-                var msg = new SendEmailTemplate
+                var msg = new NoReplyEmail
                 {
                     FromEmail = WebConfigurationManager.AppSettings["FeedbackEmailFrom"],
                     Subject = WebConfigurationManager.AppSettings["FeedbackEmailSubject"],

@@ -14,7 +14,7 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult SendFeedback(Feedback input)
         {
-            var msg = new FeedbackEmailTemplate
+            var msg = new NoReplyEmail
             {
                 FromEmail = WebConfigurationManager.AppSettings["FeedbackEmailFrom"],
                 Subject = WebConfigurationManager.AppSettings["FeedbackEmailSubject"],
