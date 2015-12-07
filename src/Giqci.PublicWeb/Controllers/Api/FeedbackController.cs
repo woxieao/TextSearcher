@@ -14,10 +14,10 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult SendFeedback(Feedback input)
         {
-            var msg = new NoReplyEmail
+            var msg = new SendEmailTemplate
             {
-                FromEmail = WebConfigurationManager.AppSettings["FeedbackEmailFrom"],
-                Subject = WebConfigurationManager.AppSettings["FeedbackEmailSubject"],
+                FromEmail = Config.Current.NoReplyEmail,
+                Subject = Config.Current.FeedbackEmailSubject,
                 TextTemplate = string.Format(
                     @"Firstname:
 {0}
@@ -35,7 +35,7 @@ Message:
 {4}", input.firstname, input.lastname, input.email, input.subject, input.message)
             };
             var m = new SmartMail(msg);
-            m.To.Add(WebConfigurationManager.AppSettings["AdminEmail"]);
+            m.To.Add(Config.Current.AdminEmail);
             m.SendEmail();
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }

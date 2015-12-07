@@ -35,14 +35,14 @@ namespace Giqci.PublicWeb.Controllers.Api
                 if (result)
                 {
                     FormsAuthentication.SetAuthCookie(input.Email, true);
-                    var msg = new NoReplyEmail
+                    var msg = new SendEmailTemplate
                     {
-                        FromEmail = WebConfigurationManager.AppSettings["SendEmailFrom"],
-                        Subject = WebConfigurationManager.AppSettings["RegMerchantEmailSubject"],
+                        FromEmail = Config.Current.NoReplyEmail,
+                        Subject = Config.Current.RegMerchantEmailSubject,
                         TextTemplate = string.Format(
 @"您已经注册成功，请单击链接，<a href='{0}account/active?code={1}&email={2}'>去认证</a>。",
-WebConfigurationManager.AppSettings["Host"],
-authCode.ToString(),
+Config.Current.Host,
+authCode,
 input.Email)
                     };
                     var m = new SmartMail(msg);
@@ -124,10 +124,10 @@ input.Email)
             try
             {
                 result = _repo.ResetPassword(model.Email, out newpassword);
-                var msg = new NoReplyEmail
+                var msg = new SendEmailTemplate
                 {
-                    FromEmail = WebConfigurationManager.AppSettings["FeedbackEmailFrom"],
-                    Subject = WebConfigurationManager.AppSettings["FeedbackEmailSubject"],
+                    FromEmail = Config.Current.NoReplyEmail,
+                    Subject = Config.Current.FeedbackEmailSubject,
                     TextTemplate = string.Format("您的密码已经重置，请及时更新，新密码为:{0}", newpassword)
                 };
                 var m = new SmartMail(msg);

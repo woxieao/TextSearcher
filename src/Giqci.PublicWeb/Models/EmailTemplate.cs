@@ -2,13 +2,13 @@
 
 namespace Giqci.PublicWeb.Models
 {
-    public class NoReplyEmail : IEmailTemplate
+    public class SendEmailTemplate : IEmailTemplate
     {
         public string FromEmail { get; set; }
 
         public string FromEmailDisplay { get; set; }
 
-        public string HtmlTemplate { get { return null; } }
+        public string HtmlTemplate { get; set; }
 
         public string Subject { get; set; }
 
