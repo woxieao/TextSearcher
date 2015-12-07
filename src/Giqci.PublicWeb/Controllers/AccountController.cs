@@ -3,6 +3,7 @@ using System.Web.Security;
 using Giqci.Models;
 using Giqci.PublicWeb.Models.Account;
 using Giqci.Repositories;
+using System;
 
 namespace Giqci.PublicWeb.Controllers
 {
@@ -54,6 +55,34 @@ namespace Giqci.PublicWeb.Controllers
         [Authorize]
         public ActionResult ChangePassword()
         {
+            return View();
+        }
+
+        [Route("forgot")]
+        [HttpGet]
+        public ActionResult Forgot()
+        {
+            return View();
+        }
+
+        [Route("active")]
+        [HttpGet]
+        public ActionResult ActiveMerchant(Guid code, string email)
+        {
+            bool result = false;
+            string message;
+            try
+            {
+                result = _repo.ActiveMerchant(email, code, out message);
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                message = ex.Message;
+            }
+            ViewBag.result = result;
+            ViewBag.message = message;
             return View();
         }
     }

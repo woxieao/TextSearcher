@@ -1,29 +1,28 @@
 ﻿@model Giqci.PublicWeb.Models.Account.LoginViewModel
 
 @{
-    ViewBag.Title = "Login";
+    ViewBag.Title = "Forgot";
 }
 <script src="~/Global/js/commalert.js"></script>
 <script type="text/javascript">
     var app = angular.module("giqci", ['commonAlert']);
-    app.controller("LoginController", ['$http', '$scope', '$location', 'commAlertService', function ($http, $scope, $location, commAlertService) {
-        $scope.submitButton = ' 登录 ';
+    app.controller("ForgotController", ['$http', '$scope', '$location', 'commAlertService', function ($http, $scope, $location, commAlertService) {
+        $scope.submitButton = ' 提交 ';
         $scope.submitForm = function (isValid) {
             if (isValid) {
                 $scope.enableDisableButton = true;
                 $scope.submitButton = '正在提交...';
                 $scope.formData = {
-                    email: $scope.user.email,
-                    password: $scope.user.password
+                    email: $scope.user.email
                 };
-                $http.post('/api/account/login', $scope.formData).then(function (response) {
+                $http.post('/api/account/forgotpassword', $scope.formData).then(function (response) {
                     if (response.data.result) {
-                        window.location.href = "/forms/app";
+                        commAlertService.alertService().add('success', "您的密码已经重置，并发往您的注册邮箱，请检查。");
                     } else {
                         commAlertService.alertService().add('danger', response.data.message || "未知错误");
-                        $scope.enableDisableButton = false;
-                        $scope.submitButton = ' 登录 ';
                     }
+                    $scope.enableDisableButton = false;
+                    $scope.submitButton = ' 提交 ';
                 });
             }
         };
@@ -31,9 +30,9 @@
     ]);
 </script>
 
-<div class="panel panel-default" ng-controller="LoginController">
+<div class="panel panel-default" ng-controller="ForgotController">
     <div class="panel-heading">
-        <h1 class="panel-title">商户登录</h1>
+        <h1 class="panel-title">忘记密码</h1>
     </div>
     <div class="panel-body">
         <div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
@@ -48,22 +47,11 @@
                     <small ng-show="appform.email.$invalid" class="help-block">请填写正确的邮箱</small>
                 </div>
             </div>
-            <div class="form-group" ng-class="{ 'has-error' : appform.password.$error.required && !appform.password.$pristine }">
-                <label class="col-sm-2 control-label">密码: </label>
-                <div class="col-sm-5">
-                    <input name="password" type="password" class="form-control" required ng-model="user.password" />
-                    <small ng-show="appform.password.$error.required" class="help-block">请输入您的密码</small>
-                </div>
-            </div>
             <div class="form-group">
                 <div class="col-sm-offset-2 col-sm-8">
                     <button class="btn btn-default" ng-disabled="enableDisableButton">
                         <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> {{submitButton}}
                     </button>
-                    &nbsp;
-                    <a href="forgot" class="btn btn-link">忘记密码？</a>
-                    &nbsp;
-                    <a href="reg" class="btn btn-link">商户注册</a>
                 </div>
             </div>
         </form>

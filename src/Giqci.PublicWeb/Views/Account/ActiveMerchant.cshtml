@@ -1,0 +1,24 @@
+﻿@model Giqci.PublicWeb.Models.Account.LoginViewModel
+
+@{
+    ViewBag.Title = "Active";
+}
+
+<div class="panel panel-default" ng-controller="ForgotController">
+    <div class="panel-body">
+        @if (ViewBag.result)
+        {
+            <div role="alert" class="alert alert-dismissible alert-success">
+                <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
+                <span>您已经认证通过，现在&nbsp;<a href="login">去登录</a></span>
+            </div>
+        }
+        else
+        {
+            <div role="alert" class="alert alert-dismissible alert-danger">
+                <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
+                <span>@ViewBag.message</span>
+            </div>
+        }
+    </div>
+</div>
