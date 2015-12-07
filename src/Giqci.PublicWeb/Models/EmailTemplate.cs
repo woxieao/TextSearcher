@@ -15,7 +15,7 @@ namespace Giqci.PublicWeb.Models
         public string TextTemplate { get; set; }
     }
 
-    public class ForgotPasswordEmailTemplate : IEmailTemplate
+    public class SendEmailTemplate : IEmailTemplate
     {
         public string FromEmail { get; set; }
 

@@ -59,9 +59,9 @@
       <HintPath>..\..\packages\Giqci.Contract.1.0.78\lib\net45\Giqci.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Repository, Version=1.0.156.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Giqci.Repository.1.0.156\lib\net45\Giqci.Repository.dll</HintPath>
+    <Reference Include="Giqci.Repository, Version=1.0.157.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.Repository.1.0.157\lib\net45\Giqci.Repository.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Ktech.Contract, Version=1.0.12.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Ktech.Contract.1.0.12\lib\net45\Ktech.Contract.dll</HintPath>
@@ -218,6 +218,7 @@
     <Content Include="Views\Account\Profile.cshtml" />
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\Forgot.cshtml" />
+    <Content Include="Views\Account\ActiveMerchant.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

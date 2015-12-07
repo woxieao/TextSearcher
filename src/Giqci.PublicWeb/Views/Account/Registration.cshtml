@@ -36,11 +36,11 @@
                 <span ng-bind="alert.msg"></span>
             </div>
             <form name="appform" class="form-horizontal" method="POST" ng-submit="submitForm(appform.$valid,user.password != user.confirm_password)" novalidate>
-                <div class="form-group" ng-class="{ 'has-error' : (appform.username.$error.minlength || appform.username.$error.required || appform.username.$error.maxlength) && !appform.username.$pristine}">
-                    <label class="col-sm-2 control-label">用户名: </label>
+                <div class="form-group" ng-class="{ 'has-error' : appform.email.$invalid && appform.email.$dirty }">
+                    <label class="col-sm-2 control-label">邮箱: </label>
                     <div class="col-sm-10">
-                        <input name="username" type="text" class="form-control" required ng-model="user.username" ng-minlength="4" ng-maxlength="20" />
-                        <small ng-show="appform.username.$error.minlength || appform.username.$error.required || appform.username.$error.maxlength" class="help-block">用户名不为空，且长度为4-20个字符</small>
+                        <input name="email" type="email" class="form-control" ng-model="user.email" required />
+                        <small ng-show="appform.email.$invalid" class="help-block">请填写正确的邮箱</small>
                     </div>
                 </div>
                 <div class="form-group" ng-class="{ 'has-error' : (appform.password.$error.required || appform.password.$error.minlength || appform.password.$error.maxlength) && !appform.password.$pristine }">
@@ -78,13 +78,6 @@
                         <small ng-show="appform.contact.$error.required" class="help-block">联系人不能为空</small>
                     </div>
                 </div>
-                <div class="form-group" ng-class="{ 'has-error' : appform.email.$invalid && appform.email.$dirty }">
-                    <label class="col-sm-2 control-label">Email: </label>
-                    <div class="col-sm-10">
-                        <input name="email" type="email" class="form-control" ng-model="user.email" required />
-                        <small ng-show="appform.email.$invalid" class="help-block">请填写正确的Email</small>
-                    </div>
-                </div>
                 <div class="form-group" ng-class="{ 'has-error' : appform.phone.$error.required  && !appform.phone.$pristine}">
                     <label class="col-sm-2 control-label">电话: </label>
                     <div class="col-sm-10">
@@ -120,12 +113,11 @@
                 $scope.enableDisableButton = true;
                 $scope.submitButton = '正在提交...';
                 $scope.formData = {
-                    username: $scope.user.username,
+                    email: $scope.user.email,
                     password: $scope.user.password,
                     name: $scope.user.name,
                     address: $scope.user.address,
                     contact: $scope.user.contact,
-                    email: $scope.user.email,
                     phone: $scope.user.phone
                 };
                 $http.post('/api/account/reg', $scope.formData).then(function (response) {

@@ -3,6 +3,7 @@ using System.Web.Security;
 using Giqci.Models;
 using Giqci.PublicWeb.Models.Account;
 using Giqci.Repositories;
+using System;
 
 namespace Giqci.PublicWeb.Controllers
 {
@@ -61,6 +62,18 @@ namespace Giqci.PublicWeb.Controllers
         [HttpGet]
         public ActionResult Forgot()
         {
+            return View();
+        }
+
+        [Route("active")]
+        [HttpGet]
+        public ActionResult ActiveMerchant(Guid code, string email)
+        {
+            bool result = false;
+            string message;
+            result = _repo.ActiveMerchant(email, code, out message);
+            ViewData["result"] = result;
+            ViewData["message"] = message;
             return View();
         }
     }

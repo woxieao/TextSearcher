@@ -28,12 +28,26 @@ namespace Giqci.PublicWeb.Controllers.Api
         {
             bool result;
             string message;
+            Guid authCode;
             try
             {
-                result = _repo.RegMerchant(input, out message);
+                result = _repo.RegMerchant(input, out authCode, out message);
                 if (result)
                 {
                     FormsAuthentication.SetAuthCookie(input.Username, true);
+                    var msg = new SendEmailTemplate
+                    {
+                        FromEmail = WebConfigurationManager.AppSettings["SendEmailFrom"],
+                        Subject = WebConfigurationManager.AppSettings["RegMerchantEmailSubject"],
+                        TextTemplate = string.Format(
+@"您已经注册成功，请单击链接，<a href='{0}account/active?code={1}&email={2}'>去认证</a>。",
+WebConfigurationManager.AppSettings["LocalHost"],
+authCode.ToString(),
+input.Email)
+                    };
+                    var m = new SmartMail(msg);
+                    m.To.Add(WebConfigurationManager.AppSettings["AdminEmail"]);
+                    m.SendEmail();
                 }
             }
             catch (Exception ex)
@@ -69,9 +83,9 @@ namespace Giqci.PublicWeb.Controllers.Api
         {
             bool result = true;
             string message = "";
-            if (_repo.MerchantLogin(input.Username, input.Password))
+            if (_repo.MerchantLogin(input.Email, input.Password))
             {
-                FormsAuthentication.SetAuthCookie(input.Username, true);
+                FormsAuthentication.SetAuthCookie(input.Email, true);
             }
             else
             {
@@ -110,7 +124,7 @@ namespace Giqci.PublicWeb.Controllers.Api
             try
             {
                 result = _repo.ResetPassword(model.Username, out newpassword);
-                var msg = new ForgotPasswordEmailTemplate
+                var msg = new SendEmailTemplate
                 {
                     FromEmail = WebConfigurationManager.AppSettings["FeedbackEmailFrom"],
                     Subject = WebConfigurationManager.AppSettings["FeedbackEmailSubject"],
