@@ -71,9 +71,18 @@ namespace Giqci.PublicWeb.Controllers
         {
             bool result = false;
             string message;
-            result = _repo.ActiveMerchant(email, code, out message);
-            ViewData["result"] = result;
-            ViewData["message"] = message;
+            try
+            {
+                result = _repo.ActiveMerchant(email, code, out message);
+                result = true;
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                message = ex.Message;
+            }
+            ViewBag.result = result;
+            ViewBag.message = message;
             return View();
         }
     }

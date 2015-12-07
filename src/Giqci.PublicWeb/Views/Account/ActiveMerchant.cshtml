@@ -6,7 +6,7 @@
 
 <div class="panel panel-default" ng-controller="ForgotController">
     <div class="panel-body">
-        @if (ViewData["result"].Equals(true))
+        @if (ViewBag.result)
         {
             <div role="alert" class="alert alert-dismissible alert-success">
                 <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
@@ -17,7 +17,7 @@
         {
             <div role="alert" class="alert alert-dismissible alert-danger">
                 <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
-                <span>@ViewData["message"]</span>
+                <span>@ViewBag.message</span>
             </div>
         }
     </div>

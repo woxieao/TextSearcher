@@ -13,7 +13,7 @@
                 $scope.enableDisableButton = true;
                 $scope.submitButton = '正在提交...';
                 $scope.formData = {
-                    username: $scope.user.username
+                    email: $scope.user.email
                 };
                 $http.post('/api/account/forgotpassword', $scope.formData).then(function (response) {
                     if (response.data.result) {
@@ -40,11 +40,11 @@
             <span ng-bind="alert.msg"></span>
         </div>
         <form name="appform" class="form-horizontal" method="POST" ng-submit="submitForm(appform.$valid)" novalidate>
-            <div class="form-group" ng-class="{ 'has-error' : appform.username.$error.required && !appform.username.$pristine }">
-                <label class="col-sm-2 control-label">用户名: </label>
+            <div class="form-group" ng-class="{ 'has-error' : appform.email.$invalid && appform.email.$dirty }">
+                <label class="col-sm-2 control-label">邮箱: </label>
                 <div class="col-sm-5">
-                    <input name="username" type="text" class="form-control" required ng-model="user.username" />
-                    <small ng-show="appform.username.$error.required" class="help-block">请输入您的用户名</small>
+                    <input name="email" type="email" class="form-control" required ng-model="user.email" />
+                    <small ng-show="appform.email.$invalid" class="help-block">请填写正确的邮箱</small>
                 </div>
             </div>
             <div class="form-group">

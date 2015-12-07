@@ -34,19 +34,19 @@ namespace Giqci.PublicWeb.Controllers.Api
                 result = _repo.RegMerchant(input, out authCode, out message);
                 if (result)
                 {
-                    FormsAuthentication.SetAuthCookie(input.Username, true);
+                    FormsAuthentication.SetAuthCookie(input.Email, true);
                     var msg = new SendEmailTemplate
                     {
                         FromEmail = WebConfigurationManager.AppSettings["SendEmailFrom"],
                         Subject = WebConfigurationManager.AppSettings["RegMerchantEmailSubject"],
                         TextTemplate = string.Format(
 @"您已经注册成功，请单击链接，<a href='{0}account/active?code={1}&email={2}'>去认证</a>。",
-WebConfigurationManager.AppSettings["LocalHost"],
+WebConfigurationManager.AppSettings["Host"],
 authCode.ToString(),
 input.Email)
                     };
                     var m = new SmartMail(msg);
-                    m.To.Add(WebConfigurationManager.AppSettings["AdminEmail"]);
+                    m.To.Add(input.Email);
                     m.SendEmail();
                 }
             }
@@ -123,7 +123,7 @@ input.Email)
             string newpassword = "";
             try
             {
-                result = _repo.ResetPassword(model.Username, out newpassword);
+                result = _repo.ResetPassword(model.Email, out newpassword);
                 var msg = new SendEmailTemplate
                 {
                     FromEmail = WebConfigurationManager.AppSettings["FeedbackEmailFrom"],
@@ -131,7 +131,7 @@ input.Email)
                     TextTemplate = string.Format("您的密码已经重置，请及时更新，新密码为:{0}", newpassword)
                 };
                 var m = new SmartMail(msg);
-                m.To.Add(WebConfigurationManager.AppSettings["AdminEmail"]);
+                m.To.Add(model.Email);
                 m.SendEmail();
             }
             catch (Exception ex)
