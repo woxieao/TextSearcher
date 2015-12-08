@@ -34,7 +34,6 @@ namespace Giqci.PublicWeb.Controllers.Api
                 result = _repo.RegMerchant(input, out authCode, out message);
                 if (result)
                 {
-                    var msg = new SendEmailTemplate
                     {
                         FromEmail = Config.Current.NoReplyEmail,
                         Subject = Config.Current.RegMerchantEmailSubject,
