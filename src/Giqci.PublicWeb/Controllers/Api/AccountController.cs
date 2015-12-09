@@ -33,10 +33,10 @@ namespace Giqci.PublicWeb.Controllers.Api
             try
             {
                 result = _repo.RegMerchant(input, out authCode, out message);
-                string active_string = FileHelper.GetInterIDList(@"~/App_Data/Active.txt");
                 if (result)
                 {
                     string active_url = string.Format(@"{0}account/active?code={1}&email={2}", WebConfigurationManager.AppSettings["Host"], authCode.ToString(), input.Email);
+                    string active_string = FileHelper.GetInterIDList(@"~/App_Data/EmailTemlate/Active.txt");
                     var msg = new SendEmailTemplate
                     {
                         FromEmail = Config.Current.NoReplyEmail,
@@ -124,17 +124,20 @@ namespace Giqci.PublicWeb.Controllers.Api
             try
             {
                 result = _repo.ResetPassword(model.Email, out newpassword);
-                string forgot_string = FileHelper.GetInterIDList(@"~/App_Data/ForgotPassword.txt");
-                var msg = new SendEmailTemplate
+                if (result)
                 {
-                    FromEmail = Config.Current.NoReplyEmail,
-                    Subject = Config.Current.FeedbackEmailSubject,
-                    TextTemplate = string.Format(@"您的密码已经重置，请及时更新，新密码为:{0}", newpassword),
-                    HtmlTemplate = string.Format(forgot_string, newpassword)
-                };
-                var m = new SmartMail(msg);
-                m.To.Add(model.Email);
-                m.SendEmail();
+                    string forgot_string = FileHelper.GetInterIDList(@"~/App_Data/EmailTemlate/ForgotPassword.txt");
+                    var msg = new SendEmailTemplate
+                    {
+                        FromEmail = Config.Current.NoReplyEmail,
+                        Subject = Config.Current.FeedbackEmailSubject,
+                        TextTemplate = string.Format(@"您的密码已经重置，请及时更新，新密码为:{0}", newpassword),
+                        HtmlTemplate = string.Format(forgot_string, newpassword)
+                    };
+                    var m = new SmartMail(msg);
+                    m.To.Add(model.Email);
+                    m.SendEmail();
+                }
             }
             catch (Exception ex)
             {

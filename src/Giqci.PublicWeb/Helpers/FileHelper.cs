@@ -13,10 +13,7 @@ namespace Giqci.PublicWeb.Helpers
             string FilePath = System.Web.HttpContext.Current.Server.MapPath(strfile);
             if (File.Exists(FilePath))
             {
-                StreamReader sr = new StreamReader(System.Web.HttpContext.Current.Server.MapPath(strfile), System.Text.Encoding.Default);
-                String input = sr.ReadToEnd();
-                sr.Close();
-                strout = input;
+                strout = File.ReadAllText(System.Web.HttpContext.Current.Server.MapPath(strfile), System.Text.Encoding.Default);
             }
             return strout;
         }
