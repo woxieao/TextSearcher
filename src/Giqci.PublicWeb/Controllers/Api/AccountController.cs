@@ -7,7 +7,6 @@ using System;
 using Giqci.Models;
 using Giqci.PublicWeb.Models.Account;
 using Giqci.PublicWeb.Models;
-using System.Web.Configuration;
 using Ktech.Core.Mail;
 using Giqci.PublicWeb.Helpers;
 

@@ -17,13 +17,13 @@ namespace Giqci.PublicWeb.Controllers
     [Authorize]
     public class FormsController : Ktech.Mvc.ControllerBase
     {
-        private readonly IApplicationRepository _coreRepo;
+        private readonly IPublicRepository _publicRepo;
         private readonly IMerchantRepository _merchantRepo;
         private readonly ICacheService _cache;
 
-        public FormsController(IApplicationRepository coreRepo, ICacheService cache, IMerchantRepository merchantRepo)
+        public FormsController(IPublicRepository publicRepo, ICacheService cache, IMerchantRepository merchantRepo)
         {
-            _coreRepo = coreRepo;
+            _publicRepo = publicRepo;
             _merchantRepo = merchantRepo;
             _cache = cache;
         }
@@ -58,7 +58,7 @@ namespace Giqci.PublicWeb.Controllers
             if (!errors.Any())
             {
                 // submit
-                appNo = _coreRepo.CreateApplication(model);
+                appNo = _publicRepo.CreateApplication(User.Identity.Name, model);
                 errors = null;
             }
             return new KtechJsonResult(HttpStatusCode.OK, new { appNo = appNo, errors = errors });
