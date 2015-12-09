@@ -59,8 +59,8 @@
       <HintPath>..\..\packages\Giqci.Contract.1.0.79\lib\net45\Giqci.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Repository, Version=1.0.157.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.Repository.1.0.157\lib\net45\Giqci.Repository.dll</HintPath>
+    <Reference Include="Giqci.Repository, Version=1.0.159.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.Repository.1.0.159\lib\net45\Giqci.Repository.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ktech.Contract, Version=1.0.12.0, Culture=neutral, processorArchitecture=MSIL">
@@ -152,7 +152,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\FileHelper.cs" />
+    <Compile Include="Helpers\EmailTemplateHelper.cs" />
     <Compile Include="Helpers\ModelBuilder.cs" />
     <Compile Include="Models\Account\ChangePasswordPageModel.cs" />
     <Compile Include="Models\Account\ForgotPasswordViewModel.cs" />
@@ -166,7 +166,9 @@
     <Compile Include="Services\CacheService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\EmailTemlate\Active.html" />
     <Content Include="App_Data\EmailTemlate\Active.txt" />
+    <Content Include="App_Data\EmailTemlate\ForgotPassword.html" />
     <Content Include="App_Data\EmailTemlate\ForgotPassword.txt" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />

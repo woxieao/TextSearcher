@@ -29,23 +29,22 @@ namespace Giqci.PublicWeb.Controllers.Api
         {
             bool result;
             string message;
-            Guid authCode;
             try
             {
+                Guid authCode;
                 result = _repo.RegMerchant(input, out authCode, out message);
                 if (result)
                 {
-                    string activeUrl = string.Format(@"{0}account/active?code={1}&email={2}", Config.Current.Host, authCode.ToString(), input.Email);
-                    string activeString = FileHelper.GetInterIDList(@"~/App_Data/EmailTemlate/Active.txt");
                     var msg = new SendEmailTemplate
                     {
                         FromEmail = Config.Current.NoReplyEmail,
                         Subject = Config.Current.RegMerchantEmailSubject,
-                        TextTemplate = string.Format(@"尊敬的用户,您好！您已经注册成功，请打开以下地址，并通过认证。{0}", activeUrl),
-
-                        HtmlTemplate = string.Format(activeString, activeUrl, activeUrl, activeUrl)
+                        TextTemplate = EmailTemplateHelper.GetEmailTemplate("Active.txt"),
+                        HtmlTemplate = EmailTemplateHelper.GetEmailTemplate("Active.html")
                     };
                     var m = new SmartMail(msg);
+                    m.AddParameter("ActiveUrl",
+                        string.Format(@"{0}account/active?code={1}&email={2}", Config.Current.Host, authCode, input.Email));
                     m.To.Add(input.Email);
                     m.SendEmail();
                 }
@@ -118,23 +117,23 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult ForgotPassword(ForgotPasswordViewModel model)
         {
-            bool result = true;
-            string message = "";
-            string newPassword = "";
+            var result = true;
+            var message = "";
             try
             {
+                string newPassword;
                 result = _repo.ResetPassword(model.Email, out newPassword);
                 if (result)
                 {
-                    string forgotString = FileHelper.GetInterIDList(@"~/App_Data/EmailTemlate/ForgotPassword.txt");
                     var msg = new SendEmailTemplate
                     {
                         FromEmail = Config.Current.NoReplyEmail,
                         Subject = Config.Current.FeedbackEmailSubject,
-                        TextTemplate = string.Format(@"您的密码已经重置，请及时更新，新密码为:{0}", newPassword),
-                        HtmlTemplate = string.Format(forgotString, newPassword)
+                        TextTemplate = EmailTemplateHelper.GetEmailTemplate("ForgotPassword.txt"),
+                        HtmlTemplate = EmailTemplateHelper.GetEmailTemplate("ForgotPassword.html"),
                     };
                     var m = new SmartMail(msg);
+                    m.AddParameter("Password", newPassword);
                     m.To.Add(model.Email);
                     m.SendEmail();
                 }
