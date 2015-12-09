@@ -9,6 +9,7 @@ using Giqci.PublicWeb.Models.Account;
 using Giqci.PublicWeb.Models;
 using System.Web.Configuration;
 using Ktech.Core.Mail;
+using Giqci.PublicWeb.Helpers;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {
@@ -34,15 +35,15 @@ namespace Giqci.PublicWeb.Controllers.Api
                 result = _repo.RegMerchant(input, out authCode, out message);
                 if (result)
                 {
+                    string activeUrl = string.Format(@"{0}account/active?code={1}&email={2}", Config.Current.Host, authCode.ToString(), input.Email);
+                    string activeString = FileHelper.GetInterIDList(@"~/App_Data/EmailTemlate/Active.txt");
                     var msg = new SendEmailTemplate
                     {
                         FromEmail = Config.Current.NoReplyEmail,
                         Subject = Config.Current.RegMerchantEmailSubject,
-                        TextTemplate = string.Format(
-@"您已经注册成功，请单击链接，<a href='{0}account/active?code={1}&email={2}'>去认证</a>。",
-Config.Current.Host,
-authCode,
-input.Email)
+                        TextTemplate = string.Format(@"尊敬的用户,您好！您已经注册成功，请打开以下地址，并通过认证。{0}", activeUrl),
+
+                        HtmlTemplate = string.Format(activeString, activeUrl, activeUrl, activeUrl)
                     };
                     var m = new SmartMail(msg);
                     m.To.Add(input.Email);
@@ -119,19 +120,24 @@ input.Email)
         {
             bool result = true;
             string message = "";
-            string newpassword = "";
+            string newPassword = "";
             try
             {
-                result = _repo.ResetPassword(model.Email, out newpassword);
-                var msg = new SendEmailTemplate
+                result = _repo.ResetPassword(model.Email, out newPassword);
+                if (result)
                 {
-                    FromEmail = Config.Current.NoReplyEmail,
-                    Subject = Config.Current.FeedbackEmailSubject,
-                    TextTemplate = string.Format("您的密码已经重置，请及时更新，新密码为:{0}", newpassword)
-                };
-                var m = new SmartMail(msg);
-                m.To.Add(model.Email);
-                m.SendEmail();
+                    string forgotString = FileHelper.GetInterIDList(@"~/App_Data/EmailTemlate/ForgotPassword.txt");
+                    var msg = new SendEmailTemplate
+                    {
+                        FromEmail = Config.Current.NoReplyEmail,
+                        Subject = Config.Current.FeedbackEmailSubject,
+                        TextTemplate = string.Format(@"您的密码已经重置，请及时更新，新密码为:{0}", newPassword),
+                        HtmlTemplate = string.Format(forgotString, newPassword)
+                    };
+                    var m = new SmartMail(msg);
+                    m.To.Add(model.Email);
+                    m.SendEmail();
+                }
             }
             catch (Exception ex)
             {

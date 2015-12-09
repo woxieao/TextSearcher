@@ -123,11 +123,11 @@
                 $http.post('/api/account/reg', $scope.formData).then(function (response) {
                     if (!response.data.result) {
                         commAlertService.alertService().add('danger', response.data.message || "未知错误");
-                        $scope.enableDisableButton = false;
-                        $scope.submitButton = ' 提交 ';
                     } else {
-                        window.location.href = "/forms/app";
+                        commAlertService.alertService().add('success', "注册成功，请检查邮件并认证。");
                     }
+                    $scope.enableDisableButton = false;
+                    $scope.submitButton = ' 提交 ';
                 });
             }
         };
