@@ -153,6 +153,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\EmailTemplateHelper.cs" />
+    <Compile Include="Helpers\CookieHelper.cs" />
     <Compile Include="Helpers\ModelBuilder.cs" />
     <Compile Include="Models\Account\ChangePasswordPageModel.cs" />
     <Compile Include="Models\Account\ForgotPasswordViewModel.cs" />
