@@ -1,0 +1,116 @@
+﻿@using Newtonsoft.Json
+
+@{
+    ViewBag.Title = "证书查询";
+}
+<script src="~/Global/js/commalert.js"></script>
+<div class="panel panel-default" ng-controller="ForumSearchController">
+    <div class="panel-heading">
+        <h1 class="panel-title">证书查询</h1>
+    </div>
+    <div class="panel-body">
+        <div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
+            <button aria-label="Close" data-dismiss="alert" ng-click="alert.close()" class="close" type="button"><span aria-hidden="true">×</span></button>
+            <span ng-bind="alert.msg"></span>
+        </div>
+        <form class="form-inline">
+            <div class="form-group">
+                <input ng-model="applyNo" placeholder="申请号" class="form-control" />
+                <button type="button" class="btn btn-default" ng-click="searchApplication()">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
+                </button>
+            </div>
+        </form>
+        <table class="table table-striped">
+            <colgroup>
+                <col width='100' />
+                <col width='100' />
+                <col width='100' />
+                <col width='220' />
+                <col width='120' />
+                <col>
+            </colgroup>
+            <thead>
+                <tr>
+                    <th>申请号</th>
+                    <th>证书类别</th>
+                    <th>商业目的</th>
+                    <th>创建日期</th>
+                    <th>当前状态</th>
+                    <th>申请人</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="emp in persons">
+                    <td><a href="/apps/{{emp.Id}}">{{emp.Key}}</a></td>
+                    <td>{{emp.CertType}}</td>
+                    <td>{{emp.TradeType}}</td>
+                    <td>{{emp.CreateDate}}</td>
+                    <td>{{emp.Status}}</td>
+                    <td>{{emp.Applicant}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="page-list">
+            <ul class="pagination" ng-show="paginationConf.totalItems > 0">
+                <li ng-class="{disabled: postData.pageIndex == 1}" ng-click="indexPage()"><span>首页</span></li>
+                <li ng-class="{disabled: postData.pageIndex == 1}" ng-click="prevPage()"><span>上一页</span></li>
+                <li class="disabled"><span>第{{postData.pageIndex}}页</span></li>
+                <li ng-class="{disabled: paginationConf.totalItems < postData.pageSize}" ng-click="nextPage()"><span>下一页</span></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var app = angular.module('giqci', []);
+    app.controller('ForumSearchController', ['$scope','$http', function ($scope,$http) {
+        $scope.paginationConf = {
+            totalItems :0
+        };
+        $scope.postData = {
+            applyNo: $scope.applyNo,
+            status: $scope.status,
+            start: $scope.start,
+            end: $scope.end,
+            pageIndex: 1,
+            pageSize: 10
+        }
+
+        $scope.prevPage = function () {
+            if ($scope.postData.pageIndex > 1) {
+                $scope.postData.pageIndex -= 1;
+                $scope.list($scope.postData);
+            }
+        };
+        $scope.nextPage = function () {
+            if ($scope.paginationConf.totalItems == $scope.postData.pageSize) {
+                $scope.postData.pageIndex += 1;
+                $scope.list($scope.postData);
+            }
+        };
+        $scope.indexPage = function(){
+            if ($scope.postData.pageIndex > 1) {
+                $scope.postData.pageIndex = 1;
+                $scope.list($scope.postData);
+            }
+        }
+        $scope.searchApplication = function () {
+            $scope.postData = {
+                applyNo: $scope.applyNo || "",
+                status: $scope.status || "",
+                start: $scope.start || "",
+                end: $scope.end || "",
+                pageIndex: 1,
+                pageSize: $scope.postData.pageSize
+            };
+            $scope.list($scope.postData);
+        }
+        $scope.list = function(postData){
+            $http.post('/api/forms/search', postData).then(function (response) {
+                $scope.paginationConf.totalItems = response.data.count;
+                $scope.persons = response.data.items;
+            });
+        };
+        $scope.list($scope.postData);
+    }]);
+</script>

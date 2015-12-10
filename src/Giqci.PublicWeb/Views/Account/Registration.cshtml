@@ -9,6 +9,10 @@
         <h1 class="panel-title">商户注册</h1>
     </div>
     <div class="panel-body">
+        <div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
+            <button aria-label="Close" data-dismiss="alert" ng-click="alert.close()" class="close" type="button"><span aria-hidden="true">×</span></button>
+            <span ng-bind="alert.msg"></span>
+        </div>
         <div id="accept" ng-show="acceptshow">
             <form class="form-horizontal">
                 <div class="form-group">
@@ -31,10 +35,6 @@
             </form>
         </div>
         <div id="reg" ng-show="regshow">
-            <div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
-                <button aria-label="Close" data-dismiss="alert" ng-click="alert.close()" class="close" type="button"><span aria-hidden="true">×</span></button>
-                <span ng-bind="alert.msg"></span>
-            </div>
             <form name="appform" class="form-horizontal" method="POST" ng-submit="submitForm(appform.$valid,user.password != user.confirm_password)" novalidate>
                 <div class="form-group" ng-class="{ 'has-error' : appform.email.$invalid && appform.email.$dirty }">
                     <label class="col-sm-2 control-label">邮箱: </label>
@@ -100,7 +100,8 @@
     var app = angular.module("giqci", ["commonAlert"]);
     app.controller("RegController", ['$http', '$scope', '$location', "commAlertService", function ($http, $scope, $location, commAlertService) {
         //$scope.acceptshow = true; 暂时不显示
-        //$scope.regshow = false;
+        $scope.regshow = true;
+
         $scope.submitButton = ' 提交 ';
         $scope.acceptshow = false;
         $scope.regshow = true;
@@ -125,6 +126,7 @@
                         commAlertService.alertService().add('danger', response.data.message || "未知错误");
                     } else {
                         commAlertService.alertService().add('success', "注册成功，请检查邮件并认证。");
+                        $scope.regshow = false;
                     }
                     $scope.enableDisableButton = false;
                     $scope.submitButton = ' 提交 ';
