@@ -11,10 +11,11 @@ using Giqci.Repositories;
 using Ktech.Mvc.ActionResults;
 using Application = Giqci.Models.Application;
 using GoodsItem = Giqci.Models.GoodsItem;
+using Newtonsoft.Json;
 
 namespace Giqci.PublicWeb.Controllers
 {
-    [Authorize]
+
     public class FormsController : Ktech.Mvc.ControllerBase
     {
         private readonly IPublicRepository _publicRepo;
@@ -30,7 +31,72 @@ namespace Giqci.PublicWeb.Controllers
 
         [Route("forms/app")]
         [HttpGet]
+        [Authorize]
         public ActionResult Application(string applicantCode)
+        {
+            var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
+            string _appString = "";
+            //get cookies 
+            CookieHelper _cookie = new CookieHelper();
+            _appString = _cookie.GetApplication("application");
+            Application _application = JsonConvert.DeserializeObject<Application>(_appString);
+            var model = new ApplicationPageModel { };
+            if (_application == null)
+            {
+                model = new ApplicationPageModel
+                {
+                    Application = new Application
+                    {
+                        ApplicantCode = applicantCode,
+                        Applicant = merchant.Name,
+                        ApplicantAddr = merchant.Address,
+                        ApplicantContact = merchant.Contact,
+                        ApplicantPhone = merchant.Phone,
+                        Goods = new List<GoodsItem> { new GoodsItem { ManufacturerCountry = "036" } }
+                    }
+                };
+            }
+            else
+            {
+                model = new ApplicationPageModel
+               {
+                   Application = _application
+               };
+            }
+            ModelBuilder.SetHelperFields(_cache, model);
+            return View(model);
+        }
+
+        [Route("forms/app")]
+        [HttpPost]
+        public ActionResult SubmitApplication(Application model)
+        {
+            var errors = validateApplication(model);
+            string appNo = null;
+            //set cookies 
+            CookieHelper _cookie = new CookieHelper();
+            _cookie.SetApplication("application", model);
+            // check user status
+            string userName = User.Identity.Name;
+            if (string.IsNullOrEmpty(userName))
+            {
+                appNo = null;
+                errors = new List<string>() { "登录状态已失效，请您重新登录系统" };
+            }
+
+            if (!errors.Any())
+            {
+                // submit
+                appNo = _publicRepo.CreateApplication(User.Identity.Name, model);
+                errors = null;
+            }
+            return new KtechJsonResult(HttpStatusCode.OK, new { appNo = appNo, errors = errors });
+        }
+
+        [Route("forms/search")]
+        [HttpGet]
+        [Authorize]
+        public ActionResult ApplicationSearch(string applicantCode)
         {
             var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
             var model = new ApplicationPageModel
@@ -49,21 +115,6 @@ namespace Giqci.PublicWeb.Controllers
             return View(model);
         }
 
-        [Route("forms/app")]
-        [HttpPost]
-        public ActionResult SubmitApplication(Application model)
-        {
-            var errors = validateApplication(model);
-            string appNo = null;
-            if (!errors.Any())
-            {
-                // submit
-                appNo = _publicRepo.CreateApplication(User.Identity.Name, model);
-                errors = null;
-            }
-            return new KtechJsonResult(HttpStatusCode.OK, new { appNo = appNo, errors = errors });
-        }
-
         private List<string> validateApplication(Application model)
         {
             var errors = new List<string>();
@@ -71,6 +122,23 @@ namespace Giqci.PublicWeb.Controllers
             {
                 errors.Add("请至少填写一个商品");
             }
+            else
+            {
+                foreach (GoodsItem goods in model.Goods)
+                {
+                    var _index = 1;
+                    if (goods.ManufacturerDate == null)
+                    {
+                        errors.Add("请正确填写商品" + _index + "的生产日期");
+                    }
+                    if (string.IsNullOrEmpty(goods.BatchNo))
+                    {
+                        errors.Add("请正确填写商品" + _index + "的批次号");
+                    }
+                    _index++;
+                }
+            }
+
             if (!Enum.IsDefined(typeof(CertType), model.CertType))
             {
                 errors.Add("请选择证书类型");

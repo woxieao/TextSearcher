@@ -145,5 +145,12 @@ namespace Giqci.PublicWeb.Controllers.Api
             return new KtechJsonResult(HttpStatusCode.OK, new { result = result, message = message });
 
         }
+
+        [Route("account/heartbeat")]
+        [HttpPost]
+        public ActionResult HeartBeat()
+        {
+            return new KtechJsonResult(HttpStatusCode.OK, new { result = true, message = "" });
+        }
     }
 }

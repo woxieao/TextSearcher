@@ -21,7 +21,7 @@
     <script type="text/javascript">
         var app = angular.module("giqci", []);
         app.controller("GlobalController", [
-            '$http', '$scope', '$log', '$location', '$anchorScroll', function($http, $scope, $log, $location, $anchorScroll) {
+            '$http', '$scope', '$log', '$location', '$anchorScroll','$timeout', function($http, $scope, $log, $location, $anchorScroll, $timeout) {
                 $scope.model = @Html.Raw(JsonConvert.SerializeObject(Model));
                 $scope.model.Application.InspectionDate = null;
                 $scope.errors = [];
@@ -60,10 +60,19 @@
                 $scope.unit = "Pallets";
                 $scope.check_A = function(){
                     $scope.unit = "Pallets";
-                }
+                };
                 $scope.check_O = function(){
                     $scope.unit = "Containers";
-                }
+                };
+                
+                $scope.updateClock = function(){
+                    $http.post('/api/account/heartbeat').then(function(){});
+                };
+                setInterval(function(){
+                    $scope.$apply($scope.updateClock);
+                },300000);
+
+                $scope.updateClock();
             }
         ]);
     </script>

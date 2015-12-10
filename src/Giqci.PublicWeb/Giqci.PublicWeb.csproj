@@ -55,12 +55,12 @@
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Contract, Version=1.0.80.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.Contract.1.0.80\lib\net45\Giqci.Contract.dll</HintPath>
+    <Reference Include="Giqci.Contract, Version=1.0.83.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.Contract.1.0.83\lib\net45\Giqci.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Repository, Version=1.0.162.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.Repository.1.0.162\lib\net45\Giqci.Repository.dll</HintPath>
+    <Reference Include="Giqci.Repository, Version=1.0.163.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.Repository.1.0.163\lib\net45\Giqci.Repository.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ktech.Contract, Version=1.0.12.0, Culture=neutral, processorArchitecture=MSIL">
@@ -145,6 +145,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\AccountController.cs" />
+    <Compile Include="Controllers\Api\FormsController.cs" />
     <Compile Include="Controllers\Api\FeedbackController.cs" />
     <Compile Include="Controllers\FormsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -226,6 +227,7 @@
     <Content Include="Views\Account\ChangePassword.cshtml" />
     <Content Include="Views\Account\Forgot.cshtml" />
     <Content Include="Views\Account\ActiveMerchant.cshtml" />
+    <Content Include="Views\Forms\ApplicationSearch.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
