@@ -1,6 +1,5 @@
 ﻿using System.Web.Mvc;
 using System.Web.Security;
-using Giqci.Models;
 using Giqci.PublicWeb.Models.Account;
 using Giqci.Repositories;
 using System;

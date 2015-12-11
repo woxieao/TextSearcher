@@ -6,8 +6,8 @@ using System.Web.Mvc;
 using Giqci.Enums;
 using Giqci.PublicWeb.Helpers;
 using Giqci.PublicWeb.Models.Application;
-using Giqci.PublicWeb.Services;
 using Giqci.Repositories;
+using Giqci.Services;
 using Ktech.Mvc.ActionResults;
 using Application = Giqci.Models.Application;
 using GoodsItem = Giqci.Models.GoodsItem;
@@ -20,9 +20,9 @@ namespace Giqci.PublicWeb.Controllers
     {
         private readonly IPublicRepository _publicRepo;
         private readonly IMerchantRepository _merchantRepo;
-        private readonly ICacheService _cache;
+        private readonly ICachedDictionaryService _cache;
 
-        public FormsController(IPublicRepository publicRepo, ICacheService cache, IMerchantRepository merchantRepo)
+        public FormsController(IPublicRepository publicRepo, ICachedDictionaryService cache, IMerchantRepository merchantRepo)
         {
             _publicRepo = publicRepo;
             _merchantRepo = merchantRepo;
@@ -74,10 +74,10 @@ namespace Giqci.PublicWeb.Controllers
             var errors = validateApplication(model);
             string appNo = null;
             //set cookies 
-            CookieHelper _cookie = new CookieHelper();
-            _cookie.SetApplication("application", model);
+            var cookieHelper = new CookieHelper();
+            cookieHelper.SetApplication("application", model);
             // check user status
-            string userName = User.Identity.Name;
+            var userName = User.Identity.Name;
             if (string.IsNullOrEmpty(userName))
             {
                 appNo = null;
@@ -124,18 +124,24 @@ namespace Giqci.PublicWeb.Controllers
             }
             else
             {
-                foreach (GoodsItem goods in model.Goods)
+                for (var i = 0; i < model.Goods.Count; i++)
                 {
-                    var _index = 1;
-                    if (goods.ManufacturerDate == null)
+                    var item = model.Goods[i];
+                    if (string.IsNullOrEmpty(item.DescriptionEn)
+                    || (string.IsNullOrEmpty(item.HSCode) && string.IsNullOrEmpty(item.OtherHSCode))
+                    || string.IsNullOrEmpty(item.CiqCode)
+                    || string.IsNullOrEmpty(item.Spec)
+                    || string.IsNullOrEmpty(item.ManufacturerCountry)
+                    || string.IsNullOrEmpty(item.Brand)
+                    || item.Quantity <= 0
+                    || string.IsNullOrEmpty(item.Package))
                     {
-                        errors.Add("请正确填写商品" + _index + "的生产日期");
+                        errors.Add("商品" + (i + 1) + "个商品资料不完整");
                     }
-                    if (string.IsNullOrEmpty(goods.BatchNo))
+                    if (!item.ManufacturerDate.HasValue && string.IsNullOrEmpty(item.BatchNo))
                     {
-                        errors.Add("请正确填写商品" + _index + "的批次号");
+                        errors.Add("请正确填写商品" + (i + 1) + "的生产日期或批次号");
                     }
-                    _index++;
                 }
             }
 
@@ -165,22 +171,6 @@ namespace Giqci.PublicWeb.Controllers
                 errors.Add("运输总数量必须大于0");
             if (model.TotalWeight <= 0)
                 errors.Add("运输总重量必须大于0");
-
-            for (var i = 0; i < model.Goods.Count; i++)
-            {
-                var item = model.Goods[i];
-                if (string.IsNullOrEmpty(item.DescriptionEn)
-                    || (string.IsNullOrEmpty(item.HSCode) && string.IsNullOrEmpty(item.OtherHSCode))
-                    || string.IsNullOrEmpty(item.CiqCode)
-                    || string.IsNullOrEmpty(item.Spec)
-                    || string.IsNullOrEmpty(item.ManufacturerCountry)
-                    || string.IsNullOrEmpty(item.Brand)
-                    || item.Quantity <= 0
-                    || string.IsNullOrEmpty(item.Package))
-                {
-                    errors.Add("第" + (i + 1) + "个商品资料不完整");
-                }
-            }
             return errors;
         }
     }

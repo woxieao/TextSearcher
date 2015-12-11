@@ -1,12 +1,8 @@
 ﻿using Giqci.Enums;
 using Giqci.Repositories;
 using Ktech.Mvc.ActionResults;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Giqci.PublicWeb.Controllers.Api

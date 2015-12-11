@@ -1,9 +1,6 @@
 ﻿using Giqci.Models;
-using Giqci.PublicWeb.Models.Application;
-using Giqci.PublicWeb.Services;
 using Newtonsoft.Json;
 using System;
-using System.IO;
 using System.Web;
 
 namespace Giqci.PublicWeb.Helpers
@@ -12,30 +9,35 @@ namespace Giqci.PublicWeb.Helpers
     {
         public bool SetApplication(string key, Application application)
         {
-            SetCookies(key, JsonConvert.SerializeObject(application));
+            setCookies(key, JsonConvert.SerializeObject(application), 7);
             return true;
         }
 
         public string GetApplication(string key)
         {
-            return GetCookies(key);
+            return getCookies(key);
         }
 
-        private void SetCookies(string key, string value)
+        private void setCookies(string key, string value, int expiryDays)
         {
-            HttpCookie aCookie = new HttpCookie(key);
-            aCookie.Value = System.Web.HttpContext.Current.Server.UrlEncode(value);
-            aCookie.Expires = DateTime.Now.AddDays(1);
-            HttpContext.Current.Response.Cookies.Add(aCookie);
+            var cookie = new HttpCookie(key, encrypt(value));
+            cookie.Expires = DateTime.Now.AddDays(expiryDays);
+
+            HttpContext.Current.Response.Cookies.Add(cookie);
         }
 
-        private string GetCookies(string key)
+        private string getCookies(string key)
         {
-            string value = "";
-            if (HttpContext.Current.Request.Cookies[key] != null)
-            {
-                value = System.Web.HttpContext.Current.Server.UrlDecode(HttpContext.Current.Request.Cookies[key].Value);
-            }
+            return HttpContext.Current.Request.Cookies[key] != null ? decrypt(HttpContext.Current.Request.Cookies[key].Value) : string.Empty;
+        }
+
+        private string encrypt(string value)
+        {
+            return value;
+        }
+
+        private string decrypt(string value)
+        {
             return value;
         }
     }

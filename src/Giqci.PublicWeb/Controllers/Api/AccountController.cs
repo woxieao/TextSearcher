@@ -83,7 +83,7 @@ namespace Giqci.PublicWeb.Controllers.Api
             string message = "";
             if (_repo.MerchantLogin(input.Email, input.Password))
             {
-                FormsAuthentication.SetAuthCookie(input.Email, true);
+                FormsAuthentication.SetAuthCookie(input.Email, false);
             }
             else
             {
@@ -143,13 +143,16 @@ namespace Giqci.PublicWeb.Controllers.Api
                 message = ex.Message;
             }
             return new KtechJsonResult(HttpStatusCode.OK, new { result = result, message = message });
-
         }
 
         [Route("account/heartbeat")]
         [HttpPost]
         public ActionResult HeartBeat()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                FormsAuthentication.SetAuthCookie(User.Identity.Name, false);
+            }
             return new KtechJsonResult(HttpStatusCode.OK, new { result = true, message = "" });
         }
     }

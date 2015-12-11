@@ -1,11 +1,11 @@
 ﻿using Giqci.PublicWeb.Models.Application;
-using Giqci.PublicWeb.Services;
+using Giqci.Services;
 
 namespace Giqci.PublicWeb.Helpers
 {
     public static class ModelBuilder
     {
-        public static void SetHelperFields(ICacheService cache, ApplicationPageModel model)
+        public static void SetHelperFields(ICachedDictionaryService cache, ApplicationPageModel model)
         {
             model.Countries = cache.GetCountries();
 
