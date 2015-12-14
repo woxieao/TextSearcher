@@ -33,11 +33,13 @@ namespace Giqci.PublicWeb.Helpers
 
         private string encrypt(string value)
         {
+            value = HttpUtility.UrlEncode(value);
             return value;
         }
 
         private string decrypt(string value)
         {
+            value = HttpUtility.UrlDecode(value);
             return value;
         }
     }
