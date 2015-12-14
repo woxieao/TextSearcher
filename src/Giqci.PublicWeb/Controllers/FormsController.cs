@@ -138,6 +138,10 @@ namespace Giqci.PublicWeb.Controllers
                     {
                         errors.Add("商品" + (i + 1) + "个商品资料不完整");
                     }
+                    if (!item.ExpiryDate.HasValue)
+                    {
+                        errors.Add("请填写商品" + (i + 1) + "的过期日期");
+                    }
                     if (!item.ManufacturerDate.HasValue && string.IsNullOrEmpty(item.BatchNo))
                     {
                         errors.Add("请正确填写商品" + (i + 1) + "的生产日期或批次号");
