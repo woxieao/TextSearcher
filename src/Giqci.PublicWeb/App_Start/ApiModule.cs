@@ -17,6 +17,8 @@ namespace Giqci.PublicWeb
             builder.RegisterType<DictionaryRepository>().As<IDictionaryRepository>().InstancePerDependency();
             builder.RegisterType<LoggerRepository>().As<ILoggerRepository>().InstancePerDependency();
             builder.RegisterType<CachedDictionaryService>().As<ICachedDictionaryService>().InstancePerDependency();
+            builder.RegisterType<ApplicationRepository>().As<IApplicationRepository>().InstancePerDependency();
+            builder.RegisterType<CertificateRepository>().As<ICertificateRepository>().InstancePerDependency();
         }
     }
 }

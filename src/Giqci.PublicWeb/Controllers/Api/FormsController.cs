@@ -1,31 +1,34 @@
-﻿using Giqci.Enums;
+﻿using System.Net;
+using System.Web.Mvc;
 using Giqci.Repositories;
 using Ktech.Mvc.ActionResults;
 using System;
-using System.Net;
-using System.Web.Mvc;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using Giqci.Enums;
+using Giqci.PublicWeb.Converters;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {
     [RoutePrefix("api")]
     public class FormsController : Controller
     {
-        private IApplicationRepository _repo;
-        public FormsController(IApplicationRepository repo)
+        private readonly ICertificateRepository _certRepo;
+
+        public FormsController(ICertificateRepository certRepo)
         {
-            _repo = repo;
+            _certRepo = certRepo;
         }
 
 
         [Route("forms/search")]
         [HttpPost]
-        public ActionResult GetAllItem(string applyNo, ApplicationStatus? status, DateTime? start, DateTime? end, int pageIndex = 1, int pageSize = 10)
+        public ActionResult FormsSearch(string certNo)
         {
-            var model = _repo.SearchApplications(applyNo, status, start, end, pageIndex, pageSize);
+            var model = _certRepo.SearchCertificate(certNo);
 
-            var count = model.Count;
-
-            return new KtechJsonResult(HttpStatusCode.OK, new { items = model, count = count });
+            //return new KtechJsonResult(HttpStatusCode.OK, new { items = model });
+            return new KtechJsonResult(HttpStatusCode.OK, new { items = model }, new JsonSerializerSettings { Converters = new List<JsonConverter> { new DescriptionEnumConverter() } });
         }
     }
 }

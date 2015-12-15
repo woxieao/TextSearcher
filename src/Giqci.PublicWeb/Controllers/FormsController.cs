@@ -21,12 +21,14 @@ namespace Giqci.PublicWeb.Controllers
         private readonly IPublicRepository _publicRepo;
         private readonly IMerchantRepository _merchantRepo;
         private readonly ICachedDictionaryService _cache;
+        private readonly IApplicationRepository _appRepo;
 
-        public FormsController(IPublicRepository publicRepo, ICachedDictionaryService cache, IMerchantRepository merchantRepo)
+        public FormsController(IPublicRepository publicRepo, ICachedDictionaryService cache, IMerchantRepository merchantRepo, IApplicationRepository appRepo)
         {
             _publicRepo = publicRepo;
             _merchantRepo = merchantRepo;
             _cache = cache;
+            _appRepo = appRepo;
         }
 
         [Route("forms/app")]
@@ -96,23 +98,9 @@ namespace Giqci.PublicWeb.Controllers
         [Route("forms/search")]
         [HttpGet]
         [Authorize]
-        public ActionResult ApplicationSearch(string applicantCode)
+        public ActionResult ApplicationSearch()
         {
-            var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
-            var model = new ApplicationPageModel
-            {
-                Application = new Application
-                {
-                    ApplicantCode = applicantCode,
-                    Applicant = merchant.Name,
-                    ApplicantAddr = merchant.Address,
-                    ApplicantContact = merchant.Contact,
-                    ApplicantPhone = merchant.Phone,
-                    Goods = new List<GoodsItem> { new GoodsItem { ManufacturerCountry = "036" } }
-                }
-            };
-            ModelBuilder.SetHelperFields(_cache, model);
-            return View(model);
+            return View();
         }
 
         private List<string> validateApplication(Application model)
