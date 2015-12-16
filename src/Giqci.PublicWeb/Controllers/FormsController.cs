@@ -95,14 +95,6 @@ namespace Giqci.PublicWeb.Controllers
             return new KtechJsonResult(HttpStatusCode.OK, new { appNo = appNo, errors = errors });
         }
 
-        [Route("forms/search")]
-        [HttpGet]
-        [Authorize]
-        public ActionResult ApplicationSearch()
-        {
-            return View();
-        }
-
         private List<string> validateApplication(Application model)
         {
             var errors = new List<string>();
@@ -137,7 +129,7 @@ namespace Giqci.PublicWeb.Controllers
                 }
             }
 
-            if (!Enum.IsDefined(typeof(CertType), model.CertType))
+            if (!model.C101 && !model.C102 && !model.C103)
             {
                 errors.Add("请选择证书类型");
             }

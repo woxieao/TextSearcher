@@ -4,7 +4,7 @@
     ViewBag.Title = "证书查询";
 }
 <script src="~/Global/js/commalert.js"></script>
-<div class="panel panel-default" ng-controller="FormsSearchController">
+<div class="panel panel-default" ng-controller="CertificateSearchController">
     <div class="panel-heading">
         <h1 class="panel-title">证书查询</h1>
     </div>
@@ -25,7 +25,7 @@
 </div>
 <script type="text/javascript">
     var app = angular.module('giqci', []);
-    app.controller('FormsSearchController', ['$scope', '$http', function ($scope, $http) {
+    app.controller('CertificateSearchController', ['$scope', '$http', function ($scope, $http) {
         $scope.showtable = false;
 
         $scope.postData = {
@@ -38,7 +38,7 @@
             $scope.list($scope.postData);
         }
         $scope.list = function (postData) {
-            $http.post('/api/forms/search', $scope.postData).then(function (response) {
+            $http.post('/api/certificate/search', $scope.postData).then(function (response) {
                 $scope.paginationConf.totalItems = response.data.count;
                 $scope.persons = response.data.items;
                 $scope.showtable = true;
