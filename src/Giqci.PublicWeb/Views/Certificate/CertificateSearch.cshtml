@@ -39,7 +39,6 @@
         }
         $scope.list = function (postData) {
             $http.post('/api/certificate/search', $scope.postData).then(function (response) {
-                $scope.paginationConf.totalItems = response.data.count;
                 $scope.persons = response.data.items;
                 $scope.showtable = true;
             });

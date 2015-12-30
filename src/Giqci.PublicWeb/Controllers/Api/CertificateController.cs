@@ -21,7 +21,7 @@ namespace Giqci.PublicWeb.Controllers.Api
         }
 
 
-        [Route("forms/search")]
+        [Route("certificate/search")]
         [HttpPost]
         public ActionResult FormsSearch(string certNo)
         {
