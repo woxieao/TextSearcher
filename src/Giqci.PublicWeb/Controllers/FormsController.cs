@@ -31,7 +31,7 @@ namespace Giqci.PublicWeb.Controllers
             _appRepo = appRepo;
         }
 
-        [Route("forms/app")]
+        [Route("forms/app/")]
         [HttpGet]
         [Authorize]
         public ActionResult Application(string applicantCode)
@@ -69,6 +69,46 @@ namespace Giqci.PublicWeb.Controllers
             return View(model);
         }
 
+
+        [Route("forms/app/{id:int}")]
+        [HttpGet]
+        [Authorize]
+        public ActionResult Application(int id)
+        {
+            string applicantCode = null;
+            var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
+            string _appString = "";
+            //get cookies 
+            CookieHelper _cookie = new CookieHelper();
+            _appString = _cookie.GetApplication("application");
+            Application _application = JsonConvert.DeserializeObject<Application>(_appString);
+            var model = new ApplicationPageModel { };
+            if (_application == null)
+            {
+                model = new ApplicationPageModel
+                {
+                    Application = new Application
+                    {
+                        ApplicantCode = applicantCode,
+                        Applicant = merchant.Name,
+                        ApplicantAddr = merchant.Address,
+                        ApplicantContact = merchant.Contact,
+                        ApplicantPhone = merchant.Phone,
+                        Goods = new List<GoodsItem> { new GoodsItem { ManufacturerCountry = "036" } }
+                    }
+                };
+            }
+            else
+            {
+                model = new ApplicationPageModel
+                {
+                    Application = _application
+                };
+            }
+            ModelBuilder.SetHelperFields(_cache, model);
+            return View(model);
+        }
+
         [Route("forms/app")]
         [HttpPost]
         public ActionResult SubmitApplication(Application model)
@@ -93,6 +133,12 @@ namespace Giqci.PublicWeb.Controllers
                 errors = null;
             }
             return new KtechJsonResult(HttpStatusCode.OK, new { appNo = appNo, errors = errors });
+        }
+
+        [Route("forms/list")]
+        public ActionResult UserFormsList()
+        {
+            return View();
         }
 
         private List<string> validateApplication(Application model)
@@ -133,7 +179,8 @@ namespace Giqci.PublicWeb.Controllers
             {
                 errors.Add("请选择证书类型");
             }
-            if (!Enum.IsDefined(typeof(TradeType), model.TradeType))
+            //if (!Enum.IsDefined(typeof(TradeType), model.TradeType))
+            if (model.TradeType == TradeType.C)
             {
                 errors.Add("请选择商业目的");
             }

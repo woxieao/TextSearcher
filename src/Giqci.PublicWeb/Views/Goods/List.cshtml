@@ -1,0 +1,111 @@
+﻿@{
+    ViewBag.Title = "商品列表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-controller="GoodsListController">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">商品列表</h3>
+        </div>
+        <div class="panel-body">
+            <ul class="note">
+                <li><a class="btn btn-primary btn-sm" href="/goods/add">添加商品</a></li>
+            </ul>
+            <form class="form-inline">
+                <div class="form-group">
+                    <input ng-model="applyNo" placeholder="名称" class="form-control" />
+                    <button type="button" class="btn btn-default" ng-click="searchGoods()">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
+                    </button>
+                </div>
+            </form>
+            <table class="table table-striped">
+                <colgroup>
+                    <col>
+                    <col width='140' />
+                    <col width='100' />
+                    <col width='220' />
+                    <col width='120' />
+                    <col width='200' />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>名称(中文)</th>
+                        <th>品牌</th>
+                        <th>HS编码</th>
+                        <th>规格型号</th>
+                        <th>商品货号</th>
+                        <th>生产日期</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="emp in persons">
+                        <td>{{emp.Description}}</td>
+                        <td>{{emp.Brand}}</td>
+                        <td>{{emp.HSCode}}</td>
+                        <td>{{emp.Spec}}</td>
+                        <td>{{emp.Code}}</td>
+                        <td>{{emp.ManufacturerDate}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="page-list">
+                <ul class="pagination" ng-show="paginationConf.totalItems > 0">
+                    <li ng-class="{disabled: postData.pageIndex == 1}" ng-click="indexPage()"><span>首页</span></li>
+                    <li ng-class="{disabled: postData.pageIndex == 1}" ng-click="prevPage()"><span>上一页</span></li>
+                    <li class="disabled"><span>第{{postData.pageIndex}}页</span></li>
+                    <li ng-class="{disabled: paginationConf.totalItems < postData.pageSize}" ng-click="nextPage()"><span>下一页</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var app = angular.module('giqci', []);
+    app.controller('GoodsListController', ['$scope', '$http', function ($scope, $http) {
+        $scope.paginationConf = {
+            totalItems: 0
+        };
+        $scope.postData = {
+            applyNo: $scope.applyNo,
+            pageIndex: 1,
+            pageSize: 10
+        }
+
+        $scope.prevPage = function () {
+            if ($scope.postData.pageIndex > 1) {
+                $scope.postData.pageIndex -= 1;
+                $scope.list($scope.postData);
+            }
+        };
+        $scope.nextPage = function () {
+            if ($scope.paginationConf.totalItems == $scope.postData.pageSize) {
+                $scope.postData.pageIndex += 1;
+                $scope.list($scope.postData);
+            }
+        };
+        $scope.indexPage = function () {
+            if ($scope.postData.pageIndex > 1) {
+                $scope.postData.pageIndex = 1;
+                $scope.list($scope.postData);
+            }
+        }
+        $scope.searchGoods = function () {
+            $scope.postData = {
+                applyNo: $scope.applyNo || "",
+                pageIndex: 1,
+                pageSize: $scope.postData.pageSize
+            };
+            $scope.list($scope.postData);
+        }
+        $scope.list = function (postData) {
+            $http.post('/api/goods/list', postData).then(function (response) {
+                $scope.paginationConf.totalItems = response.data.count;
+                $scope.persons = response.data.items;
+            });
+        };
+        $scope.list($scope.postData);
+    }]);
+</script>

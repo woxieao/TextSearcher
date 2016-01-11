@@ -56,12 +56,12 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Giqci.Contract, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Giqci.Contract.1.1.1\lib\net45\Giqci.Contract.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Giqci.Repository, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Giqci.Repository.1.1.1\lib\net45\Giqci.Repository.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Ktech.Contract, Version=1.0.13.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Ktech.Contract.1.0.13\lib\net45\Ktech.Contract.dll</HintPath>
@@ -80,8 +80,8 @@
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.8.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -143,8 +143,11 @@
     <Compile Include="Controllers\Api\AccountController.cs" />
     <Compile Include="Controllers\Api\CertificateController.cs" />
     <Compile Include="Controllers\Api\FeedbackController.cs" />
+    <Compile Include="Controllers\Api\FormsController.cs" />
+    <Compile Include="Controllers\Api\GoodsController.cs" />
     <Compile Include="Controllers\CertificateController.cs" />
     <Compile Include="Controllers\FormsController.cs" />
+    <Compile Include="Controllers\GoodsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Converters\DescriptionEnumConverter.cs" />
     <Compile Include="Extensions\HtmlExtensions.cs" />
@@ -162,6 +165,7 @@
     <Compile Include="Models\Application\ApplicationPageModel.cs" />
     <Compile Include="Models\Config.cs" />
     <Compile Include="Models\EmailTemplate.cs" />
+    <Compile Include="Models\Goods\GoodsItemPageModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +229,9 @@
     <Content Include="Views\Account\Forgot.cshtml" />
     <Content Include="Views\Account\ActiveMerchant.cshtml" />
     <Content Include="Views\Certificate\CertificateSearch.cshtml" />
+    <Content Include="Views\Forms\UserFormsList.cshtml" />
+    <Content Include="Views\Goods\List.cshtml" />
+    <Content Include="Views\Goods\GoodsAdd.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

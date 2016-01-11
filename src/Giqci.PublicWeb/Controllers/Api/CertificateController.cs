@@ -11,11 +11,11 @@ using Giqci.PublicWeb.Converters;
 namespace Giqci.PublicWeb.Controllers.Api
 {
     [RoutePrefix("api")]
-    public class FormsController : Controller
+    public class CertificateController : Controller
     {
         private readonly ICertificateRepository _certRepo;
 
-        public FormsController(ICertificateRepository certRepo)
+        public CertificateController(ICertificateRepository certRepo)
         {
             _certRepo = certRepo;
         }
