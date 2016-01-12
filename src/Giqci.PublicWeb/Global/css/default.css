@@ -105,6 +105,9 @@ body {
 a:hover {
   text-decoration: none; }
 
+ul,li,ol{
+    list-style:none;
+}
 /*
 * Header for desktop 
 */
@@ -698,4 +701,11 @@ a:hover {
     height: 300px;
     font-size: 12px;
     background: none #fff;
+}
+.note {
+    background: #fafafa;
+    border-left: 3px solid #ddd;
+    border-right: 0 solid #ddd;
+    margin-bottom: 20px;
+    padding: 20px;
 }

@@ -1,0 +1,127 @@
+﻿@{
+    ViewBag.Title = "申请列表";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using Giqci.Enums
+@using Ktech.Extensions
+@using Newtonsoft.Json
+@{
+    var statusValues = Enum.GetValues(typeof(ApplicationStatus)).Cast<ApplicationStatus>().Select(i => new { value = i.ToString(), name = i.ToDescription() }).ToArray();
+}
+<div ng-controller="FormsListController">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">申请列表</h3>
+        </div>
+        <div class="panel-body">
+            <form class="form-inline">
+                <div class="form-group">
+                    <input ng-model="applyNo" placeholder="申请号" class="form-control" />
+                    状态: <select ng-model="status" ng-options="s.value as s.name for s in statusValues" class="form-control">
+                        <option value="">-- 全部 --</option>
+                    </select>
+                    From: <input ng-model="start" type="date" class="form-control">
+                    To: <input ng-model="end" type="date" class="form-control">
+                    <button type="button" class="btn btn-default" ng-click="searchApplication()">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
+                    </button>
+                </div>
+            </form>
+            <table class="table table-striped">
+                <colgroup>
+                    <col width='100' />
+                    <col width='240' />
+                    <col width='100' />
+                    <col width='220' />
+                    <col width='120' />
+                    <col>
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>申请号</th>
+                        <th>证书类别</th>
+                        <th>商业目的</th>
+                        <th>创建日期</th>
+                        <th>当前状态</th>
+                        <th>申请人</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="emp in persons">
+                        <td><a href="/forms/app/{{emp.Id}}" ng-if="emp.Status=='新申请'">{{emp.Key}}</a><span ng-show="emp.Status!='新申请'">{{emp.Key}}</span></td>
+                        <td><span ng-show="emp.C101">溯源证书&nbsp;</span><span ng-show="emp.C102">品质证书&nbsp;</span><span ng-show="emp.C103">标签证书&nbsp;</span></td>
+                        <td>{{emp.TradeType}}</td>
+                        <td>{{emp.CreateDate}}</td>
+                        <td>{{emp.Status}}</td>
+                        <td>{{emp.Applicant}}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="page-list">
+                <ul class="pagination" ng-show="paginationConf.totalItems > 0">
+                    <li ng-class="{disabled: postData.pageIndex == 1}" ng-click="indexPage()"><span>首页</span></li>
+                    <li ng-class="{disabled: postData.pageIndex == 1}" ng-click="prevPage()"><span>上一页</span></li>
+                    <li class="disabled"><span>第{{postData.pageIndex}}页</span></li>
+                    <li ng-class="{disabled: paginationConf.totalItems < postData.pageSize}" ng-click="nextPage()"><span>下一页</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var app = angular.module('giqci', []);
+    app.controller('FormsListController', ['$scope','$http', function ($scope,$http) {
+        $scope.paginationConf = {
+            totalItems :0
+        };
+        $scope.postData = {
+            applyNo: $scope.applyNo,
+            status: $scope.status,
+            start: $scope.start,
+            end: $scope.end,
+            pageIndex: 1,
+            pageSize: 10
+        }
+
+        $scope.statusValues = @Html.Raw(JsonConvert.SerializeObject(statusValues));
+
+        $scope.prevPage = function () {
+            if ($scope.postData.pageIndex > 1) {
+                $scope.postData.pageIndex -= 1;
+                $scope.list($scope.postData);
+            }
+        };
+        $scope.nextPage = function () {
+            if ($scope.paginationConf.totalItems == $scope.postData.pageSize) {
+                $scope.postData.pageIndex += 1;
+                $scope.list($scope.postData);
+            }
+        };
+        $scope.indexPage = function(){
+            if ($scope.postData.pageIndex > 1) {
+                $scope.postData.pageIndex = 1;
+                $scope.list($scope.postData);
+            }
+        }
+        $scope.searchApplication = function () {
+            $scope.postData = {
+                applyNo: $scope.applyNo || "",
+                status: $scope.status || "",
+                start: $scope.start || "",
+                end: $scope.end || "",
+                pageIndex: 1,
+                pageSize: $scope.postData.pageSize
+            };
+            $scope.list($scope.postData);
+        }
+        $scope.list = function(postData){
+            $http.post('/api/forms/list', postData).then(function (response) {
+                $scope.paginationConf.totalItems = response.data.count;
+                $scope.persons = response.data.items;
+            });
+        };
+        $scope.list($scope.postData);
+    }]);
+</script>
+

@@ -34,8 +34,10 @@
                 $scope.errors = [];
                 $scope.acceptshow  = true;
                 $scope.appshow = false;
+                $scope.model.Application.ShippingMethod = 'A';
+
                 $scope.additem = function() {
-                    $scope.model.Application.Goods.push({ ManufacturerCountry: "036", ManufacturerDate: null, ExpiryDate: null });
+                    $scope.model.Application.Goods.push({ ManufacturerCountry: "036", ManufacturerDate: null, ExpiryDate: null, C102: null, C102Comment: null });
                     $log.log($scope.model);
                 };
                 $scope.removeitem = function(index) {
@@ -46,12 +48,27 @@
                     $scope.acceptshow = false;
                     $scope.appshow = true;
                 };
+
+                $scope.check_type_c102 = function(){
+                    if($scope.model.Application.C102){
+                        $scope.show_c_102 = true;
+                    }else{
+                        $scope.show_c_102 = false;
+                    }
+                };
+                $scope.check_type_c102();
+
                 $scope.submit = function() {
                     for (var i = 0; i < $scope.model.Application.Goods.length; i++) {
                         $scope.model.Application.Goods[i].Index = i;
                         $scope.model.Application.Goods[i].ManufacturerDate = getDate($scope.model.Application.Goods[i].ManufacturerDate);
                         $scope.model.Application.Goods[i].ExpiryDate = getDate($scope.model.Application.Goods[i].ExpiryDate);
+                        if(!$scope.show_c_102){
+                            $scope.model.Application.Goods[i].C102 = false;
+                            $scope.model.Application.Goods[i].C102Comment = "";
+                        }
                     }
+                    console.log($scope.model.Application);
                     $http.post('/forms/app', $scope.model.Application)
                         .then(function(response) {
                             $log.log(response);
@@ -73,7 +90,7 @@
                 $scope.check_O = function(){
                     $scope.unit = "Containers";
                 };
-                
+
                 $scope.updateClock = function(){
                     $http.post('/api/account/heartbeat').then(function(){});
                 };
@@ -208,11 +225,10 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">证书类别 *</label>
                     <div class="col-sm-10">
-                        <div class="radio">
-                            <label><input type="radio" name="Application.CertType" ng-model="model.Application.CertType" value="C101" /> 溯源证书</label>
-                            <label><input type="radio" name="Application.CertType" ng-model="model.Application.CertType" value="C102" /> 品质证书</label>
-                            <label><input type="radio" name="Application.CertType" ng-model="model.Application.CertType" value="C103" /> 标签证书</label>
-                            <label><input type="radio" name="Application.CertType" ng-model="model.Application.CertType" value="C104" /> 个人代购(私人)物品报告</label>
+                        <div class="checkbox">
+                            <label><input type="checkbox" name="Application.C101" ng-model="model.Application.C101" /> 溯源证书</label>
+                            <label><input type="checkbox" name="Application.C102" ng-model="model.Application.C102" ng-click="check_type_c102()" /> 品质证书</label>
+                            <label><input type="checkbox" name="Application.C103[]" ng-model="model.Application.C103" /> 标签证书</label>
                         </div>
                     </div>
                 </div>
@@ -221,8 +237,6 @@
                     <div class="col-sm-10">
                         <div class="radio">
                             <label><input type="radio" name="Application.TradeType" ng-model="model.Application.TradeType" value="C" /> 电商贸易</label>
-                            <label><input type="radio" name="Application.TradeType" ng-model="model.Application.TradeType" value="P" /> 私人物品</label>
-                            <label><input type="radio" name="Application.TradeType" ng-model="model.Application.TradeType" value="B" /> 个人代购</label>
                         </div>
                     </div>
                 </div>
@@ -339,6 +353,12 @@
                                             </div>
                                         </div>
                                     </td>
+                                </tr>
+                                <tr ng-show="show_c_102">
+                                    <th>质量检验</th>
+                                    <td><div class="checkbox"><label><input type="checkbox" ng-model="item.C102" />是否检查</label></div></td>
+                                    <th>检验内容 *</th>
+                                    <td><input type="text" ng-model="item.C102Comment" class="form-control" /></td>
                                 </tr>
                             </table>
                         </div>

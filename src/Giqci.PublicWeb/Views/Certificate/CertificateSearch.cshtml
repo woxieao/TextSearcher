@@ -1,0 +1,47 @@
+﻿@using Newtonsoft.Json
+
+@{
+    ViewBag.Title = "证书查询";
+}
+<script src="~/Global/js/commalert.js"></script>
+<div class="panel panel-default" ng-controller="CertificateSearchController">
+    <div class="panel-heading">
+        <h1 class="panel-title">证书查询</h1>
+    </div>
+    <div class="panel-body">
+        <div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
+            <button aria-label="Close" data-dismiss="alert" ng-click="alert.close()" class="close" type="button"><span aria-hidden="true">×</span></button>
+            <span ng-bind="alert.msg"></span>
+        </div>
+        <form class="form-inline">
+            <div class="form-group">
+                <input ng-model="certNo" placeholder="证书编号" class="form-control" />
+                <button type="button" class="btn btn-default" ng-click="searchApplication()">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    var app = angular.module('giqci', []);
+    app.controller('CertificateSearchController', ['$scope', '$http', function ($scope, $http) {
+        $scope.showtable = false;
+
+        $scope.postData = {
+            certNo: $scope.certNo
+        }
+        $scope.searchApplication = function () {
+            $scope.postData = {
+                certNo: $scope.certNo || "",
+            };
+            $scope.list($scope.postData);
+        }
+        $scope.list = function (postData) {
+            $http.post('/api/certificate/search', $scope.postData).then(function (response) {
+                $scope.persons = response.data.items;
+                $scope.showtable = true;
+            });
+        };
+    }]);
+</script>
