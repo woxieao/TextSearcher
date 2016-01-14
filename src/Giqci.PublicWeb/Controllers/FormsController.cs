@@ -12,6 +12,7 @@ using Ktech.Mvc.ActionResults;
 using Application = Giqci.Models.Application;
 using GoodsItem = Giqci.Models.GoodsItem;
 using Newtonsoft.Json;
+using Giqci.PublicWeb.Models.Goods;
 
 namespace Giqci.PublicWeb.Controllers
 {
@@ -38,6 +39,9 @@ namespace Giqci.PublicWeb.Controllers
         {
             var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
             string _appString = "";
+
+            ViewBag.id = 0;
+
             //get cookies 
             CookieHelper _cookie = new CookieHelper();
             _appString = _cookie.GetApplication("application");
@@ -75,43 +79,91 @@ namespace Giqci.PublicWeb.Controllers
         [Authorize]
         public ActionResult Application(int id)
         {
-            string applicantCode = null;
             var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
-            string _appString = "";
-            //get cookies 
-            CookieHelper _cookie = new CookieHelper();
-            _appString = _cookie.GetApplication("application");
-            Application _application = JsonConvert.DeserializeObject<Application>(_appString);
+            Giqci.Entities.Core.Application _application = _appRepo.GetApplication(id);
             var model = new ApplicationPageModel { };
-            if (_application == null)
+
+            ViewBag.id = id;
+
+            var goods = new List<GoodsItem>();
+
+            List<Giqci.Entities.Core.GoodsItem> _goods = _appRepo.SelectGoodsItems(_application.Id);
+
+            for (int i = 0; i < _goods.Count; i++)
             {
-                model = new ApplicationPageModel
-                {
-                    Application = new Application
-                    {
-                        ApplicantCode = applicantCode,
-                        Applicant = merchant.Name,
-                        ApplicantAddr = merchant.Address,
-                        ApplicantContact = merchant.Contact,
-                        ApplicantPhone = merchant.Phone,
-                        Goods = new List<GoodsItem> { new GoodsItem { ManufacturerCountry = "036" } }
-                    }
-                };
+                GoodsItem gi = new GoodsItem();
+                gi.BatchNo = _goods[i].BatchNo;
+                gi.Brand = _goods[i].Brand;
+                gi.C102 = _goods[i].C102;
+                gi.C102Comment = _goods[i].C102Comment;
+                gi.CiqCode = _goods[i].CiqCode;
+                gi.Code = _goods[i].Code;
+                gi.Description = _goods[i].Description;
+                gi.DescriptionEn = _goods[i].DescriptionEn;
+                gi.ExpiryDate = _goods[i].ExpiryDate;
+                gi.HSCode = _goods[i].HSCode;
+                gi.Manufacturer = _goods[i].Manufacturer;
+                gi.ManufacturerCountry = _goods[i].ManufacturerCountry;
+                //gi.ManufacturerCountryName = _goods[i].ManufacturerCountry;
+                gi.ManufacturerDate = _goods[i].ManufacturerDate;
+                gi.OtherHSCode = _goods[i].OtherHSCode;
+                gi.Package = _goods[i].Package;
+                gi.Quantity = _goods[i].Quantity;
+                gi.Spec = _goods[i].Spec;
+                goods.Add(gi);
             }
-            else
+
+            model = new ApplicationPageModel
             {
-                model = new ApplicationPageModel
+                Application = new Application
                 {
-                    Application = _application
-                };
-            }
+                    ApplicantCode = _application.ApplicantCode,
+                    Applicant = merchant.Name,
+                    ApplicantAddr = merchant.Address,
+                    ApplicantContact = merchant.Contact,
+                    ApplicantPhone = merchant.Phone,
+                    Billno = _application.BillNo,
+                    C101 = _application.C101,
+                    C102 = _application.C102,
+                    C103 = _application.C103,
+                    DestPort = _application.DestPort,
+                    Exporter = _application.Exporter,
+                    ExporterAddr = _application.ExporterAddr,
+                    ExporterContact = _application.ExporterContact,
+                    ExporterPhone = _application.ExporterPhone,
+                    ImBroker = _application.ImBroker,
+                    ImBrokerAddr = _application.ImBrokerAddr,
+                    ImBrokerContact = _application.ImBrokerContact,
+                    ImBrokerPhone = _application.ImBrokerPhone,
+                    Importer = _application.Importer,
+                    ImporterAddr = _application.ImporterAddr,
+                    ImporterContact = _application.ImporterContact,
+                    ImporterPhone = _application.ImporterPhone,
+                    InspectionAddr = _application.InspectionAddr,
+                    InspectionDate = _application.InspectionDate,
+                    LoadingPort = _application.LoadingPort,
+                    OtherBillno = _application.OtherBillNo,
+                    OtherDestPort = _application.OtherDestPort,
+                    OtherLoadingPort = _application.OtherLoadingPort,
+                    PurchaseContract = _application.PurchaseContract,
+                    ShippingDate = _application.ShippingDate,
+                    ShippingMethod = _application.ShippingMethod,
+                    TotalUnits = _application.TotalUnits,
+                    TotalWeight = _application.TotalWeight,
+                    TradeType = _application.TradeType,
+                    Vesselcn = _application.Vesselcn,
+                    Voyage = _application.Voyage,
+                    Goods = goods
+                }
+            };
+
             ModelBuilder.SetHelperFields(_cache, model);
             return View(model);
         }
 
         [Route("forms/app")]
         [HttpPost]
-        public ActionResult SubmitApplication(Application model)
+        public ActionResult SubmitApplication(Application model, int id = 0)
         {
             var errors = validateApplication(model);
             string appNo = null;
@@ -129,13 +181,86 @@ namespace Giqci.PublicWeb.Controllers
             if (!errors.Any())
             {
                 // submit
-                appNo = _publicRepo.CreateApplication(User.Identity.Name, model);
+                if (id > 0)
+                {
+                    Giqci.Entities.Core.Application _application = new Entities.Core.Application()
+                    {
+                        ApplicantCode = model.ApplicantCode,
+                        Applicant = model.Applicant,
+                        ApplicantAddr = model.ApplicantAddr,
+                        ApplicantContact = model.ApplicantContact,
+                        ApplicantPhone = model.ApplicantPhone,
+                        BillNo = model.Billno,
+                        C101 = model.C101,
+                        C102 = model.C102,
+                        C103 = model.C103,
+                        DestPort = model.DestPort,
+                        Exporter = model.Exporter,
+                        ExporterAddr = model.ExporterAddr,
+                        ExporterContact = model.ExporterContact,
+                        ExporterPhone = model.ExporterPhone,
+                        ImBroker = model.ImBroker,
+                        ImBrokerAddr = model.ImBrokerAddr,
+                        ImBrokerContact = model.ImBrokerContact,
+                        ImBrokerPhone = model.ImBrokerPhone,
+                        Importer = model.Importer,
+                        ImporterAddr = model.ImporterAddr,
+                        ImporterContact = model.ImporterContact,
+                        ImporterPhone = model.ImporterPhone,
+                        InspectionAddr = model.InspectionAddr,
+                        InspectionDate = model.InspectionDate,
+                        LoadingPort = model.LoadingPort,
+                        OtherBillNo = model.OtherBillno,
+                        OtherDestPort = model.OtherDestPort,
+                        OtherLoadingPort = model.OtherLoadingPort,
+                        PurchaseContract = model.PurchaseContract,
+                        ShippingDate = model.ShippingDate,
+                        ShippingMethod = model.ShippingMethod,
+                        TotalUnits = model.TotalUnits,
+                        TotalWeight = model.TotalWeight,
+                        TradeType = model.TradeType,
+                        Vesselcn = model.Vesselcn,
+                        Voyage = model.Voyage,
+
+                    };
+                    List<Giqci.Entities.Core.GoodsItem> _goods = new List<Entities.Core.GoodsItem>();
+                    for (int i = 0; i < model.Goods.Count; i++)
+                    {
+                        Giqci.Entities.Core.GoodsItem gi = new Entities.Core.GoodsItem();
+                        gi.BatchNo = model.Goods[i].BatchNo;
+                        gi.Brand = model.Goods[i].Brand;
+                        gi.C102 = model.Goods[i].C102;
+                        gi.C102Comment = model.Goods[i].C102Comment;
+                        gi.CiqCode = model.Goods[i].CiqCode;
+                        gi.Code = model.Goods[i].Code;
+                        gi.Description = model.Goods[i].Description;
+                        gi.DescriptionEn = model.Goods[i].DescriptionEn;
+                        gi.ExpiryDate = model.Goods[i].ExpiryDate;
+                        gi.HSCode = model.Goods[i].HSCode;
+                        gi.Manufacturer = model.Goods[i].Manufacturer;
+                        gi.ManufacturerCountry = model.Goods[i].ManufacturerCountry;
+                        //gi.ManufacturerCountryName = model.Goods[i].ManufacturerCountry;
+                        gi.ManufacturerDate = model.Goods[i].ManufacturerDate;
+                        gi.OtherHSCode = model.Goods[i].OtherHSCode;
+                        gi.Package = model.Goods[i].Package;
+                        gi.Quantity = model.Goods[i].Quantity;
+                        gi.Spec = model.Goods[i].Spec;
+                        _goods.Add(gi);
+                    }
+                    _appRepo.UpdateApplication(id, _application, _goods);
+                }
+                else
+                {
+                    appNo = _publicRepo.CreateApplication(User.Identity.Name, model);
+                }
                 errors = null;
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { appNo = appNo, errors = errors });
+            return new KtechJsonResult(HttpStatusCode.OK, new { appNo = appNo, id = id, errors = errors });
         }
 
         [Route("forms/list")]
+        [HttpGet]
+        [Authorize]
         public ActionResult UserFormsList()
         {
             return View();
@@ -162,7 +287,7 @@ namespace Giqci.PublicWeb.Controllers
                     || item.Quantity <= 0
                     || string.IsNullOrEmpty(item.Package))
                     {
-                        errors.Add("商品" + (i + 1) + "个商品资料不完整");
+                        errors.Add("商品" + (i + 1) + "资料不完整");
                     }
                     if (!item.ExpiryDate.HasValue)
                     {
@@ -179,8 +304,8 @@ namespace Giqci.PublicWeb.Controllers
             {
                 errors.Add("请选择证书类型");
             }
-            //if (!Enum.IsDefined(typeof(TradeType), model.TradeType))
-            if (model.TradeType == TradeType.C)
+            //if (model.TradeType != TradeType.C)
+            if (!Enum.IsDefined(typeof(TradeType), TradeType.C))
             {
                 errors.Add("请选择商业目的");
             }

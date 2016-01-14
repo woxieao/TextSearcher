@@ -24,9 +24,13 @@ namespace Giqci.PublicWeb.Controllers.Api
 
         [Route("forms/list")]
         [HttpPost]
-        public ActionResult GetAllItem(string metchantid, ApplicationStatus? status, DateTime? start, DateTime? end, int pageIndex = 1, int pageSize = 10)
+        public ActionResult GetAllItem(string applyNo, ApplicationStatus? status, DateTime? start, DateTime? end, int pageIndex = 1, int pageSize = 10)
         {
-            var model = _repo.SearchApplications(metchantid, null, status, start, end, pageIndex, pageSize);
+            if (string.IsNullOrEmpty(User.Identity.Name))
+            {
+                return new KtechJsonResult(HttpStatusCode.OK, new { count = 0 });
+            }
+            var model = _repo.SearchApplications(applyNo, User.Identity.Name, status, start, end, pageIndex, pageSize);
 
             var count = model.Count;
 

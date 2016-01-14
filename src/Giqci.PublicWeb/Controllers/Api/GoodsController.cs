@@ -13,20 +13,20 @@ namespace Giqci.PublicWeb.Controllers.Api
     [RoutePrefix("api")]
     public class GoodsController : Controller
     {
-        private readonly IApplicationRepository _repo;
+        private readonly IGoodsRepository _repo;
 
-        public GoodsController(IApplicationRepository repo)
+        public GoodsController(IGoodsRepository repo)
         {
             _repo = repo;
         }
 
         [Route("goods/list")]
         [HttpPost]
-        public ActionResult GoodsList(string applyNo, int pageIndex = 1, int pageSize = 10)
+        public ActionResult GoodsList(string keywords, int pageIndex = 1, int pageSize = 10)
         {
-            var model = "";
+            var model = _repo.SearchGoods(User.Identity.Name, keywords, pageIndex, pageSize);
 
-            var count = 0;
+            var count = model.Count;
 
             return new KtechJsonResult(HttpStatusCode.OK, new { items = model, count = count });
         }
