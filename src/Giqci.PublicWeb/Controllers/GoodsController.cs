@@ -11,17 +11,20 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using GoodsViewModel = Giqci.Models.GoodsViewModel;
 
 namespace Giqci.PublicWeb.Controllers
 {
     public class GoodsController : Controller
     {
         private readonly IMerchantRepository _merchantRepo;
+        private readonly IGoodsRepository _goodsRepo;
         private readonly ICachedDictionaryService _cache;
 
-        public GoodsController(IMerchantRepository merchantRepo, ICachedDictionaryService cache)
+        public GoodsController(IMerchantRepository merchantRepo, IGoodsRepository goodsRepo, ICachedDictionaryService cache)
         {
             _merchantRepo = merchantRepo;
+            _goodsRepo = goodsRepo;
             _cache = cache;
         }
 
@@ -54,7 +57,7 @@ namespace Giqci.PublicWeb.Controllers
 
         [Route("goods/add")]
         [HttpPost]
-        public ActionResult SubmitApplication(GoodsItem model)
+        public ActionResult SubmitApplication(GoodsViewModel model)
         {
             var errors = ValidateGoods(model);
             bool result = false;
@@ -69,6 +72,8 @@ namespace Giqci.PublicWeb.Controllers
             if (!errors.Any())
             {
                 // submit
+                string message = null;
+                _goodsRepo.InsertGoods(User.Identity.Name, model, out message);
                 result = true;
                 errors = null;
             }
@@ -76,7 +81,7 @@ namespace Giqci.PublicWeb.Controllers
         }
 
 
-        private List<string> ValidateGoods(GoodsItem model)
+        private List<string> ValidateGoods(GoodsViewModel model)
         {
             var errors = new List<string>();
             if (string.IsNullOrEmpty(model.DescriptionEn))

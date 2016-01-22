@@ -26,14 +26,20 @@
         app.controller("GlobalController", [
             '$http', '$scope', '$log', '$location', '$anchorScroll','$timeout', function($http, $scope, $log, $location, $anchorScroll, $timeout) {
                 $scope.model = @Html.Raw(JsonConvert.SerializeObject(Model));
+                $scope.model.Application.Id = @ViewBag.id;
                 $scope.model.Application.InspectionDate = getDate($scope.model.Application.InspectionDate);
                 for (var i = 0; i < $scope.model.Application.Goods.length; i++) {
                     $scope.model.Application.Goods[i].ManufacturerDate = getDate($scope.model.Application.Goods[i].ManufacturerDate);
                     $scope.model.Application.Goods[i].ExpiryDate = getDate($scope.model.Application.Goods[i].ExpiryDate);
                 }
                 $scope.errors = [];
-                $scope.acceptshow  = true;
-                $scope.appshow = false;
+                if($scope.model.Application.Id > 0){
+                    $scope.acceptshow  = false;
+                    $scope.appshow = true;
+                }else{
+                    $scope.acceptshow  = true;
+                    $scope.appshow = false;
+                }
                 $scope.model.Application.ShippingMethod = 'A';
 
                 $scope.additem = function() {
@@ -69,11 +75,13 @@
                         }
                     }
                     console.log($scope.model.Application);
-                    $http.post('/forms/app', $scope.model.Application)
+                    $http.post('/forms/app', $scope.model.Application,$scope.model.Application.Id)
                         .then(function(response) {
                             $log.log(response);
-                            if (response.data.appNo) {
-                                $scope.appNo = response.data.appNo;
+                            if (response.data.appNo && response.data.id ==0) {
+                                $scope.resultMessage = "证书申请成功！申请编号为"+response.data.appNo;
+                            }else if(!response.data.appNo && response.data.id > 0){
+                                $scope.resultMessage = "数据更新成功";
                             } else {
                                 $scope.errors = response.data.errors;
                                 $location.hash("h1");
@@ -212,8 +220,8 @@
         </form>
     </div>
     <div ng-show="appshow">
-        <h1 ng-show="appNo">证书申请成功！申请编号为{{appNo}}</h1>
-        <div ng-show="!appNo">
+        <h1 ng-show="resultMessage">{{resultMessage}}</h1>
+        <div ng-show="!resultMessage">
             <h1 id="h1">证书申请表格</h1>
             <div class="has-error" ng-show="errors.length > 0">
                 <ul class="help-block">
