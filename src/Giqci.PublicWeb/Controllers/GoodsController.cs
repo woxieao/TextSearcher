@@ -116,6 +116,10 @@ namespace Giqci.PublicWeb.Controllers
             {
                 errors.Add("请填写商品数量/包装");
             }
+            if (model.C102 && string.IsNullOrEmpty(model.C102Comment))
+            {
+                errors.Add("请填写检验内容");
+            }
             return errors;
         }
     }
