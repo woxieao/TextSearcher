@@ -58,6 +58,7 @@ namespace Giqci.PublicWeb.Controllers
                         ApplicantAddr = merchant.Address,
                         ApplicantContact = merchant.Contact,
                         ApplicantPhone = merchant.Phone,
+                        InspectionDate = DateTime.Now.AddDays(-1),
                         Goods = new List<GoodsItem> { new GoodsItem { ManufacturerCountry = "036" } }
                     }
                 };
