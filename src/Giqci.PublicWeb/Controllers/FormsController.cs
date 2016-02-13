@@ -166,6 +166,8 @@ namespace Giqci.PublicWeb.Controllers
         [HttpPost]
         public ActionResult SubmitApplication(Application model, int id = 0)
         {
+            // trade type must be 电商贸易
+            model.TradeType = TradeType.C;
             var errors = validateApplication(model);
             string appNo = null;
             //set cookies 
