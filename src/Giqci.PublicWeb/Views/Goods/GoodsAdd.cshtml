@@ -4,10 +4,29 @@
 }
 @using Newtonsoft.Json
 @model Giqci.PublicWeb.Models.Goods.GoodsItemPageModel
+
+<link href="~/Global/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+<script src="~/Global/js/bootstrap-datetimepicker.min.js"></script>
+<script src="~/Global/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
 <script type="text/javascript">
     var app = angular.module("giqci", []);
     app.controller("GoodsAddController", ['$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', function ($http, $scope, $log, $location, $anchorScroll, $timeout) {
         $scope.model = @Html.Raw(JsonConvert.SerializeObject(Model));
+        $(function(){
+            $('.datetimepicker').datetimepicker({
+                language:  'zh-CN',
+                format: 'yyyy/mm/dd',
+                autoclose: true,
+                minView: "month",
+                todayBtn: true,
+            }).on("hide",function(){
+                var $this = $(this);
+                var _this = this;
+                $scope.$apply(function(){
+                    $scope[$this.attr('ng-model')] = _this.value;
+                });
+            });
+        });
         $scope.submit = function() {
             console.log($scope.model.goods);
             $http.post('/goods/add', $scope.model.goods).then(function(response) {
@@ -96,13 +115,13 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">生产日期</label>
                         <div class="col-sm-10">
-                            <input type="date" ng-model="model.goods.ManufacturerDate" class="form-control" />
+                            <input type="text" ng-model="model.goods.ManufacturerDate" class="form-control datetimepicker" style="ime-mode:disabled" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">保质期 *</label>
                         <div class="col-sm-10">
-                            <input type="date" ng-model="model.goods.ExpiryDate" class="form-control" />
+                            <input type="text" ng-model="model.goods.ExpiryDate" class="form-control datetimepicker" style="ime-mode:disabled;" />
                         </div>
                     </div>
                     <div class="form-group">

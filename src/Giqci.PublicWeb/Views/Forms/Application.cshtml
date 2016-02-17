@@ -7,7 +7,7 @@
 {
     <style type="text/css">
         input[type="date"] {
-            width: 180px;
+            /*width: 180px;*/
         }
 
         .goodsItems th {
@@ -18,19 +18,26 @@
             width: 35%;
         }
     </style>
+    <link href="~/Global/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <script src="~/Global/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Global/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
     <script type="text/javascript">
         var app = angular.module("giqci", []);
         function getDate(str) {
             return str ? new Date(str) : null;
         }
+
         app.controller("GlobalController", [
-            '$http', '$scope', '$log', '$location', '$anchorScroll','$timeout', function($http, $scope, $log, $location, $anchorScroll, $timeout) {
+            '$http', '$scope', '$log', '$location', '$anchorScroll','$timeout','$filter', function($http, $scope, $log, $location, $anchorScroll, $timeout, $filter) {
                 $scope.model = @Html.Raw(JsonConvert.SerializeObject(Model));
                 $scope.model.Application.Id = @ViewBag.id;
-                $scope.model.Application.InspectionDate = getDate($scope.model.Application.InspectionDate);
+                //$scope.model.Application.InspectionDate = getDate($scope.model.Application.InspectionDate);
+                $scope.model.Application.InspectionDate = $filter('date')($scope.model.Application.InspectionDate,'yyyy/MM/dd');
                 for (var i = 0; i < $scope.model.Application.Goods.length; i++) {
-                    $scope.model.Application.Goods[i].ManufacturerDate = getDate($scope.model.Application.Goods[i].ManufacturerDate);
-                    $scope.model.Application.Goods[i].ExpiryDate = getDate($scope.model.Application.Goods[i].ExpiryDate);
+                    //$scope.model.Application.Goods[i].ManufacturerDate = getDate($scope.model.Application.Goods[i].ManufacturerDate);
+                    //$scope.model.Application.Goods[i].ExpiryDate = getDate($scope.model.Application.Goods[i].ExpiryDate);
+                    $scope.model.Application.Goods[i].ManufacturerDate = $filter('date')($scope.model.Application.Goods[i].ManufacturerDate,'yyyy/MM/dd');
+                    $scope.model.Application.Goods[i].ExpiryDate = $filter('date')($scope.model.Application.Goods[i].ExpiryDate,'yyyy/MM/dd');
                 }
                 $scope.errors = [];
                 if($scope.model.Application.Id > 0){
@@ -42,6 +49,22 @@
                 }
                 $scope.model.Application.ShippingMethod = 'A';
 
+                $(function(){
+                    $('.datetimepicker').datetimepicker({
+                        language:  'zh-CN',
+                        format: 'yyyy/mm/dd',
+                        autoclose: true,
+                        minView: "month",
+                        todayBtn: true,
+                    }).on("hide",function(){
+                        var $this = $(this);
+                        var _this = this;
+                        $scope.$apply(function(){
+                            $scope[$this.attr('ng-model')] = _this.value;
+                        });
+                    });
+                });
+
                 $scope.additem = function() {
                     $scope.model.Application.Goods.push({ ManufacturerCountry: "036", ManufacturerDate: null, ExpiryDate: null, C102: null, C102Comment: null });
                     $log.log($scope.model);
@@ -49,6 +72,23 @@
                 $scope.removeitem = function(index) {
                     $scope.model.Application.Goods.splice(index, 1);
                     $log.log($scope.model);
+                };
+                $scope.itemClickHandler = function(event) {
+                    var currentElement = event.target;
+                    console.log(currentElement);
+                    $(currentElement).datetimepicker({
+                        language:  'zh-CN',
+                        format: 'yyyy/mm/dd',
+                        autoclose: true,
+                        minView: "month",
+                        todayBtn: true,
+                    }).on("hide",function(){
+                        var $this = $(this);
+                        var _this = this;
+                        $scope.$apply(function(){
+                            $scope[$this.attr('ng-model')] = _this.value;
+                        });
+                    });
                 };
                 $scope.accept = function () {
                     $scope.acceptshow = false;
@@ -334,9 +374,9 @@
                                 </tr>
                                 <tr>
                                     <th>生产日期</th>
-                                    <td><input type="date" ng-model="item.ManufacturerDate" class="form-control" /></td>
+                                    <td><input type="text" ng-model="item.ManufacturerDate" class="form-control" ng-mousedown="itemClickHandler($event)" /></td>
                                     <th>保质期 *</th>
-                                    <td><input type="date" ng-model="item.ExpiryDate" class="form-control" /></td>
+                                    <td><input type="text" ng-model="item.ExpiryDate" class="form-control" ng-mousedown="itemClickHandler($event)" /></td>
                                 </tr>
                                 <tr>
                                     <th>批次号</th>
@@ -395,13 +435,13 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">计划发货日期</label>
                     <div class="col-sm-10">
-                        <input type="text" ng-model="model.Application.ShippingDate" class="form-control" placeholder="计划发货日期" />
+                        <input type="text" ng-model="model.Application.ShippingDate" class="form-control datetimepicker" placeholder="计划发货日期" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">预约检查日期 *</label>
                     <div class="col-sm-10">
-                        <input type="date" ng-model="model.Application.InspectionDate" class="form-control" placeholder="yyyy-MM-dd" />
+                        <input type="text" ng-model="model.Application.InspectionDate" class="form-control datetimepicker" placeholder="yyyy-MM-dd" />
                     </div>
                 </div>
                 <div class="form-group">
@@ -453,7 +493,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">出发日期</label>
                     <div class="col-sm-10">
-                        <input type="text" ng-model="model.Application.Voyage" class="form-control" placeholder="出发日期" />
+                        <input type="text" ng-model="model.Application.Voyage" class="form-control datetimepicker" placeholder="出发日期" />
                     </div>
                 </div>
                 <div class="form-group">
