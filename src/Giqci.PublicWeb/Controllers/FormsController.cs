@@ -257,6 +257,9 @@ namespace Giqci.PublicWeb.Controllers
                     appNo = _publicRepo.CreateApplication(User.Identity.Name, model);
                 }
                 errors = null;
+
+                CookieHelper _cookie = new CookieHelper();
+                _cookie.DeleteApplication("application");
             }
             return new KtechJsonResult(HttpStatusCode.OK, new { appNo = appNo, id = id, errors = errors });
         }

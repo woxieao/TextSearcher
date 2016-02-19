@@ -18,12 +18,27 @@ namespace Giqci.PublicWeb.Helpers
             return getCookies(key);
         }
 
+        public bool DeleteApplication(string key)
+        {
+            deleteCookies(key);
+            return true;
+        }
+
         private void setCookies(string key, string value, int expiryDays)
         {
             var cookie = new HttpCookie(key, encrypt(value));
             cookie.Expires = DateTime.Now.AddDays(expiryDays);
 
             HttpContext.Current.Response.Cookies.Add(cookie);
+        }
+
+        private void deleteCookies(string key)
+        {
+            //HttpContext.Current.Response.Cookies.Remove(key);
+            if (HttpContext.Current.Request.Cookies[key] != null)
+            {
+                HttpContext.Current.Response.Cookies[key].Expires = DateTime.Now.AddDays(-1);
+            }
         }
 
         private string getCookies(string key)
