@@ -709,20 +709,3 @@ ul,li,ol{
     margin-bottom: 20px;
     padding: 20px;
 }
-
-.ad-banner{
-    padding: 4px 10px;
-    text-align:center;
-    display:none;
-    height:695px;
-    position:relative;
-}
-.ad-close{
-    background: url(../images/close.png) no-repeat 0 0 /24px 24px;
-    position: absolute;
-    height: 24px;
-    width: 24px;
-    right: 214px;
-    top: 12px;
-    cursor: pointer;
-}

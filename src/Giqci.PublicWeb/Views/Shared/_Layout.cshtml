@@ -16,20 +16,10 @@
 <body>
     @Html.Partial("_Header")
     @Html.Partial("_TopNav")
-    <div class="ad-banner"><div class="ad-close"></div><img src="~/Global/images/giqci-banner.jpg" /></div>
     <div class="row body-content">
         @RenderBody()
     </div>
     @Html.Partial("_Footer")
     <script type="text/javascript" src="/Scripts/bootstrap.min.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $(".ad-banner").animate({ height: 'toggle' }, 2000);
-            $(".ad-close").click(function () {
-                $(".ad-banner").animate({ height: 'toggle' }, 2000);
-            });
-            //setTimeout(function () { $(".ad-close").click(); }, 8000);
-        });
-    </script>
 </body>
 </html>
