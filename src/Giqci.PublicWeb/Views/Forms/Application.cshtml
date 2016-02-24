@@ -276,13 +276,18 @@
                         <div class="checkbox">
                             <label><input type="checkbox" name="Application.C101" ng-model="model.Application.C101" /> 溯源证书</label>
                             <label><input type="checkbox" name="Application.C102" ng-model="model.Application.C102" ng-click="check_type_c102()" /> 品质证书</label>
-                            <label><input type="checkbox" name="Application.C103[]" ng-model="model.Application.C103" /> 标签证书</label>
+                            <label><input type="checkbox" name="Application.C103" ng-model="model.Application.C103" /> 标签证书</label>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">商业目的 *</label>
-                    <div class="col-sm-10"><span>电商贸易</span></div>
+                    <div class="col-sm-10">
+                        <div class="radio">
+                            <label><input type="radio" name="Application.TradeType" ng-model="model.Application.TradeType" value="T" /> 一般贸易</label>
+                            <label><input type="radio" name="Application.TradeType" ng-model="model.Application.TradeType" value="C" /> 电商贸易</label>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">申请企业备案号</label>
@@ -297,6 +302,7 @@
                         <input type="text" name="Application.ApplicantAddr" ng-model="model.Application.ApplicantAddr" class="form-control" placeholder="地址" />
                         <input type="text" name="Application.ApplicantContact" ng-model="model.Application.ApplicantContact" class="form-control" placeholder="联系人" />
                         <input type="text" name="Application.ApplicantPhone" ng-model="model.Application.ApplicantPhone" class="form-control" placeholder="联系电话" />
+                        <input type="text" name="Application.ApplicantEmail" ng-model="model.Application.ApplicantEmail" class="form-control" placeholder="邮箱" />
                     </div>
                 </div>
                 <div class="form-group">
@@ -379,7 +385,7 @@
                                     <td><input type="text" ng-model="item.ExpiryDate" class="form-control" ng-mousedown="itemClickHandler($event)" /></td>
                                 </tr>
                                 <tr>
-                                    <th>批次号</th>
+                                    <th>批次号 *</th>
                                     <td><input type="text" ng-model="item.BatchNo" class="form-control" maxlength="100" /></td>
                                     <th>数量/包装 *</th>
                                     <td>
@@ -399,9 +405,9 @@
                                     </td>
                                 </tr>
                                 <tr ng-show="show_c_102">
-                                    <th>质量检验</th>
+                                    <th>品质检验</th>
                                     <td><div class="checkbox"><label><input type="checkbox" ng-model="item.C102" />是否检查</label></div></td>
-                                    <th>检验内容 *</th>
+                                    <th>检测项目 *</th>
                                     <td><input type="text" ng-model="item.C102Comment" class="form-control" /></td>
                                 </tr>
                             </table>
@@ -419,7 +425,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">运输总数量</label>
+                    <label class="col-sm-2 control-label">运输总数量 *</label>
                     <div class="col-sm-5">
                         <input type="number" ng-model="model.Application.TotalUnits" class="form-control" placeholder="运输总数量" />
                     </div>
@@ -445,7 +451,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">检验地点</label>
+                    <label class="col-sm-2 control-label">检验地点 *</label>
                     <div class="col-sm-10">
                         <input type="text" ng-model="model.Application.InspectionAddr" class="form-control" placeholder="检验地点" />
                     </div>

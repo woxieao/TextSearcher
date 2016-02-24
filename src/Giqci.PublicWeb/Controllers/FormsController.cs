@@ -58,6 +58,7 @@ namespace Giqci.PublicWeb.Controllers
                         ApplicantAddr = merchant.Address,
                         ApplicantContact = merchant.Contact,
                         ApplicantPhone = merchant.Phone,
+                        ApplicantEmail = merchant.Email,
                         InspectionDate = DateTime.Now.AddDays(-1),
                         Goods = new List<GoodsItem> { new GoodsItem { ManufacturerCountry = "036" } }
                     }
@@ -123,6 +124,7 @@ namespace Giqci.PublicWeb.Controllers
                     ApplicantAddr = merchant.Address,
                     ApplicantContact = merchant.Contact,
                     ApplicantPhone = merchant.Phone,
+                    ApplicantEmail = merchant.Email,
                     Billno = _application.BillNo,
                     C101 = _application.C101,
                     C102 = _application.C102,
@@ -167,7 +169,7 @@ namespace Giqci.PublicWeb.Controllers
         public ActionResult SubmitApplication(Application model, int id = 0)
         {
             // trade type must be 电商贸易
-            model.TradeType = TradeType.C;
+            //model.TradeType = TradeType.C;
             var errors = validateApplication(model);
             string appNo = null;
             //set cookies 
@@ -193,6 +195,7 @@ namespace Giqci.PublicWeb.Controllers
                         ApplicantAddr = model.ApplicantAddr,
                         ApplicantContact = model.ApplicantContact,
                         ApplicantPhone = model.ApplicantPhone,
+                        ApplicantEmail = model.ApplicantEmail,
                         BillNo = model.Billno,
                         C101 = model.C101,
                         C102 = model.C102,
@@ -303,6 +306,10 @@ namespace Giqci.PublicWeb.Controllers
                     {
                         errors.Add("请正确填写商品" + (i + 1) + "的生产日期或批次号");
                     }
+                    if (item.Quantity <= 0)
+                    {
+                        errors.Add("商品" + (i + 1) + "的数量必须大于0");
+                    }
                 }
             }
 
@@ -310,8 +317,7 @@ namespace Giqci.PublicWeb.Controllers
             {
                 errors.Add("请选择证书类型");
             }
-            //if (model.TradeType != TradeType.C)
-            if (!Enum.IsDefined(typeof(TradeType), TradeType.C))
+            if (!Enum.IsDefined(typeof(TradeType), model.TradeType))
             {
                 errors.Add("请选择商业目的");
             }
@@ -328,6 +334,10 @@ namespace Giqci.PublicWeb.Controllers
             if (model.InspectionDate < DateTime.Today)
             {
                 errors.Add("请填写正确预约检查日期");
+            }
+            if (string.IsNullOrEmpty(model.InspectionAddr))
+            {
+                errors.Add("请填写检验地点");
             }
             if (model.TotalUnits <= 0)
                 errors.Add("运输总数量必须大于0");
