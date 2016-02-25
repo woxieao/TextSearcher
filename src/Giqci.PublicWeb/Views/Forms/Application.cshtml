@@ -407,8 +407,8 @@
                                 <tr ng-show="show_c_102">
                                     <th>品质检验</th>
                                     <td><div class="checkbox"><label><input type="checkbox" ng-model="item.C102" />是否检查</label></div></td>
-                                    <th>检测项目 *</th>
-                                    <td><input type="text" ng-model="item.C102Comment" class="form-control" /></td>
+                                    <th><span ng-show="item.C102"> 检测项目 *</span></th>
+                                    <td><input type="text" ng-show="item.C102" ng-model="item.C102Comment" class="form-control" /></td>
                                 </tr>
                             </table>
                         </div>
