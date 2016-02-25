@@ -391,7 +391,7 @@
                                     <td>
                                         <div class="form-group">
                                             <div class="col-sm-6">
-                                                <input type="number" ng-model="item.Quantity" class="form-control" />
+                                                <input type="number" ng-model="item.Quantity" min="0" class="form-control" />
                                             </div>
                                             <div class="col-sm-6">
                                                 <select ng-model="item.Package" class="form-control">
@@ -407,8 +407,8 @@
                                 <tr ng-show="show_c_102">
                                     <th>品质检验</th>
                                     <td><div class="checkbox"><label><input type="checkbox" ng-model="item.C102" />是否检查</label></div></td>
-                                    <th>检测项目 *</th>
-                                    <td><input type="text" ng-model="item.C102Comment" class="form-control" /></td>
+                                    <th><span ng-show="item.C102"> 检测项目 *</span></th>
+                                    <td><input type="text" ng-show="item.C102" ng-model="item.C102Comment" class="form-control" /></td>
                                 </tr>
                             </table>
                         </div>
@@ -427,14 +427,14 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">运输总数量 *</label>
                     <div class="col-sm-5">
-                        <input type="number" ng-model="model.Application.TotalUnits" class="form-control" placeholder="运输总数量" />
+                        <input type="number" ng-model="model.Application.TotalUnits" class="form-control" min="0" placeholder="运输总数量" />
                     </div>
                     <div class="col-sm-5"><p class="form-control-static">{{unit}}</p></div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">运输总重量</label>
                     <div class="col-sm-5">
-                        <input type="number" ng-model="model.Application.TotalWeight" class="form-control" placeholder="运输总重量" />
+                        <input type="number" ng-model="model.Application.TotalWeight" class="form-control" min="0" placeholder="运输总重量" />
                     </div>
                     <div class="col-sm-5"><p class="form-control-static">KG</p></div>
                 </div>
