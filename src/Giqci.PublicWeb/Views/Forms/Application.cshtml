@@ -31,14 +31,19 @@
             '$http', '$scope', '$log', '$location', '$anchorScroll','$timeout','$filter', function($http, $scope, $log, $location, $anchorScroll, $timeout, $filter) {
                 $scope.model = @Html.Raw(JsonConvert.SerializeObject(Model));
                 $scope.model.Application.Id = @ViewBag.id;
-                //$scope.model.Application.InspectionDate = getDate($scope.model.Application.InspectionDate);
-                $scope.model.Application.InspectionDate = $filter('date')($scope.model.Application.InspectionDate,'yyyy/MM/dd');
-                for (var i = 0; i < $scope.model.Application.Goods.length; i++) {
-                    //$scope.model.Application.Goods[i].ManufacturerDate = getDate($scope.model.Application.Goods[i].ManufacturerDate);
-                    //$scope.model.Application.Goods[i].ExpiryDate = getDate($scope.model.Application.Goods[i].ExpiryDate);
-                    $scope.model.Application.Goods[i].ManufacturerDate = $filter('date')($scope.model.Application.Goods[i].ManufacturerDate,'yyyy/MM/dd');
-                    $scope.model.Application.Goods[i].ExpiryDate = $filter('date')($scope.model.Application.Goods[i].ExpiryDate,'yyyy/MM/dd');
-                }
+
+                $scope.dataInit = function(){
+                    //$scope.model.Application.InspectionDate = getDate($scope.model.Application.InspectionDate);
+                    $scope.model.Application.InspectionDate = $filter('date')($scope.model.Application.InspectionDate,'yyyy/MM/dd');
+                    for (var i = 0; i < $scope.model.Application.Goods.length; i++) {
+                        //$scope.model.Application.Goods[i].ManufacturerDate = getDate($scope.model.Application.Goods[i].ManufacturerDate);
+                        //$scope.model.Application.Goods[i].ExpiryDate = getDate($scope.model.Application.Goods[i].ExpiryDate);
+                        $scope.model.Application.Goods[i].ManufacturerDate = $filter('date')($scope.model.Application.Goods[i].ManufacturerDate,'yyyy/MM/dd');
+                        $scope.model.Application.Goods[i].ExpiryDate = $filter('date')($scope.model.Application.Goods[i].ExpiryDate,'yyyy/MM/dd');
+                    }
+                };
+                $scope.model.Application.TradeType = "T";
+                $scope.dataInit();
                 $scope.errors = [];
                 if($scope.model.Application.Id > 0){
                     $scope.acceptshow  = false;
@@ -126,6 +131,7 @@
                                 $scope.errors = response.data.errors;
                                 $location.hash("h1");
                                 $anchorScroll();
+                                $scope.dataInit();
                             }
                         }, function(response) {
                             $log.warn(response);

@@ -127,7 +127,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                     var msg = new SendEmailTemplate
                     {
                         FromEmail = Config.Current.NoReplyEmail,
-                        Subject = Config.Current.FeedbackEmailSubject,
+                        Subject = Config.Current.ForgotPasswordEmailSubject,
                         TextTemplate = EmailTemplateHelper.GetEmailTemplate("ForgotPassword.txt"),
                         HtmlTemplate = EmailTemplateHelper.GetEmailTemplate("ForgotPassword.html"),
                     };
