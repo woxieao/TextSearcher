@@ -85,7 +85,6 @@
                     $scope.model.Application.TradeType = "T";
                     $scope.model.Application.ShippingMethod = 'A';
                 }
-
                 $scope.dataInit();
                 $scope.errors = [];
                 if ($scope.model.Application.Id > 0) {
@@ -195,7 +194,7 @@
                 }else{
                     $scope.unit = "Containers";
                 }
-
+             
                 $scope.check_A = function() {
                     $scope.showContainer = false;
                     $scope.unit = "Pallets";
