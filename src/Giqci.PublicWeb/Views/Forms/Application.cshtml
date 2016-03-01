@@ -30,54 +30,54 @@
         }
 
         app.controller("GlobalController", [
-            '$http', '$scope', '$log', '$location', '$anchorScroll','$timeout','$filter', function($http, $scope, $log, $location, $anchorScroll, $timeout, $filter) {
+            '$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', '$filter', function($http, $scope, $log, $location, $anchorScroll, $timeout, $filter) {
                 $scope.model = @Html.Raw(JsonConvert.SerializeObject(Model));
 
                 $http({
-                    url:'/api/dict/countries',
-                    method:'GET'
-                }).success(function(data,header,config,status){
-                    //console.log(data.items);
+                    url: '/api/dict/countries',
+                    method: 'GET'
+                }).success(function(data, header, config, status) {
+                    console.log(data.items);
                     $scope.model.Countries = data.items;
-                }).error(function(data,header,config,status){
+                }).error(function(data, header, config, status) {
                     $log.warn(response);
                 });
                 $http({
-                    url:'/api/dict/commonhscodes',
-                    method:'GET'
-                }).success(function(data,header,config,status){
+                    url: '/api/dict/commonhscodes',
+                    method: 'GET'
+                }).success(function(data, header, config, status) {
                     $scope.model.CommonHSCodes = data.items;
-                }).error(function(data,header,config,status){
+                }).error(function(data, header, config, status) {
                     $log.warn(response);
                 });
                 $http({
-                    url:'/api/dict/loadingports',
-                    method:'GET'
-                }).success(function(data,header,config,status){
+                    url: '/api/dict/loadingports',
+                    method: 'GET'
+                }).success(function(data, header, config, status) {
                     $scope.model.LoadingPorts = data.items;
-                }).error(function(data,header,config,status){
+                }).error(function(data, header, config, status) {
                     $log.warn(response);
                 });
                 $http({
-                    url:'/api/dict/destports',
-                    method:'GET'
-                }).success(function(data,header,config,status){
+                    url: '/api/dict/destports',
+                    method: 'GET'
+                }).success(function(data, header, config, status) {
                     $scope.model.DestPorts = data.items;
-                }).error(function(data,header,config,status){
+                }).error(function(data, header, config, status) {
                     $log.warn(response);
                 });
 
 
                 $scope.model.Application.Id = @ViewBag.id;
 
-                $scope.dataInit = function(){
+                $scope.dataInit = function() {
                     //$scope.model.Application.InspectionDate = getDate($scope.model.Application.InspectionDate);
-                    $scope.model.Application.InspectionDate = $filter('date')($scope.model.Application.InspectionDate,'yyyy/MM/dd');
+                    $scope.model.Application.InspectionDate = $filter('date')($scope.model.Application.InspectionDate, 'yyyy/MM/dd');
                     for (var i = 0; i < $scope.model.Application.Goods.length; i++) {
                         //$scope.model.Application.Goods[i].ManufacturerDate = getDate($scope.model.Application.Goods[i].ManufacturerDate);
                         //$scope.model.Application.Goods[i].ExpiryDate = getDate($scope.model.Application.Goods[i].ExpiryDate);
-                        $scope.model.Application.Goods[i].ManufacturerDate = $filter('date')($scope.model.Application.Goods[i].ManufacturerDate,'yyyy/MM/dd');
-                        $scope.model.Application.Goods[i].ExpiryDate = $filter('date')($scope.model.Application.Goods[i].ExpiryDate,'yyyy/MM/dd');
+                        $scope.model.Application.Goods[i].ManufacturerDate = $filter('date')($scope.model.Application.Goods[i].ManufacturerDate, 'yyyy/MM/dd');
+                        $scope.model.Application.Goods[i].ExpiryDate = $filter('date')($scope.model.Application.Goods[i].ExpiryDate, 'yyyy/MM/dd');
                     }
                 };
                 if($scope.model.Application.Id==0)
@@ -85,33 +85,40 @@
                     $scope.model.Application.TradeType = "T";
                     $scope.model.Application.ShippingMethod = 'A';
                 }
-
+                
                 $scope.dataInit();
                 $scope.errors = [];
-                if($scope.model.Application.Id > 0){
-                    $scope.acceptshow  = false;
+                if ($scope.model.Application.Id > 0) {
+                    $scope.acceptshow = false;
                     $scope.appshow = true;
-                }else{
-                    $scope.acceptshow  = true;
+                } else {
+                    $scope.acceptshow = true;
                     $scope.appshow = false;
                 }
 
-                $(function(){
+                $(function() {
                     $('.datetimepicker').datetimepicker({
-                        language:  'zh-CN',
+                        language: 'zh-CN',
                         format: 'yyyy/mm/dd',
                         autoclose: true,
                         minView: "month",
                         todayBtn: true,
-                    }).on("hide",function(){
+                    }).on("hide", function() {
                         var $this = $(this);
                         var _this = this;
-                        $scope.$apply(function(){
+                        $scope.$apply(function() {
                             $scope[$this.attr('ng-model')] = _this.value;
                         });
                     });
                 });
-
+                $scope.addContainerInfo = function() {
+                    $scope.model.Application.ContainerInfoList.push({ ContainerNumber: "", SealNumber: "" });
+                    $log.log($scope.model);
+                };
+                $scope.removeContainerInfo = function(index) {
+                    $scope.model.Application.ContainerInfoList.splice(index, 1);
+                    $log.log($scope.model);
+                };
                 $scope.additem = function() {
                     $scope.model.Application.Goods.push({ ManufacturerCountry: "036", ManufacturerDate: null, ExpiryDate: null, C102: null, C102Comment: null });
                     $log.log($scope.model);
@@ -124,12 +131,12 @@
                     var currentElement = event.target;
                     //console.log(currentElement);
                     $(currentElement).datetimepicker({
-                        language:  'zh-CN',
+                        language: 'zh-CN',
                         format: 'yyyy/mm/dd',
                         autoclose: true,
                         minView: "month",
                         todayBtn: true,
-                    }).on("hide",function(){
+                    }).on("hide", function() {
                         var $this = $(this);
                         var _this = this;
                         $scope.$apply(function(){
@@ -152,6 +159,9 @@
                 $scope.check_type_c102();
 
                 $scope.submit = function() {
+                    if ($scope.model.Application.ShippingMethod === "A") {
+                        $scope.model.Application.ContainerInfoList = [];
+                    }
                     for (var i = 0; i < $scope.model.Application.Goods.length; i++) {
                         $scope.model.Application.Goods[i].Index = i;
                         $scope.model.Application.Goods[i].ManufacturerDate = getDate($scope.model.Application.Goods[i].ManufacturerDate);
@@ -185,20 +195,22 @@
                 }else{
                     $scope.unit = "Containers";
                 }
-
-                $scope.check_A = function(){
+             
+                $scope.check_A = function() {
+                    $scope.showContainer = false;
                     $scope.unit = "Pallets";
                 };
-                $scope.check_O = function(){
+                $scope.check_O = function() {
+                    $scope.showContainer = true;
                     $scope.unit = "Containers";
                 };
 
-                $scope.updateClock = function(){
-                    $http.post('/api/account/heartbeat').then(function(){});
+                $scope.updateClock = function() {
+                    $http.post('/api/account/heartbeat').then(function() {});
                 };
-                setInterval(function(){
+                setInterval(function() {
                     $scope.$apply($scope.updateClock);
-                },300000);
+                }, 300000);
 
                 $scope.updateClock();
             }
