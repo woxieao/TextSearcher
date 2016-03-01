@@ -30,6 +30,42 @@
         app.controller("GlobalController", [
             '$http', '$scope', '$log', '$location', '$anchorScroll','$timeout','$filter', function($http, $scope, $log, $location, $anchorScroll, $timeout, $filter) {
                 $scope.model = @Html.Raw(JsonConvert.SerializeObject(Model));
+
+                $http({
+                    url:'/api/dict/countries',
+                    method:'GET'
+                }).success(function(data,header,config,status){
+                    console.log(data.items);
+                    $scope.model.Countries = data.items;
+                }).error(function(data,header,config,status){
+                    $log.warn(response);
+                });
+                $http({
+                    url:'/api/dict/commonhscodes',
+                    method:'GET'
+                }).success(function(data,header,config,status){
+                    $scope.model.CommonHSCodes = data.items;
+                }).error(function(data,header,config,status){
+                    $log.warn(response);
+                });
+                $http({
+                    url:'/api/dict/loadingports',
+                    method:'GET'
+                }).success(function(data,header,config,status){
+                    $scope.model.LoadingPorts = data.items;
+                }).error(function(data,header,config,status){
+                    $log.warn(response);
+                });
+                $http({
+                    url:'/api/dict/destports',
+                    method:'GET'
+                }).success(function(data,header,config,status){
+                    $scope.model.DestPorts = data.items;
+                }).error(function(data,header,config,status){
+                    $log.warn(response);
+                });
+
+
                 $scope.model.Application.Id = @ViewBag.id;
 
                 $scope.dataInit = function(){
