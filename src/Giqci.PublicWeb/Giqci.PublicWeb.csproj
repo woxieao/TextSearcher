@@ -142,6 +142,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Api\AccountController.cs" />
     <Compile Include="Controllers\Api\CertificateController.cs" />
+    <Compile Include="Controllers\Api\DictionaryController.cs" />
     <Compile Include="Controllers\Api\FeedbackController.cs" />
     <Compile Include="Controllers\Api\FormsController.cs" />
     <Compile Include="Controllers\Api\GoodsController.cs" />
