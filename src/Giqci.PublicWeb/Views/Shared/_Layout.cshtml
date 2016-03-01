@@ -14,6 +14,10 @@
     @RenderSection("Header", false)
 </head>
 <body>
+    <div class="alert alert-warning alert-dismissible" role="alert" id="browser-tip" style="display:none;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>警告!</strong> 为了得到我们网站最好的体验效果，我们建议您升级至最新版本的Internet Explorer或选择其他web浏览器，当前最流行的web浏览器如下：Google Chrome，Firefox，Opera，Safari等。
+    </div>
     @Html.Partial("_Header")
     @Html.Partial("_TopNav")
     <div class="row body-content">
@@ -21,5 +25,33 @@
     </div>
     @Html.Partial("_Footer")
     <script type="text/javascript" src="/Scripts/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var browser = getBrowserIe();
+        var browserInfo = Number(getBrowserIeInfo());
+        //alert(getBrowserIeInfo());
+        if (browser && browserInfo <= 9) {
+            $("#browser-tip").show();
+        }
+        function getBrowserIe() {
+            var agent = navigator.userAgent.toLowerCase();
+            var regStr_ie = /msie [\d.]+;/gi;
+            if (agent.indexOf("msie") > 0) {
+                return true;
+            }
+            if (agent.indexOf("trident") > 0 && agent.indexOf("rv") > 0) {
+                return true;
+            }
+        }
+        function getBrowserIeInfo() {
+            var agent = navigator.userAgent.toLowerCase();
+            var regStr_ie = /msie [\d.]+;/gi;
+            if (agent.indexOf("msie") > 0) {
+                return agent.match(regStr_ie);
+            }
+            if (agent.indexOf("trident") > 0 && agent.indexOf("rv") > 0) {
+                return agent.match(/rv:(\d+\.\d+)/)[1];
+            }
+        }
+    </script>
 </body>
 </html>
