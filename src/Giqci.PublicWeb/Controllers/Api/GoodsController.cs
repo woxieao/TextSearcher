@@ -30,5 +30,14 @@ namespace Giqci.PublicWeb.Controllers.Api
 
             return new KtechJsonResult(HttpStatusCode.OK, new { items = model, count = count });
         }
+
+
+        [Route("goods/delete")]
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            var result = _repo.DeleteGoods(id);
+            return new KtechJsonResult(HttpStatusCode.OK, new { result = result });
+        }
     }
 }

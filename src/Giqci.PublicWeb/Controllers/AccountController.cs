@@ -20,7 +20,6 @@ namespace Giqci.PublicWeb.Controllers
         [HttpGet]
         public ActionResult Login()
         {
-            var a = 1;
             var model = new LoginViewModel();
             return View(model);
         }

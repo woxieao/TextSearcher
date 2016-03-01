@@ -4,7 +4,7 @@ namespace Giqci.PublicWeb.Models.Application
 {
     public class ApplicationPageModel
     {
-        public Giqci.Models.Application Application { get; set; }
+        public Application Application { get; set; }
 
         public bool AcceptTerms { get; set; }
 

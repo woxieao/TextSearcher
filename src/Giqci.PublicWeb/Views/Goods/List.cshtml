@@ -10,7 +10,7 @@
         </div>
         <div class="panel-body">
             <ul class="note">
-                <li><a class="btn btn-primary btn-sm" href="/goods/add">添加商品</a></li>
+                <li><a class="btn btn-primary btn-sm" href="/goods/add/">添加商品</a></li>
             </ul>
             <form class="form-inline">
                 <div class="form-group">
@@ -37,21 +37,19 @@
                         <th>HS编码</th>
                         <th>规格型号</th>
                         <th>商品货号</th>
-                        <th>生产日期</th>
                         <th>操作</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="emp in persons">
-                        <td>{{emp.Description}}{{emp.Id}}</td>
+                        <td>{{emp.Description}}</td>
                         <td>{{emp.Brand}}</td>
                         <td>{{emp.HSCode}}</td>
                         <td>{{emp.Spec}}</td>
                         <td>{{emp.Code}}</td>
-                        <td>{{emp.ManufacturerDate}}</td>
                         <td>
                             <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-primary btn-sm">编辑</button>
+                                <button type="button" class="btn btn-primary btn-sm" ng-click="edit(emp)">编辑</button>
                                 <button type="button" class="btn btn-danger btn-sm" ng-click="remove(emp)">删除</button>
                             </div>
                         </td>
@@ -117,10 +115,18 @@
         $scope.list($scope.postData);
 
         $scope.remove = function (record) {
-            $scope.persons.splice($scope.persons.indexOf(record), 1);
-            $http.post('/api/goods/delete', record.Id).then(function (response) {
-                
-            });
+            if (confirm("您确定要删除该商品吗?")) {
+                $scope.persons.splice($scope.persons.indexOf(record), 1);
+                $http.post('/api/goods/delete', { id: record.Id }).then(function (response) {
+                    if (response.data.result) {
+
+                    }
+                });
+            }
+
+        }
+        $scope.edit = function (record) {
+            window.location.href = "/goods/add/" + record.Id;
         }
     }]);
 </script>

@@ -24,5 +24,13 @@ namespace Giqci.PublicWeb.Helpers
 
             model.CommonHSCodes = cache.GetCommonHSCodes();
         }
+
+
+        public static void SetHelperGoodsModel(ICachedDictionaryService cache, GoodsPageModel model)
+        {
+            model.Countries = cache.GetCountries();
+
+            model.CommonHSCodes = cache.GetCommonHSCodes();
+        }
     }
 }
