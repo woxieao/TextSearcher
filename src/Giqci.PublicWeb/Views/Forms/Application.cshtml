@@ -37,7 +37,7 @@
                     url: '/api/dict/countries',
                     method: 'GET'
                 }).success(function(data, header, config, status) {
-                    console.log(data.items);
+                    //console.log(data.items);
                     $scope.model.Countries = data.items;
                 }).error(function(data, header, config, status) {
                     $log.warn(response);
@@ -85,7 +85,7 @@
                     $scope.model.Application.TradeType = "T";
                     $scope.model.Application.ShippingMethod = 'A';
                 }
-                
+
                 $scope.dataInit();
                 $scope.errors = [];
                 if ($scope.model.Application.Id > 0) {
@@ -195,7 +195,7 @@
                 }else{
                     $scope.unit = "Containers";
                 }
-             
+
                 $scope.check_A = function() {
                     $scope.showContainer = false;
                     $scope.unit = "Pallets";
