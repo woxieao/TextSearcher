@@ -3,33 +3,6 @@
 @{
     ViewBag.Title = "Forgot";
 }
-<script src="~/Global/js/commalert.js"></script>
-<script type="text/javascript">
-    var app = angular.module("giqci", ['commonAlert']);
-    app.controller("ForgotController", ['$http', '$scope', '$location', 'commAlertService', function ($http, $scope, $location, commAlertService) {
-        $scope.submitButton = ' 提交 ';
-        $scope.submitForm = function (isValid) {
-            if (isValid) {
-                $scope.enableDisableButton = true;
-                $scope.submitButton = '正在提交...';
-                $scope.formData = {
-                    email: $scope.user.email
-                };
-                $http.post('/api/account/forgotpassword', $scope.formData).then(function (response) {
-                    if (response.data.result) {
-                        commAlertService.alertService().add('success', "您的密码已经重置，并发往您的注册邮箱，请检查。");
-                    } else {
-                        commAlertService.alertService().add('danger', response.data.message || "未知错误");
-                    }
-                    $scope.enableDisableButton = false;
-                    $scope.submitButton = ' 提交 ';
-                });
-            }
-        };
-    }
-    ]);
-</script>
-
 <div class="panel panel-default" ng-controller="ForgotController">
     <div class="panel-heading">
         <h1 class="panel-title">忘记密码</h1>

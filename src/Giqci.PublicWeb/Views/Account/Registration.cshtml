@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "商家注册";
 }
-<script src="~/Global/js/commalert.js"></script>
 <div class="panel panel-default" ng-controller="RegController">
     <div class="panel-heading">
         <h1 class="panel-title">商户注册</h1>
@@ -96,43 +95,3 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
-    var app = angular.module("giqci", ["commonAlert"]);
-    app.controller("RegController", ['$http', '$scope', '$location', "commAlertService", function ($http, $scope, $location, commAlertService) {
-        //$scope.acceptshow = true; 暂时不显示
-        $scope.regshow = true;
-
-        $scope.submitButton = ' 提交 ';
-        $scope.acceptshow = false;
-        $scope.regshow = true;
-        $scope.accept = function () {
-            $scope.acceptshow = false;
-            $scope.regshow = true;
-        };
-        $scope.submitForm = function (isValid, PasswordValid) {
-            if (isValid && !PasswordValid) {
-                $scope.enableDisableButton = true;
-                $scope.submitButton = '正在提交...';
-                $scope.formData = {
-                    email: $scope.user.email,
-                    password: $scope.user.password,
-                    name: $scope.user.name,
-                    address: $scope.user.address,
-                    contact: $scope.user.contact,
-                    phone: $scope.user.phone
-                };
-                $http.post('/api/account/reg', $scope.formData).then(function (response) {
-                    if (!response.data.result) {
-                        commAlertService.alertService().add('danger', response.data.message || "未知错误");
-                    } else {
-                        commAlertService.alertService().add('success', "注册成功，请检查邮件并认证。");
-                        $scope.regshow = false;
-                    }
-                    $scope.enableDisableButton = false;
-                    $scope.submitButton = ' 提交 ';
-                });
-            }
-        };
-    }
-    ]);
-</script>

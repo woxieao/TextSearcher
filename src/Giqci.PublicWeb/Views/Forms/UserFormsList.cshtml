@@ -2,12 +2,6 @@
     ViewBag.Title = "申请列表";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@using Giqci.Enums
-@using Ktech.Extensions
-@using Newtonsoft.Json
-@{
-    var statusValues = Enum.GetValues(typeof(ApplicationStatus)).Cast<ApplicationStatus>().Select(i => new { value = i.ToString(), name = i.ToDescription() }).ToArray();
-}
 <div ng-controller="FormsListController">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -68,60 +62,3 @@
         </div>
     </div>
 </div>
-
-<script type="text/javascript">
-    var app = angular.module('giqci', []);
-    app.controller('FormsListController', ['$scope','$http', function ($scope,$http) {
-        $scope.paginationConf = {
-            totalItems :0
-        };
-        $scope.postData = {
-            applyNo: $scope.applyNo,
-            status: $scope.status,
-            start: $scope.start,
-            end: $scope.end,
-            pageIndex: 1,
-            pageSize: 10
-        }
-
-        $scope.statusValues = @Html.Raw(JsonConvert.SerializeObject(statusValues));
-
-        $scope.prevPage = function () {
-            if ($scope.postData.pageIndex > 1) {
-                $scope.postData.pageIndex -= 1;
-                $scope.list($scope.postData);
-            }
-        };
-        $scope.nextPage = function () {
-            if ($scope.paginationConf.totalItems == $scope.postData.pageSize) {
-                $scope.postData.pageIndex += 1;
-                $scope.list($scope.postData);
-            }
-        };
-        $scope.indexPage = function(){
-            if ($scope.postData.pageIndex > 1) {
-                $scope.postData.pageIndex = 1;
-                $scope.list($scope.postData);
-            }
-        }
-        $scope.searchApplication = function () {
-            $scope.postData = {
-                applyNo: $scope.applyNo || "",
-                status: $scope.status || "",
-                start: $scope.start || "",
-                end: $scope.end || "",
-                pageIndex: 1,
-                pageSize: $scope.postData.pageSize
-            };
-            $scope.list($scope.postData);
-        }
-        $scope.list = function(postData){
-            $http.post('/api/forms/list', postData).then(function (response) {
-                $scope.paginationConf.totalItems = response.data.count;
-                $scope.persons = response.data.items;
-            });
-        };
-        $scope.list($scope.postData);
-    }]);
-</script>
-

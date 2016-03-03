@@ -3,34 +3,6 @@
 @{
     ViewBag.Title = "Login";
 }
-<script src="~/Global/js/commalert.js"></script>
-<script type="text/javascript">
-    var app = angular.module("giqci", ['commonAlert']);
-    app.controller("LoginController", ['$http', '$scope', '$location', 'commAlertService', function ($http, $scope, $location, commAlertService) {
-        $scope.submitButton = ' 登录 ';
-        $scope.submitForm = function (isValid) {
-            if (isValid) {
-                $scope.enableDisableButton = true;
-                $scope.submitButton = '正在提交...';
-                $scope.formData = {
-                    email: $scope.user.email,
-                    password: $scope.user.password
-                };
-                $http.post('/api/account/login', $scope.formData).then(function (response) {
-                    if (response.data.result) {
-                        window.location.href = "/forms/app";
-                    } else {
-                        commAlertService.alertService().add('danger', response.data.message || "未知错误");
-                        $scope.enableDisableButton = false;
-                        $scope.submitButton = ' 登录 ';
-                    }
-                });
-            }
-        };
-    }
-    ]);
-</script>
-
 <div class="panel panel-default" ng-controller="LoginController">
     <div class="panel-heading">
         <h1 class="panel-title">商户登录</h1>
