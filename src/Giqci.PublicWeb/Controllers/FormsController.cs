@@ -45,8 +45,7 @@ namespace Giqci.PublicWeb.Controllers
             //get cookies 
             CookieHelper _cookie = new CookieHelper();
             _appString = _cookie.GetApplication("application");
-           Models
-               .Application.Application _application = JsonConvert.DeserializeObject<Models.Application.Application>(_appString);
+           Models.Application.Application _application = JsonConvert.DeserializeObject<Models.Application.Application>(_appString);
             var model = new ApplicationPageModel { };
             if (_application == null)
             {

@@ -1,8 +1,11 @@
-﻿using Giqci.Models.Dict;
+﻿using System.Collections.Generic;
+using Giqci.Models;
+using Giqci.Models.Dict;
 
 namespace Giqci.PublicWeb.Models.Application
 {
-    public class ApplicationPageModel
+    public class 
+        ApplicationPageModel
     {
         public Application Application { get; set; }
 
@@ -15,5 +18,6 @@ namespace Giqci.PublicWeb.Models.Application
         public Port[] DestPorts { get; set; }
 
         public Port[] LoadingPorts { get; set; }
+
     }
 }
