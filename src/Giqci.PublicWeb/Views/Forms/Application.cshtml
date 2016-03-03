@@ -21,8 +21,10 @@
     <link href="~/Global/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
     <script src="~/Global/js/bootstrap-datetimepicker.min.js"></script>
     <script src="~/Global/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+}
+@section Footer{
     <script type="text/javascript">
-        var app = angular.module("giqci", []);
+        //var app = angular.module("giqci", []);
         function getDate(str) {
             return str ? new Date(str) : null;
         }
@@ -35,7 +37,7 @@
                     url:'/api/dict/countries',
                     method:'GET'
                 }).success(function(data,header,config,status){
-                    console.log(data.items);
+                    //console.log(data.items);
                     $scope.model.Countries = data.items;
                 }).error(function(data,header,config,status){
                     $log.warn(response);
@@ -83,7 +85,7 @@
                     $scope.model.Application.TradeType = "T";
                     $scope.model.Application.ShippingMethod = 'A';
                 }
-                
+
                 $scope.dataInit();
                 $scope.errors = [];
                 if($scope.model.Application.Id > 0){
@@ -120,7 +122,7 @@
                 };
                 $scope.itemClickHandler = function(event) {
                     var currentElement = event.target;
-                    console.log(currentElement);
+                    //console.log(currentElement);
                     $(currentElement).datetimepicker({
                         language:  'zh-CN',
                         format: 'yyyy/mm/dd',
@@ -159,7 +161,7 @@
                             $scope.model.Application.Goods[i].C102Comment = "";
                         }
                     }
-                    console.log($scope.model.Application);
+                    //console.log($scope.model.Application);
                     $http.post('/forms/app', $scope.model.Application,$scope.model.Application.Id)
                         .then(function(response) {
                             $log.log(response);
@@ -183,7 +185,7 @@
                 }else{
                     $scope.unit = "Containers";
                 }
-             
+
                 $scope.check_A = function(){
                     $scope.unit = "Pallets";
                 };
