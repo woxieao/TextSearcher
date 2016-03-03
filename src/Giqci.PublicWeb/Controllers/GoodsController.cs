@@ -39,19 +39,34 @@ namespace Giqci.PublicWeb.Controllers
         [Route("goods/add")]
         [HttpGet]
         [Authorize]
-        public ActionResult GoodsAdd(string applicantCode)
+        public ActionResult AddGoods(string applicantCode)
         {
-            var model = new GoodsItemPageModel { };
-            model = new GoodsItemPageModel
+            var model = new GoodsPageModel { };
+            model = new GoodsPageModel
             {
-                goods = new GoodsItem
+                goods = new GoodsModel
                 {
                     ManufacturerCountry = "036"
                 }
             };
-            ModelBuilder.SetHelperGoods(_cache, model);
+            ModelBuilder.SetHelperGoodsModel(_cache, model);
 
-            return View(model);
+            return View("GoodsAdd",model);
+        }
+
+
+        [Route("goods/add/{id:int}")]
+        [HttpGet]
+        [Authorize]
+        public ActionResult AddGoods(int id = 0)
+        {
+            var model = new GoodsPageModel();
+            var goodmodel = _goodsRepo.GetGoods(id);
+            model.goods = goodmodel;
+
+            ModelBuilder.SetHelperGoodsModel(_cache, model);
+
+            return View("GoodsAdd", model);
         }
 
 
@@ -72,10 +87,23 @@ namespace Giqci.PublicWeb.Controllers
             if (!errors.Any())
             {
                 // submit
-                string message = null;
-                _goodsRepo.InsertGoods(User.Identity.Name, model, out message);
-                result = true;
-                errors = null;
+                if (model.Id == 0)
+                {
+                    string message = null;
+                    model.CreateDate = DateTime.Now;
+                    model.IsDelete = false;
+
+                    result = _goodsRepo.InsertGoods(User.Identity.Name, model, out message); ;
+                    errors.Add(message);
+                }
+                else
+                {
+                    string message = null;
+
+                    result = _goodsRepo.UpdateGoods(model.Id, model, out message); ;
+                    errors.Add(message);
+                }
+
             }
             return new KtechJsonResult(HttpStatusCode.OK, new { result = result, errors = errors });
         }
@@ -107,14 +135,6 @@ namespace Giqci.PublicWeb.Controllers
             if (string.IsNullOrEmpty(model.CiqCode))
             {
                 errors.Add("请填写商品备案号");
-            }
-            if (!model.ExpiryDate.HasValue)
-            {
-                errors.Add("请填写商品保质期");
-            }
-            if (model.Quantity <= 0)
-            {
-                errors.Add("请填写商品数量/包装");
             }
             if (model.C102 && string.IsNullOrEmpty(model.C102Comment))
             {

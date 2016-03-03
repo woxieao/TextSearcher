@@ -163,10 +163,13 @@
     <Compile Include="Models\Account\LoginViewModel.cs" />
     <Compile Include="Models\Account\RegistrationViewModel.cs" />
     <Compile Include="Models\Api\Feedback.cs" />
+    <Compile Include="Models\Application\Application.cs" />
     <Compile Include="Models\Application\ApplicationPageModel.cs" />
+    <Compile Include="Models\Application\BaseApplication.cs" />
     <Compile Include="Models\Config.cs" />
     <Compile Include="Models\EmailTemplate.cs" />
     <Compile Include="Models\Goods\GoodsItemPageModel.cs" />
+    <Compile Include="Models\Goods\GoodsPageModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

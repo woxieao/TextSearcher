@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @using Newtonsoft.Json
-@model Giqci.PublicWeb.Models.Goods.GoodsItemPageModel
+@model Giqci.PublicWeb.Models.Goods.GoodsPageModel
 
 <link href="~/Global/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
 <script src="~/Global/js/bootstrap-datetimepicker.min.js"></script>
@@ -26,6 +26,10 @@
                     $scope[$this.attr('ng-model')] = _this.value;
                 });
             });
+            if($scope.model.goods.Id>0)
+            {
+                $(".panel-title").html("编辑商品");
+            }
         });
         $scope.submit = function() {
             console.log($scope.model.goods);
@@ -112,48 +116,7 @@
                             <input type="text" ng-model="model.goods.CiqCode" class="form-control" />
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">生产日期</label>
-                        <div class="col-sm-10">
-                            <input type="text" ng-model="model.goods.ManufacturerDate" class="form-control datetimepicker" style="ime-mode:disabled" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">保质期 *</label>
-                        <div class="col-sm-10">
-                            <input type="text" ng-model="model.goods.ExpiryDate" class="form-control datetimepicker" style="ime-mode:disabled;" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">批次号</label>
-                        <div class="col-sm-10">
-                            <input type="text" ng-model="model.goods.BatchNo" class="form-control" maxlength="100" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">数量/包装 *</label>
-                        <div class="col-sm-5">
-                            <input type="number" ng-model="model.goods.Quantity" class="form-control" min="0" />
-                        </div>
-                        <div class="col-sm-5">
-                            <select ng-model="model.goods.Package" class="form-control">
-                                <option value="罐装">罐装</option>
-                                <option value="瓶装">瓶装</option>
-                                <option value="袋装">袋装</option>
-                                <option value="盒装">盒装</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">质量检验</label>
-                        <div ng-class="(model.goods.C102?'col-sm-2':'col-sm-6')">
-                            <div class="checkbox"><label><input type="checkbox" ng-model="model.goods.C102" />是否检查</label></div>
-                        </div>
-                        <label ng-show="model.goods.C102" class="col-sm-2 control-label">检验内容 *</label>
-                        <div ng-show="model.goods.C102" class="col-sm-6">
-                            <input type="text" ng-model="model.goods.C102Comment" class="form-control" />
-                        </div>
-                    </div>
+                    
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <button class="btn btn-default" ng-click="submit()">
