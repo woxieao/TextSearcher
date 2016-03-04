@@ -11,6 +11,7 @@ using Giqci.Services;
 using Ktech.Mvc.ActionResults;
 using Application = Giqci.Models.Application;
 using GoodsItem = Giqci.Models.GoodsItem;
+using ContainerInfo = Giqci.Models.ContainerInfo;
 using Newtonsoft.Json;
 using Giqci.PublicWeb.Models.Goods;
 
@@ -23,13 +24,15 @@ namespace Giqci.PublicWeb.Controllers
         private readonly IMerchantRepository _merchantRepo;
         private readonly ICachedDictionaryService _cache;
         private readonly IApplicationRepository _appRepo;
+        private readonly IContainerInfoRepository _conRepo;
 
-        public FormsController(IPublicRepository publicRepo, ICachedDictionaryService cache, IMerchantRepository merchantRepo, IApplicationRepository appRepo)
+        public FormsController(IPublicRepository publicRepo, ICachedDictionaryService cache, IMerchantRepository merchantRepo, IApplicationRepository appRepo, IContainerInfoRepository conRepo)
         {
             _publicRepo = publicRepo;
             _merchantRepo = merchantRepo;
             _cache = cache;
             _appRepo = appRepo;
+            _conRepo = conRepo;
         }
 
         [Route("forms/app/")]
@@ -45,8 +48,7 @@ namespace Giqci.PublicWeb.Controllers
             //get cookies 
             CookieHelper _cookie = new CookieHelper();
             _appString = _cookie.GetApplication("application");
-           Models
-               .Application.Application _application = JsonConvert.DeserializeObject<Models.Application.Application>(_appString);
+            Models.Application.Application _application = JsonConvert.DeserializeObject<Models.Application.Application>(_appString);
             var model = new ApplicationPageModel { };
             if (_application == null)
             {
@@ -61,16 +63,21 @@ namespace Giqci.PublicWeb.Controllers
                         ApplicantPhone = merchant.Phone,
                         ApplicantEmail = merchant.Email,
                         InspectionDate = DateTime.Now.AddDays(-1),
-                        Goods = new List<GoodsItem> { new GoodsItem { ManufacturerCountry = "036" } }
+                        Goods = new List<GoodsItem> { new GoodsItem { ManufacturerCountry = "036" } },
+                        ContainerInfoList = new List<ContainerInfo> {new ContainerInfo()
+                        {
+                            ContainerNumber= String.Empty,
+                            SealNumber = String.Empty,
+                        } },
                     }
                 };
             }
             else
             {
                 model = new ApplicationPageModel
-               {
-                   Application = _application
-               };
+                {
+                    Application = _application
+                };
             }
             ModelBuilder.SetHelperFields(_cache, model);
             return View(model);
@@ -91,7 +98,16 @@ namespace Giqci.PublicWeb.Controllers
             var goods = new List<GoodsItem>();
 
             List<Giqci.Entities.Core.GoodsItem> _goods = _appRepo.SelectGoodsItems(_application.Id);
-
+            var _containerInfoList = new List<ContainerInfo>();
+            var containerInfoList = _conRepo.GetContainerInfoList(_application.Id);
+            foreach (var containerInfo in containerInfoList)
+            {
+                _containerInfoList.Add(new ContainerInfo
+                {
+                    SealNumber = containerInfo.SealNumber,
+                    ContainerNumber = containerInfo.ContainerNumber,
+                });
+            }
             for (int i = 0; i < _goods.Count; i++)
             {
                 GoodsItem gi = new GoodsItem();
@@ -157,7 +173,8 @@ namespace Giqci.PublicWeb.Controllers
                     TradeType = _application.TradeType,
                     Vesselcn = _application.Vesselcn,
                     Voyage = _application.Voyage,
-                    Goods = goods
+                    Goods = goods,
+                    ContainerInfoList = _containerInfoList,
                 }
             };
 
@@ -254,7 +271,16 @@ namespace Giqci.PublicWeb.Controllers
                         gi.Spec = model.Goods[i].Spec;
                         _goods.Add(gi);
                     }
-                    _appRepo.UpdateApplication(id, _application, _goods);
+                    var _containerInfo = new List<Giqci.Entities.Core.ContainerInfo>();
+                    foreach (var containerInfo in model.ContainerInfoList)
+                    {
+                        _containerInfo.Add(new Giqci.Entities.Core.ContainerInfo()
+                        {
+                            SealNumber = containerInfo.SealNumber,
+                            ContainerNumber = containerInfo.ContainerNumber
+                        });
+                    }
+                    _appRepo.UpdateApplication(id, _application, _goods, _containerInfo);
                 }
                 else
                 {
@@ -313,7 +339,21 @@ namespace Giqci.PublicWeb.Controllers
                     }
                 }
             }
-
+            if (model.ShippingMethod.ToString().ToUpper() == "O")
+            {
+                for (var i = 0; i < model.ContainerInfoList.Count; i++)
+                {
+                    var containerInfo = model.ContainerInfoList[i];
+                    if (string.IsNullOrWhiteSpace(containerInfo.ContainerNumber))
+                    {
+                        errors.Add("船舶资料" + (i + 1) + "的铅封号不能为空");
+                    }
+                    if (string.IsNullOrWhiteSpace(containerInfo.SealNumber))
+                    {
+                        errors.Add("船舶资料" + (i + 1) + "的铅封号不能为空");
+                    }
+                }
+            }
             if (!model.C101 && !model.C102 && !model.C103)
             {
                 errors.Add("请选择证书类型");

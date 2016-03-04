@@ -20,6 +20,7 @@ namespace Giqci.PublicWeb
             builder.RegisterType<ApplicationRepository>().As<IApplicationRepository>().InstancePerDependency();
             builder.RegisterType<CertificateRepository>().As<ICertificateRepository>().InstancePerDependency();
             builder.RegisterType<GoodsRepository>().As<IGoodsRepository>().InstancePerDependency();
+            builder.RegisterType<ContainerInfoRepository>().As<IContainerInfoRepository>().InstancePerDependency();
         }
     }
 }
