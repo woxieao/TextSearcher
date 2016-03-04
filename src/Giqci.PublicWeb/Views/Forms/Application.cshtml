@@ -490,6 +490,26 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group" ng-show="showContainer">
+                    <label class="col-sm-2 control-label">船舶资料</label>
+                    <div class="col-sm-10">
+                        <div ng-repeat="item in model.Application.ContainerInfoList">
+                            <table class="table table-striped goodsItems">
+                                <tr>
+                                    <th>装箱信息 {{$index+1}}</th>
+                                    <td colspan="3"><button type="button" ng-click="removeContainerInfo($index)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button></td>
+                                </tr>
+                                <tr>
+                                    <th>装箱号</th>
+                                    <td><input type="text" ng-model="item.ContainerNumber" class="form-control" placeholder="装箱号" /></td>
+                                    <th>铅封号</th>
+                                    <td><input type="text" ng-model="item.SealNumber" class="form-control" placeholder="铅封号" /></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <button type="button" ng-click="addContainerInfo()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加装箱信息</button>
+                    </div>
+                </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">运输总数量 *</label>
                     <div class="col-sm-5">
