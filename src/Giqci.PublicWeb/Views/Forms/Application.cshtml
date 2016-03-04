@@ -111,7 +111,14 @@
                         });
                     });
                 });
-
+                $scope.addContainerInfo = function() {
+                    $scope.model.Application.ContainerInfoList.push({ ContainerNumber: "", SealNumber: "" });
+                    $log.log($scope.model);
+                };
+                $scope.removeContainerInfo = function(index) {
+                    $scope.model.Application.ContainerInfoList.splice(index, 1);
+                    $log.log($scope.model);
+                };
                 $scope.additem = function() {
                     $scope.model.Application.Goods.push({ ManufacturerCountry: "036", ManufacturerDate: null, ExpiryDate: null, C102: null, C102Comment: null });
                     $log.log($scope.model);
@@ -152,6 +159,9 @@
                 $scope.check_type_c102();
 
                 $scope.submit = function() {
+                    if ($scope.model.Application.ShippingMethod === "A") {
+                        $scope.model.Application.ContainerInfoList = [];
+                    }
                     for (var i = 0; i < $scope.model.Application.Goods.length; i++) {
                         $scope.model.Application.Goods[i].Index = i;
                         $scope.model.Application.Goods[i].ManufacturerDate = getDate($scope.model.Application.Goods[i].ManufacturerDate);
@@ -186,19 +196,21 @@
                     $scope.unit = "Containers";
                 }
 
-                $scope.check_A = function(){
+                $scope.check_A = function() {
+                    $scope.showContainer = false;
                     $scope.unit = "Pallets";
                 };
-                $scope.check_O = function(){
+                $scope.check_O = function() {
+                    $scope.showContainer = true;
                     $scope.unit = "Containers";
                 };
 
-                $scope.updateClock = function(){
-                    $http.post('/api/account/heartbeat').then(function(){});
+                $scope.updateClock = function() {
+                    $http.post('/api/account/heartbeat').then(function() {});
                 };
-                setInterval(function(){
+                setInterval(function() {
                     $scope.$apply($scope.updateClock);
-                },300000);
+                }, 300000);
 
                 $scope.updateClock();
             }
