@@ -338,52 +338,58 @@ namespace Giqci.PublicWeb.Controllers
                         errors.Add("商品" + (i + 1) + "的数量必须大于0");
                     }
                 }
-            }
-            if (model.ShippingMethod.ToString().ToUpper() == "O")
-            {
-                for (var i = 0; i < model.ContainerInfoList.Count; i++)
+
+                if (model.ShippingMethod.ToString().ToUpper() == Giqci.Enums.ShippingMethod.O.ToString())
                 {
-                    var containerInfo = model.ContainerInfoList[i];
-                    if (string.IsNullOrWhiteSpace(containerInfo.ContainerNumber))
+                    if (!model.ContainerInfoList.Any())
                     {
-                        errors.Add("船舶资料" + (i + 1) + "的铅封号不能为空");
+                        errors.Add("船舶资料不能为空");
                     }
-                    if (string.IsNullOrWhiteSpace(containerInfo.SealNumber))
+                    for (var i = 0; i < model.ContainerInfoList.Count; i++)
                     {
-                        errors.Add("船舶资料" + (i + 1) + "的铅封号不能为空");
+                        var containerInfo = model.ContainerInfoList[i];
+                        if (string.IsNullOrWhiteSpace(containerInfo.ContainerNumber))
+                        {
+                            errors.Add("船舶资料" + (i + 1) + "的装箱号不能为空");
+                        }
+                        if (string.IsNullOrWhiteSpace(containerInfo.SealNumber))
+                        {
+                            errors.Add("船舶资料" + (i + 1) + "的铅封号不能为空");
+                        }
                     }
+
                 }
+                if (!model.C101 && !model.C102 && !model.C103)
+                {
+                    errors.Add("请选择证书类型");
+                }
+                if (!Enum.IsDefined(typeof(TradeType), model.TradeType))
+                {
+                    errors.Add("请选择商业目的");
+                }
+                if (string.IsNullOrEmpty(model.DestPort) &&
+                    string.IsNullOrEmpty(model.OtherDestPort))
+                {
+                    errors.Add("请填写目标港口");
+                }
+                if (string.IsNullOrEmpty(model.LoadingPort) &&
+                    string.IsNullOrEmpty(model.OtherLoadingPort))
+                {
+                    errors.Add("请填写发货港口");
+                }
+                if (model.InspectionDate < DateTime.Today)
+                {
+                    errors.Add("请填写正确预约检查日期");
+                }
+                if (string.IsNullOrEmpty(model.InspectionAddr))
+                {
+                    errors.Add("请填写检验地点");
+                }
+                if (model.TotalUnits <= 0)
+                    errors.Add("运输总数量必须大于0");
+                if (model.TotalWeight <= 0)
+                    errors.Add("运输总重量必须大于0");
             }
-            if (!model.C101 && !model.C102 && !model.C103)
-            {
-                errors.Add("请选择证书类型");
-            }
-            if (!Enum.IsDefined(typeof(TradeType), model.TradeType))
-            {
-                errors.Add("请选择商业目的");
-            }
-            if (string.IsNullOrEmpty(model.DestPort) &&
-                string.IsNullOrEmpty(model.OtherDestPort))
-            {
-                errors.Add("请填写目标港口");
-            }
-            if (string.IsNullOrEmpty(model.LoadingPort) &&
-                string.IsNullOrEmpty(model.OtherLoadingPort))
-            {
-                errors.Add("请填写发货港口");
-            }
-            if (model.InspectionDate < DateTime.Today)
-            {
-                errors.Add("请填写正确预约检查日期");
-            }
-            if (string.IsNullOrEmpty(model.InspectionAddr))
-            {
-                errors.Add("请填写检验地点");
-            }
-            if (model.TotalUnits <= 0)
-                errors.Add("运输总数量必须大于0");
-            if (model.TotalWeight <= 0)
-                errors.Add("运输总重量必须大于0");
             return errors;
         }
     }
