@@ -159,7 +159,7 @@
                 $scope.check_type_c102();
 
                 $scope.submit = function() {
-                    if ($scope.model.Application.ShippingMethod === "A") {
+                    if ($scope.model.Application.ShippingMethod === "@Html.Raw(Giqci.Enums.ShippingMethod.A)") {
                         $scope.model.Application.ContainerInfoList = [];
                     }
                     for (var i = 0; i < $scope.model.Application.Goods.length; i++) {
@@ -189,7 +189,7 @@
                             $log.warn(response);
                         });
                 };
-                if($scope.model.Application.ShippingMethod=="A")
+                if($scope.model.Application.ShippingMethod==="@Html.Raw(Giqci.Enums.ShippingMethod.A)")
                 {
                     $scope.unit = "Pallets";
                 }else{
