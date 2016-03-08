@@ -19,8 +19,11 @@
         }
     </style>
     <link href="~/Global/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/Global/css/select2/select2.min.css" rel="stylesheet" />
+    <link href="~/Global/css/select2/select2-bootstrap.css" rel="stylesheet" />
     <script src="~/Global/js/bootstrap-datetimepicker.min.js"></script>
     <script src="~/Global/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="~/Global/js/select2/select2.min.js"></script>
 }
 @section Footer{
     <script type="text/javascript">
@@ -471,7 +474,7 @@
                                     <td>
                                         <div class="form-group">
                                             <div ng-class="(item.HSCode?'col-sm-12':'col-sm-6')">
-                                                <select ng-model="item.HSCode" ng-options="i.Code as i.Name group by i.Category for i in model.CommonHSCodes" class="form-control">
+                                                <select ng-model="item.HSCode" ng-options="i.Code as i.Name group by i.Category for i in model.CommonHSCodes" class="form-control ajaxselect" style="width:100%">
                                                     <option value="">&lt; - 其他HS编码 - &gt;</option>
                                                 </select>
                                             </div>
@@ -486,7 +489,7 @@
                                     <td><input type="text" class="form-control" ng-model="item.Spec" /></td>
                                     <th>制造国代码 *</th>
                                     <td>
-                                        <select ng-model="item.ManufacturerCountry" ng-options="c.Code as c.CnName for c in model.Countries" class="form-control"></select>
+                                        <select ng-model="item.ManufacturerCountry" ng-options="c.Code as c.CnName for c in model.Countries" class="form-control ajaxselect" style="width:100%"></select>
                                     </td>
                                 </tr>
                                 <tr>
@@ -543,20 +546,20 @@
                                     <div class="modal-body">
                                         <table class="table table-striped">
                                             <thead>
-                                            <tr>
-                                                <th>品牌</th>
-                                                <th>商品英文名称</th>
-                                                <th>商品中文名称</th>
-                                                <th>操作</th>
-                                            </tr>
+                                                <tr>
+                                                    <th>品牌</th>
+                                                    <th>商品英文名称</th>
+                                                    <th>商品中文名称</th>
+                                                    <th>操作</th>
+                                                </tr>
                                             </thead>
                                             <tbody>
-                                            <tr ng-repeat="item in MerchantGoodsList">
-                                                <td> <span>{{item.Brand}}</span></td>
-                                                <td> <span>{{item.DescriptionEn}}</span></td>
-                                                <td> <span>{{item.Description}}</span></td>
-                                                <td><button ng-click="selectGoods($index)">选择</button></td>
-                                            </tr>
+                                                <tr ng-repeat="item in MerchantGoodsList">
+                                                    <td> <span>{{item.Brand}}</span></td>
+                                                    <td> <span>{{item.DescriptionEn}}</span></td>
+                                                    <td> <span>{{item.Description}}</span></td>
+                                                    <td><button ng-click="selectGoods($index)">选择</button></td>
+                                                </tr>
                                             </tbody>
                                             <tfoot>
                                                 <tr>
@@ -646,7 +649,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">发货港口 *</label>
                     <div ng-class="(!model.Application.LoadingPort ? 'col-sm-5':'col-sm-10')">
-                        <select ng-model="model.Application.LoadingPort" ng-options="i.Code as i.CnName group by i.Country for i in model.LoadingPorts" class="form-control">
+                        <select ng-model="model.Application.LoadingPort" ng-options="i.Code as i.CnName group by i.Country for i in model.LoadingPorts" class="form-control ajaxselect" style="width:100%">
                             <option value="">&lt; - 其他港口 - &gt;</option>
                         </select>
                     </div>
@@ -657,7 +660,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">目的港口 *</label>
                     <div ng-class="(!model.Application.DestPort ? 'col-sm-5':'col-sm-10')">
-                        <select ng-model="model.Application.DestPort" ng-options="i.Code as i.CnName group by i.Country for i in model.DestPorts" class="form-control">
+                        <select ng-model="model.Application.DestPort" ng-options="i.Code as i.CnName group by i.Country for i in model.DestPorts" class="form-control ajaxselect" style="width:100%">
                             <option value="">&lt; - 其他港口 - &gt;</option>
                         </select>
                     </div>

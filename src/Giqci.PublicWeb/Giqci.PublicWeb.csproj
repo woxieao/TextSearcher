@@ -56,12 +56,10 @@
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Contract, Version=1.1.17.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Giqci.Contract">
       <HintPath>..\..\packages\Giqci.Contract.1.1.17\lib\net45\Giqci.Contract.dll</HintPath>
     </Reference>
-    <Reference Include="Giqci.Repository, Version=1.1.12.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Giqci.Repository">
       <HintPath>..\..\packages\Giqci.Repository.1.1.12\lib\net45\Giqci.Repository.dll</HintPath>
     </Reference>
     <Reference Include="Ktech.Contract, Version=1.0.13.0, Culture=neutral, processorArchitecture=MSIL">
@@ -188,6 +186,8 @@
     <Content Include="Global\css\bootstrap-datetimepicker.min.css" />
     <Content Include="Global\css\default.css" />
     <Content Include="Global.asax" />
+    <Content Include="Global\css\select2\select2-bootstrap.css" />
+    <Content Include="Global\css\select2\select2.min.css" />
     <Content Include="Global\images\close.png" />
     <Content Include="Global\images\giqci-banner.jpg" />
     <Content Include="Global\images\cnas-small.jpg" />
@@ -199,7 +199,9 @@
     <Content Include="Global\js\commalert.js" />
     <Content Include="Global\js\locales\bootstrap-datetimepicker.zh-CN.js" />
     <Content Include="Global\js\npm.js" />
-    <Content Include="connectionStrings.config" />
+    <Content Include="connectionStrings.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -211,6 +213,7 @@
     <None Include="Global\js\jquery-2.1.4.intellisense.js" />
     <Content Include="Global\js\jquery-2.1.4.js" />
     <Content Include="Global\js\jquery-2.1.4.min.js" />
+    <Content Include="Global\js\select2\select2.min.js" />
     <Content Include="Global\js\ui-bootstrap-tpls-1.1.2.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
