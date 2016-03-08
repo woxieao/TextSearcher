@@ -30,83 +30,82 @@
         }
 
         app.controller("GlobalController", [
-            '$http', '$scope', '$log', '$location', '$anchorScroll','$timeout','$filter', function($http, $scope, $log, $location, $anchorScroll, $timeout, $filter) {
+            '$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', '$filter', function($http, $scope, $log, $location, $anchorScroll, $timeout, $filter) {
                 $scope.model = @Html.Raw(JsonConvert.SerializeObject(Model));
 
                 $http({
-                    url:'/api/dict/countries',
-                    method:'GET'
-                }).success(function(data,header,config,status){
+                    url: '/api/dict/countries',
+                    method: 'GET'
+                }).success(function(data, header, config, status) {
                     //console.log(data.items);
                     $scope.model.Countries = data.items;
-                }).error(function(data,header,config,status){
+                }).error(function(data, header, config, status) {
                     $log.warn(response);
                 });
                 $http({
-                    url:'/api/dict/commonhscodes',
-                    method:'GET'
-                }).success(function(data,header,config,status){
+                    url: '/api/dict/commonhscodes',
+                    method: 'GET'
+                }).success(function(data, header, config, status) {
                     $scope.model.CommonHSCodes = data.items;
-                }).error(function(data,header,config,status){
+                }).error(function(data, header, config, status) {
                     $log.warn(response);
                 });
                 $http({
-                    url:'/api/dict/loadingports',
-                    method:'GET'
-                }).success(function(data,header,config,status){
+                    url: '/api/dict/loadingports',
+                    method: 'GET'
+                }).success(function(data, header, config, status) {
                     $scope.model.LoadingPorts = data.items;
-                }).error(function(data,header,config,status){
+                }).error(function(data, header, config, status) {
                     $log.warn(response);
                 });
                 $http({
-                    url:'/api/dict/destports',
-                    method:'GET'
-                }).success(function(data,header,config,status){
+                    url: '/api/dict/destports',
+                    method: 'GET'
+                }).success(function(data, header, config, status) {
                     $scope.model.DestPorts = data.items;
-                }).error(function(data,header,config,status){
+                }).error(function(data, header, config, status) {
                     $log.warn(response);
                 });
 
 
                 $scope.model.Application.Id = @ViewBag.id;
 
-                $scope.dataInit = function(){
+                $scope.dataInit = function() {
                     //$scope.model.Application.InspectionDate = getDate($scope.model.Application.InspectionDate);
-                    $scope.model.Application.InspectionDate = $filter('date')($scope.model.Application.InspectionDate,'yyyy/MM/dd');
+                    $scope.model.Application.InspectionDate = $filter('date')($scope.model.Application.InspectionDate, 'yyyy/MM/dd');
                     for (var i = 0; i < $scope.model.Application.Goods.length; i++) {
                         //$scope.model.Application.Goods[i].ManufacturerDate = getDate($scope.model.Application.Goods[i].ManufacturerDate);
                         //$scope.model.Application.Goods[i].ExpiryDate = getDate($scope.model.Application.Goods[i].ExpiryDate);
-                        $scope.model.Application.Goods[i].ManufacturerDate = $filter('date')($scope.model.Application.Goods[i].ManufacturerDate,'yyyy/MM/dd');
-                        $scope.model.Application.Goods[i].ExpiryDate = $filter('date')($scope.model.Application.Goods[i].ExpiryDate,'yyyy/MM/dd');
+                        $scope.model.Application.Goods[i].ManufacturerDate = $filter('date')($scope.model.Application.Goods[i].ManufacturerDate, 'yyyy/MM/dd');
+                        $scope.model.Application.Goods[i].ExpiryDate = $filter('date')($scope.model.Application.Goods[i].ExpiryDate, 'yyyy/MM/dd');
                     }
                 };
-                if($scope.model.Application.Id==0)
-                {
+                if ($scope.model.Application.Id == 0) {
                     $scope.model.Application.TradeType = "T";
                     $scope.model.Application.ShippingMethod = 'A';
                 }
 
                 $scope.dataInit();
                 $scope.errors = [];
-                if($scope.model.Application.Id > 0){
-                    $scope.acceptshow  = false;
+                if ($scope.model.Application.Id > 0) {
+                    $scope.acceptshow = false;
                     $scope.appshow = true;
-                }else{
-                    $scope.acceptshow  = true;
+                } else {
+                    $scope.acceptshow = true;
                     $scope.appshow = false;
                 }
 
-                $(function(){
+                $(function() {
                     $('.datetimepicker').datetimepicker({
-                        language:  'zh-CN',
+                        language: 'zh-CN',
                         format: 'yyyy/mm/dd',
                         autoclose: true,
                         minView: "month",
                         todayBtn: true,
-                    }).on("hide",function(){
+                    }).on("hide", function() {
                         var $this = $(this);
                         var _this = this;
-                        $scope.$apply(function(){
+                        $scope.$apply(function() {
                             $scope[$this.attr('ng-model')] = _this.value;
                         });
                     });
@@ -127,32 +126,87 @@
                     $scope.model.Application.Goods.splice(index, 1);
                     $log.log($scope.model);
                 };
+                $scope.getGoodsList= function(pageIndex,pageSize) {
+                    $http({
+                        url: '/api/goods/list',
+                        method: 'POST',
+                        data: {
+                            pageIndex: pageIndex,
+                            pageSize: pageSize
+                        }
+                    }).success(function(data) {
+                        $scope.MerchantGoodsList = data.items;
+                        $scope.MerchantGoodsListTotalCount = data.count;
+                    }).error(function(data, header, config, status) {
+                        $log.warn(response);
+                    });
+                }
+                $scope.MerchantGoodsListTotalCount = 10;
+                $scope.merchantGoodsListPageIndex = 2;
+                $scope.merchantGoodsListPageSize = 10;
+                $scope.chooseGoods = function(method) {
+                    switch (method) {
+                        case -1:
+                            {
+                                if ($scope.merchantGoodsListPageIndex> 1) {
+                                    $scope.merchantGoodsListPageIndex--;
+                                    $scope.getGoodsList($scope.merchantGoodsListPageIndex,$scope.merchantGoodsListPageSize );
+                                }
+                                break;
+                            }
+                        case 0:
+                            {
+                                if ($scope.merchantGoodsListPageIndex> 1) {
+                                    $scope.merchantGoodsListPageIndex= 1;
+                                    $scope.getGoodsList($scope.merchantGoodsListPageIndex,$scope.merchantGoodsListPageSize );
+                                }
+                                break;
+                            }
+                        case 1:
+                            {
+                                if ($scope.MerchantGoodsListTotalCount== $scope.merchantGoodsListPageSize) {
+                                    $scope.merchantGoodsListPageIndex++;
+                                    $scope.getGoodsList($scope.merchantGoodsListPageIndex,$scope.merchantGoodsListPageSize );
+                                }
+                                break;
+                            }
+                        default:
+                            {
+                                break;
+                            }
+                    }
+                };
+                $scope.selectGoods = function(index) {
+                    $scope.model.Application.Goods.push($scope.MerchantGoodsList[index]);
+                    $scope.MerchantGoodsList.splice(index, 1);
+                }
+
                 $scope.itemClickHandler = function(event) {
                     var currentElement = event.target;
                     //console.log(currentElement);
                     $(currentElement).datetimepicker({
-                        language:  'zh-CN',
+                        language: 'zh-CN',
                         format: 'yyyy/mm/dd',
                         autoclose: true,
                         minView: "month",
                         todayBtn: true,
-                    }).on("hide",function(){
+                    }).on("hide", function() {
                         var $this = $(this);
                         var _this = this;
-                        $scope.$apply(function(){
+                        $scope.$apply(function() {
                             $scope[$this.attr('ng-model')] = _this.value;
                         });
                     });
                 };
-                $scope.accept = function () {
+                $scope.accept = function() {
                     $scope.acceptshow = false;
                     $scope.appshow = true;
                 };
 
-                $scope.check_type_c102 = function(){
-                    if($scope.model.Application.C102){
+                $scope.check_type_c102 = function() {
+                    if ($scope.model.Application.C102) {
                         $scope.show_c_102 = true;
-                    }else{
+                    } else {
                         $scope.show_c_102 = false;
                     }
                 };
@@ -166,18 +220,18 @@
                         $scope.model.Application.Goods[i].Index = i;
                         $scope.model.Application.Goods[i].ManufacturerDate = getDate($scope.model.Application.Goods[i].ManufacturerDate);
                         $scope.model.Application.Goods[i].ExpiryDate = getDate($scope.model.Application.Goods[i].ExpiryDate);
-                        if(!$scope.show_c_102){
+                        if (!$scope.show_c_102) {
                             $scope.model.Application.Goods[i].C102 = false;
                             $scope.model.Application.Goods[i].C102Comment = "";
                         }
                     }
                     //console.log($scope.model.Application);
-                    $http.post('/forms/app', $scope.model.Application,$scope.model.Application.Id)
+                    $http.post('/forms/app', $scope.model.Application, $scope.model.Application.Id)
                         .then(function(response) {
                             $log.log(response);
-                            if (response.data.appNo && response.data.id ==0 && !response.data.errors) {
-                                $scope.resultMessage = "证书申请成功！申请编号为"+response.data.appNo;
-                            }else if(!response.data.appNo && response.data.id >0 && !response.data.errors){
+                            if (response.data.appNo && response.data.id == 0 && !response.data.errors) {
+                                $scope.resultMessage = "证书申请成功！申请编号为" + response.data.appNo;
+                            } else if (!response.data.appNo && response.data.id > 0 && !response.data.errors) {
                                 $scope.resultMessage = "数据更新成功";
                             } else {
                                 $scope.errors = response.data.errors;
@@ -189,10 +243,9 @@
                             $log.warn(response);
                         });
                 };
-                if($scope.model.Application.ShippingMethod==="@Html.Raw(Giqci.Enums.ShippingMethod.A)")
-                {
+                if ($scope.model.Application.ShippingMethod === "@Html.Raw(Giqci.Enums.ShippingMethod.A)") {
                     $scope.unit = "Pallets";
-                }else{
+                } else {
                     $scope.unit = "Containers";
                 }
 
@@ -477,6 +530,56 @@
                             </table>
                         </div>
                         <button type="button" ng-click="additem()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加商品</button>
+                        <button type="button" ng-click="chooseGoods(0)" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">
+                            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 从已有商品中选择
+                        </button>
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <h4 class="modal-title" id="myModalLabel">已有商品</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>品牌</th>
+                                                <th>商品英文名称</th>
+                                                <th>商品中文名称</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="item in MerchantGoodsList">
+                                                <td> <span>{{item.Brand}}</span></td>
+                                                <td> <span>{{item.DescriptionEn}}</span></td>
+                                                <td> <span>{{item.Description}}</span></td>
+                                                <td><button ng-click="selectGoods($index)">选择</button></td>
+                                            </tr>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="4">
+                                                        <div class="page-list">
+                                                            <ul class="pagination" ng-show="MerchantGoodsListTotalCount> 0">
+                                                                <li ng-class="{disabled: merchantGoodsListPageIndex== 1}" ng-click="chooseGoods(0)"><span>首页</span></li>
+                                                                <li ng-class="{disabled: merchantGoodsListPageIndex== 1}" ng-click="chooseGoods(-1)"><span>上一页</span></li>
+                                                                <li class="disabled"><span>第{{merchantGoodsListPageIndex}}页</span></li>
+                                                                <li ng-class="{disabled: MerchantGoodsListTotalCount < merchantGoodsListPageSize}" ng-click="chooseGoods(1)"><span>下一页</span></li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
