@@ -28,5 +28,21 @@
     <script src="~/Global/js/commalert.js"></script>
     <script src="~/Global/js/app.js"></script>
     @RenderSection("Footer", false)
+    <script>
+        var _Browser = {};
+        var checkBrowser = function () {
+            var ua = navigator.userAgent.toLowerCase();
+            var s;
+            (s = ua.match(/msie ([\d.]+)/)) ? _Browser.ie = s[1] :
+            (s = ua.match(/firefox\/([\d.]+)/)) ? _Browser.firefox = s[1] :
+            (s = ua.match(/chrome\/([\d.]+)/)) ? _Browser.chrome = s[1] :
+            (s = ua.match(/opera.([\d.]+)/)) ? _Browser.opera = s[1] :
+            (s = ua.match(/version\/([\d.]+).*safari/)) ? _Browser.safari = s[1] : 0;
+            if (_Browser.ie <= 9) {
+                document.getElementById("browser-tip").style.display = "block";
+            }
+        }
+        window.onload = checkBrowser();
+    </script>
 </body>
 </html>
