@@ -25,28 +25,32 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpGet]
         public ActionResult GetCountries()
         {
-            return new KtechJsonResult(HttpStatusCode.OK, new { items = _repoDictionary.GetCountryDictionary() });
+            string query = string.IsNullOrEmpty(Request.QueryString.Get("q")) ? "" : Request.QueryString.Get("q");
+            return new KtechJsonResult(HttpStatusCode.OK, new { items = _repoDictionary.FindCountryDictionary(query) });
         }
 
         [Route("dict/commonhscodes")]
         [HttpGet]
         public ActionResult GetCommonHSCodes()
         {
-            return new KtechJsonResult(HttpStatusCode.OK, new { items = _repoDictionary.GetCommonHSCodes() });
+            string query = string.IsNullOrEmpty(Request.QueryString.Get("q")) ? "" : Request.QueryString.Get("q");
+            return new KtechJsonResult(HttpStatusCode.OK, new { items = _repoDictionary.FindHSCodeByName(query) });
         }
 
         [Route("dict/loadingports")]
         [HttpGet]
         public ActionResult GetLoadingPorts()
         {
-            return new KtechJsonResult(HttpStatusCode.OK, new { items = _repoDictionary.GetLoadingPorts() });
+            string query = string.IsNullOrEmpty(Request.QueryString.Get("q")) ? "" : Request.QueryString.Get("q");
+            return new KtechJsonResult(HttpStatusCode.OK, new { items = _repoDictionary.FindLoadingPortsByName(query) });
         }
 
         [Route("dict/destports")]
         [HttpGet]
         public ActionResult GetDestPorts()
         {
-            return new KtechJsonResult(HttpStatusCode.OK, new { items = _repoDictionary.GetDestPorts() });
+            string query = string.IsNullOrEmpty(Request.QueryString.Get("q")) ? "" : Request.QueryString.Get("q");
+            return new KtechJsonResult(HttpStatusCode.OK, new { items = _repoDictionary.FindDestPortsByName(query) });
         }
     }
 }
