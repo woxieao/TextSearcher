@@ -59,10 +59,15 @@ namespace Giqci.PublicWeb.Models.Application
         public List<GoodsItem> Goods { get; set; }
 
         public List<ContainerInfo> ContainerInfoList { get; set; }
+
+        public List<ExampleCertView> ExampleCertList { get; set; }
+
+
         protected BaseApplication()
         {
             Goods = new List<GoodsItem>();
-          //  ContainerInfoList = new List<ContainerInfo>();
+            ContainerInfoList = new List<ContainerInfo>();
+            ExampleCertList = new List<ExampleCertView>();
         }
     }
 }
