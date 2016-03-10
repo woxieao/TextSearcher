@@ -18,7 +18,8 @@ namespace Giqci.PublicWeb.Models
                 NoReplyEmail = WebConfigurationManager.AppSettings["NoReplyEmail"],
                 FeedbackEmailSubject = WebConfigurationManager.AppSettings["FeedbackEmailSubject"],
                 RegMerchantEmailSubject = WebConfigurationManager.AppSettings["RegMerchantEmailSubject"],
-                ForgotPasswordEmailSubject = WebConfigurationManager.AppSettings["ForgotPasswordEmailSubject"]
+                ForgotPasswordEmailSubject = WebConfigurationManager.AppSettings["ForgotPasswordEmailSubject"],
+                UserExampleFilePath = WebConfigurationManager.AppSettings["UserExampleFilePath"],
             };
         }
 
@@ -35,5 +36,8 @@ namespace Giqci.PublicWeb.Models
         public string RegMerchantEmailSubject { get; set; }
 
         public string ForgotPasswordEmailSubject { get; set; }
+
+        public string UserExampleFilePath { get; private set; }
+
     }
 }
