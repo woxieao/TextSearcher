@@ -19,6 +19,7 @@ using GoodsItem = Giqci.Models.GoodsItem;
 using ContainerInfo = Giqci.Models.ContainerInfo;
 using Newtonsoft.Json;
 using Giqci.PublicWeb.Models.Goods;
+using Ktech.Extensions;
 
 namespace Giqci.PublicWeb.Controllers
 {
@@ -100,12 +101,14 @@ namespace Giqci.PublicWeb.Controllers
         public ActionResult Application(int id)
         {
             var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
-            var application = _appRepo.GetApplication(id);
-
+            var application = _appRepo.GetApplication(id, merchant.Id);
+            //非该登录人的申请就跳转到新申请页面,避免任意用户更改非本人的申请
+            if (application == null)
+            {
+                return Redirect("/forms/app/");
+            }
             ViewBag.id = id;
-
             var goods = new List<GoodsItem>();
-
             var _goods = _appRepo.SelectGoodsItems(application.Id);
             var containerInfos = _conRepo.GetContainerInfoList(application.Id);
             var exampleCerts = _exaRepo.GetExampleCertList(application.Id);
@@ -148,11 +151,11 @@ namespace Giqci.PublicWeb.Controllers
                 Application = new Models.Application.Application
                 {
                     ApplicantCode = application.ApplicantCode,
-                    Applicant = merchant.Name,
-                    ApplicantAddr = merchant.Address,
-                    ApplicantContact = merchant.Contact,
-                    ApplicantPhone = merchant.Phone,
-                    ApplicantEmail = merchant.Email,
+                    Applicant = application.Applicant,
+                    ApplicantAddr = application.ApplicantAddr,
+                    ApplicantContact = application.ApplicantContact,
+                    ApplicantPhone = application.ApplicantPhone,
+                    ApplicantEmail = application.ApplicantEmail,
                     Billno = application.BillNo,
                     C101 = application.C101,
                     C102 = application.C102,
@@ -214,6 +217,7 @@ namespace Giqci.PublicWeb.Controllers
                 errors = new List<string>() {"登录状态已失效，请您重新登录系统"};
             }
 
+            var merchantId = _merchantRepo.GetMerchant(User.Identity.Name).Id;
             if (!errors.Any())
             {
                 var exampleCertList = cookieHelper.GetExampleList(true);
@@ -293,7 +297,7 @@ namespace Giqci.PublicWeb.Controllers
                             ContainerNumber = containerInfo.ContainerNumber
                         });
                     }
-                    _appRepo.UpdateApplication(id, _application, _goods, _containerInfo, exampleCertList);
+                    _appRepo.UpdateApplication(id, merchantId, _application, _goods, _containerInfo, exampleCertList);
                 }
                 else
                 {
@@ -446,6 +450,24 @@ namespace Giqci.PublicWeb.Controllers
                     errors.Add("运输总重量必须大于0");
             }
             return errors;
+        }
+
+        [Route("test")]
+        [HttpGet]
+        public ActionResult Test()
+        {
+            TestFunc();
+            return Redirect("/");
+        }
+
+        private int TestFunc(params string[] strList)
+        {
+            var a = 0;
+            foreach (var str in strList)
+            {
+                a++;
+            }
+            return a;
         }
     }
 }
