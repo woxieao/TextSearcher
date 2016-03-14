@@ -5,14 +5,6 @@
 @using Newtonsoft.Json
 @model Giqci.PublicWeb.Models.Goods.GoodsPageModel
 
-@section Header{
-    <link href="~/Global/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <link href="~/Global/css/select2/select2.min.css" rel="stylesheet" />
-    <link href="~/Global/css/select2/select2-bootstrap.css" rel="stylesheet" />
-    <script src="~/Global/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="~/Global/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
-    <script src="~/Global/js/select2/select2.min.js"></script>
-}
 @section Footer{
     <script type="text/javascript">
         //var app = angular.module("giqci", []);
@@ -91,7 +83,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">HS编码 *</label>
                         <div class="col-sm-10">
-                            <select ng-model="model.goods.HSCode" ng-options="i.Code as i.Name group by i.Category for i in model.CommonHSCodes" class="form-control selectCommonHsCodes" style="width:100%">
+                            <select ajax-select ajax-url="commonhscodes" ng-model="model.goods.HSCode" ng-options="i.Code as i.Name group by i.Category for i in model.CommonHSCodes" class="form-control selectCommonHsCodes" style="width:100%">
                                 <option value="">&lt; - 请选择HS编码 - &gt;</option>
                             </select>
                         </div>
@@ -105,7 +97,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">制造国代码 *</label>
                         <div class="col-sm-10">
-                            <select ng-model="model.goods.ManufacturerCountry" ng-options="c.Code as c.CnName for c in model.Countries" class="form-control selectCountry" style="width:100%"></select>
+                            <select ajax-select ajax-url="countries" ng-model="model.goods.ManufacturerCountry" ng-options="c.Code as c.CnName for c in model.Countries" class="form-control selectCountry" style="width:100%"></select>
                         </div>
                     </div>
                     <div class="form-group">
