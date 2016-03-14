@@ -199,6 +199,7 @@
     <Content Include="Global\js\app.js" />
     <Content Include="Global\js\bootstrap-datetimepicker.min.js" />
     <Content Include="Global\js\commalert.js" />
+    <Content Include="Global\js\directive.js" />
     <Content Include="Global\js\locales\bootstrap-datetimepicker.zh-CN.js" />
     <Content Include="Global\js\npm.js" />
     <Content Include="connectionStrings.config">
