@@ -451,23 +451,5 @@ namespace Giqci.PublicWeb.Controllers
             }
             return errors;
         }
-
-        [Route("test")]
-        [HttpGet]
-        public ActionResult Test()
-        {
-            TestFunc();
-            return Redirect("/");
-        }
-
-        private int TestFunc(params string[] strList)
-        {
-            var a = 0;
-            foreach (var str in strList)
-            {
-                a++;
-            }
-            return a;
-        }
     }
 }
