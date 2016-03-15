@@ -52,5 +52,37 @@ namespace Giqci.PublicWeb.Controllers.Api
             string query = string.IsNullOrEmpty(Request.QueryString.Get("q")) ? "" : Request.QueryString.Get("q");
             return new KtechJsonResult(HttpStatusCode.OK, new { items = _repoDictionary.FindDestPortsByName(query) });
         }
+
+        [Route("dict/countries/code")]
+        [HttpGet]
+        public ActionResult GetCountriesByCode()
+        {
+            string query = string.IsNullOrEmpty(Request.QueryString.Get("code")) ? "" : Request.QueryString.Get("code");
+            return new KtechJsonResult(HttpStatusCode.OK, new { items = _repoDictionary.GetCountryDictionaryByCode(query) });
+        }
+
+        [Route("dict/commonhscodes/code")]
+        [HttpGet]
+        public ActionResult GetCommonHSCodesByCode()
+        {
+            string query = string.IsNullOrEmpty(Request.QueryString.Get("code")) ? "" : Request.QueryString.Get("code");
+            return new KtechJsonResult(HttpStatusCode.OK, new { items = _repoDictionary.GetHSCode(query) });
+        }
+
+        [Route("dict/loadingports/code")]
+        [HttpGet]
+        public ActionResult GetLoadingPortsByCode()
+        {
+            string query = string.IsNullOrEmpty(Request.QueryString.Get("code")) ? "" : Request.QueryString.Get("code");
+            return new KtechJsonResult(HttpStatusCode.OK, new { items = _repoDictionary.GetPort(query) });
+        }
+
+        [Route("dict/destports/code")]
+        [HttpGet]
+        public ActionResult GetDestPortsByCode()
+        {
+            string query = string.IsNullOrEmpty(Request.QueryString.Get("code")) ? "" : Request.QueryString.Get("code");
+            return new KtechJsonResult(HttpStatusCode.OK, new { items = _repoDictionary.GetPort(query) });
+        }
     }
 }
