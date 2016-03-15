@@ -118,7 +118,7 @@ namespace Giqci.PublicWeb.Controllers
             {
                 exampleListStr += (string.IsNullOrWhiteSpace(exampleListStr)
                     ? exampleCerat.CertFilePath
-                    : string.Format("{0}|", exampleCerat.CertFilePath));
+                    : string.Format("|{0}|", exampleCerat.CertFilePath));
             }
             cookieHelper.OverrideCookies(cookieHelper.ExampleFileListKeyName, exampleListStr);
             for (int i = 0; i < _goods.Count; i++)
@@ -329,7 +329,7 @@ namespace Giqci.PublicWeb.Controllers
 
         private string FormatExampleCookieStr(string exampleStr)
         {
-            return string.IsNullOrWhiteSpace(exampleStr) ? string.Empty : exampleStr + "|";
+            return string.IsNullOrWhiteSpace(exampleStr) ? string.Empty : string.Format("|{0}|", exampleStr);
         }
 
         private string SaveFile(HttpPostedFileBase file)
