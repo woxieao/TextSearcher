@@ -62,8 +62,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Giqci.Repository, Version=1.1.20.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Giqci.Repository.1.1.20\lib\net45\Giqci.Repository.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Ktech.Contract, Version=1.0.13.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Ktech.Contract.1.0.13\lib\net45\Ktech.Contract.dll</HintPath>
@@ -201,6 +201,7 @@
     <Content Include="Global\js\commalert.js" />
     <Content Include="Global\js\directive.js" />
     <Content Include="Global\js\locales\bootstrap-datetimepicker.zh-CN.js" />
+    <Content Include="Global\js\locales\select2.zh-CN.js" />
     <Content Include="Global\js\npm.js" />
     <Content Include="connectionStrings.config">
       <SubType>Designer</SubType>

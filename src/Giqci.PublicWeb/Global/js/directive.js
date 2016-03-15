@@ -1,14 +1,34 @@
 ﻿"use strict";
 
-app.directive("ajaxSelect", function ($timeout) {
+app.directive("ajaxSelect", function ($timeout, $http) {
     return {
         restrict: 'AC',
         require: "ngModel",
         link: function (scope, element, attrs, model) {
             var $element = $(element);
             var url = attrs["ajaxUrl"];
+
+            scope.$watch("ngModel", function (n, o) {
+                scope.isLoading = false;
+                if (!scope.isLoading) {
+                    $http.get("/api/dict/" + url + "/code", {
+                        params: { 'code': model.$viewValue }
+                    }).success(function (data) {
+                        if (typeof (data.items) !== "undefined") {
+                            var newVal = (url === "commonhscodes") ? data.items.Name : data.items.CnName;
+                            //console.log(newVal);
+                            $(element).next().find("span.select2-selection__rendered").html(newVal);
+                            scope.isLoading = true;
+                        }
+                    }).error(function (data) {
+                    });
+                }
+            }, true);
+
             $element.select2({
                 theme: "bootstrap",
+                minimumInputLength: 1,
+                language: "zh-CN",
                 ajax: {
                     url: "/api/dict/" + url,
                     dataType: 'json',
@@ -40,19 +60,10 @@ app.directive("ajaxSelect", function ($timeout) {
                 }
             }).on('change', function () {
                 scope.$apply(function () {
-                    console.log($element.val());
+                    //console.log("change " + $element.val());
                     model.$setViewValue($element.val());
                 });
             });
-            // model -> view
-            model.$render = function () {
-                $element.html(model.$viewValue);
-            };
-
-            scope.$watch(attrs["ngModel"], function (n, o) {
-                //console.log("change to  " + n);
-                //element.select2().val(n);
-            }, true);
         }
     };
 });
