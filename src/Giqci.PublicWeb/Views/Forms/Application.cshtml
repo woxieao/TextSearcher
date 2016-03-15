@@ -549,7 +549,7 @@
                     </td>
                     <th>HS编码 *</th>
                     <td>
-                        <select ajax-select ajax-url="commonhscodes" ng-model="item.HSCode" ng-options="i.Code as i.Name group by i.Category for i in model.CommonHSCodes" class="form-control selectCommonHsCodes" style="width:100%">
+                        <select ajax-select ajax-url="commonhscodes" ng-model="item.HSCode" ng-options="i.Code as i.Name group by i.Category for i in model.CommonHSCodes" class="form-control selectCommonHsCodes" style="width: 100%">
                             <option value="">&lt; - 请选择HS编码 - &gt;</option>
                         </select>
                     </td>
@@ -557,21 +557,21 @@
                 <tr style="display: none">
                     <th>规格型号 *</th>
                     <td>
-                        <input type="text" class="form-control" ng-model="item.Spec" />
+                        <input type="text" class="form-control" ng-model="item.Spec"/>
                     </td>
                     <th>制造国代码 *</th>
                     <td>
-                        <select ajax-select ajax-url="countries" ng-model="item.ManufacturerCountry" ng-options="c.Code as c.CnName for c in model.Countries" class="form-control selectCountry" style="width:100%"></select>
+                        <select ajax-select ajax-url="countries" ng-model="item.ManufacturerCountry" ng-options="c.Code as c.CnName for c in model.Countries" class="form-control selectCountry" style="width: 100%"></select>
                     </td>
                 </tr>
                 <tr style="display: none">
                     <th>商品货号</th>
                     <td>
-                        <input type="text" ng-model="item.Code" class="form-control" />
+                        <input type="text" ng-model="item.Code" class="form-control"/>
                     </td>
                     <th>商品备案号 *</th>
                     <td>
-                        <input type="text" ng-model="item.CiqCode" class="form-control" />
+                        <input type="text" ng-model="item.CiqCode" class="form-control"/>
                     </td>
                 </tr>
                 <tr>
@@ -630,7 +630,7 @@
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">已有商品</h4>
+                        <h4 class="modal-title" id="myModalLabel">已有商品&nbsp;&nbsp;<a target="_blank" href="/goods/add">添加新商品</a></h4>
                     </div>
                     <div class="modal-body">
                         <table class="table table-striped">
@@ -757,7 +757,7 @@
 <div class="form-group">
     <label class="col-sm-2 control-label">发货港口 *</label>
     <div class="col-sm-10">
-        <select ajax-select ajax-url="loadingports" ng-model="model.Application.LoadingPort" ng-options="i.Code as i.CnName group by i.Country for i in model.LoadingPorts" class="form-control selectLoadingPort" style="width:100%">
+        <select ajax-select ajax-url="loadingports" ng-model="model.Application.LoadingPort" ng-options="i.Code as i.CnName group by i.Country for i in model.LoadingPorts" class="form-control selectLoadingPort" style="width: 100%">
             <option value="">&lt; - 请选择港口 - &gt;</option>
         </select>
     </div>
@@ -765,7 +765,7 @@
 <div class="form-group">
     <label class="col-sm-2 control-label">目的港口 *</label>
     <div class="col-sm-10">
-        <select ajax-select ajax-url="destports" ng-model="model.Application.DestPort" ng-options="i.Code as i.CnName group by i.Country for i in model.DestPorts" class="form-control selectDestPorts" style="width:100%">
+        <select ajax-select ajax-url="destports" ng-model="model.Application.DestPort" ng-options="i.Code as i.CnName group by i.Country for i in model.DestPorts" class="form-control selectDestPorts" style="width: 100%">
             <option value="">&lt; - 其他港口 - &gt;</option>
         </select>
     </div>

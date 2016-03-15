@@ -21,7 +21,8 @@ namespace Giqci.PublicWeb.Controllers
         private readonly IGoodsRepository _goodsRepo;
         private readonly ICachedDictionaryService _cache;
 
-        public GoodsController(IMerchantRepository merchantRepo, IGoodsRepository goodsRepo, ICachedDictionaryService cache)
+        public GoodsController(IMerchantRepository merchantRepo, IGoodsRepository goodsRepo,
+            ICachedDictionaryService cache)
         {
             _merchantRepo = merchantRepo;
             _goodsRepo = goodsRepo;
@@ -41,7 +42,7 @@ namespace Giqci.PublicWeb.Controllers
         [Authorize]
         public ActionResult AddGoods(string applicantCode)
         {
-            var model = new GoodsPageModel { };
+            var model = new GoodsPageModel {};
             model = new GoodsPageModel
             {
                 goods = new GoodsModel
@@ -51,7 +52,7 @@ namespace Giqci.PublicWeb.Controllers
             };
             ModelBuilder.SetHelperGoodsModel(_cache, model);
 
-            return View("GoodsAdd",model);
+            return View("GoodsAdd", model);
         }
 
 
@@ -81,7 +82,7 @@ namespace Giqci.PublicWeb.Controllers
             if (string.IsNullOrEmpty(userName))
             {
                 result = false;
-                errors = new List<string>() { "登录状态已失效，请您重新登录系统" };
+                errors = new List<string>() {"登录状态已失效，请您重新登录系统"};
             }
 
             if (!errors.Any())
@@ -93,19 +94,20 @@ namespace Giqci.PublicWeb.Controllers
                     model.CreateDate = DateTime.Now;
                     model.IsDelete = false;
 
-                    result = _goodsRepo.InsertGoods(User.Identity.Name, model, out message); ;
+                    result = _goodsRepo.InsertGoods(User.Identity.Name, model, out message);
+                    ;
                     errors.Add(message);
                 }
                 else
                 {
                     string message = null;
 
-                    result = _goodsRepo.UpdateGoods(model.Id, model, out message); ;
+                    result = _goodsRepo.UpdateGoods(model.Id, model, out message);
+                    ;
                     errors.Add(message);
                 }
-
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = result, errors = errors });
+            return new KtechJsonResult(HttpStatusCode.OK, new {result = result, errors = errors});
         }
 
 
@@ -135,6 +137,10 @@ namespace Giqci.PublicWeb.Controllers
             if (string.IsNullOrEmpty(model.CiqCode))
             {
                 errors.Add("请填写商品备案号");
+            }
+            if (string.IsNullOrEmpty(model.Package))
+            {
+                errors.Add("请填写规格型号");
             }
             if (model.C102 && string.IsNullOrEmpty(model.C102Comment))
             {
