@@ -112,7 +112,17 @@
                             <input type="text" ng-model="model.goods.CiqCode" class="form-control" />
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">规格型号 *</label>
+                        <div class="col-sm-10">
+                            <select ng-model="model.goods.Package" class="form-control">
+                                <option value="罐装">罐装</option>
+                                <option value="瓶装">瓶装</option>
+                                <option value="袋装">袋装</option>
+                                <option value="盒装">盒装</option>
+                            </select>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <button class="btn btn-default" ng-click="submit()">
