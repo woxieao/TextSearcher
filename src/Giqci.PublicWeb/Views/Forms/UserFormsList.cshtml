@@ -49,7 +49,7 @@
                     <td>
                         <span ng-show="emp.C101">溯源证书&nbsp;</span><span ng-show="emp.C102">品质证书&nbsp;</span><span ng-show="emp.C103">标签证书&nbsp;</span></td>
                     <td>{{emp.TradeType}}</td>
-                    <td>{{emp.CreateDate}}</td>
+                    <td>{{emp.CreateDate|date:"yyyy/MM/dd"}}</td>
                     <td>{{emp.Status}}</td>
                     <td>{{emp.Applicant}}</td>
                     <td>{{emp.MerchantEmail}}</td>
