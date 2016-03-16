@@ -16,11 +16,13 @@ namespace Giqci.PublicWeb.Controllers.Api
     {
         private readonly IGoodsRepository _repo;
         private readonly IDictionaryRepository _repoDictionary;
+        private readonly IMerchantRepository _merchant;
 
-        public GoodsController(IGoodsRepository repo, IDictionaryRepository repoDictionary)
+        public GoodsController(IGoodsRepository repo, IMerchantRepository merchant,IDictionaryRepository repoDictionary)
         {
             _repo = repo;
             _repoDictionary = repoDictionary;
+            _merchant = merchant;
         }
 
         [Route("goods/list")]
@@ -48,7 +50,17 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult Delete(int id)
         {
-            var result = _repo.DeleteGoods(id);
+            var merchant = _merchant.GetMerchant(User.Identity.Name);
+            var goods = _repo.GetGoods(id);
+            var result = false;
+            if (merchant.Id != goods.MerchantId)
+            {
+                result = false;
+            }
+            else
+            {
+                result = _repo.DeleteGoods(id);
+            }
             return new KtechJsonResult(HttpStatusCode.OK, new {result = result});
         }
     }

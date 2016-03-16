@@ -62,6 +62,16 @@ namespace Giqci.PublicWeb.Controllers
             var model = new GoodsPageModel();
             var goodmodel = _goodsRepo.GetGoods(id);
             model.Goods = goodmodel;
+
+            var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
+            if (merchant.Id != goodmodel.MerchantId)
+            {
+                Response.Redirect("/goods/list");
+            }
+            else
+            {
+                model.Goods = goodmodel;
+            }
             ModelBuilder.SetHelperGoodsModel(_cache, model);
             return View("GoodsAdd", model);
         }
