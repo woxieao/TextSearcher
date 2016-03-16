@@ -42,8 +42,7 @@ namespace Giqci.PublicWeb.Controllers
         [Authorize]
         public ActionResult AddGoods(string applicantCode)
         {
-            var model = new GoodsPageModel {};
-            model = new GoodsPageModel
+            var model = new GoodsPageModel
             {
                 goods = new GoodsModel
                 {
@@ -51,7 +50,6 @@ namespace Giqci.PublicWeb.Controllers
                 }
             };
             ModelBuilder.SetHelperGoodsModel(_cache, model);
-
             return View("GoodsAdd", model);
         }
 
@@ -64,9 +62,7 @@ namespace Giqci.PublicWeb.Controllers
             var model = new GoodsPageModel();
             var goodmodel = _goodsRepo.GetGoods(id);
             model.goods = goodmodel;
-
             ModelBuilder.SetHelperGoodsModel(_cache, model);
-
             return View("GoodsAdd", model);
         }
 
@@ -84,7 +80,6 @@ namespace Giqci.PublicWeb.Controllers
                 result = false;
                 errors = new List<string>() {"登录状态已失效，请您重新登录系统"};
             }
-
             if (!errors.Any())
             {
                 // submit
@@ -93,17 +88,13 @@ namespace Giqci.PublicWeb.Controllers
                     string message = null;
                     model.CreateDate = DateTime.Now;
                     model.IsDelete = false;
-
                     result = _goodsRepo.InsertGoods(User.Identity.Name, model, out message);
-                    ;
                     errors.Add(message);
                 }
                 else
                 {
                     string message = null;
-
                     result = _goodsRepo.UpdateGoods(model.Id, model, out message);
-                    ;
                     errors.Add(message);
                 }
             }
@@ -140,7 +131,7 @@ namespace Giqci.PublicWeb.Controllers
             }
             if (string.IsNullOrEmpty(model.Package))
             {
-                errors.Add("请填写规格型号");
+                errors.Add("请填写商品包装");
             }
             if (model.C102 && string.IsNullOrEmpty(model.C102Comment))
             {
