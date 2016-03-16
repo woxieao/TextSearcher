@@ -44,7 +44,7 @@ namespace Giqci.PublicWeb.Controllers
         {
             var model = new GoodsPageModel
             {
-                goods = new GoodsModel
+                Goods = new GoodsModel
                 {
                     ManufacturerCountry = "036"
                 }
@@ -61,7 +61,7 @@ namespace Giqci.PublicWeb.Controllers
         {
             var model = new GoodsPageModel();
             var goodmodel = _goodsRepo.GetGoods(id);
-            model.goods = goodmodel;
+            model.Goods = goodmodel;
             ModelBuilder.SetHelperGoodsModel(_cache, model);
             return View("GoodsAdd", model);
         }

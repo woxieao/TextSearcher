@@ -31,10 +31,11 @@ namespace Giqci.PublicWeb.Controllers
         private readonly IApplicationRepository _appRepo;
         private readonly IContainerInfoRepository _conRepo;
         private readonly IExampleCertRepository _exaRepo;
+        private readonly IDictionaryRepository _repoDictionary;
 
         public FormsController(IPublicRepository publicRepo, ICachedDictionaryService cache,
             IMerchantRepository merchantRepo, IApplicationRepository appRepo, IContainerInfoRepository conRepo,
-            IExampleCertRepository exaRepo)
+            IExampleCertRepository exaRepo, IDictionaryRepository repoDictionary)
         {
             _publicRepo = publicRepo;
             _merchantRepo = merchantRepo;
@@ -42,6 +43,7 @@ namespace Giqci.PublicWeb.Controllers
             _appRepo = appRepo;
             _conRepo = conRepo;
             _exaRepo = exaRepo;
+            _repoDictionary = repoDictionary;
         }
 
         [Route("forms/app/")]
@@ -108,8 +110,8 @@ namespace Giqci.PublicWeb.Controllers
                 return Redirect("/forms/app/");
             }
             ViewBag.id = id;
-            var goods = new List<GoodsItem>();
-            var _goods = _appRepo.SelectGoodsItems(application.Id);
+            var goodsList = new List<GoodsItemModel>();
+            var goodsItems = _appRepo.SelectGoodsItems(application.Id);
             var containerInfos = _conRepo.GetContainerInfoList(application.Id);
             var exampleCerts = _exaRepo.GetExampleCertList(application.Id);
             var cookieHelper = new CookieHelper();
@@ -119,29 +121,32 @@ namespace Giqci.PublicWeb.Controllers
                 exampleListStr += string.Format("|{0}|", exampleCerat.CertFilePath);
             }
             cookieHelper.OverrideCookies(cookieHelper.ExampleFileListKeyName, exampleListStr);
-            for (int i = 0; i < _goods.Count; i++)
+            foreach (Entities.Core.GoodsItem goodsItem in goodsItems)
             {
-                var gi = new GoodsItem
+                var gi = new GoodsItemModel
                 {
-                    BatchNo = _goods[i].BatchNo,
-                    Brand = _goods[i].Brand,
-                    C102 = _goods[i].C102,
-                    C102Comment = _goods[i].C102Comment,
-                    CiqCode = _goods[i].CiqCode,
-                    Code = _goods[i].Code,
-                    Description = _goods[i].Description,
-                    DescriptionEn = _goods[i].DescriptionEn,
-                    ExpiryDate = _goods[i].ExpiryDate,
-                    HSCode = _goods[i].HSCode,
-                    Manufacturer = _goods[i].Manufacturer,
-                    ManufacturerCountry = _goods[i].ManufacturerCountry,
-                    ManufacturerDate = _goods[i].ManufacturerDate,
-                    OtherHSCode = _goods[i].OtherHSCode,
-                    Package = _goods[i].Package,
-                    Quantity = _goods[i].Quantity,
-                    Spec = _goods[i].Spec
+                    BatchNo = goodsItem.BatchNo,
+                    Brand = goodsItem.Brand,
+                    C102 = goodsItem.C102,
+                    C102Comment = goodsItem.C102Comment,
+                    CiqCode = goodsItem.CiqCode,
+                    Code = goodsItem.Code,
+                    Description = goodsItem.Description,
+                    DescriptionEn = goodsItem.DescriptionEn,
+                    ExpiryDate = goodsItem.ExpiryDate,
+                    HSCode = goodsItem.HSCode,
+                    Manufacturer = goodsItem.Manufacturer,
+                    ManufacturerCountry = goodsItem.ManufacturerCountry,
+                    ManufacturerDate = goodsItem.ManufacturerDate,
+                    OtherHSCode = goodsItem.OtherHSCode,
+                    Package = goodsItem.Package,
+                    Quantity = goodsItem.Quantity,
+                    Spec = goodsItem.Spec,
+                    HSCodeDesc = _repoDictionary.GetHSCode(goodsItem.HSCode).Name,
+                    ManufacturerCountryDesc =
+                        _repoDictionary.GetCountryDictionaryByCode(goodsItem.ManufacturerCountry).CnName
                 };
-                goods.Add(gi);
+                goodsList.Add(gi);
             }
 
             var model = new ApplicationPageModel
@@ -185,7 +190,7 @@ namespace Giqci.PublicWeb.Controllers
                     TradeType = application.TradeType,
                     Vesselcn = application.Vesselcn,
                     Voyage = application.Voyage,
-                    Goods = goods,
+                    Goods = goodsList,
                     ContainerInfoList = containerInfos,
                     ExampleCertList = exampleCerts,
                 }
@@ -222,7 +227,7 @@ namespace Giqci.PublicWeb.Controllers
                 // submit
                 if (id > 0)
                 {
-                    Giqci.Entities.Core.Application _application = new Entities.Core.Application()
+                    Giqci.Entities.Core.Application application = new Entities.Core.Application()
                     {
                         ApplicantCode = model.ApplicantCode,
                         Applicant = model.Applicant,
@@ -262,29 +267,30 @@ namespace Giqci.PublicWeb.Controllers
                         Vesselcn = model.Vesselcn,
                         Voyage = model.Voyage,
                     };
-                    List<Giqci.Entities.Core.GoodsItem> _goods = new List<Entities.Core.GoodsItem>();
-                    for (int i = 0; i < model.Goods.Count; i++)
+                    List<Giqci.Entities.Core.GoodsItem> goodsItems = new List<Entities.Core.GoodsItem>();
+                    foreach (GoodsItem goodsItem in model.Goods)
                     {
-                        Giqci.Entities.Core.GoodsItem gi = new Entities.Core.GoodsItem();
-                        gi.BatchNo = model.Goods[i].BatchNo;
-                        gi.Brand = model.Goods[i].Brand;
-                        gi.C102 = model.Goods[i].C102;
-                        gi.C102Comment = model.Goods[i].C102Comment;
-                        gi.CiqCode = model.Goods[i].CiqCode;
-                        gi.Code = model.Goods[i].Code;
-                        gi.Description = model.Goods[i].Description;
-                        gi.DescriptionEn = model.Goods[i].DescriptionEn;
-                        gi.ExpiryDate = model.Goods[i].ExpiryDate;
-                        gi.HSCode = model.Goods[i].HSCode;
-                        gi.Manufacturer = model.Goods[i].Manufacturer;
-                        gi.ManufacturerCountry = model.Goods[i].ManufacturerCountry;
-                        //gi.ManufacturerCountryName = model.Goods[i].ManufacturerCountry;
-                        gi.ManufacturerDate = model.Goods[i].ManufacturerDate;
-                        gi.OtherHSCode = model.Goods[i].OtherHSCode;
-                        gi.Package = model.Goods[i].Package;
-                        gi.Quantity = model.Goods[i].Quantity;
-                        gi.Spec = model.Goods[i].Spec;
-                        _goods.Add(gi);
+                        Giqci.Entities.Core.GoodsItem gi = new Entities.Core.GoodsItem
+                        {
+                            BatchNo = goodsItem.BatchNo,
+                            Brand = goodsItem.Brand,
+                            C102 = goodsItem.C102,
+                            C102Comment = goodsItem.C102Comment,
+                            CiqCode = goodsItem.CiqCode,
+                            Code = goodsItem.Code,
+                            Description = goodsItem.Description,
+                            DescriptionEn = goodsItem.DescriptionEn,
+                            ExpiryDate = goodsItem.ExpiryDate,
+                            HSCode = goodsItem.HSCode,
+                            Manufacturer = goodsItem.Manufacturer,
+                            ManufacturerCountry = goodsItem.ManufacturerCountry,
+                            ManufacturerDate = goodsItem.ManufacturerDate,
+                            OtherHSCode = goodsItem.OtherHSCode,
+                            Package = goodsItem.Package,
+                            Quantity = goodsItem.Quantity,
+                            Spec = goodsItem.Spec
+                        };
+                        goodsItems.Add(gi);
                     }
                     var _containerInfo = new List<Giqci.Entities.Core.ContainerInfo>();
                     foreach (var containerInfo in model.ContainerInfoList)
@@ -295,7 +301,7 @@ namespace Giqci.PublicWeb.Controllers
                             ContainerNumber = containerInfo.ContainerNumber
                         });
                     }
-                    _appRepo.UpdateApplication(id, merchantId, _application, _goods, _containerInfo, exampleCertList);
+                    _appRepo.UpdateApplication(id, merchantId, application, goodsItems, _containerInfo, exampleCertList);
                 }
                 else
                 {
@@ -395,6 +401,11 @@ namespace Giqci.PublicWeb.Controllers
                     {
                         errors.Add("商品" + (i + 1) + "的数量必须大于0");
                     }
+                    if (item.ManufacturerDate.HasValue && item.ExpiryDate.HasValue &&
+                        item.ManufacturerDate >= item.ExpiryDate)
+                    {
+                        errors.Add("商品" + (i + 1) + "的生产日期不得大于等于过期日期");
+                    }
                 }
 
                 if (model.ShippingMethod.ToString().ToUpper() == Giqci.Enums.ShippingMethod.O.ToString())
@@ -443,7 +454,7 @@ namespace Giqci.PublicWeb.Controllers
                     errors.Add("请填写检验地点");
                 }
                 if (model.TotalUnits <= 0)
-                    errors.Add("运输总数量必须大于0");
+                    errors.Add("运输总数量必须为正整数");
                 if (model.TotalWeight <= 0)
                     errors.Add("运输总重量必须大于0");
             }
