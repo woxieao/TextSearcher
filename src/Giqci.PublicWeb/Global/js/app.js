@@ -249,7 +249,7 @@ app.controller('GoodsListController', ['$scope', '$http', function ($scope, $htt
     $scope.remove = function (record) {
         if (confirm("您确定要删除该商品吗?")) {
             $scope.persons.splice($scope.persons.indexOf(record), 1);
-            $http.post('/api/goods/delete', { id: record.Id }).then(function (response) {
+            $http.post('/api/goods/delete', { id: record.Goods.Id }).then(function (response) {
                 if (response.data.result) {
 
                 }
@@ -257,6 +257,6 @@ app.controller('GoodsListController', ['$scope', '$http', function ($scope, $htt
         }
     }
     $scope.edit = function (record) {
-        window.location.href = "/goods/add/" + record.Id;
+        window.location.href = "/goods/add/" + record.Goods.Id;
     }
 }]);
