@@ -7,7 +7,6 @@
 
 @section Footer{
     <script type="text/javascript">
-        //var app = angular.module("giqci", []);
         app.controller("GoodsAddController", ['$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', function ($http, $scope, $log, $location, $anchorScroll, $timeout) {
             $scope.model = @Html.Raw(JsonConvert.SerializeObject(Model));
             $(function(){
@@ -16,7 +15,7 @@
                     format: 'yyyy/mm/dd',
                     autoclose: true,
                     minView: "month",
-                    todayBtn: true,
+                    todayBtn: true
                 }).on("hide",function(){
                     var $this = $(this);
                     var _this = this;
@@ -30,11 +29,11 @@
                 }
             });
             $scope.submit = function() {
-                console.log($scope.model.goods);
-                $http.post('/goods/add', $scope.model.goods).then(function(response) {
+                console.log($scope.model.Goods);
+                $http.post('/goods/add', $scope.model.Goods).then(function(response) {
                     $log.log(response);
                     if (response.data.result) {
-                        $scope.result = response.data.result;
+                        window.location.href = "/goods/list";
                     } else {
                         $scope.errors = response.data.errors;
                         $location.hash("h1");
@@ -51,7 +50,8 @@
 <div ng-controller="GoodsAddController">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">新增商品</h3>
+            <span class="panel-title">新增商品</span><a href="/goods/list" style="float: right;">返回列表</a>
+
         </div>
         <div class="panel-body">
             <h1 ng-show="result">提交成功</h1>
@@ -65,25 +65,25 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">名称(英文) *</label>
                         <div class="col-sm-10">
-                            <input type="text" ng-model="model.goods.DescriptionEn" class="form-control" />
+                            <input type="text" ng-model="model.Goods.DescriptionEn" class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">名称(中文)</label>
                         <div class="col-sm-10">
-                            <input type="text" ng-model="model.goods.Description" class="form-control" />
+                            <input type="text" ng-model="model.Goods.Description" class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">品牌 *</label>
                         <div class="col-sm-10">
-                            <input type="text" ng-model="model.goods.Brand" class="form-control" />
+                            <input type="text" ng-model="model.Goods.Brand" class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">HS编码 *</label>
                         <div class="col-sm-10">
-                            <select ajax-select ajax-url="commonhscodes" ng-model="model.goods.HSCode" class="form-control">
+                            <select ajax-select ajax-url="commonhscodes" ng-model="model.Goods.HSCode" class="form-control">
                                 <option value="">&lt; - 请选择HS编码 - &gt;</option>
                             </select>
                         </div>
@@ -91,31 +91,31 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">规格型号 *</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" ng-model="model.goods.Spec" />
+                            <input type="text" class="form-control" ng-model="model.Goods.Spec" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">制造国代码 *</label>
                         <div class="col-sm-10">
-                            <select ajax-select ajax-url="countries" ng-model="model.goods.ManufacturerCountry" class="form-control"></select>
+                            <select ajax-select ajax-url="countries" ng-model="model.Goods.ManufacturerCountry" class="form-control"></select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">商品货号</label>
                         <div class="col-sm-10">
-                            <input type="text" ng-model="model.goods.Code" class="form-control" />
+                            <input type="text" ng-model="model.Goods.Code" class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">商品备案号 *</label>
                         <div class="col-sm-10">
-                            <input type="text" ng-model="model.goods.CiqCode" class="form-control" />
+                            <input type="text" ng-model="model.Goods.CiqCode" class="form-control" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">商品包装 *</label>
                         <div class="col-sm-10">
-                            <select ng-model="model.goods.Package" class="form-control">
+                            <select ng-model="model.Goods.Package" class="form-control">
                                 <option value="罐装">罐装</option>
                                 <option value="瓶装">瓶装</option>
                                 <option value="袋装">袋装</option>
