@@ -76,16 +76,6 @@
                 };
                 $scope.MerchantGoodsList = {};
                 $scope.removeitem = function(index) {
-                    var removeItemId = $scope.model.Application.Goods[index].Id;
-                    var canPushBack = true;
-                    for (var i = 0; i < $scope.MerchantGoodsList.length; i++) {
-                        if ($scope.MerchantGoodsList[i].Id === removeItemId) {
-                            canPushBack = false;
-                        }
-                    }
-                    if (canPushBack && $scope.MerchantGoodsList.length < $scope.merchantGoodsListPageSize) {
-                        $scope.MerchantGoodsList.push($scope.model.Application.Goods[index]);
-                    }
                     $scope.model.Application.Goods.splice(index, 1);
                 };
                 $scope.getGoodsList = function(pageIndex, pageSize) {
@@ -138,24 +128,26 @@
                     }
                     }
                 };
+
                 $scope.selectGoods = function(index) {
-                    var canPushIntoGoods = true;
-                    var newItemId = $scope.MerchantGoodsList[index].Id;
+                    var item = $scope.MerchantGoodsList[index];
+                    var tempGoods = item.Goods;
+                    var newGoods = {
+                        Brand: tempGoods.Brand,
+                        CiqCode: tempGoods.CiqCode,
+                        Code: tempGoods.Code,
+                        Description: tempGoods.Description,
+                        DescriptionEn: tempGoods.DescriptionEn,
+                        HSCode: tempGoods.HSCode,
+                        ManufacturerCountry: tempGoods.ManufacturerCountry,
+                        Package: tempGoods.Package,
+                        Spec: tempGoods.Spec,
+                        HSCodeDesc: item.HSCodeDesc,
+                        ManufacturerCountryDesc: item.ManufacturerCountryDesc
 
-                    for (var i = 0; i < $scope.model.Application.Goods.length; i++) {
-                        if ($scope.model.Application.Goods[i].Id === newItemId) {
-                            canPushIntoGoods = false;
-                        }
-                    }
-                    if (canPushIntoGoods) {
-                        $scope.model.Application.Goods.push($scope.MerchantGoodsList[index]);
-                        $scope.MerchantGoodsList.splice(index, 1);
-                        return true;
-                    } else {
-                        return false;
-                    }
+                    };
+                    $scope.model.Application.Goods.push(newGoods);
                 }
-
                 $scope.itemClickHandler = function(event) {
                     var currentElement = event.target;
                     //console.log(currentElement);
@@ -243,7 +235,6 @@
                 $scope.showUploadMsg = function() {
                     $scope.showUploadExampleCertMsg = true;
                 }
-
                 if ($scope.model.Application.ShippingMethod === "@Html.Raw(Giqci.Enums.ShippingMethod.A)") {
                     $scope.unit = "Pallets";
                 } else {
@@ -501,187 +492,214 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-2 control-label">商品资料</label>
-    <div class="col-sm-10">
-        <div ng-repeat="item in model.Application.Goods">
-            <table class="table table-striped goodsItems">
-                <tr>
-                    <th>商品 {{$index+1}}</th>
-                    <td colspan="3">
-                        <button type="button" ng-click="removeitem($index)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button>
-                    </td>
-                </tr>
-                @*为避免大量更改代码,暂把原来的model做隐藏处理,提交时上传,而非读取商品ID*@
-                <tr >
-                    <th>名称(英文)</th>
-                    <td>
-                        <span>{{item.DescriptionEn}}</span>
-                    </td>
-                    <th>名称(中文)</th>
-                    <td>
-                        <span>{{item.Description}}</span>
-                    </td>
-                </tr>
-                <tr >
-                    <th>商品货号</th>
-                    <td>
-                        <span>{{item.Code}}</span>     
-                    </td>
-                    <th>商品备案号</th>
-                    <td>
-                        <span>{{item.CiqCode}}</span>  
-                    </td>
-                </tr>
-                <tr style="display: none">
-                    <th>名称(英文) *</th>
-                    <td>
-                        <input type="text" ng-model="item.DescriptionEn" class="form-control"/>
-                    </td>
-                    <th>名称(中文)</th>
-                    <td>
-                        <input type="text" ng-model="item.Description" class="form-control"/>
-                    </td>
-                </tr>
-                <tr style="display: none">
-                    <th>品牌 *</th>
-                    <td>
-                        <input type="text" ng-model="item.Brand" class="form-control"/>
-                    </td>
-                    <th>HS编码 *</th>
-                    <td>
-                        <select ajax-select ajax-url="commonhscodes" ng-model="item.HSCode" ng-options="i.Code as i.Name group by i.Category for i in model.CommonHSCodes" class="form-control selectCommonHsCodes" style="width:100%">
-                            <option value="">&lt; - 请选择HS编码 - &gt;</option>
+<label class="col-sm-2 control-label">商品资料</label>
+<div class="col-sm-10">
+<div ng-repeat="item in model.Application.Goods ">
+    <table class="table table-striped goodsItems">
+        <tr>
+            <th>商品 {{$index+1}}</th>
+            <td colspan="3">
+                <button type="button" ng-click="removeitem($index)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button>
+            </td>
+        </tr>
+        <tr >
+            <th>名称(英文) *</th>
+            <td>
+                {{item.DescriptionEn}}
+            </td>
+            <th>名称(中文)</th>
+            <td>
+                {{item.Description}}
+            </td>
+        </tr>
+        <tr >
+            <th>品牌 *</th>
+            <td>
+                {{item.Brand}}
+            </td>
+            <th>HS编码 *</th>
+            <td>
+                {{item.HSCodeDesc}}
+                <div style="display: none">
+                    <select ajax-select ajax-url="commonhscodes" ng-model="item.HSCode" ng-options="i.Code as i.Name group by i.Category for i in model.CommonHSCodes" class="form-control selectCommonHsCodes" style="width: 100%">
+                        <option value="">&lt; - 请选择HS编码 - &gt;</option>
+                    </select></div>
+</td>
+        </tr>
+        <tr >
+            <th>规格型号 *</th>
+            <td>
+                {{item.Spec}}
+            </td>
+            <th>制造国代码 *</th>
+            <td>
+                {{item.ManufacturerCountryDesc}}
+                <div style="display: none">
+                    <select ajax-select ajax-url="countries" ng-model="item.ManufacturerCountry" ng-options="c.Code as c.CnName for c in model.Countries" class="form-control selectCountry" style="width: 100%"></select>
+                </div>
+            </td>
+        </tr>
+        <tr >
+            <th>商品货号</th>
+            <td>
+                {{item.Code}}
+            </td>
+            <th>商品备案号 *</th>
+            <td>
+                {{item.CiqCode}}
+            </td>
+        </tr>
+        @*为避免大量更改代码,暂把原来的model做隐藏处理,提交时上传,而非读取商品ID*@
+        <tr style="display: none">
+            <th>名称(英文) *</th>
+            <td>
+                <input type="text" ng-model="item.DescriptionEn" class="form-control"/>
+            </td>
+            <th>名称(中文)</th>
+            <td>
+                <input type="text" ng-model="item.Description" class="form-control"/>
+            </td>
+        </tr>
+        <tr style="display: none">
+            <th>品牌 *</th>
+            <td>
+                <input type="text" ng-model="item.Brand" class="form-control"/>
+            </td>
+            <th>HS编码 *</th>
+            <td>
+                <select ajax-select ajax-url="commonhscodes" ng-model="item.HSCode" ng-options="i.Code as i.Name group by i.Category for i in model.CommonHSCodes" class="form-control selectCommonHsCodes" style="width: 100%">
+                    <option value="">&lt; - 请选择HS编码 - &gt;</option>
+                </select>
+            </td>
+        </tr>
+        <tr style="display: none">
+            <th>规格型号 *</th>
+            <td>
+                <input type="text" class="form-control" ng-model="item.Spec"/>
+            </td>
+            <th>制造国代码 *</th>
+            <td>
+                <select ajax-select ajax-url="countries" ng-model="item.ManufacturerCountry" ng-options="c.Code as c.CnName for c in model.Countries" class="form-control selectCountry" style="width: 100%"></select>
+            </td>
+        </tr>
+        <tr style="display: none">
+            <th>商品货号</th>
+            <td>
+                <input type="text" ng-model="item.Code" class="form-control"/>
+            </td>
+            <th>商品备案号 *</th>
+            <td>
+                <input type="text" ng-model="item.CiqCode" class="form-control"/>
+            </td>
+        </tr>
+        <tr>
+            <th>生产日期</th>
+            <td>
+                <input type="text" ng-model="item.ManufacturerDate" class="form-control" ng-mousedown="itemClickHandler($event)"/>
+            </td>
+            <th>保质期 *</th>
+            <td>
+                <input type="text" ng-model="item.ExpiryDate" class="form-control" ng-mousedown="itemClickHandler($event)"/>
+            </td>
+        </tr>
+        <tr>
+            <th>批次号 *</th>
+            <td>
+                <input type="text" ng-model="item.BatchNo" class="form-control" maxlength="100"/>
+            </td>
+            <th>数量/包装({{item.Package}})*</th>
+            <td>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <input type="number" ng-model="item.Quantity" min="0" class="form-control"/>
+                    </div>
+                    <div class="col-sm-6" style="display: none">
+                        <select ng-model="item.Package" class="form-control">
+                            <option value="罐装">罐装</option>
+                            <option value="瓶装">瓶装</option>
+                            <option value="袋装">袋装</option>
+                            <option value="盒装">盒装</option>
                         </select>
-                    </td>
-                </tr>
-                <tr style="display: none">
-                    <th>规格型号 *</th>
-                    <td>
-                        <input type="text" class="form-control" ng-model="item.Spec" />
-                    </td>
-                    <th>制造国代码 *</th>
-                    <td>
-                        <select ajax-select ajax-url="countries" ng-model="item.ManufacturerCountry" ng-options="c.Code as c.CnName for c in model.Countries" class="form-control selectCountry" style="width:100%"></select>
-                    </td>
-                </tr>
-                <tr style="display: none">
-                    <th>商品货号</th>
-                    <td>
-                        <input type="text" ng-model="item.Code" class="form-control" />
-                    </td>
-                    <th>商品备案号 *</th>
-                    <td>
-                        <input type="text" ng-model="item.CiqCode" class="form-control" />
-                    </td>
-                </tr>
-                <tr>
-                    <th>生产日期</th>
-                    <td>
-                        <input type="text" ng-model="item.ManufacturerDate" class="form-control" ng-mousedown="itemClickHandler($event)"/>
-                    </td>
-                    <th>保质期 *</th>
-                    <td>
-                        <input type="text" ng-model="item.ExpiryDate" class="form-control" ng-mousedown="itemClickHandler($event)"/>
-                    </td>
-                </tr>
-                <tr>
-                    <th>批次号 *</th>
-                    <td>
-                        <input type="text" ng-model="item.BatchNo" class="form-control" maxlength="100"/>
-                    </td>
-                    <th>数量/包装 *</th>
-                    <td>
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                                <input type="number" ng-model="item.Quantity" min="0" class="form-control"/>
-                            </div>
-                            <div class="col-sm-6" style="display: none">
-                                <select ng-model="item.Package" class="form-control">
-                                    <option value="罐装">罐装</option>
-                                    <option value="瓶装">瓶装</option>
-                                    <option value="袋装">袋装</option>
-                                    <option value="盒装">盒装</option>
-                                </select>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr ng-show="show_c_102">
-                    <th>品质检验</th>
-                    <td>
-                        <div class="checkbox">
-                            <label><input type="checkbox" ng-model="item.C102"/>是否检查</label>
-                        </div>
-                    </td>
-                    <th>
-                        <span ng-show="item.C102"> 检测项目 *</span></th>
-                    <td>
-                        <input type="text" ng-show="item.C102" ng-model="item.C102Comment" class="form-control"/>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <button type="button" ng-click="chooseGoods(0)" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">
-            <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 从已有商品中选择
-        </button>
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">已有商品</h4>
-                    </div>
-                    <div class="modal-body">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th>品牌</th>
-                                <th>商品英文名称</th>
-                                <th>商品中文名称</th>
-                                <th>操作</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="item in MerchantGoodsList">
-                                <td>
-                                    <span>{{item.Brand}}</span></td>
-                                <td>
-                                    <span>{{item.DescriptionEn}}</span></td>
-                                <td>
-                                    <span>{{item.Description}}</span></td>
-                                <td>
-                                    <button ng-click="selectGoods($index)">选择</button>
-                                </td>
-                            </tr>
-                            </tbody>
-                            <tfoot>
-                            <tr>
-                                <td colspan="4">
-                                    <div class="page-list">
-                                        <ul class="pagination" ng-show="MerchantGoodsListTotalCount> 0">
-                                            <li ng-class="{disabled: merchantGoodsListPageIndex== 1}" ng-click="chooseGoods(0)">
-                                                <span>首页</span></li>
-                                            <li ng-class="{disabled: merchantGoodsListPageIndex== 1}" ng-click="chooseGoods(-1)">
-                                                <span>上一页</span></li>
-                                            <li class="disabled">
-                                                <span>第{{merchantGoodsListPageIndex}}页</span></li>
-                                            <li ng-class="{disabled: MerchantGoodsListTotalCount < merchantGoodsListPageSize}" ng-click="chooseGoods(1)">
-                                                <span>下一页</span></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                     </div>
                 </div>
+            </td>
+        </tr>
+        <tr ng-show="show_c_102">
+            <th>品质检验</th>
+            <td>
+                <div class="checkbox">
+                    <label><input type="checkbox" ng-model="item.C102"/>是否检查</label>
+                </div>
+            </td>
+            <th>
+                <span ng-show="item.C102"> 检测项目 *</span></th>
+            <td>
+                <input type="text" ng-show="item.C102" ng-model="item.C102Comment" class="form-control"/>
+            </td>
+        </tr>
+    </table>
+</div>
+<button type="button" ng-click="chooseGoods(0)" class="btn btn-primary btn-md" data-toggle="modal" data-target="#myModal">
+    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 从已有商品中选择
+</button>
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">已有商品&nbsp;&nbsp;<a target="_blank" href="/goods/add">添加新商品</a></h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>品牌</th>
+                        <th>商品英文名称</th>
+                        <th>商品中文名称</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="item in MerchantGoodsList">
+                        <td>
+                            <span>{{item.Goods.Brand}}</span></td>
+                        <td>
+                            <span>{{item.Goods.DescriptionEn}}</span></td>
+                        <td>
+                            <span>{{item.Goods.Description}}</span></td>
+                        <td>
+                            <button ng-click="selectGoods($index)">选择</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="4">
+                            <div class="page-list">
+                                <ul class="pagination" ng-show="MerchantGoodsListTotalCount> 0">
+                                    <li ng-class="{disabled: merchantGoodsListPageIndex== 1}" ng-click="chooseGoods(0)">
+                                        <span>首页</span></li>
+                                    <li ng-class="{disabled: merchantGoodsListPageIndex== 1}" ng-click="chooseGoods(-1)">
+                                        <span>上一页</span></li>
+                                    <li class="disabled">
+                                        <span>第{{merchantGoodsListPageIndex}}页</span></li>
+                                    <li ng-class="{disabled: MerchantGoodsListTotalCount < merchantGoodsListPageSize}" ng-click="chooseGoods(1)">
+                                        <span>下一页</span></li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
             </div>
         </div>
     </div>
+</div>
+</div>
 </div>
 <div class="form-group">
     <label class="col-sm-2 control-label">运输方式</label>
@@ -757,7 +775,7 @@
 <div class="form-group">
     <label class="col-sm-2 control-label">发货港口 *</label>
     <div class="col-sm-10">
-        <select ajax-select ajax-url="loadingports" ng-model="model.Application.LoadingPort" ng-options="i.Code as i.CnName group by i.Country for i in model.LoadingPorts" class="form-control selectLoadingPort" style="width:100%">
+        <select ajax-select ajax-url="loadingports" ng-model="model.Application.LoadingPort" ng-options="i.Code as i.CnName group by i.Country for i in model.LoadingPorts" class="form-control selectLoadingPort" style="width: 100%">
             <option value="">&lt; - 请选择港口 - &gt;</option>
         </select>
     </div>
@@ -765,7 +783,7 @@
 <div class="form-group">
     <label class="col-sm-2 control-label">目的港口 *</label>
     <div class="col-sm-10">
-        <select ajax-select ajax-url="destports" ng-model="model.Application.DestPort" ng-options="i.Code as i.CnName group by i.Country for i in model.DestPorts" class="form-control selectDestPorts" style="width:100%">
+        <select ajax-select ajax-url="destports" ng-model="model.Application.DestPort" ng-options="i.Code as i.CnName group by i.Country for i in model.DestPorts" class="form-control selectDestPorts" style="width: 100%">
             <option value="">&lt; - 其他港口 - &gt;</option>
         </select>
     </div>

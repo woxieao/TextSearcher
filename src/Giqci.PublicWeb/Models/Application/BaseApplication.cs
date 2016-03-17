@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Giqci.Enums;
 using Giqci.Models;
+using Giqci.PublicWeb.Models.Goods;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -19,7 +20,7 @@ namespace Giqci.PublicWeb.Models.Application
 
         public bool C103 { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonConverter(typeof (StringEnumConverter))]
         public TradeType TradeType { get; set; }
 
         public string ApplicantCode { get; set; }
@@ -56,7 +57,7 @@ namespace Giqci.PublicWeb.Models.Application
         /// </summary>
         public string Voyage { get; set; }
 
-        public List<GoodsItem> Goods { get; set; }
+        public List<GoodsItemModel> Goods { get; set; }
 
         public List<ContainerInfo> ContainerInfoList { get; set; }
 
@@ -65,7 +66,7 @@ namespace Giqci.PublicWeb.Models.Application
 
         protected BaseApplication()
         {
-            Goods = new List<GoodsItem>();
+            Goods = new List<GoodsItemModel>();
             ContainerInfoList = new List<ContainerInfo>();
             ExampleCertList = new List<ExampleCertView>();
         }
