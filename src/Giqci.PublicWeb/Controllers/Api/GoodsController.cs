@@ -2,12 +2,14 @@
 using Ktech.Mvc.ActionResults;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Giqci.Models;
 using Giqci.PublicWeb.Models.Goods;
+using Giqci.Services;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {
@@ -17,12 +19,15 @@ namespace Giqci.PublicWeb.Controllers.Api
         private readonly IGoodsRepository _repo;
         private readonly IDictionaryRepository _repoDictionary;
         private readonly IMerchantRepository _merchant;
+        private readonly ICacheService _cacheService;
 
-        public GoodsController(IGoodsRepository repo, IMerchantRepository merchant,IDictionaryRepository repoDictionary)
+        public GoodsController(IGoodsRepository repo, IMerchantRepository merchant, IDictionaryRepository repoDictionary,
+            ICacheService cacheService)
         {
             _repo = repo;
             _repoDictionary = repoDictionary;
             _merchant = merchant;
+            _cacheService = cacheService;
         }
 
         [Route("goods/list")]
