@@ -8,6 +8,7 @@ using Giqci.PublicWeb.Converters;
 using Giqci.Repositories;
 using Ktech.Mvc.ActionResults;
 using System.Net;
+using Giqci.Services;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {
@@ -15,74 +16,76 @@ namespace Giqci.PublicWeb.Controllers.Api
     public class DictionaryController : Controller
     {
         private readonly IDictionaryRepository _repoDictionary;
+        private readonly ICacheService _cacheService;
 
-        public DictionaryController(IDictionaryRepository repoDictionary)
+        public DictionaryController(IDictionaryRepository repoDictionary, ICacheService cacheService)
         {
             _repoDictionary = repoDictionary;
+            _cacheService = cacheService;
         }
 
         [Route("dict/countries")]
         [HttpGet]
-        public ActionResult GetCountries()
+        public ActionResult GetCountries(string q)
         {
-            string query = string.IsNullOrEmpty(Request.QueryString.Get("q")) ? "" : Request.QueryString.Get("q");
-            return new KtechJsonResult(HttpStatusCode.OK, new { items = _repoDictionary.FindCountryDictionary(query) });
+            return new KtechJsonResult(HttpStatusCode.OK,
+                new {items = _cacheService.GetCache(_repoDictionary.FindCountryDictionary, q)});
         }
 
         [Route("dict/commonhscodes")]
         [HttpGet]
-        public ActionResult GetCommonHSCodes()
+        public ActionResult GetCommonHSCodes(string q)
         {
-            string query = string.IsNullOrEmpty(Request.QueryString.Get("q")) ? "" : Request.QueryString.Get("q");
-            return new KtechJsonResult(HttpStatusCode.OK, new { items = _repoDictionary.FindHSCodeByName(query) });
+            return new KtechJsonResult(HttpStatusCode.OK,
+                new {items = _cacheService.GetCache(_repoDictionary.FindHSCodeByName, q)});
         }
 
         [Route("dict/loadingports")]
         [HttpGet]
-        public ActionResult GetLoadingPorts()
+        public ActionResult GetLoadingPorts(string q)
         {
-            string query = string.IsNullOrEmpty(Request.QueryString.Get("q")) ? "" : Request.QueryString.Get("q");
-            return new KtechJsonResult(HttpStatusCode.OK, new { items = _repoDictionary.FindLoadingPortsByName(query) });
+            return new KtechJsonResult(HttpStatusCode.OK,
+                new {items = _cacheService.GetCache(_repoDictionary.FindLoadingPortsByName, q)});
         }
 
         [Route("dict/destports")]
         [HttpGet]
-        public ActionResult GetDestPorts()
+        public ActionResult GetDestPorts(string q)
         {
-            string query = string.IsNullOrEmpty(Request.QueryString.Get("q")) ? "" : Request.QueryString.Get("q");
-            return new KtechJsonResult(HttpStatusCode.OK, new { items = _repoDictionary.FindDestPortsByName(query) });
+            return new KtechJsonResult(HttpStatusCode.OK,
+                new {items = _cacheService.GetCache(_repoDictionary.FindDestPortsByName, q)});
         }
 
         [Route("dict/countries/code")]
         [HttpGet]
-        public ActionResult GetCountriesByCode()
+        public ActionResult GetCountriesByCode(string code)
         {
-            string query = string.IsNullOrEmpty(Request.QueryString.Get("code")) ? "" : Request.QueryString.Get("code");
-            return new KtechJsonResult(HttpStatusCode.OK, new { items = _repoDictionary.GetCountryDictionaryByCode(query) });
+            return new KtechJsonResult(HttpStatusCode.OK,
+                new {items = _cacheService.GetCache(_repoDictionary.GetCountryDictionaryByCode, code)});
         }
 
         [Route("dict/commonhscodes/code")]
         [HttpGet]
-        public ActionResult GetCommonHSCodesByCode()
+        public ActionResult GetCommonHSCodesByCode(string code)
         {
-            string query = string.IsNullOrEmpty(Request.QueryString.Get("code")) ? "" : Request.QueryString.Get("code");
-            return new KtechJsonResult(HttpStatusCode.OK, new { items = _repoDictionary.GetHSCode(query) });
+            return new KtechJsonResult(HttpStatusCode.OK,
+                new {items = _cacheService.GetCache(_repoDictionary.GetHSCode, code)});
         }
 
         [Route("dict/loadingports/code")]
         [HttpGet]
-        public ActionResult GetLoadingPortsByCode()
+        public ActionResult GetLoadingPortsByCode(string code)
         {
-            string query = string.IsNullOrEmpty(Request.QueryString.Get("code")) ? "" : Request.QueryString.Get("code");
-            return new KtechJsonResult(HttpStatusCode.OK, new { items = _repoDictionary.GetPort(query) });
+            return new KtechJsonResult(HttpStatusCode.OK,
+                new {items = _cacheService.GetCache(_repoDictionary.GetPort, code)});
         }
 
         [Route("dict/destports/code")]
         [HttpGet]
-        public ActionResult GetDestPortsByCode()
+        public ActionResult GetDestPortsByCode(string code)
         {
-            string query = string.IsNullOrEmpty(Request.QueryString.Get("code")) ? "" : Request.QueryString.Get("code");
-            return new KtechJsonResult(HttpStatusCode.OK, new { items = _repoDictionary.GetPort(query) });
+            return new KtechJsonResult(HttpStatusCode.OK,
+                new {items = _cacheService.GetCache(_repoDictionary.GetPort, code)});
         }
     }
 }
