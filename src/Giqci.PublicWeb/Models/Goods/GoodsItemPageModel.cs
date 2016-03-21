@@ -1,4 +1,4 @@
-﻿using Giqci.Models.Dict;
+﻿using Giqci.Chapi.Dict.Models;
 
 namespace Giqci.PublicWeb.Models.Goods
 {

@@ -1,6 +1,4 @@
-﻿using Giqci.Models.Dict;
-
-namespace Giqci.PublicWeb.Models.Goods
+﻿namespace Giqci.PublicWeb.Models.Goods
 {
     public class GoodsItemModel : Giqci.Models.GoodsItem
     {

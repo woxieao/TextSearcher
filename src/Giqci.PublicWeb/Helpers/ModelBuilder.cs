@@ -1,4 +1,5 @@
-﻿using Giqci.PublicWeb.Models.Application;
+﻿using Giqci.ApiProxy.Services;
+using Giqci.PublicWeb.Models.Application;
 using Giqci.PublicWeb.Models.Goods;
 using Giqci.Services;
 
@@ -6,31 +7,31 @@ namespace Giqci.PublicWeb.Helpers
 {
     public static class ModelBuilder
     {
-        public static void SetHelperFields(ICachedDictionaryService cache, ApplicationPageModel model)
+        public static void SetHelperFields(IDictService dict, ApplicationPageModel model)
         {
-            model.Countries = cache.GetCountries();
+            model.Countries = dict.GetCountries();
 
-            model.CommonHSCodes = cache.GetCommonHSCodes();
+            model.CommonHSCodes = dict.SearchHSCodes(null, 20);
 
-            model.DestPorts = cache.GetDestPorts();
+            model.DestPorts = dict.SearchPorts(null, 20);
 
-            model.LoadingPorts = cache.GetLoadingPorts();
+            model.LoadingPorts = dict.SearchPorts(null, 20);
         }
 
 
-        public static void SetHelperGoods(ICachedDictionaryService cache, GoodsItemPageModel model)
+        public static void SetHelperGoods(IDictService dict, GoodsItemPageModel model)
         {
-            model.Countries = cache.GetCountries();
+            model.Countries = dict.GetCountries();
 
-            model.CommonHSCodes = cache.GetCommonHSCodes();
+            model.CommonHSCodes = dict.SearchHSCodes(null, 20);
         }
 
 
-        public static void SetHelperGoodsModel(ICachedDictionaryService cache, GoodsPageModel model)
+        public static void SetHelperGoodsModel(IDictService dict, ProductPageModel model)
         {
-            model.Countries = cache.GetCountries();
+            model.Countries = dict.GetCountries();
 
-            model.CommonHSCodes = cache.GetCommonHSCodes();
+            model.CommonHSCodes = dict.SearchHSCodes(null, 20);
         }
     }
 }

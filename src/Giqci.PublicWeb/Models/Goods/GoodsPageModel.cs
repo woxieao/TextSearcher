@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Giqci.Models.Dict;
+﻿using Giqci.Chapi.Dict.Models;
 
 namespace Giqci.PublicWeb.Models.Goods
 {
-    public class GoodsPageModel
+    public class ProductPageModel
     {
-        public Giqci.Models.GoodsModel Goods { get; set; }
+        public Giqci.Models.Prod.ProductViewModel Goods { get; set; }
 
         public Country[] Countries { get; set; }
 

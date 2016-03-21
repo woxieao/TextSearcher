@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Giqci.ApiProxy.Services;
 using Giqci.Entities.Core;
 using Giqci.Enums;
 using Giqci.Models;
@@ -27,23 +28,21 @@ namespace Giqci.PublicWeb.Controllers
     {
         private readonly IPublicRepository _publicRepo;
         private readonly IMerchantRepository _merchantRepo;
-        private readonly ICachedDictionaryService _cache;
+        private readonly IDictService _dict;
         private readonly IApplicationRepository _appRepo;
         private readonly IContainerInfoRepository _conRepo;
         private readonly IExampleCertRepository _exaRepo;
-        private readonly IDictionaryRepository _repoDictionary;
 
-        public FormsController(IPublicRepository publicRepo, ICachedDictionaryService cache,
+        public FormsController(IPublicRepository publicRepo, IDictService dict,
             IMerchantRepository merchantRepo, IApplicationRepository appRepo, IContainerInfoRepository conRepo,
-            IExampleCertRepository exaRepo, IDictionaryRepository repoDictionary)
+            IExampleCertRepository exaRepo)
         {
             _publicRepo = publicRepo;
             _merchantRepo = merchantRepo;
-            _cache = cache;
+            _dict = dict;
             _appRepo = appRepo;
             _conRepo = conRepo;
             _exaRepo = exaRepo;
-            _repoDictionary = repoDictionary;
         }
 
         [Route("forms/app/")]
@@ -92,7 +91,7 @@ namespace Giqci.PublicWeb.Controllers
                     Application = application
                 };
             }
-            ModelBuilder.SetHelperFields(_cache, model);
+            ModelBuilder.SetHelperFields(_dict, model);
             return View(model);
         }
 
@@ -121,83 +120,85 @@ namespace Giqci.PublicWeb.Controllers
                 exampleListStr += string.Format("|{0}|", exampleCerat.CertFilePath);
             }
             cookieHelper.OverrideCookies(cookieHelper.ExampleFileListKeyName, exampleListStr);
-            foreach (Entities.Core.GoodsItem goodsItem in goodsItems)
-            {
-                var gi = new GoodsItemModel
-                {
-                    BatchNo = goodsItem.BatchNo,
-                    Brand = goodsItem.Brand,
-                    C102 = goodsItem.C102,
-                    C102Comment = goodsItem.C102Comment,
-                    CiqCode = goodsItem.CiqCode,
-                    Code = goodsItem.Code,
-                    Description = goodsItem.Description,
-                    DescriptionEn = goodsItem.DescriptionEn,
-                    ExpiryDate = goodsItem.ExpiryDate,
-                    HSCode = goodsItem.HSCode,
-                    Manufacturer = goodsItem.Manufacturer,
-                    ManufacturerCountry = goodsItem.ManufacturerCountry,
-                    ManufacturerDate = goodsItem.ManufacturerDate,
-                    OtherHSCode = goodsItem.OtherHSCode,
-                    Package = goodsItem.Package,
-                    Quantity = goodsItem.Quantity,
-                    Spec = goodsItem.Spec,
-                    HSCodeDesc = _repoDictionary.GetHSCode(goodsItem.HSCode).Name,
-                    ManufacturerCountryDesc =
-                        _repoDictionary.GetCountryDictionaryByCode(goodsItem.ManufacturerCountry).CnName
-                };
-                goodsList.Add(gi);
-            }
+            // TODO
+            throw new NotImplementedException();
+            //foreach (Entities.Core.ApplicationProduct goodsItem in goodsItems)
+            //{
+            //    var gi = new GoodsItemModel
+            //    {
+            //        BatchNo = goodsItem.BatchNo,
+            //        Brand = goodsItem.Brand,
+            //        C102 = goodsItem.C102,
+            //        C102Comment = goodsItem.C102Comment,
+            //        CiqCode = goodsItem.CiqCode,
+            //        Code = goodsItem.Code,
+            //        Description = goodsItem.Description,
+            //        DescriptionEn = goodsItem.DescriptionEn,
+            //        ExpiryDate = goodsItem.ExpiryDate,
+            //        HSCode = goodsItem.HSCode,
+            //        Manufacturer = goodsItem.Manufacturer,
+            //        ManufacturerCountry = goodsItem.ManufacturerCountry,
+            //        ManufacturerDate = goodsItem.ManufacturerDate,
+            //        OtherHSCode = goodsItem.OtherHSCode,
+            //        Package = goodsItem.Package,
+            //        Quantity = goodsItem.Quantity,
+            //        Spec = goodsItem.Spec,
+            //        HSCodeDesc = _repoDictionary.GetHSCode(goodsItem.HSCode).Name,
+            //        ManufacturerCountryDesc =
+            //            _repoDictionary.GetCountryDictionaryByCode(goodsItem.ManufacturerCountry).CnName
+            //    };
+            //    goodsList.Add(gi);
+            //}
 
-            var model = new ApplicationPageModel
-            {
-                Application = new Models.Application.Application
-                {
-                    ApplicantCode = application.ApplicantCode,
-                    Applicant = application.Applicant,
-                    ApplicantAddr = application.ApplicantAddr,
-                    ApplicantContact = application.ApplicantContact,
-                    ApplicantPhone = application.ApplicantPhone,
-                    ApplicantEmail = application.ApplicantEmail,
-                    Billno = application.BillNo,
-                    C101 = application.C101,
-                    C102 = application.C102,
-                    C103 = application.C103,
-                    DestPort = application.DestPort,
-                    Exporter = application.Exporter,
-                    ExporterAddr = application.ExporterAddr,
-                    ExporterContact = application.ExporterContact,
-                    ExporterPhone = application.ExporterPhone,
-                    ImBroker = application.ImBroker,
-                    ImBrokerAddr = application.ImBrokerAddr,
-                    ImBrokerContact = application.ImBrokerContact,
-                    ImBrokerPhone = application.ImBrokerPhone,
-                    Importer = application.Importer,
-                    ImporterAddr = application.ImporterAddr,
-                    ImporterContact = application.ImporterContact,
-                    ImporterPhone = application.ImporterPhone,
-                    InspectionAddr = application.InspectionAddr,
-                    InspectionDate = application.InspectionDate,
-                    LoadingPort = application.LoadingPort,
-                    OtherBillno = application.OtherBillNo,
-                    OtherDestPort = application.OtherDestPort,
-                    OtherLoadingPort = application.OtherLoadingPort,
-                    PurchaseContract = application.PurchaseContract,
-                    ShippingDate = application.ShippingDate,
-                    ShippingMethod = application.ShippingMethod,
-                    TotalUnits = application.TotalUnits,
-                    TotalWeight = application.TotalWeight,
-                    TradeType = application.TradeType,
-                    Vesselcn = application.Vesselcn,
-                    Voyage = application.Voyage,
-                    Goods = goodsList,
-                    ContainerInfoList = containerInfos,
-                    ExampleCertList = exampleCerts,
-                }
-            };
+            //var model = new ApplicationPageModel
+            //{
+            //    Application = new Models.Application.Application
+            //    {
+            //        ApplicantCode = application.ApplicantCode,
+            //        Applicant = application.Applicant,
+            //        ApplicantAddr = application.ApplicantAddr,
+            //        ApplicantContact = application.ApplicantContact,
+            //        ApplicantPhone = application.ApplicantPhone,
+            //        ApplicantEmail = application.ApplicantEmail,
+            //        Billno = application.BillNo,
+            //        C101 = application.C101,
+            //        C102 = application.C102,
+            //        C103 = application.C103,
+            //        DestPort = application.DestPort,
+            //        Exporter = application.Exporter,
+            //        ExporterAddr = application.ExporterAddr,
+            //        ExporterContact = application.ExporterContact,
+            //        ExporterPhone = application.ExporterPhone,
+            //        ImBroker = application.ImBroker,
+            //        ImBrokerAddr = application.ImBrokerAddr,
+            //        ImBrokerContact = application.ImBrokerContact,
+            //        ImBrokerPhone = application.ImBrokerPhone,
+            //        Importer = application.Importer,
+            //        ImporterAddr = application.ImporterAddr,
+            //        ImporterContact = application.ImporterContact,
+            //        ImporterPhone = application.ImporterPhone,
+            //        InspectionAddr = application.InspectionAddr,
+            //        InspectionDate = application.InspectionDate,
+            //        LoadingPort = application.LoadingPort,
+            //        OtherBillno = application.OtherBillNo,
+            //        OtherDestPort = application.OtherDestPort,
+            //        OtherLoadingPort = application.OtherLoadingPort,
+            //        PurchaseContract = application.PurchaseContract,
+            //        ShippingDate = application.ShippingDate,
+            //        ShippingMethod = application.ShippingMethod,
+            //        TotalUnits = application.TotalUnits,
+            //        TotalWeight = application.TotalWeight,
+            //        TradeType = application.TradeType,
+            //        Vesselcn = application.Vesselcn,
+            //        Voyage = application.Voyage,
+            //        Goods = goodsList,
+            //        ContainerInfoList = containerInfos,
+            //        ExampleCertList = exampleCerts,
+            //    }
+            //};
 
-            ModelBuilder.SetHelperFields(_cache, model);
-            return View(model);
+            //ModelBuilder.SetHelperFields(_cache, model);
+            //return View(model);
         }
 
 
@@ -267,41 +268,43 @@ namespace Giqci.PublicWeb.Controllers
                         Vesselcn = model.Vesselcn,
                         Voyage = model.Voyage,
                     };
-                    List<Giqci.Entities.Core.GoodsItem> goodsItems = new List<Entities.Core.GoodsItem>();
-                    foreach (GoodsItem goodsItem in model.Goods)
-                    {
-                        Giqci.Entities.Core.GoodsItem gi = new Entities.Core.GoodsItem
-                        {
-                            BatchNo = goodsItem.BatchNo,
-                            Brand = goodsItem.Brand,
-                            C102 = goodsItem.C102,
-                            C102Comment = goodsItem.C102Comment,
-                            CiqCode = goodsItem.CiqCode,
-                            Code = goodsItem.Code,
-                            Description = goodsItem.Description,
-                            DescriptionEn = goodsItem.DescriptionEn,
-                            ExpiryDate = goodsItem.ExpiryDate,
-                            HSCode = goodsItem.HSCode,
-                            Manufacturer = goodsItem.Manufacturer,
-                            ManufacturerCountry = goodsItem.ManufacturerCountry,
-                            ManufacturerDate = goodsItem.ManufacturerDate,
-                            OtherHSCode = goodsItem.OtherHSCode,
-                            Package = goodsItem.Package,
-                            Quantity = goodsItem.Quantity,
-                            Spec = goodsItem.Spec
-                        };
-                        goodsItems.Add(gi);
-                    }
-                    var _containerInfo = new List<Giqci.Entities.Core.ContainerInfo>();
-                    foreach (var containerInfo in model.ContainerInfoList)
-                    {
-                        _containerInfo.Add(new Giqci.Entities.Core.ContainerInfo()
-                        {
-                            SealNumber = containerInfo.SealNumber,
-                            ContainerNumber = containerInfo.ContainerNumber
-                        });
-                    }
-                    _appRepo.UpdateApplication(id, merchantId, application, goodsItems, _containerInfo, exampleCertList);
+                    List<Giqci.Entities.Core.ApplicationProduct> goodsItems = new List<Entities.Core.ApplicationProduct>();
+                    // TODO
+                    throw new NotImplementedException();
+                    //foreach (GoodsItem goodsItem in model.Goods)
+                    //{
+                    //    Giqci.Entities.Core.ApplicationProduct gi = new Entities.Core.ApplicationProduct
+                    //    {
+                    //        BatchNo = goodsItem.BatchNo,
+                    //        Brand = goodsItem.Brand,
+                    //        C102 = goodsItem.C102,
+                    //        C102Comment = goodsItem.C102Comment,
+                    //        CiqCode = goodsItem.CiqCode,
+                    //        Code = goodsItem.Code,
+                    //        Description = goodsItem.Description,
+                    //        DescriptionEn = goodsItem.DescriptionEn,
+                    //        ExpiryDate = goodsItem.ExpiryDate,
+                    //        HSCode = goodsItem.HSCode,
+                    //        Manufacturer = goodsItem.Manufacturer,
+                    //        ManufacturerCountry = goodsItem.ManufacturerCountry,
+                    //        ManufacturerDate = goodsItem.ManufacturerDate,
+                    //        OtherHSCode = goodsItem.OtherHSCode,
+                    //        Package = goodsItem.Package,
+                    //        Quantity = goodsItem.Quantity,
+                    //        Spec = goodsItem.Spec
+                    //    };
+                    //    goodsItems.Add(gi);
+                    //}
+                    //var _containerInfo = new List<Giqci.Entities.Core.ContainerInfo>();
+                    //foreach (var containerInfo in model.ContainerInfoList)
+                    //{
+                    //    _containerInfo.Add(new Giqci.Entities.Core.ContainerInfo()
+                    //    {
+                    //        SealNumber = containerInfo.SealNumber,
+                    //        ContainerNumber = containerInfo.ContainerNumber
+                    //    });
+                    //}
+                    //_appRepo.UpdateApplication(id, merchantId, application, goodsItems, _containerInfo, exampleCertList);
                 }
                 else
                 {
