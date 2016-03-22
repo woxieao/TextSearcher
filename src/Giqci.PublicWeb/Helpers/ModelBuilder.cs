@@ -11,11 +11,11 @@ namespace Giqci.PublicWeb.Helpers
         {
             model.Countries = dict.GetCountries();
 
-            model.CommonHSCodes = dict.SearchHSCodes(null, 20);
+            model.CommonHSCodes = dict.SearchHSCodes("", 20);
 
-            model.DestPorts = dict.SearchPorts(null, 20);
+            model.DestPorts = dict.SearchPorts("", 20);
 
-            model.LoadingPorts = dict.SearchPorts(null, 20);
+            model.LoadingPorts = dict.SearchPorts("", 20);
         }
 
 
@@ -23,7 +23,7 @@ namespace Giqci.PublicWeb.Helpers
         {
             model.Countries = dict.GetCountries();
 
-            model.CommonHSCodes = dict.SearchHSCodes(null, 20);
+            model.CommonHSCodes = dict.SearchHSCodes("", 20);
         }
 
 
@@ -31,7 +31,7 @@ namespace Giqci.PublicWeb.Helpers
         {
             model.Countries = dict.GetCountries();
 
-            model.CommonHSCodes = dict.SearchHSCodes(null, 20);
+            model.CommonHSCodes = dict.SearchHSCodes("", 20);
         }
     }
 }
