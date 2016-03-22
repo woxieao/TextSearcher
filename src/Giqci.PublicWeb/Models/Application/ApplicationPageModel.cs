@@ -1,4 +1,5 @@
 ﻿using Giqci.Chapi.Dict.Models;
+using Giqci.Chapi.Dict.Models;
 
 namespace Giqci.PublicWeb.Models.Application
 {

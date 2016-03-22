@@ -1,55 +1,61 @@
 ﻿using Giqci.Repositories;
 using Ktech.Mvc.ActionResults;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
-using Giqci.ApiProxy.Services;
 using Giqci.Interfaces;
-using Giqci.PublicWeb.Models.Goods;
+using Giqci.Models.Tools;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {
     [RoutePrefix("api")]
     public class GoodsController : Controller
     {
-        private readonly IProductApiProxy _prodApi;
-        private readonly IDictService _dict;
-        private readonly IMerchantRepository _merchant;
+        private readonly IMerchantRepository _merchantRepository;
+        private readonly IProductApiProxy _productApiProxy;
 
-        public GoodsController(IProductApiProxy prodApi, IMerchantRepository merchant, IDictService dict)
+        public GoodsController(IMerchantRepository merchantRepository, IProductApiProxy productApiProxy)
         {
-            _prodApi = prodApi;
-            _dict = dict;
-            _merchant = merchant;
+            _merchantRepository = merchantRepository;
+            _productApiProxy = productApiProxy;
         }
 
-        //[Route("goods/list")]
-        //[HttpPost]
-        //public ActionResult GoodsList(string keywords, int pageIndex = 1, int pageSize = 10)
-        //{
-        //    var goodsList = _repo.SearchProducts(User.Identity.Name, keywords, pageIndex, pageSize);
-        //    var count = goodsList.Count;
-        //    var goodsModelList = new List<ProductPageModel>();
-        //    foreach (var goods in goodsList)
-        //    {
-        //        goodsModelList.Add(new ProductPageModel
-        //        {
-        //            Goods = goods,
-        //            HSCodeDesc = _dict.GetHSCode(goods.HSCode).Name,
-        //            ManufacturerCountryDesc = _dict.GetCountry(goods.ManufacturerCountry).CnName
-        //        });
-        //    }
-        //    return new KtechJsonResult(HttpStatusCode.OK, new { items = goodsModelList, count = count });
-        //}
+        [Route("goods/getproductlist")]
+        [HttpPost]
+        public ActionResult MerchantGetProductList(int pageIndex = 1, int pageSize = 10)
+        {
+            var productList= _merchantRepository.GetFavoriteProducts(User.Identity.Name, new Page(pageIndex, pageSize));
+            var result = _productApiProxy.SearchProduct(productList);
+            return new KtechJsonResult(HttpStatusCode.OK, new {result = result});
+        }
 
+        [Route("goods/addproduct")]
+        [HttpPost]
+        public ActionResult MerchantAddProduct(string ciqCode)
+        {
+            string msg;
+            var result = _merchantRepository.AddFavoriteProduct(User.Identity.Name, ciqCode, out msg);
+            return new KtechJsonResult(HttpStatusCode.OK, new {result = result, msg = msg ?? "添加成功" });
+        }
 
         [Route("goods/delete")]
         [HttpPost]
-        public ActionResult Delete(string code)
+        public ActionResult MerchantDeleteProduct(string ciqCode)
         {
-            // TODO: remove by code rather than id
-            _merchant.RemoveProduct(User.Identity.Name, code);
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = true });
+            _merchantRepository.RemoveFavoriteProduct(User.Identity.Name, ciqCode);
+
+            return new KtechJsonResult(HttpStatusCode.OK, new {result = true});
+        }
+
+        [Route("goods/searchproduct")]
+        [HttpPost]
+        public ActionResult SearchProductList(string ciqCode )
+        {
+            var result = _productApiProxy.GetProduct(ciqCode);
+            return new KtechJsonResult(HttpStatusCode.OK, new {result = result});
         }
     }
 }
