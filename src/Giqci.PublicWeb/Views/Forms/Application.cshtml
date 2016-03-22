@@ -150,22 +150,7 @@
                         }).error(function(data, header, config, status) {
                         });
                 }
-
-                $scope.Product = null;
-                $scope.getproductlist = function() {
-                    if ($scope.CiqCode != "")
-                        $http({
-                            url: '/api/goods/searchproduct',
-                            method: 'POST',
-                            data: {
-                                ciqCode: $scope.CiqCode
-                            }
-                        }).success(function(data) {
-                            $scope.Product = data.result;
-                        }).error(function(data, header, config, status) {
-                        });
-                }
-
+                
                 $scope.selectGoods = function(index) {
                     $http({
                         url: '/api/goods/searchproduct',
