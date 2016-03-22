@@ -775,7 +775,7 @@
 <div class="form-group">
     <label class="col-sm-2 control-label">发货港口 *</label>
     <div class="col-sm-10">
-        <select ajax-select ajax-url="loadingports" ng-model="model.Application.LoadingPort" ng-options="i.Code as i.CnName group by i.Country for i in model.LoadingPorts" class="form-control selectLoadingPort" style="width: 100%">
+        <select ajax-select ajax-url="ports" ng-model="model.Application.LoadingPort" ng-options="i.Code as i.CnName group by i.Country for i in model.LoadingPorts" class="form-control selectLoadingPort" style="width: 100%">
             <option value="">&lt; - 请选择港口 - &gt;</option>
         </select>
     </div>
@@ -783,7 +783,7 @@
 <div class="form-group">
     <label class="col-sm-2 control-label">目的港口 *</label>
     <div class="col-sm-10">
-        <select ajax-select ajax-url="destports" ng-model="model.Application.DestPort" ng-options="i.Code as i.CnName group by i.Country for i in model.DestPorts" class="form-control selectDestPorts" style="width: 100%">
+        <select ajax-select ajax-url="ports" ng-model="model.Application.DestPort" ng-options="i.Code as i.CnName group by i.Country for i in model.DestPorts" class="form-control selectDestPorts" style="width: 100%">
             <option value="">&lt; - 其他港口 - &gt;</option>
         </select>
     </div>

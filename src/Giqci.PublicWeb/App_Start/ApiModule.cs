@@ -1,6 +1,7 @@
 using System.Net.Http;
 using System.Web.Configuration;
 using Autofac;
+using Autofac.Core;
 using Giqci.ApiProxy;
 using Giqci.ApiProxy.Services;
 using Giqci.Interfaces;
@@ -30,8 +31,8 @@ namespace Giqci.PublicWeb
             builder.RegisterType<ExampleCertRepository>().As<IExampleCertRepository>().InstancePerDependency();
             builder.RegisterType<CacheService>().As<ICacheService>().InstancePerDependency();
 
-            builder.RegisterType<DictApiProxy>().As<IDictApiProxy>().InstancePerDependency();
-            builder.RegisterType<ProductApiProxy>().As<IProductApiProxy>().InstancePerDependency();
+            builder.RegisterType<DictApiProxy>().As<IDictApiProxy>().WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Dict)).InstancePerDependency();
+            builder.RegisterType<ProductApiProxy>().As<IProductApiProxy>().WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Products)).InstancePerDependency();
 
             builder.RegisterType<CachedDictService>().As<IDictService>().InstancePerDependency();
         }
