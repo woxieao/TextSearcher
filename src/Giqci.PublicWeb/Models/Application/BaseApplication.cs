@@ -57,7 +57,7 @@ namespace Giqci.PublicWeb.Models.Application
         /// </summary>
         public string Voyage { get; set; }
 
-        public List<GoodsItemModel> Goods { get; set; }
+        public List<GoodsItem> Goods { get; set; }
 
         public List<ContainerInfo> ContainerInfoList { get; set; }
 
@@ -66,7 +66,7 @@ namespace Giqci.PublicWeb.Models.Application
 
         protected BaseApplication()
         {
-            Goods = new List<GoodsItemModel>();
+            Goods = new List<GoodsItem>();
             ContainerInfoList = new List<ContainerInfo>();
             ExampleCertList = new List<ExampleCertView>();
         }

@@ -20,7 +20,7 @@ namespace Giqci.PublicWeb.Controllers
         [Route("goods/list")]
         [HttpGet]
         [Authorize]
-        public ActionResult List()
+        public ActionResult MerchantProductList()
         {
             return View();
         }
@@ -28,49 +28,15 @@ namespace Giqci.PublicWeb.Controllers
         [Route("goods/add")]
         [HttpGet]
         [Authorize]
-        public ActionResult AddGoods(string applicantCode)
+        public ActionResult GoodsAdd()
         {
-            // TODO
-            throw new NotImplementedException();
-            //var model = new GoodsPageModel
-            //{
-            //    Goods = new GoodsModel
-            //    {
-            //        ManufacturerCountry = "036"
-            //    }
-            //};
-            //ModelBuilder.SetHelperGoodsModel(_cache, model);
-            //return View("GoodsAdd", model);
+            return View();
         }
 
 
-        [Route("goods/add/{id:int}")]
-        [HttpGet]
-        [Authorize]
-        public ActionResult AddGoods(int id = 0)
-        {
-            // TODO
-            throw new NotImplementedException();
-            //var model = new GoodsPageModel();
-            //var goodmodel = _goodsRepo.GetGoods(id);
-            //model.Goods = goodmodel;
 
-            //var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
-            //if (merchant.Id != goodmodel.MerchantId)
-            //{
-            //    Response.Redirect("/goods/list");
-            //}
-            //else
-            //{
-            //    model.Goods = goodmodel;
-            //}
-            //ModelBuilder.SetHelperGoodsModel(_cache, model);
-            //return View("GoodsAdd", model);
-        }
-
-
-        [Route("goods/add")]
-        [HttpPost]
+        //[Route("goods/add")]
+        //[HttpPost]
         public ActionResult SubmitApplication(string ciqCode)
         {
             throw new NotImplementedException();
