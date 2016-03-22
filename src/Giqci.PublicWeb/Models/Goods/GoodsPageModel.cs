@@ -1,10 +1,11 @@
 ﻿using Giqci.Chapi.Dict.Models;
+using Giqci.Chapi.Prod.Models;
 
 namespace Giqci.PublicWeb.Models.Goods
 {
     public class ProductPageModel
     {
-        public Giqci.Models.Prod.ProductViewModel Goods { get; set; }
+        public Product Goods { get; set; }
 
         public Country[] Countries { get; set; }
 

@@ -2,18 +2,19 @@
 using Giqci.Repositories;
 using System;
 using System.Web.Mvc;
+using Giqci.Interfaces;
 
 namespace Giqci.PublicWeb.Controllers
 {
     public class GoodsController : Controller
     {
         private readonly IMerchantRepository _merchantRepo;
-        private readonly IProductRepository _goodsRepo;
+        private readonly IProductApiProxy _prodApi;
 
-        public GoodsController(IMerchantRepository merchantRepo, IProductRepository goodsRepo)
+        public GoodsController(IMerchantRepository merchantRepo, IProductApiProxy prodApi)
         {
             _merchantRepo = merchantRepo;
-            _goodsRepo = goodsRepo;
+            _prodApi = prodApi;
         }
 
         [Route("goods/list")]

@@ -15,12 +15,13 @@ namespace Giqci.PublicWeb
         {
             var connStr = WebConfigurationManager.AppSettings["connStr"];
             var dictApiUrl = WebConfigurationManager.AppSettings["dictApiUrl"];
+            var prodApiUrl = WebConfigurationManager.AppSettings["prodApiUrl"];
 
             builder.Register(x => RestClientFactory.Create(dictApiUrl, false)).Keyed<HttpClient>(ApiType.Dict).SingleInstance();
+            builder.Register(x => RestClientFactory.Create(prodApiUrl, false)).Keyed<HttpClient>(ApiType.Products).SingleInstance();
 
             builder.Register(context => new DatabaseSetting(connStr)).SingleInstance();
             builder.RegisterType<PublicRepository>().As<IPublicRepository>().InstancePerDependency();
-            builder.RegisterType<ProductRepository>().As<IProductRepository>().InstancePerDependency();
             builder.RegisterType<MerchantRepository>().As<IMerchantRepository>().InstancePerDependency();
             builder.RegisterType<LoggerRepository>().As<ILoggerRepository>().InstancePerDependency();
             builder.RegisterType<ApplicationRepository>().As<IApplicationRepository>().InstancePerDependency();
@@ -30,6 +31,7 @@ namespace Giqci.PublicWeb
             builder.RegisterType<CacheService>().As<ICacheService>().InstancePerDependency();
 
             builder.RegisterType<DictApiProxy>().As<IDictApiProxy>().InstancePerDependency();
+            builder.RegisterType<ProductApiProxy>().As<IProductApiProxy>().InstancePerDependency();
 
             builder.RegisterType<CachedDictService>().As<IDictService>().InstancePerDependency();
         }
@@ -37,6 +39,7 @@ namespace Giqci.PublicWeb
         private enum ApiType
         {
             Dict,
+            Products,
         }
     }
 }
