@@ -1,8 +1,7 @@
-﻿using System.Linq;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Ktech.Mvc.ActionResults;
 using System.Net;
-using Giqci.ApiProxy.Services;
+using Giqci.Interfaces;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {

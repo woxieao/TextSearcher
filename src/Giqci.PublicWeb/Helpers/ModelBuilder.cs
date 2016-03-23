@@ -1,7 +1,6 @@
-﻿using Giqci.ApiProxy.Services;
+﻿using Giqci.Interfaces;
 using Giqci.PublicWeb.Models.Application;
 using Giqci.PublicWeb.Models.Goods;
-using Giqci.Services;
 
 namespace Giqci.PublicWeb.Helpers
 {

@@ -5,52 +5,46 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Giqci.ApiProxy.Services;
-using Giqci.Entities.Core;
 using Giqci.Enums;
 using Giqci.Interfaces;
-using Giqci.Models;
 using Giqci.PublicWeb.Helpers;
 using Giqci.PublicWeb.Models;
 using Giqci.PublicWeb.Models.Application;
+using Giqci.PublicWeb.Services;
 using Giqci.Repositories;
-using Giqci.Services;
 using Ktech.Mvc.ActionResults;
 using Application = Giqci.Models.Application;
-using GoodsItem = Giqci.Models.GoodsItem;
 using ContainerInfo = Giqci.Models.ContainerInfo;
 using Newtonsoft.Json;
-using Giqci.PublicWeb.Models.Goods;
-using Ktech.Extensions;
 
 namespace Giqci.PublicWeb.Controllers
 {
+    [Authorize]
     public class FormsController : Ktech.Mvc.ControllerBase
     {
-        private readonly IPublicRepository _publicRepo;
-        private readonly IMerchantRepository _merchantRepo;
+        private readonly IMerchantApiProxy _merchantRepo;
         private readonly IDictService _cache;
         private readonly IApplicationRepository _appRepo;
         private readonly IContainerInfoRepository _conRepo;
         private readonly IExampleCertRepository _exaRepo;
         private readonly IProductApiProxy _prodApi;
+        private readonly IAuthService _auth;
 
-        public FormsController(IPublicRepository publicRepo, IDictService cache,
-            IMerchantRepository merchantRepo, IApplicationRepository appRepo, IContainerInfoRepository conRepo,
-            IExampleCertRepository exaRepo, IProductApiProxy prodApi)
+        public FormsController(IDictService cache,
+            IMerchantApiProxy merchantRepo, IApplicationRepository appRepo, IContainerInfoRepository conRepo,
+            IExampleCertRepository exaRepo, IProductApiProxy prodApi, IAuthService auth)
         {
-            _publicRepo = publicRepo;
             _merchantRepo = merchantRepo;
             _cache = cache;
             _appRepo = appRepo;
             _conRepo = conRepo;
             _exaRepo = exaRepo;
             _prodApi = prodApi;
+            _auth = auth;
         }
 
         [Route("forms/app/")]
         [HttpGet]
-        [Authorize]
         public ActionResult Application(string applicantCode)
         {
             var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
@@ -101,7 +95,6 @@ namespace Giqci.PublicWeb.Controllers
 
         [Route("forms/app/{id:int}")]
         [HttpGet]
-        [Authorize]
         public ActionResult Application(int id)
         {
             var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
@@ -190,7 +183,7 @@ namespace Giqci.PublicWeb.Controllers
             if (string.IsNullOrEmpty(userName))
             {
                 appNo = null;
-                errors = new List<string>() {"登录状态已失效，请您重新登录系统"};
+                errors = new List<string>() { "登录状态已失效，请您重新登录系统" };
             }
 
             var merchantId = _merchantRepo.GetMerchant(User.Identity.Name).Id;
@@ -203,12 +196,12 @@ namespace Giqci.PublicWeb.Controllers
                 }
                 else
                 {
-                    appNo = _appRepo.CreateApplication(User.Identity.Name, model, _prodApi.GetProduct, exampleCertList);
+                    appNo = _appRepo.CreateApplication(_auth.GetAuth().MerchantId, model, _prodApi.GetProduct, exampleCertList);
                 }
                 errors = null;
                 cookieHelper.DeleteApplication("application");
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new {appNo = appNo, id = id, errors = errors});
+            return new KtechJsonResult(HttpStatusCode.OK, new { appNo = appNo, id = id, errors = errors });
         }
 
         [Route("forms/uploadexample")]
@@ -226,7 +219,7 @@ namespace Giqci.PublicWeb.Controllers
                 FormatExampleCookieStr(SaveFile(file4)),
                 currentExampleListStr);
             cookie.OverrideCookies(cookie.ExampleFileListKeyName, pathList);
-            return new KtechJsonResult(HttpStatusCode.OK, new {});
+            return new KtechJsonResult(HttpStatusCode.OK, new { });
         }
 
         private string FormatExampleCookieStr(string exampleStr)
@@ -258,7 +251,6 @@ namespace Giqci.PublicWeb.Controllers
 
         [Route("forms/list")]
         [HttpGet]
-        [Authorize]
         public ActionResult UserFormsList()
         {
             return View();
@@ -324,7 +316,7 @@ namespace Giqci.PublicWeb.Controllers
                 {
                     errors.Add("请选择证书类型");
                 }
-                if (!Enum.IsDefined(typeof (TradeType), model.TradeType))
+                if (!Enum.IsDefined(typeof(TradeType), model.TradeType))
                 {
                     errors.Add("请选择商业目的");
                 }

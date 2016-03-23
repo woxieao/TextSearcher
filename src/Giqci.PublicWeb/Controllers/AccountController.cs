@@ -1,17 +1,17 @@
 ﻿using System.Web.Mvc;
 using System.Web.Security;
 using Giqci.PublicWeb.Models.Account;
-using Giqci.Repositories;
 using System;
+using Giqci.Interfaces;
 
 namespace Giqci.PublicWeb.Controllers
 {
     [RoutePrefix("account")]
     public class AccountController : Controller
     {
-        private IMerchantRepository _repo;
+        private IMerchantApiProxy _repo;
 
-        public AccountController(IMerchantRepository repo)
+        public AccountController(IMerchantApiProxy repo)
         {
             _repo = repo;
         }
@@ -72,7 +72,7 @@ namespace Giqci.PublicWeb.Controllers
             string message;
             try
             {
-                result = _repo.ActiveMerchant(email, code, out message);
+                result = _repo.Activate(email, code, out message);
                 result = true;
             }
             catch (Exception ex)

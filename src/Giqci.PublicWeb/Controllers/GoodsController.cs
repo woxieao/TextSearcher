@@ -1,6 +1,4 @@
-﻿using Giqci.PublicWeb.Helpers;
-using Giqci.Repositories;
-using System;
+﻿using System;
 using System.Web.Mvc;
 using Giqci.Interfaces;
 
@@ -8,10 +6,10 @@ namespace Giqci.PublicWeb.Controllers
 {
     public class GoodsController : Controller
     {
-        private readonly IMerchantRepository _merchantRepo;
+        private readonly IMerchantApiProxy _merchantRepo;
         private readonly IProductApiProxy _prodApi;
 
-        public GoodsController(IMerchantRepository merchantRepo, IProductApiProxy prodApi)
+        public GoodsController(IMerchantApiProxy merchantRepo, IProductApiProxy prodApi)
         {
             _merchantRepo = merchantRepo;
             _prodApi = prodApi;

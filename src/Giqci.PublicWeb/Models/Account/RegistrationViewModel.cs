@@ -1,8 +1,8 @@
-﻿using Giqci.Models;
+﻿using Giqci.Chapi.Customers.Models;
 
 namespace Giqci.PublicWeb.Models.Account
 {
-    public class RegistrationViewModel : MerchantReg
+    public class RegistrationViewModel : Merchant
     {
         public string ConfirmPassword { get; set; }
 
