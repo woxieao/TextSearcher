@@ -568,13 +568,13 @@
                 </td>
             </tr>
             <tr>
-                <th>生产日期</th>
+            <th>生产日期</th>
                 <td>
-                    <input type="text" ng-model="item.ManufacturerDate" class="form-control datetimepicker"/>
+                   <input type="text" ng-model="item.ManufacturerDate" class="form-control datetimepicker" ng-mousedown="itemClickHandler($event)" />
                 </td>
                 <th>保质期 *</th>
                 <td>
-                    <input type="text" ng-model="item.ExpiryDate" class="form-control datetimepicker"/>
+                    <input type="text" ng-model="item.ExpiryDate" class="form-control datetimepicker" ng-mousedown="itemClickHandler($event)" />
                 </td>
             </tr>
             <tr>
