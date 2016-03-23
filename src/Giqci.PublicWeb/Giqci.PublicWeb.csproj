@@ -246,6 +246,7 @@
     <Content Include="Global\js\jquery-2.1.4.min.js" />
     <Content Include="Global\js\select2\select2.min.js" />
     <Content Include="Global\js\ui-bootstrap-tpls-1.1.2.min.js" />
+    <Content Include="Scripts\giqci.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-2.2.1.js" />
