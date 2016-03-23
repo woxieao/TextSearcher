@@ -2,27 +2,30 @@
 using System.Net;
 using System.Web.Mvc;
 using Giqci.Interfaces;
-using Giqci.Models.Tools;
+using Giqci.PublicWeb.Services;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {
     [RoutePrefix("api")]
+    [Authorize]
     public class GoodsController : Controller
     {
         private readonly IMerchantProductApiProxy _merchantRepository;
         private readonly IProductApiProxy _productApiProxy;
+        private readonly IAuthService _auth;
 
-        public GoodsController(IMerchantProductApiProxy merchantRepository, IProductApiProxy productApiProxy)
+        public GoodsController(IMerchantProductApiProxy merchantRepository, IProductApiProxy productApiProxy, IAuthService auth)
         {
             _merchantRepository = merchantRepository;
             _productApiProxy = productApiProxy;
+            _auth = auth;
         }
 
         [Route("goods/getproductlist")]
         [HttpPost]
         public ActionResult MerchantGetProductList(int pageIndex = 1, int pageSize = 10)
         {
-            var productList = _merchantRepository.GetProducts(User.Identity.Name, pageIndex, pageSize);
+            var productList = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, pageIndex, pageSize);
             var result = _productApiProxy.SearchProduct(productList);
             return new KtechJsonResult(HttpStatusCode.OK, new { result = result });
         }
@@ -32,7 +35,7 @@ namespace Giqci.PublicWeb.Controllers.Api
         public ActionResult MerchantAddProduct(string ciqCode)
         {
             string msg;
-            var result = _merchantRepository.AddProduct(User.Identity.Name, ciqCode, out msg);
+            var result = _merchantRepository.AddProduct(_auth.GetAuth().MerchantId, ciqCode, out msg);
             return new KtechJsonResult(HttpStatusCode.OK, new { result = result, msg = msg ?? "添加成功" });
         }
 
@@ -40,7 +43,7 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult MerchantDeleteProduct(string ciqCode)
         {
-            _merchantRepository.RemoveProduct(User.Identity.Name, ciqCode);
+            _merchantRepository.RemoveProduct(_auth.GetAuth().MerchantId, ciqCode);
 
             return new KtechJsonResult(HttpStatusCode.OK, new { result = true });
         }
