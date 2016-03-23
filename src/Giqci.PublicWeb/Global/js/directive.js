@@ -11,7 +11,7 @@ app.directive("ajaxSelect", function ($timeout, $http) {
             scope.$watch("ngModel", function (n, o) {
                 scope.isLoading = false;
                 if (!scope.isLoading) {
-                    $http.get("/api/dict/" + url + "/code", {
+                    $http.get("/api/dict/" + url , {
                         params: { 'code': model.$viewValue }
                     }).success(function (data) {
                         if (typeof (data.items) !== "undefined") {
