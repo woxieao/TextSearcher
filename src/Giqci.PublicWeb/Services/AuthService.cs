@@ -6,7 +6,7 @@ using Giqci.Interfaces;
 
 namespace Giqci.PublicWeb.Services
 {
-    public class AuthService
+    public class AuthService : IAuthService
     {
         private readonly IMerchantApiProxy _proxy;
 
