@@ -2,71 +2,27 @@
     ViewBag.Title = "新增商品";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@section Footer{
-    <script type="text/javascript">
-        app.controller("GoodsAddController", [
-            '$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', function($http, $scope, $log, $location, $anchorScroll, $timeout) {
-                $(function() {
-                    $('.datetimepicker').datetimepicker({
-                        language: 'zh-CN',
-                        format: 'yyyy/mm/dd',
-                        autoclose: true,
-                        minView: "month",
-                        todayBtn: true
-                    }).on("hide", function() {
-                        var $this = $(this);
-                        var _this = this;
-                        $scope.$apply(function() {
-                            $scope[$this.attr('ng-model')] = _this.value;
-                        });
-                    });
-                });
-                $scope.CiqCode = "";
-                $scope.Product = null;
-                $scope.getproductlist = function() {
-                    if ($scope.CiqCode != "")
-                        $http({
-                            url: '/api/goods/searchproduct',
-                            method: 'POST',
-                            data: {
-                                ciqCode: $scope.CiqCode
-                            }
-                        }).success(function(data) {
-                            $scope.Product = data.result;
-                        }).error(function(data, header, config, status) {
-                        });
-                }
-                $scope.addProductMsg = null;
-                $scope.addproduct = function() {
-                    if (confirm('是否添加该商品为常用商品'))
-                        if ($scope.Product != null)
-                            $http({
-                                url: '/api/goods/addproduct',
-                                method: 'POST',
-                                data: {
-                                    ciqCode: $scope.Product.CiqCode
-                                }
-                            }).success(function(data) {
-                                $scope.addProductMsg = data.msg;
-                            }).error(function(data, header, config, status) {
-                            });
-                }
-            }
-        ]);
-    </script>
-}
 <div ng-controller="GoodsAddController">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <span class="panel-title">新增商品</span><a href="/goods/list" style="float: right;">返回列表</a>
+            <h3 class="panel-title">
+                新增商品
+                <span class="small pull-right">
+                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<a href="/goods/list">返回列表</a>
+                </span>
+            </h3>
         </div>
         <div class="panel-body">
-            <h1 >{{addProductMsg}}</h1>
+            <div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
+                <button aria-label="Close" data-dismiss="alert" ng-click="alert.close()" class="close" type="button"><span aria-hidden="true">×</span></button>
+                <span ng-bind="alert.msg"></span>
+            </div>
+            <h1>{{addProductMsg}}</h1>
             <form name="appform" class="form-horizontal" novalidate>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">商品备案号</label>
                     <div class="col-sm-10">
-                        <input type="text" placeholder="请输入完整的商品备案号"ng-model="CiqCode" class="form-control"/>
+                        <input type="text" placeholder="请输入完整的商品备案号" ng-model="CiqCode" class="form-control"/>
                     </div>
                 </div>
 
@@ -104,7 +60,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr >
+                        <tr>
                             <td>{{Product.CiqCode}}</td>
                             <td>{{Product.HSCode}}</td>
                             <td>{{Product.Description}}</td>

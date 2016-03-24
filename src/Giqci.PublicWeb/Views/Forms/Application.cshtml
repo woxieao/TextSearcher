@@ -407,14 +407,11 @@
 
 
 <div ng-show="appshow">
-<h1 ng-show="resultMessage">
-    {{resultMessage}}<br/>
-    <a href="/forms/app" target="_self">
-        再次申请
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-    </a>
-</h1>
+<div class="alert alert-success" role="alert" ng-show="resultMessage">
+    <strong>信息提示</strong> 
+    <p>{{resultMessage}}</p>
+    <p><a href="/forms/app" target="_self">再次申请</a></p>
+</div>
 <div ng-show="!resultMessage">
 <h1 id="h1">证书申请表格</h1>
 <div class="has-error" ng-show="errors.length > 0">
