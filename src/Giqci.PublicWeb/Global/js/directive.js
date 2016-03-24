@@ -14,8 +14,8 @@ app.directive("ajaxSelect", function ($timeout, $http) {
                     $http.get("/api/dict/" + url , {
                         params: { 'code': model.$viewValue }
                     }).success(function (data) {
-                        if (typeof (data.items) !== "undefined") {
-                            var newVal = (url === "commonhscodes") ? data.items.Name : data.items.CnName;
+                        if (data.items.length > 0) {
+                            var newVal = (url === "commonhscodes") ? data.items[0].Name : data.items[0].CnName;
                             //console.log(newVal);
                             $(element).next().find("span.select2-selection__rendered").html(newVal);
                             scope.isLoading = true;
@@ -35,7 +35,7 @@ app.directive("ajaxSelect", function ($timeout, $http) {
                     delay: 250,
                     data: function (params) {
                         return {
-                            q: params.term
+                            code : params.term
                         };
                     },
                     processResults: function (data, params) {

@@ -77,7 +77,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="form-group" ng-show="Product!=null">
+                <div ng-show="Product!=null">
                     <table class="table table-striped">
                         <colgroup>
                             <col width='140'/>
@@ -87,8 +87,8 @@
                             <col width='140'/>
                             <col width='140'/>
                             <col width='140'/>
-                            <col width='140' />
-                            <col width='140' />
+                            <col width='140'/>
+                            <col width='80'/>
                         </colgroup>
                         <thead>
                         <tr>
@@ -115,7 +115,7 @@
                             <td>{{Product.Package}}</td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-danger btn-sm" ng-click="addproduct()">添加</button>
+                                    <button type="button" class="btn btn-primary btn-sm" ng-click="addproduct()">添加</button>
                                 </div>
                             </td>
                         </tr>
