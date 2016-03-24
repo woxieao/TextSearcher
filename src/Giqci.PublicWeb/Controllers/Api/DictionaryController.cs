@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using Ktech.Mvc.ActionResults;
 using System.Net;
 using Giqci.Interfaces;
@@ -17,23 +18,23 @@ namespace Giqci.PublicWeb.Controllers.Api
 
         [Route("dict/countries")]
         [HttpGet]
-        public ActionResult GetCountries()
+        public ActionResult GetCountries(string code)
         {
-            return new KtechJsonResult(HttpStatusCode.OK, new {items = _dict.GetCountries()});
+            return new KtechJsonResult(HttpStatusCode.OK, new { items = _dict.GetCountries().Where(x => string.IsNullOrEmpty(code) || x.Code == code || x.CnName.Contains(code)) });
         }
 
         [Route("dict/commonhscodes")]
         [HttpGet]
-        public ActionResult GetCommonHSCodes(string code)
+        public ActionResult GetCommonHSCodes(string code = "")
         {
-            return new KtechJsonResult(HttpStatusCode.OK, new {items = _dict.SearchHSCodes(code, 20)});
+            return new KtechJsonResult(HttpStatusCode.OK, new { items = _dict.SearchHSCodes(code, 20) });
         }
 
         [Route("dict/ports")]
         [HttpGet]
-        public ActionResult GetPorts(string code)
+        public ActionResult GetPorts(string code = "")
         {
-            return new KtechJsonResult(HttpStatusCode.OK, new {items = _dict.SearchPorts(code, 20)});
+            return new KtechJsonResult(HttpStatusCode.OK, new { items = _dict.SearchPorts(code, 20) });
         }
     }
 }
