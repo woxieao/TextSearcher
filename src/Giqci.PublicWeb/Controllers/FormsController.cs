@@ -99,10 +99,10 @@ namespace Giqci.PublicWeb.Controllers
         {
             var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
             var application = _appRepo.GetApplication(id, merchant.Id);
-            //非该登录人的申请就跳转到新申请页面,避免任意用户更改非本人的申请
-            if (application == null)
+            //非该登录人的申请||不是新申请
+            if (application == null || application.Status != ApplicationStatus.New)
             {
-                return Redirect("/forms/app/");
+                throw new ApplicationException(":(   You Can Not View This Application");
             }
             ViewBag.id = id;
             var goodsItemList = _appRepo.SelectGoodsItems(application.Id);
@@ -183,7 +183,7 @@ namespace Giqci.PublicWeb.Controllers
             if (string.IsNullOrEmpty(userName))
             {
                 appNo = null;
-                errors = new List<string>() { "登录状态已失效，请您重新登录系统" };
+                errors = new List<string>() {"登录状态已失效，请您重新登录系统"};
             }
 
             var merchantId = _merchantRepo.GetMerchant(User.Identity.Name).Id;
@@ -196,12 +196,13 @@ namespace Giqci.PublicWeb.Controllers
                 }
                 else
                 {
-                    appNo = _appRepo.CreateApplication(_auth.GetAuth().MerchantId, model, _prodApi.GetProduct, exampleCertList);
+                    appNo = _appRepo.CreateApplication(_auth.GetAuth().MerchantId, model, _prodApi.GetProduct,
+                        exampleCertList);
                 }
                 errors = null;
                 cookieHelper.DeleteApplication("application");
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { appNo = appNo, id = id, errors = errors });
+            return new KtechJsonResult(HttpStatusCode.OK, new {appNo = appNo, id = id, errors = errors});
         }
 
         [Route("forms/uploadexample")]
@@ -219,7 +220,7 @@ namespace Giqci.PublicWeb.Controllers
                 FormatExampleCookieStr(SaveFile(file4)),
                 currentExampleListStr);
             cookie.OverrideCookies(cookie.ExampleFileListKeyName, pathList);
-            return new KtechJsonResult(HttpStatusCode.OK, new { });
+            return new KtechJsonResult(HttpStatusCode.OK, new {});
         }
 
         private string FormatExampleCookieStr(string exampleStr)
@@ -316,7 +317,7 @@ namespace Giqci.PublicWeb.Controllers
                 {
                     errors.Add("请选择证书类型");
                 }
-                if (!Enum.IsDefined(typeof(TradeType), model.TradeType))
+                if (!Enum.IsDefined(typeof (TradeType), model.TradeType))
                 {
                     errors.Add("请选择商业目的");
                 }
