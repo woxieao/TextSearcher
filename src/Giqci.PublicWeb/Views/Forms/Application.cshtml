@@ -125,7 +125,7 @@
                             Package: _selected.Package,
                             ProductItemList: [
                                 {
-                            
+
                                 }
                             ]
                         };
@@ -141,7 +141,7 @@
                             Package: "",
                             ProductItemList: [
                                 {
-                            
+
                                 }
                             ]
                         };
@@ -165,34 +165,34 @@
 
                 $scope.chooseGoods = function(method) {
                     switch (method) {
-                    case -1:
-                    {
-                        if ($scope.merchantGoodsListPageIndex > 1) {
-                            $scope.merchantGoodsListPageIndex--;
-                            $scope.getGoodsList($scope.merchantGoodsListPageIndex, $scope.merchantGoodsListPageSize);
-                        }
-                        break;
-                    }
-                    case 0:
-                    {
-                        if ($scope.merchantGoodsListPageIndex > 1) {
-                            $scope.merchantGoodsListPageIndex = 1;
-                            $scope.getGoodsList($scope.merchantGoodsListPageIndex, $scope.merchantGoodsListPageSize);
-                        }
-                        break;
-                    }
-                    case 1:
-                    {
-                        if ($scope.MerchantGoodsListTotalCount == $scope.merchantGoodsListPageSize) {
-                            $scope.merchantGoodsListPageIndex++;
-                            $scope.getGoodsList($scope.merchantGoodsListPageIndex, $scope.merchantGoodsListPageSize);
-                        }
-                        break;
-                    }
-                    default:
-                    {
-                        break;
-                    }
+                        case -1:
+                            {
+                                if ($scope.merchantGoodsListPageIndex > 1) {
+                                    $scope.merchantGoodsListPageIndex--;
+                                    $scope.getGoodsList($scope.merchantGoodsListPageIndex, $scope.merchantGoodsListPageSize);
+                                }
+                                break;
+                            }
+                        case 0:
+                            {
+                                if ($scope.merchantGoodsListPageIndex > 1) {
+                                    $scope.merchantGoodsListPageIndex = 1;
+                                    $scope.getGoodsList($scope.merchantGoodsListPageIndex, $scope.merchantGoodsListPageSize);
+                                }
+                                break;
+                            }
+                        case 1:
+                            {
+                                if ($scope.MerchantGoodsListTotalCount == $scope.merchantGoodsListPageSize) {
+                                    $scope.merchantGoodsListPageIndex++;
+                                    $scope.getGoodsList($scope.merchantGoodsListPageIndex, $scope.merchantGoodsListPageSize);
+                                }
+                                break;
+                            }
+                        default:
+                            {
+                                break;
+                            }
                     }
                 };
                 $scope.Product = null;
@@ -600,7 +600,7 @@
                                                 <select ng-if="!isEdit" class="form-control" ng-change="selectProduct(item.Selected,$index)" ng-model="item.Selected" ng-options="mp.CiqCode for mp in merchantProductList">
                                                     <option value="">--请选择--</option>
                                                 </select>
-                                                <input ng-if="!isEdit" type="hidden" ng-model="item.CiqCode"/>
+                                                <input ng-if="!isEdit" type="hidden" ng-model="item.CiqCode" />
                                             </div>
                                             <div class="col-sm-6">
                                                 <a class="btn btn-default" ng-click="addItemByBatchNo($index)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;添加批次号</a>
@@ -628,10 +628,15 @@
                                         <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&item.CiqCode!=null)">{{item.Brand}}</p>
                                         <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.CiqCode==null)" type="text" ng-model="item.Brand" class="form-control" />
                                     </td>
-                                    <th>HS编码 *</th>
+                                    <th>包装 *</th>
                                     <td>
-                                        <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&item.CiqCode!=null)">{{item.HSCode}}</p>
-                                        <select ajax-select ajax-url="commonhscodes" ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.CiqCode==null)" ng-model="item.HSCode" class="form-control"></select>
+                                        <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&item.CiqCode!=null)">{{item.Package}}</p>
+                                        <select ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.CiqCode==null)" ng-model="item.Package" class="form-control half-form-control">
+                                            <option value="罐装">罐装</option>
+                                            <option value="瓶装">瓶装</option>
+                                            <option value="袋装">袋装</option>
+                                            <option value="盒装">盒装</option>
+                                        </select>
                                     </td>
                                 </tr>
                                 <tr>
@@ -643,7 +648,14 @@
                                     <th>制造国代码 *</th>
                                     <td>
                                         <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&item.CiqCode!=null)">{{item.ManufacturerCountry}}</p>
-                                        <select ajax-select ajax-url="countries" ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.CiqCode==null)" ng-model="item.ManufacturerCountry" class="form-control"></select>
+                                        <select ajax-select ajax-url="countries" ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.CiqCode==null)" ng-model="item.ManufacturerCountry" class="form-control" style="width: 100%"></select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>HS编码 *</th>
+                                    <td colspan="3">
+                                        <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&item.CiqCode!=null)">{{item.HSCode}}</p>
+                                        <select ajax-select ajax-url="commonhscodes" ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.CiqCode==null)" ng-model="item.HSCode" class="form-control" style="width: 100%"></select>
                                     </td>
                                 </tr>
                                 <tr ng-show="model.Application.C102">
@@ -691,22 +703,9 @@
                                         <td>
                                             <input type="text" ng-model="batch.BatchNo" class="form-control" maxlength="100" />
                                         </td>
-                                        <th>数量/包装 *</th>
+                                        <th>数量 *</th>
                                         <td>
-                                            <div class="form-group">
-                                                <div class="col-sm-6">
-                                                    <input type="number" ng-model="batch.Quantity" min="0" class="form-control half-form-control" />
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&item.CiqCode!=null)">{{item.Package}}</p>
-                                                    <select ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.CiqCode==null)" ng-model="item.Package" class="form-control half-form-control">
-                                                        <option value="罐装">罐装</option>
-                                                        <option value="瓶装">瓶装</option>
-                                                        <option value="袋装">袋装</option>
-                                                        <option value="盒装">盒装</option>
-                                                    </select>
-                                                </div>
-                                            </div>
+                                            <input type="number" ng-model="batch.Quantity" min="0" class="form-control half-form-control" />
                                         </td>
                                     </tr>
                                 </table>
