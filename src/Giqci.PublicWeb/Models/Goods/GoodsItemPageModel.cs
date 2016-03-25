@@ -4,7 +4,7 @@ namespace Giqci.PublicWeb.Models.Goods
 {
     public class GoodsItemPageModel
     {
-        public Giqci.Models.GoodsItem goods { get; set; }
+     //   public Giqci.Models.GoodsItem goods { get; set; }
 
         public string HSCodeDesc { get; set; }
 

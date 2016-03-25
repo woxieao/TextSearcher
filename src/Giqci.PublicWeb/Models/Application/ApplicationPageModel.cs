@@ -1,10 +1,8 @@
 ﻿using Giqci.Chapi.Dict.Models;
-using Giqci.Chapi.Dict.Models;
 
 namespace Giqci.PublicWeb.Models.Application
 {
-    public class 
-        ApplicationPageModel
+    public class ApplicationPageModel
     {
         public Application Application { get; set; }
 
