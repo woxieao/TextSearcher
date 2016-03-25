@@ -173,7 +173,7 @@ namespace Giqci.PublicWeb.Controllers
         {
             // trade type must be 电商贸易
             //model.TradeType = TradeType.C;
-            var errors = validateApplication(model);
+            var errors = ValidateApplication(model);
             string appNo = null;
             //set cookies 
             var cookieHelper = new CookieHelper();
@@ -257,94 +257,9 @@ namespace Giqci.PublicWeb.Controllers
             return View();
         }
 
-        private List<string> validateApplication(Application model)
+        private List<string> ValidateApplication(Application model)
         {
-            var errors = new List<string>();
-            if (model.Goods.Count == 0)
-            {
-                errors.Add("请至少填写一个商品");
-            }
-            else
-            {
-                for (var i = 0; i < model.Goods.Count; i++)
-                {
-                    var item = model.Goods[i];
-                    if (string.IsNullOrEmpty(item.DescriptionEn)
-                        || (string.IsNullOrEmpty(item.HSCode) && string.IsNullOrEmpty(item.OtherHSCode))
-                        || string.IsNullOrEmpty(item.CiqCode)
-                        || string.IsNullOrEmpty(item.Spec)
-                        || string.IsNullOrEmpty(item.ManufacturerCountry)
-                        || string.IsNullOrEmpty(item.Brand)
-                        || item.Quantity <= 0
-                        || string.IsNullOrEmpty(item.Package))
-                    {
-                        errors.Add("商品" + (i + 1) + "资料不完整");
-                    }
-                    if (!item.ExpiryDate.HasValue)
-                    {
-                        errors.Add("请填写商品" + (i + 1) + "的过期日期");
-                    }
-                    if (!item.ManufacturerDate.HasValue && string.IsNullOrEmpty(item.BatchNo))
-                    {
-                        errors.Add("请正确填写商品" + (i + 1) + "的生产日期或批次号");
-                    }
-                    if (item.Quantity <= 0)
-                    {
-                        errors.Add("商品" + (i + 1) + "的数量必须大于0");
-                    }
-                }
-
-                if (model.ShippingMethod.ToString().ToUpper() == Giqci.Enums.ShippingMethod.O.ToString())
-                {
-                    if (!model.ContainerInfoList.Any())
-                    {
-                        errors.Add("船舶资料不能为空");
-                    }
-                    for (var i = 0; i < model.ContainerInfoList.Count; i++)
-                    {
-                        var containerInfo = model.ContainerInfoList[i];
-                        if (string.IsNullOrWhiteSpace(containerInfo.ContainerNumber))
-                        {
-                            errors.Add("船舶资料" + (i + 1) + "的装箱号不能为空");
-                        }
-                        if (string.IsNullOrWhiteSpace(containerInfo.SealNumber))
-                        {
-                            errors.Add("船舶资料" + (i + 1) + "的铅封号不能为空");
-                        }
-                    }
-                }
-                if (!model.C101 && !model.C102 && !model.C103)
-                {
-                    errors.Add("请选择证书类型");
-                }
-                if (!Enum.IsDefined(typeof (TradeType), model.TradeType))
-                {
-                    errors.Add("请选择商业目的");
-                }
-                if (string.IsNullOrEmpty(model.DestPort) &&
-                    string.IsNullOrEmpty(model.OtherDestPort))
-                {
-                    errors.Add("请填写目标港口");
-                }
-                if (string.IsNullOrEmpty(model.LoadingPort) &&
-                    string.IsNullOrEmpty(model.OtherLoadingPort))
-                {
-                    errors.Add("请填写发货港口");
-                }
-                if (model.InspectionDate < DateTime.Today)
-                {
-                    errors.Add("请填写正确预约检查日期");
-                }
-                if (string.IsNullOrEmpty(model.InspectionAddr))
-                {
-                    errors.Add("请填写检验地点");
-                }
-                if (model.TotalUnits <= 0)
-                    errors.Add("运输总数量必须大于0");
-                if (model.TotalWeight <= 0)
-                    errors.Add("运输总重量必须大于0");
-            }
-            return errors;
+            return _appRepo.HasError(model);
         }
     }
 }

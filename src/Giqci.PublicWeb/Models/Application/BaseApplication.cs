@@ -4,9 +4,11 @@ using System.Linq;
 using System.Web;
 using Giqci.Enums;
 using Giqci.Models;
+using Giqci.Models.Core;
 using Giqci.PublicWeb.Models.Goods;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using ApplicationProductView = Giqci.Models.ApplicationProductView;
 
 namespace Giqci.PublicWeb.Models.Application
 {
