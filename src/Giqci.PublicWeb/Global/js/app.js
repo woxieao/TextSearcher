@@ -258,9 +258,9 @@ app.controller('GoodsListController', [
         };
         $scope.list($scope.postData);
 
-        $scope.remove = function (ciqCode) {
+        $scope.remove = function(ciqCode,index) {
             if (confirm("您确定要删除该商品吗?")) {
-                $scope.merchantProductList.splice($scope.merchantProductList.indexOf(ciqCode), 1);
+                $scope.merchantProductList.splice(index, 1);
                 $http.post('/api/goods/delete', { ciqCode: ciqCode }).then(function (response) {
                     if (response.data.result) {
 
