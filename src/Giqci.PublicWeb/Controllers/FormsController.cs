@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Giqci.Enums;
 using Giqci.Interfaces;
+using Giqci.Models;
 using Giqci.PublicWeb.Helpers;
 using Giqci.PublicWeb.Models;
 using Giqci.PublicWeb.Models.Application;
@@ -14,7 +15,6 @@ using Giqci.PublicWeb.Services;
 using Giqci.Repositories;
 using Ktech.Mvc.ActionResults;
 using Application = Giqci.Models.Application;
-using ContainerInfo = Giqci.Models.ContainerInfo;
 using Newtonsoft.Json;
 
 namespace Giqci.PublicWeb.Controllers
@@ -69,9 +69,9 @@ namespace Giqci.PublicWeb.Controllers
                         ApplicantEmail = merchant.Email,
                         InspectionDate = DateTime.Now.AddDays(-1),
                         //Goods = new List<GoodsItem> {new GoodsItem {ManufacturerCountry = "036"}},
-                        ContainerInfoList = new List<ContainerInfo>
+                        ContainerInfoList = new List<ContainerInfoView>
                         {
-                            new ContainerInfo()
+                            new ContainerInfoView()
                             {
                                 ContainerNumber = String.Empty,
                                 SealNumber = String.Empty,
