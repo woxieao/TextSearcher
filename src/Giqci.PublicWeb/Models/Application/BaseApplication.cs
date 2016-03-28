@@ -61,7 +61,7 @@ namespace Giqci.PublicWeb.Models.Application
 
         public List<ApplicationProductView> Goods { get; set; }
 
-        public List<ContainerInfo> ContainerInfoList { get; set; }
+        public List<ContainerInfoView> ContainerInfoList { get; set; }
 
         public List<ExampleCertView> ExampleCertList { get; set; }
 
@@ -69,7 +69,7 @@ namespace Giqci.PublicWeb.Models.Application
         protected BaseApplication()
         {
             Goods = new List<ApplicationProductView>();
-            ContainerInfoList = new List<ContainerInfo>();
+            ContainerInfoList = new List<ContainerInfoView>();
             ExampleCertList = new List<ExampleCertView>();
         }
     }
