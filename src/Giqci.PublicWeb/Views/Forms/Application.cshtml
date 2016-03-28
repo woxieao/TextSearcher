@@ -23,6 +23,7 @@
                             $scope.model.Application.Goods[i].ProductItemList[j].ManufacturerDate = $filter('date')($scope.model.Application.Goods[i].ProductItemList[j].ManufacturerDate, 'yyyy/MM/dd');
                             $scope.model.Application.Goods[i].ProductItemList[j].ExpiryDate = $filter('date')($scope.model.Application.Goods[i].ProductItemList[j].ExpiryDate, 'yyyy/MM/dd');
                         }
+                        $scope.model.Application.Goods[i].isEditSelectDefault = true;
                     }
                 };
                 if ($scope.model.Application.Id == 0) {
@@ -62,7 +63,9 @@
                                 "ExpiryDate": null,
                                 "Code": ""
                             }
-                        ]
+                        ],
+                        isEditInputDefault:true,
+                        isEditSelectDefault: false
                     });
                 };
                 $(function() {
@@ -145,9 +148,9 @@
                                 }
                             ]
                         };
+                        $scope.model.Application.Goods[_index].isEditInputDefault = true;
                     }
                     $scope.model.Application.Goods[_index].Selected = _selected;
-                    //console.log($scope.model.Application.Goods[_index].Selected);
                 };
                 $scope.addItemByBatchNo = function(_index) {
                     $scope.model.Application.Goods[_index].ProductItemList.push({
@@ -596,11 +599,11 @@
                                     <td colspan="3">
                                         <div class="form-group">
                                             <div class="col-sm-6">
-                                                <p class="form-control-static" ng-if="isEdit">{{item.CiqCode}}</p>
-                                                <select ng-if="!isEdit" class="form-control" ng-change="selectProduct(item.Selected,$index)" ng-model="item.Selected" ng-options="mp.CiqCode for mp in merchantProductList">
+                                                <p class="form-control-static" ng-if="(isEdit&&item.isEditSelectDefault)">{{item.CiqCode}}</p>
+                                                <select ng-if="!isEdit||(isEdit&&!item.isEditSelectDefault)" class="form-control" ng-change="selectProduct(item.Selected,$index)" ng-model="item.Selected" ng-options="mp.CiqCode for mp in merchantProductList">
                                                     <option value="">--请选择--</option>
                                                 </select>
-                                                <input ng-if="!isEdit" type="hidden" ng-model="item.CiqCode" />
+                                                <input ng-if="!isEdit||(isEdit&&!item.isEditSelectDefault)" type="hidden" ng-model="item.CiqCode" />
                                             </div>
                                             <div class="col-sm-6">
                                                 <a class="btn btn-default" ng-click="addItemByBatchNo($index)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;添加批次号</a>
@@ -613,25 +616,25 @@
                                 <tr>
                                     <th>名称(英文) *</th>
                                     <td>
-                                        <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&item.CiqCode!=null)">{{item.DescriptionEn}}</p>
-                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.CiqCode==null)" type="text" ng-model="item.DescriptionEn" class="form-control" />
+                                        <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.DescriptionEn}}</p>
+                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" type="text" ng-model="item.DescriptionEn" class="form-control" />
                                     </td>
                                     <th>名称(中文)</th>
                                     <td>
-                                        <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&item.CiqCode!=null)">{{item.Description}}</p>
-                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.CiqCode==null)" type="text" ng-model="item.Description" class="form-control" />
+                                        <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.Description}}</p>
+                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" type="text" ng-model="item.Description" class="form-control" />
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>品牌 *</th>
                                     <td>
-                                        <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&item.CiqCode!=null)">{{item.Brand}}</p>
-                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.CiqCode==null)" type="text" ng-model="item.Brand" class="form-control" />
+                                        <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.Brand}}</p>
+                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" type="text" ng-model="item.Brand" class="form-control" />
                                     </td>
                                     <th>包装 *</th>
                                     <td>
-                                        <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&item.CiqCode!=null)">{{item.Package}}</p>
-                                        <select ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.CiqCode==null)" ng-model="item.Package" class="form-control half-form-control">
+                                        <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.Package}}</p>
+                                        <select ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" ng-model="item.Package" class="form-control half-form-control">
                                             <option value="罐装">罐装</option>
                                             <option value="瓶装">瓶装</option>
                                             <option value="袋装">袋装</option>
@@ -642,20 +645,20 @@
                                 <tr>
                                     <th>规格型号 *</th>
                                     <td>
-                                        <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&item.CiqCode!=null)">{{item.Spec}}</p>
-                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.CiqCode==null)" type="text" class="form-control" ng-model="item.Spec" />
+                                        <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.Spec}}</p>
+                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" type="text" class="form-control" ng-model="item.Spec" />
                                     </td>
                                     <th>制造国代码 *</th>
                                     <td>
-                                        <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&item.CiqCode!=null)">{{item.ManufacturerCountry}}</p>
-                                        <select ajax-select ajax-url="countries" ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.CiqCode==null)" ng-model="item.ManufacturerCountry" class="form-control" style="width: 100%"></select>
+                                        <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.ManufacturerCountry}}</p>
+                                        <select ajax-select ajax-url="countries" ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" ng-model="item.ManufacturerCountry" class="form-control" style="width: 100%"></select>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>HS编码 *</th>
                                     <td colspan="3">
-                                        <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&item.CiqCode!=null)">{{item.HSCode}}</p>
-                                        <select ajax-select ajax-url="commonhscodes" ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.CiqCode==null)" ng-model="item.HSCode" class="form-control" style="width: 100%"></select>
+                                        <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.HSCode}}</p>
+                                        <select ajax-select ajax-url="commonhscodes" ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" ng-model="item.HSCode" class="form-control" style="width: 100%"></select>
                                     </td>
                                 </tr>
                                 <tr ng-show="model.Application.C102">
