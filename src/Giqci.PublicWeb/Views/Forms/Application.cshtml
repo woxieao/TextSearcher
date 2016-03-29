@@ -304,6 +304,7 @@
                             $scope.model.Application.Goods[i].C102Comment = "";
                         }
                     }
+                    $scope.submitApp = true;
                     $http.post('/forms/app', $scope.model.Application, $scope.model.Application.Id)
                         .then(function(response) {
                             $log.log(response);
@@ -317,6 +318,7 @@
                                 $anchorScroll();
                                 $scope.dataInit();
                             }
+                            $scope.submitApp = false;
                         }, function(response) {
                             $log.warn(response);
                         });
@@ -685,11 +687,8 @@
                                         <col width="360" />
                                     </colgroup>
                                     <tr>
-                                        <th>商品货号</th>
-                                        <td colspan="2">
-                                            <input type="text" ng-model="batch.Code" class="form-control" />
-                                        </td>
-                                        <td><button class="btn btn-default" type="button" ng-click="removeItemByBatchNo($parent.$index,$index)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除批次</button></td>
+                                        <th>商品批次 {{$index+1}}</th>
+                                        <td colspan="3"><button class="btn btn-default" type="button" ng-click="removeItemByBatchNo($parent.$index,$index)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除批次</button></td>
                                     </tr>
                                     <tr>
                                         <th>生产日期</th>
@@ -830,7 +829,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button class="btn btn-default" ng-click="submit()">
+                        <button class="btn btn-default" ng-click="submit()" ng-disabled="submitApp">
                             <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
                         </button>
                     </div>
