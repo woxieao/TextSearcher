@@ -11,7 +11,7 @@ app.directive("ajaxSelect", function ($timeout, $http) {
             scope.$watch("ngModel", function (n, o) {
                 scope.isLoading = false;
                 if (!scope.isLoading && model.$viewValue) {
-                    $http.get("/api/dict/" + url , {
+                    $http.get("/api/dict/" + url, {
                         params: { 'code': model.$viewValue }
                     }).success(function (data) {
                         if (data.items.length > 0) {
@@ -35,7 +35,7 @@ app.directive("ajaxSelect", function ($timeout, $http) {
                     delay: 250,
                     data: function (params) {
                         return {
-                            code : params.term
+                            code: params.term
                         };
                     },
                     processResults: function (data, params) {
@@ -64,6 +64,33 @@ app.directive("ajaxSelect", function ($timeout, $http) {
                     model.$setViewValue($element.val());
                 });
             });
+        }
+    };
+});
+
+
+app.directive("ajaxLabel", function ($timeout, $http) {
+    return {
+        restrict: 'AC',
+        require: "ngModel",
+        link: function (scope, element, attrs, model) {
+            var $element = $(element);
+            var url = attrs["ajaxUrl"];
+            scope.$watch("ngModel", function (n, o) {
+                scope.isLoading = false;
+                if (!scope.isLoading && typeof (model.$viewValue) !== "undefined" && model.$viewValue) {
+                    $http.get("/api/dict/" + url, {
+                        params: { 'code': model.$viewValue }
+                    }).success(function (data) {
+                        if (data.items.length > 0) {
+                            var newVal = (url === "commonhscodes") ? data.items[0].Name : data.items[0].CnName;
+                            $(element).html(newVal);
+                            scope.isLoading = true;
+                        }
+                    }).error(function (data) {
+                    });
+                }
+            }, true);
         }
     };
 });
