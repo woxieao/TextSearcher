@@ -13,7 +13,7 @@
         app.controller("GlobalController", [
             '$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', '$filter', function($http, $scope, $log, $location, $anchorScroll, $timeout, $filter) {
                 $scope.model = @Html.Raw(JsonConvert.SerializeObject(Model));
-                $log.log($scope.model);
+                //$log.log($scope.model);
                 $scope.model.Application.Id = @ViewBag.id;
 
                 $scope.dataInit = function() {
@@ -60,11 +60,10 @@
                                 "BatchNo": "",
                                 "Quantity": 0.0,
                                 "ManufacturerDate": null,
-                                "ExpiryDate": null,
-                                "Code": ""
+                                "ExpiryDate": null
                             }
                         ],
-                        isEditInputDefault:true,
+                        isEditInputDefault: true,
                         isEditSelectDefault: false
                     });
                 };
@@ -154,7 +153,6 @@
                 };
                 $scope.addItemByBatchNo = function(_index) {
                     $scope.model.Application.Goods[_index].ProductItemList.push({
-                        Code: "",
                         ManufacturerDate: "",
                         ExpiryDate: "",
                         BatchNo: "",
@@ -253,6 +251,10 @@
                         });
                     });
                 };
+                $scope.countryClickHandler = function(event) {
+                    var currentElement = event.target;
+                    $(currentElement).select2({ theme: "bootstrap", width: 'resolve' });
+                };
                 $scope.accept = function() {
                     $scope.acceptshow = false;
                     $scope.appshow = true;
@@ -331,7 +333,6 @@
                 } else {
                     $scope.unit = "Containers";
                 }
-
                 $scope.check_A = function() {
                     $scope.unit = "Pallets";
                 };
@@ -347,6 +348,17 @@
                 }, 300000);
 
                 $scope.updateClock();
+
+                $scope.loadCountriesDict = null;
+                $scope.loadCountries = function() {
+                    $http.get("/api/dict/countries", {
+                        params: { 'code': "" }
+                    }).success(function(data) {
+                        $scope.loadCountriesDict = data.items;
+                    }).error(function(data) {
+                    });
+                };
+                $scope.loadCountries();
             }
         ]);
 
@@ -591,13 +603,15 @@
                                     <col width="360" />
                                 </colgroup>
                                 <tr>
-                                    <th>商品 {{$index+1}}</th>
+                                    <th>
+                                        <p class="form-control-static">商品 {{$index+1}}</p>
+                                    </th>
                                     <td colspan="3">
                                         <button class="btn btn-default" type="button" ng-click="removeitem($index)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>商品备案号</th>
+                                    <th><p class="form-control-static">商品备案号</p></th>
                                     <td colspan="3">
                                         <div class="form-group">
                                             <div class="col-sm-6">
@@ -616,24 +630,24 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>名称(英文) *</th>
+                                    <th><p class="form-control-static">名称(英文) *</p></th>
                                     <td>
                                         <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.DescriptionEn}}</p>
                                         <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" type="text" ng-model="item.DescriptionEn" class="form-control" />
                                     </td>
-                                    <th>名称(中文)</th>
+                                    <th><p class="form-control-static">名称(中文)</p></th>
                                     <td>
                                         <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.Description}}</p>
                                         <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" type="text" ng-model="item.Description" class="form-control" />
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>品牌 *</th>
+                                    <th><p class="form-control-static">品牌 *</p></th>
                                     <td>
                                         <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.Brand}}</p>
                                         <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" type="text" ng-model="item.Brand" class="form-control" />
                                     </td>
-                                    <th>包装 *</th>
+                                    <th><p class="form-control-static">包装 *</p></th>
                                     <td>
                                         <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.Package}}</p>
                                         <select ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" ng-model="item.Package" class="form-control half-form-control">
@@ -645,26 +659,26 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>规格型号 *</th>
+                                    <th><p class="form-control-static">规格型号 *</p></th>
                                     <td>
                                         <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.Spec}}</p>
                                         <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" type="text" class="form-control" ng-model="item.Spec" />
                                     </td>
-                                    <th>制造国代码 *</th>
+                                    <th><p class="form-control-static">制造国代码 *</p></th>
                                     <td>
-                                        <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.ManufacturerCountry}}</p>
-                                        <select ajax-select ajax-url="countries" ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" ng-model="item.ManufacturerCountry" class="form-control" style="width: 100%"></select>
+                                        <p ajax-label ajax-url="countries" ng-model="item.ManufacturerCountry" class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.ManufacturerCountry}}</p>
+                                        <select ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" ng-model="item.ManufacturerCountry" class="form-control" ng-mouseover="countryClickHandler($event)" ng-options="country.Code as country.CnName for country in loadCountriesDict" style="width: 100%"></select>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>HS编码 *</th>
+                                    <th><p class="form-control-static">HS编码 *</p></th>
                                     <td colspan="3">
                                         <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.HSCode}}</p>
                                         <select ajax-select ajax-url="commonhscodes" ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" ng-model="item.HSCode" class="form-control" style="width: 100%"></select>
                                     </td>
                                 </tr>
                                 <tr ng-show="model.Application.C102">
-                                    <th>品质检验</th>
+                                    <th><p class="form-control-static">品质检验</p></th>
                                     <td>
                                         <div class="checkbox">
                                             <label><input type="checkbox" ng-model="item.C102" />是否检查</label>
@@ -687,25 +701,25 @@
                                         <col width="360" />
                                     </colgroup>
                                     <tr>
-                                        <th>商品批次 {{$index+1}}</th>
+                                        <th><p class="form-control-static">商品批次 {{$index+1}}</p></th>
                                         <td colspan="3"><button class="btn btn-default" type="button" ng-click="removeItemByBatchNo($parent.$index,$index)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除批次</button></td>
                                     </tr>
                                     <tr>
-                                        <th>生产日期</th>
+                                        <th><p class="form-control-static">生产日期</p></th>
                                         <td>
                                             <input type="text" ng-model="batch.ManufacturerDate" class="form-control datetimepicker" ng-mousedown="itemClickHandler($event)" />
                                         </td>
-                                        <th>保质期 *</th>
+                                        <th><p class="form-control-static">保质期 *</p></th>
                                         <td>
                                             <input type="text" ng-model="batch.ExpiryDate" class="form-control datetimepicker" ng-mousedown="itemClickHandler($event)" />
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>批次号</th>
+                                        <th><p class="form-control-static">批次号</p></th>
                                         <td>
                                             <input type="text" ng-model="batch.BatchNo" class="form-control" maxlength="100" />
                                         </td>
-                                        <th>数量 *</th>
+                                        <th><p class="form-control-static">数量 *</p></th>
                                         <td>
                                             <input type="number" ng-model="batch.Quantity" min="0" class="form-control half-form-control" />
                                         </td>
@@ -751,7 +765,7 @@
                         <button class="btn btn-default" type="button" ng-click="addContainerInfo()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加装箱信息</button>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ng-show="model.Application.ShippingMethod == 'A'">
                     <label class="col-sm-2 control-label">运输总数量 *</label>
                     <div class="col-sm-5">
                         <input type="number" ng-model="model.Application.TotalUnits" class="form-control" min="0" placeholder="运输总数量" />
@@ -760,7 +774,7 @@
                         <p class="form-control-static">{{unit}}</p>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ng-show="model.Application.ShippingMethod == 'A'">
                     <label class="col-sm-2 control-label">运输总重量</label>
                     <div class="col-sm-5">
                         <input type="number" ng-model="model.Application.TotalWeight" class="form-control" min="0" placeholder="运输总重量" />
