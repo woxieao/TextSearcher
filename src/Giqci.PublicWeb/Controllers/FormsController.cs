@@ -100,7 +100,7 @@ namespace Giqci.PublicWeb.Controllers
             var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
             var application = _appRepo.GetApplication(id, merchant.Id);
             //非该登录人的申请||不是新申请
-            if (application == null || application.Status != ApplicationStatus.New)
+            if (application == null)
             {
                 throw new ApplicationException(":(   You Can Not View This Application");
             }
@@ -163,7 +163,18 @@ namespace Giqci.PublicWeb.Controllers
             };
 
             ModelBuilder.SetHelperFields(_cache, model);
-            return View(model);
+
+            switch (application.Status)
+            {
+                case ApplicationStatus.New:
+                {
+                    return View(model);
+                }
+                default:
+                {
+                    return View("ViewApp", model);
+                }
+            }
         }
 
 
