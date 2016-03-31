@@ -24,6 +24,8 @@
                             $scope.model.Application.Goods[i].ProductItemList[j].ExpiryDate = $filter('date')($scope.model.Application.Goods[i].ProductItemList[j].ExpiryDate, 'yyyy/MM/dd');
                         }
                         $scope.model.Application.Goods[i].isEditSelectDefault = true;
+                        //兼容旧版本数据逻辑
+                        $scope.model.Application.Goods[i].isEditInputDefault = true;
                     }
                 };
                 if ($scope.model.Application.Id == 0) {
@@ -34,7 +36,8 @@
                     $.each($scope.model.Application.Goods, function(index) {
                         $scope.model.Application.Goods.splice(index, 1);
                     });
-                }
+                };
+
                 $scope.isEdit = $scope.model.Application.Id ? true : false;
                 $scope.dataInit();
                 $scope.errors = [];
@@ -615,16 +618,19 @@
                                     <td colspan="3">
                                         <div class="form-group">
                                             <div class="col-sm-6">
+                                                <input type="text" ng-model="item.CiqCode" class="form-control" />
+                                                <!--
                                                 <p class="form-control-static" ng-if="(isEdit&&item.isEditSelectDefault)">{{item.CiqCode}}</p>
                                                 <select ng-if="!isEdit||(isEdit&&!item.isEditSelectDefault)" class="form-control" ng-change="selectProduct(item.Selected,$index)" ng-model="item.Selected" ng-options="mp.CiqCode for mp in merchantProductList">
                                                     <option value="">--请选择--</option>
                                                 </select>
-                                                <input ng-if="!isEdit||(isEdit&&!item.isEditSelectDefault)" type="hidden" ng-model="item.CiqCode" />
+                                                <input ng-if="!isEdit||(isEdit&&!item.isEditSelectDefault)" type="hidden" ng-model="item.CiqCode"/>
+                                                -->
                                             </div>
                                             <div class="col-sm-6">
                                                 <a class="btn btn-default" ng-click="addItemByBatchNo($index)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;添加批次号</a>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;
-                                                <a class="btn btn-default" href="/goods/list"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;商品管理</a>
+                                                <!--<a class="btn btn-default" href="/goods/list"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;商品管理</a>-->
                                             </div>
                                         </div>
                                     </td>

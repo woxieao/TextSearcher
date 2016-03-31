@@ -43,7 +43,7 @@ app.directive("ajaxSelect", function ($timeout, $http) {
                         $.each(data.items, function (i, v) {
                             var o = {};
                             o.id = v.Code;
-                            o.name = (url === "commonhscodes") ? v.Name : v.CnName;
+                            o.name = (url === "commonhscodes") ? v.Code + '-' + v.Name : v.Code + '-' + v.CnName;
                             results.push(o);
                         });
                         return {
