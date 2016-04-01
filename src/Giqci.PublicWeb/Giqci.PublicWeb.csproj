@@ -57,8 +57,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Giqci.ApiProxy, Version=1.0.37.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.ApiProxy.1.0.37\lib\net45\Giqci.ApiProxy.dll</HintPath>
+    <Reference Include="Giqci.ApiProxy, Version=1.0.39.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.ApiProxy.1.0.39\lib\net45\Giqci.ApiProxy.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Giqci.Chapi.Admin.Contract, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -81,12 +81,12 @@
       <HintPath>..\..\packages\Giqci.Chapi.Prod.Contract.1.0.4\lib\net20\Giqci.Chapi.Prod.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Contract, Version=1.1.61.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.Contract.1.1.61\lib\net45\Giqci.Contract.dll</HintPath>
+    <Reference Include="Giqci.Contract, Version=1.1.63.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.Contract.1.1.63\lib\net45\Giqci.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Repository, Version=1.1.87.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.Repository.1.1.87\lib\net45\Giqci.Repository.dll</HintPath>
+    <Reference Include="Giqci.Repository, Version=1.1.89.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.Repository.1.1.89\lib\net45\Giqci.Repository.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ktech.Contract, Version=1.0.13.0, Culture=neutral, processorArchitecture=MSIL">
