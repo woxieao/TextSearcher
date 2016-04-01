@@ -13,6 +13,7 @@ using Giqci.PublicWeb.Models;
 using Giqci.PublicWeb.Models.Application;
 using Giqci.PublicWeb.Services;
 using Giqci.Repositories;
+using Ktech.Extensions;
 using Ktech.Mvc.ActionResults;
 using Application = Giqci.Models.Application;
 using Newtonsoft.Json;
@@ -159,6 +160,10 @@ namespace Giqci.PublicWeb.Controllers
                     Goods = goodsItemList,
                     ContainerInfoList = containerInfos,
                     ExampleCertList = exampleCerts,
+                    CreateDate = application.CreateDate,
+                    DeclineReason = application.DeclineReason,
+                    Key = application.Key,
+                    StatusDescription = application.Status.ToDescription()
                 }
             };
 
