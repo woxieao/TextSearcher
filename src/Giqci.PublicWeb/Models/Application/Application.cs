@@ -49,5 +49,12 @@ namespace Giqci.PublicWeb.Models.Application
         public decimal TotalWeight { get; set; }
 
         public int TotalUnits { get; set; }
+
+        public string Key { get; set; }
+        public DateTime CreateDate { get; set; }
+        public string StatusDescription { get; set; }
+
+        public string DeclineReason { get; set; }
+
     }
 }
