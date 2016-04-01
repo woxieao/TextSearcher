@@ -68,7 +68,7 @@ namespace Giqci.PublicWeb.Controllers
                         ApplicantContact = merchant.Contact,
                         ApplicantPhone = merchant.Phone,
                         ApplicantEmail = merchant.Email,
-                        InspectionDate = DateTime.Now.AddDays(-1),
+                        InspectionDate = DateTime.Now,
                         //Goods = new List<GoodsItem> {new GoodsItem {ManufacturerCountry = "036"}},
                         ContainerInfoList = new List<ContainerInfoView>
                         {
@@ -189,7 +189,7 @@ namespace Giqci.PublicWeb.Controllers
         {
             // trade type must be 电商贸易
             //model.TradeType = TradeType.C;
-            var errors = ValidateApplication(model);
+            var errors = _appRepo.HasError(model);
             string appNo = null;
             //set cookies 
             var cookieHelper = new CookieHelper();
@@ -271,11 +271,6 @@ namespace Giqci.PublicWeb.Controllers
         public ActionResult UserFormsList()
         {
             return View();
-        }
-
-        private List<string> ValidateApplication(Application model)
-        {
-            return _appRepo.HasError(model);
         }
     }
 }
