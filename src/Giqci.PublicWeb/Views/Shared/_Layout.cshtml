@@ -18,6 +18,10 @@
     <script src="~/Global/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
     <script src="~/Global/js/select2/select2.min.js"></script>
     <script src="~/Global/js/locales/select2.zh-CN.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Global/js/commalert.js"></script>
+    <script src="~/Global/js/app.js"></script>
+    <script src="~/Global/js/directive.js"></script>
     @RenderSection("Header", false)
 </head>
 <body>
@@ -31,10 +35,6 @@
         @RenderBody()
     </div>
     @Html.Partial("_Footer")
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Global/js/commalert.js"></script>
-    <script src="~/Global/js/app.js"></script>
-    <script src="~/Global/js/directive.js"></script>
     @RenderSection("Footer", false)
     <script>
         var _Browser = {};

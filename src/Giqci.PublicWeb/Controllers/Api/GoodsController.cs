@@ -2,6 +2,7 @@
 using Ktech.Mvc.ActionResults;
 using System.Net;
 using System.Web.Mvc;
+using Giqci.Chapi.Customers.Models;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Services;
 
@@ -65,6 +66,46 @@ namespace Giqci.PublicWeb.Controllers.Api
         {
             var result = _productApiProxy.GetProduct(ciqCode);
             return new KtechJsonResult(HttpStatusCode.OK, new {result = result});
+        }
+
+
+        [Route("goods/addcustomproduct")]
+        [HttpPost]
+        public ActionResult AddOrUpdateCustomProduct(Product product)
+        {
+            if (product.Id > 0)
+            {
+                if (!product.IsApproved)
+                {
+                    _merchantRepository.UpdateCustomerProducts(_auth.GetAuth().MerchantId, product);
+                }
+                else
+                {
+                    throw  new Exception("不可更改已批准的商品");
+                }
+            }
+            else
+            {
+                _merchantRepository.AddCustomProduct(_auth.GetAuth().MerchantId, product);
+            }
+
+            return new KtechJsonResult(HttpStatusCode.OK, new {flag = true});
+        }
+
+        [Route("goods/getcustomproductlist")]
+        [HttpPost]
+        public ActionResult MerchantGetCustomProductList(string ciqcode = "", string name = "")
+        {
+            var result = _merchantRepository.SelectCustomerProducts(_auth.GetAuth().MerchantId, ciqcode, name);
+            return new KtechJsonResult(HttpStatusCode.OK, new {result = result});
+        }
+
+        [Route("goods/deletecustomproduct")]
+        [HttpPost]
+        public ActionResult MerchantDeleteCustomProduct(int id)
+        {
+            // _merchantRepository.RemoveProduct(_auth.GetAuth().MerchantId, id);
+            return new KtechJsonResult(HttpStatusCode.OK, new {result = true});
         }
     }
 }

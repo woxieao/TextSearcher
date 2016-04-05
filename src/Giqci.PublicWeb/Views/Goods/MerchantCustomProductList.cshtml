@@ -1,17 +1,17 @@
 ﻿@{
-    ViewBag.Title = "商品列表";
+    ViewBag.Title = "自定义商品列表";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div ng-controller="GoodsListController">
+<div ng-controller="MerchantCustomProductListController">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">商品列表</h3>
+            <h3 class="panel-title">自定义商品列表</h3>
         </div>
         <div class="panel-body">
             <ul class="note">
                 <li>
-                    <a class="btn btn-primary btn-sm" href="/goods/add">按备案号添加商品</a> &nbsp;&nbsp;<a class="btn btn-primary btn-sm" href="/goods/addcustomproduct">添加自定义商品</a>
+                    <a class="btn btn-primary btn-sm" href="/goods/add">按备案号添加商品</a> &nbsp;&nbsp;<a class="btn btn-primary btn-sm" href="/goods/showcustomproduct">添加自定义商品</a>
                 </li>
             </ul>
             <table class="table table-striped">
@@ -28,7 +28,6 @@
                 </colgroup>
                 <thead>
                 <tr>
-                    <th>商品备案号</th>
                     <th>HS编码</th>
                     <th>中文名</th>
                     <th>英文名</th>
@@ -41,7 +40,6 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="Product in merchantProductList">
-                    <td>{{Product.CiqCode}}</td>
                     <td>{{Product.HSCode}}</td>
                     <td>{{Product.Description}}</td>
                     <td>{{Product.DescriptionEn}}</td>
@@ -51,7 +49,11 @@
                     <td>{{Product.Package}}</td>
                     <td>
                         <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-danger btn-sm" ng-click="remove(Product.CiqCode,$index)">删除</button>
+                            <div ng-show="Product.IsApproved"><a href="/goods/showcustomproduct?id={{Product.Id}}">编辑</a>
+                            </div>
+                            <div ng-show="!Product.IsApproved">
+                               <strong>不可编辑</strong>
+                            </div>
                         </div>
                     </td>
                 </tr>
