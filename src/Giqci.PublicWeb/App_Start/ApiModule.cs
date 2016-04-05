@@ -30,6 +30,7 @@ namespace Giqci.PublicWeb
                 .SingleInstance();
 
             builder.Register(context => new DatabaseSetting(connStr)).SingleInstance();
+           // builder.RegisterType<PublicRepository>().As<IPublicRepository>().InstancePerDependency();
             builder.RegisterType<LoggerRepository>().As<ILoggerRepository>().InstancePerDependency();
             builder.RegisterType<ApplicationRepository>().As<IApplicationRepository>().InstancePerDependency();
             builder.RegisterType<CertificateRepository>().As<ICertificateRepository>().InstancePerDependency();
