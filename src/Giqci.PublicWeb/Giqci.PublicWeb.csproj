@@ -288,6 +288,8 @@
     <Content Include="Views\Goods\GoodsAdd.cshtml" />
     <Content Include="Scripts\jquery-2.2.2.min.map" />
     <Content Include="Views\Forms\ViewApp.cshtml" />
+    <Content Include="Views\Goods\ShowCustomProduct.cshtml" />
+    <Content Include="Views\Goods\MerchantCustomProductList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

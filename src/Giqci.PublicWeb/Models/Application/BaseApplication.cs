@@ -22,7 +22,7 @@ namespace Giqci.PublicWeb.Models.Application
 
         public bool C103 { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonConverter(typeof (StringEnumConverter))]
         public TradeType TradeType { get; set; }
 
         public string ApplicantCode { get; set; }
@@ -48,9 +48,9 @@ namespace Giqci.PublicWeb.Models.Application
         /// <summary>
         /// 提单号
         /// </summary>
-        public string Billno { get; set; }
+        public string BillNo { get; set; }
 
-        public string OtherBillno { get; set; }
+        public string OtherBillNo { get; set; }
 
         public string Vesselcn { get; set; }
 

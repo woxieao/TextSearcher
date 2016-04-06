@@ -1,24 +1,41 @@
 ﻿using System;
+using System.Net;
 using System.Web.Mvc;
+using Giqci.Chapi.Customers.Models;
 using Giqci.Interfaces;
+using Giqci.PublicWeb.Services;
+using Ktech.Mvc.ActionResults;
 
 namespace Giqci.PublicWeb.Controllers
 {
     public class GoodsController : Controller
     {
         private readonly IMerchantApiProxy _merchantRepo;
+        private readonly IMerchantProductApiProxy _merchantRepository;
         private readonly IProductApiProxy _prodApi;
+        private readonly IAuthService _auth;
 
-        public GoodsController(IMerchantApiProxy merchantRepo, IProductApiProxy prodApi)
+        public GoodsController(IMerchantProductApiProxy merchantRepository, IMerchantApiProxy merchantRepo,
+            IProductApiProxy prodApi, IAuthService auth)
         {
+            _merchantRepository = merchantRepository;
             _merchantRepo = merchantRepo;
             _prodApi = prodApi;
+            _auth = auth;
         }
 
         [Route("goods/list")]
         [HttpGet]
         [Authorize]
         public ActionResult MerchantProductList()
+        {
+            return View();
+        }
+
+        [Route("goods/customproductlist")]
+        [HttpGet]
+        [Authorize]
+        public ActionResult MerchantCustomProductList()
         {
             return View();
         }
@@ -31,6 +48,18 @@ namespace Giqci.PublicWeb.Controllers
             return View();
         }
 
+        [Route("goods/showcustomproduct")]
+        [HttpGet]
+        [Authorize]
+        public ActionResult ShowCustomProduct(int id = 0)
+        {
+            var product = id == 0
+                ? new Product()
+                : _merchantRepository.GetCustomerProduct(_auth.GetAuth().MerchantId, id);
+            //防止编辑已批准的商品
+            product = product.IsApproved ? new Product() : product;
+            return View(product);
+        }
 
 
         //[Route("goods/add")]
