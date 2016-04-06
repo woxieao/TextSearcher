@@ -261,6 +261,7 @@
                 $scope.accept = function() {
                     $scope.acceptshow = false;
                     $scope.appshow = true;
+                    $("#appliction-form").show();
                 };
 
                 $scope.check_type_c102 = function() {
@@ -486,7 +487,7 @@
     </div>
 
 
-    <div ng-show="appshow">
+    <div ng-show="appshow" id="appliction-form" style="display: none;">
         <div class="alert alert-success" role="alert" ng-show="resultMessage">
             <strong>信息提示</strong>
             <p>{{resultMessage}}</p>
