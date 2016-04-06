@@ -44,9 +44,11 @@
                 if ($scope.model.Application.Id > 0) {
                     $scope.acceptshow = false;
                     $scope.appshow = true;
+                    $("#appliction-form").show();
                 } else {
                     $scope.acceptshow = true;
                     $scope.appshow = false;
+                    $("#accept-form").hide();
                 }
                 $scope.additem = function() {
                     $scope.model.Application.Goods.push({
@@ -261,6 +263,7 @@
                 $scope.accept = function() {
                     $scope.acceptshow = false;
                     $scope.appshow = true;
+                    $("#accept-form").hide();
                     $("#appliction-form").show();
                 };
 
@@ -363,6 +366,7 @@
                     });
                 };
                 $scope.loadCountries();
+                $("#accept-form").show();
             }
         ]);
 
@@ -379,7 +383,7 @@
 }
 
 <div ng-controller="GlobalController">
-    <div ng-show="acceptshow">
+    <div ng-show="acceptshow" id="accept-form" style="display: none;">
         <form class="form-horizontal">
             <div class="form-group">
                 <div class="col-sm-10 col-sm-offset-1">
