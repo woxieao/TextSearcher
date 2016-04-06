@@ -81,7 +81,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                 }
                 else
                 {
-                    throw  new Exception("不可更改已批准的商品");
+                    throw new Exception("不可更改已批准的商品");
                 }
             }
             else
@@ -96,7 +96,7 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult MerchantGetCustomProductList(string ciqcode = "", string name = "")
         {
-            var result = _merchantRepository.SelectCustomerProducts(_auth.GetAuth().MerchantId, ciqcode, name);
+            var result = _merchantRepository.SelectCustomerProducts(_auth.GetAuth().MerchantId, name);
             return new KtechJsonResult(HttpStatusCode.OK, new {result = result});
         }
 
