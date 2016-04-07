@@ -60,6 +60,7 @@
                         CiqCode: "",
                         ManufacturerCountry: "036",
                         Package: "",
+                        ApplicationZCodes:[],
                         ProductItemList: [
                             {
                                 "BatchNo": "",
@@ -168,7 +169,15 @@
                 $scope.removeItemByBatchNo = function(p_index, _index) {
                     $scope.model.Application.Goods[p_index].ProductItemList.splice(_index, 1);
                 };
-
+                $scope.addZcodeItem = function(_index) {
+                    $scope.model.Application.Goods[_index].ApplicationZCodes.push({
+                        ZCodeStart:"",
+                        ZCodeEnd:""
+                    });
+                };
+                $scope.removeZcodeItem = function(_pindex,_index) {
+                    $scope.model.Application.Goods[_pindex].ApplicationZCodes.splice(_index, 1);
+                };
                 $scope.chooseGoods = function(method) {
                     switch (method) {
                         case -1:
@@ -573,7 +582,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">出口商</label>
+                    <label class="col-sm-2 control-label">出口商 * </label>
                     <div class="col-sm-10">
                         <input type="text" name="Application.Exporter" ng-model="model.Application.Exporter" class="form-control" placeholder="全称" />
                         <input type="text" name="Application.ExporterAddr" ng-model="model.Application.ExporterAddr" class="form-control" placeholder="地址" />
@@ -582,7 +591,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">进口商</label>
+                    <label class="col-sm-2 control-label">进口商 * </label>
                     <div class="col-sm-10">
                         <input type="text" name="Application.Importer" ng-model="model.Application.Importer" class="form-control" placeholder="全称" />
                         <input type="text" name="Application.ImporterAddr" ng-model="model.Application.ImporterAddr" class="form-control" placeholder="地址" />
@@ -605,10 +614,10 @@
                         <div ng-repeat="item in model.Application.Goods">
                             <table class="table table-striped">
                                 <colgroup>
-                                    <col width="120" />
-                                    <col width="360" />
-                                    <col width="120" />
-                                    <col width="360" />
+                                    <col width="120"/>
+                                    <col width="360"/>
+                                    <col width="120"/>
+                                    <col width="360"/>
                                 </colgroup>
                                 <tr>
                                     <th>
@@ -619,11 +628,12 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th><p class="form-control-static">商品备案号</p></th>
+                                    <th>
+                                        <p class="form-control-static">商品备案号</p></th>
                                     <td colspan="3">
                                         <div class="form-group">
                                             <div class="col-sm-6">
-                                                <input type="text" ng-model="item.CiqCode" class="form-control" />
+                                                <input type="text" ng-model="item.CiqCode" class="form-control"/>
                                                 <!--
                                                 <p class="form-control-static" ng-if="(isEdit&&item.isEditSelectDefault)">{{item.CiqCode}}</p>
                                                 <select ng-if="!isEdit||(isEdit&&!item.isEditSelectDefault)" class="form-control" ng-change="selectProduct(item.Selected,$index)" ng-model="item.Selected" ng-options="mp.CiqCode for mp in merchantProductList">
@@ -636,29 +646,34 @@
                                                 <a class="btn btn-default" ng-click="addItemByBatchNo($index)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;添加批次号</a>
                                                 &nbsp;&nbsp;&nbsp;&nbsp;
                                                 <!--<a class="btn btn-default" href="/goods/list"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;商品管理</a>-->
+                                                <button class="btn btn-default" type="button" ng-click="addZcodeItem($index)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加真知码</button>
                                             </div>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th><p class="form-control-static">名称(英文) *</p></th>
+                                    <th>
+                                        <p class="form-control-static">名称(英文) *</p></th>
                                     <td>
                                         <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.DescriptionEn}}</p>
-                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" type="text" ng-model="item.DescriptionEn" class="form-control" />
+                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" type="text" ng-model="item.DescriptionEn" class="form-control"/>
                                     </td>
-                                    <th><p class="form-control-static">名称(中文)</p></th>
+                                    <th>
+                                        <p class="form-control-static">名称(中文)</p></th>
                                     <td>
                                         <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.Description}}</p>
-                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" type="text" ng-model="item.Description" class="form-control" />
+                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" type="text" ng-model="item.Description" class="form-control"/>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th><p class="form-control-static">品牌 *</p></th>
+                                    <th>
+                                        <p class="form-control-static">品牌 *</p></th>
                                     <td>
                                         <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.Brand}}</p>
-                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" type="text" ng-model="item.Brand" class="form-control" />
+                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" type="text" ng-model="item.Brand" class="form-control"/>
                                     </td>
-                                    <th><p class="form-control-static">包装 *</p></th>
+                                    <th>
+                                        <p class="form-control-static">包装 *</p></th>
                                     <td>
                                         <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.Package}}</p>
                                         <select ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" ng-model="item.Package" class="form-control half-form-control">
@@ -670,29 +685,33 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th><p class="form-control-static">规格型号 *</p></th>
+                                    <th>
+                                        <p class="form-control-static">规格型号 *</p></th>
                                     <td>
                                         <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.Spec}}</p>
-                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" type="text" class="form-control" ng-model="item.Spec" />
+                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" type="text" class="form-control" ng-model="item.Spec"/>
                                     </td>
-                                    <th><p class="form-control-static">制造国代码 *</p></th>
+                                    <th>
+                                        <p class="form-control-static">制造国代码 *</p></th>
                                     <td>
                                         <p ajax-label ajax-url="countries" ng-model="item.ManufacturerCountry" class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.ManufacturerCountry}}</p>
                                         <select ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" ng-model="item.ManufacturerCountry" class="form-control" ng-mouseover="countryClickHandler($event)" ng-options="country.Code as country.CnName for country in loadCountriesDict" style="width: 100%"></select>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th><p class="form-control-static">HS编码 *</p></th>
+                                    <th>
+                                        <p class="form-control-static">HS编码 *</p></th>
                                     <td colspan="3">
                                         <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.HSCode}}</p>
                                         <select ajax-select ajax-url="commonhscodes" ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" ng-model="item.HSCode" class="form-control" style="width: 100%"></select>
                                     </td>
                                 </tr>
                                 <tr ng-show="model.Application.C102">
-                                    <th><p class="form-control-static">品质检验</p></th>
+                                    <th>
+                                        <p class="form-control-static">品质检验</p></th>
                                     <td>
                                         <div class="checkbox">
-                                            <label><input type="checkbox" ng-model="item.C102" />是否检查</label>
+                                            <label><input type="checkbox" ng-model="item.C102"/>是否检查</label>
                                         </div>
                                     </td>
                                     <th>
@@ -703,7 +722,49 @@
                                     </td>
                                 </tr>
                             </table>
+                            <!--批次号-->
                             <div ng-repeat="batch in item.ProductItemList">
+                                <table class="table table-striped">
+                                    <colgroup>
+                                        <col width="120"/>
+                                        <col width="360"/>
+                                        <col width="120"/>
+                                        <col width="360"/>
+                                    </colgroup>
+                                    <tr>
+                                        <th>
+                                            <p class="form-control-static">商品批次 {{$index+1}}</p></th>
+                                        <td colspan="3"><button ng-show="$index!=0" class="btn btn-default" type="button" ng-click="removeItemByBatchNo($parent.$index,$index)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除批次</button></td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <p class="form-control-static">生产日期</p></th>
+                                        <td>
+                                            <input type="text" ng-model="batch.ManufacturerDate" class="form-control datetimepicker" ng-mousedown="itemClickHandler($event)"/>
+                                        </td>
+                                        <th>
+                                            <p class="form-control-static">保质期 *</p></th>
+                                        <td>
+                                            <input type="text" ng-model="batch.ExpiryDate" class="form-control datetimepicker" ng-mousedown="itemClickHandler($event)"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                            <p class="form-control-static">批次号</p></th>
+                                        <td>
+                                            <input type="text" ng-model="batch.BatchNo" class="form-control" maxlength="100"/>
+                                        </td>
+                                        <th>
+                                            <p class="form-control-static">数量 *</p></th>
+                                        <td>
+                                            <input type="number" ng-model="batch.Quantity" min="0" class="form-control half-form-control"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <!--end 批次号-->
+                            <!--真知码-->
+                            <div ng-repeat="zcode in item.ApplicationZCodes">
                                 <table class="table table-striped">
                                     <colgroup>
                                         <col width="120" />
@@ -712,31 +773,30 @@
                                         <col width="360" />
                                     </colgroup>
                                     <tr>
-                                        <th><p class="form-control-static">商品批次 {{$index+1}}</p></th>
-                                        <td colspan="3"><button class="btn btn-default" type="button" ng-click="removeItemByBatchNo($parent.$index,$index)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除批次</button></td>
-                                    </tr>
-                                    <tr>
-                                        <th><p class="form-control-static">生产日期</p></th>
-                                        <td>
-                                            <input type="text" ng-model="batch.ManufacturerDate" class="form-control datetimepicker" ng-mousedown="itemClickHandler($event)" />
-                                        </td>
-                                        <th><p class="form-control-static">保质期 *</p></th>
-                                        <td>
-                                            <input type="text" ng-model="batch.ExpiryDate" class="form-control datetimepicker" ng-mousedown="itemClickHandler($event)" />
+                                        <th>
+                                            <p class="form-control-static">真知码 {{$index+1}}</p>
+                                        </th>
+                                        <td colspan="3">
+                                            <button class="btn btn-default" type="button" ng-click="removeZcodeItem($parent.$index,$index)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除真知码</button>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th><p class="form-control-static">批次号</p></th>
+                                        <th>
+                                            <p class="form-control-static">首码</p>
+                                        </th>
                                         <td>
-                                            <input type="text" ng-model="batch.BatchNo" class="form-control" maxlength="100" />
+                                            <input type="text" ng-model="zcode.ZCodeStart" class="form-control" />
                                         </td>
-                                        <th><p class="form-control-static">数量 *</p></th>
+                                        <th>
+                                            <p class="form-control-static">尾码</p>
+                                        </th>
                                         <td>
-                                            <input type="number" ng-model="batch.Quantity" min="0" class="form-control half-form-control" />
+                                            <input type="text" ng-model="zcode.ZCodeEnd" class="form-control" />
                                         </td>
                                     </tr>
                                 </table>
                             </div>
+                            <!--end真知码-->
                         </div>
                         <button class="btn btn-default" type="button" ng-click="additem()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加商品</button>
                     </div>
@@ -776,7 +836,7 @@
                         <button class="btn btn-default" type="button" ng-click="addContainerInfo()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加装箱信息</button>
                     </div>
                 </div>
-                <div class="form-group" ng-show="model.Application.ShippingMethod == 'A'">
+                <div class="form-group">
                     <label class="col-sm-2 control-label">运输总数量 *</label>
                     <div class="col-sm-5">
                         <input type="number" ng-model="model.Application.TotalUnits" class="form-control" min="0" placeholder="运输总数量" />
@@ -785,7 +845,7 @@
                         <p class="form-control-static">{{unit}}</p>
                     </div>
                 </div>
-                <div class="form-group" ng-show="model.Application.ShippingMethod == 'A'">
+                <div class="form-group">
                     <label class="col-sm-2 control-label">运输总重量</label>
                     <div class="col-sm-5">
                         <input type="number" ng-model="model.Application.TotalWeight" class="form-control" min="0" placeholder="运输总重量" />
