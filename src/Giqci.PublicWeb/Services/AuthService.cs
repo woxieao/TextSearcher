@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web;
 using System.Web.Security;
-using Giqci.Chapi.Customers.Models;
+using Giqci.Chapi.Models.Customer;
 using Giqci.Interfaces;
 
 namespace Giqci.PublicWeb.Services

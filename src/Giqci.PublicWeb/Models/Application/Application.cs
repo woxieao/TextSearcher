@@ -40,12 +40,10 @@ namespace Giqci.PublicWeb.Models.Application
 
         public string LoadingPort { get; set; }
 
-        public string OtherLoadingPort { get; set; }
-
+   
         public string DestPort { get; set; }
 
-        public string OtherDestPort { get; set; }
-
+     
         public decimal TotalWeight { get; set; }
 
         public int TotalUnits { get; set; }

@@ -1,5 +1,5 @@
-﻿using Giqci.Chapi.Dict.Models;
-using Giqci.Chapi.Prod.Models;
+﻿using Giqci.Chapi.Models.Dict;
+using Giqci.Chapi.Models.Product;
 
 namespace Giqci.PublicWeb.Models.Goods
 {
@@ -9,7 +9,7 @@ namespace Giqci.PublicWeb.Models.Goods
 
         public Country[] Countries { get; set; }
 
-        public HSCode[] CommonHSCodes { get; set; }
+        public HsCode[] CommonHSCodes { get; set; }
 
         public string HSCodeDesc { get; set; }
 
