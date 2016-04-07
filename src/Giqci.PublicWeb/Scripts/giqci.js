@@ -8,6 +8,7 @@ function PageHandler(postUrl, callBackFunc, customPageSize) {
     var pageSize = customPageSize == null ? 10 : customPageSize;
     var pageIndex = 1;
     var lastTimeResultCount = pageSize;
+    var queryCondition = {};
 
     function canWeGo(currentPageIndex, type) {
         var isEnabled;
@@ -37,7 +38,8 @@ function PageHandler(postUrl, callBackFunc, customPageSize) {
     }
 
     function go(postData) {
-        postData = postData == null ? {} : postData;
+        queryCondition = postData == null ? queryCondition : postData;
+        postData = queryCondition;
         postData["pageIndex"] = pageIndex;
         postData["pageSize"] = pageSize;
         $.ajax({

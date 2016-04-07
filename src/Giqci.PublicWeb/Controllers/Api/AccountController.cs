@@ -3,7 +3,7 @@ using System.Web.Mvc;
 using Ktech.Mvc.ActionResults;
 using System.Web.Security;
 using System;
-using Giqci.Chapi.Customers.Models;
+using Giqci.Chapi.Models.Customer;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Models.Account;
 using Giqci.PublicWeb.Models;

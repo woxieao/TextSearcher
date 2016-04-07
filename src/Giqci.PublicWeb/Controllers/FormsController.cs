@@ -147,8 +147,6 @@ namespace Giqci.PublicWeb.Controllers
                     InspectionDate = application.InspectionDate,
                     LoadingPort = application.LoadingPort,
                     OtherBillNo = application.OtherBillNo,
-                    OtherDestPort = application.OtherDestPort,
-                    OtherLoadingPort = application.OtherLoadingPort,
                     PurchaseContract = application.PurchaseContract,
                     ShippingDate = application.ShippingDate,
                     ShippingMethod = application.ShippingMethod,

@@ -3,6 +3,7 @@ using System.Web.Configuration;
 using Autofac;
 using Autofac.Core;
 using Giqci.ApiProxy;
+using Giqci.ApiProxy.Logging;
 using Giqci.ApiProxy.Services;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Services;
@@ -18,6 +19,7 @@ namespace Giqci.PublicWeb
             var dictApiUrl = WebConfigurationManager.AppSettings["dictApiUrl"];
             var prodApiUrl = WebConfigurationManager.AppSettings["prodApiUrl"];
             var custApiUrl = WebConfigurationManager.AppSettings["custApiUrl"];
+            var logApiUrl = WebConfigurationManager.AppSettings["logApiUrl"];
 
             builder.Register(x => RestClientFactory.Create(dictApiUrl, false))
                 .Keyed<HttpClient>(ApiType.Dict)
@@ -28,10 +30,11 @@ namespace Giqci.PublicWeb
             builder.Register(x => RestClientFactory.Create(custApiUrl, false))
                 .Keyed<HttpClient>(ApiType.Customers)
                 .SingleInstance();
+            builder.Register(x => RestClientFactory.Create(logApiUrl, false))
+                .Keyed<HttpClient>(ApiType.Log)
+                .SingleInstance();
 
             builder.Register(context => new DatabaseSetting(connStr)).SingleInstance();
-           // builder.RegisterType<PublicRepository>().As<IPublicRepository>().InstancePerDependency();
-            builder.RegisterType<LoggerRepository>().As<ILoggerRepository>().InstancePerDependency();
             builder.RegisterType<ApplicationRepository>().As<IApplicationRepository>().InstancePerDependency();
             builder.RegisterType<CertificateRepository>().As<ICertificateRepository>().InstancePerDependency();
             builder.RegisterType<ContainerInfoRepository>().As<IContainerInfoRepository>().InstancePerDependency();
@@ -54,11 +57,16 @@ namespace Giqci.PublicWeb
                 .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers))
                 .InstancePerDependency();
 
+
             builder.RegisterType<CachedDictService>()
                 .As<IDictService>()
                 .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Dict))
                 .InstancePerDependency();
             builder.RegisterType<AuthService>().As<IAuthService>().InstancePerDependency();
+            builder.RegisterType<LoggingApiProxy>()
+                .As<ILoggingApiProxy>()
+                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Log))
+                .InstancePerDependency();
         }
 
         private enum ApiType
@@ -66,6 +74,7 @@ namespace Giqci.PublicWeb
             Dict,
             Products,
             Customers,
+            Log
         }
     }
 }

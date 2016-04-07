@@ -2,7 +2,7 @@
 using Ktech.Mvc.ActionResults;
 using System.Net;
 using System.Web.Mvc;
-using Giqci.Chapi.Customers.Models;
+using Giqci.Chapi.Models.Customer;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Services;
 
@@ -71,7 +71,7 @@ namespace Giqci.PublicWeb.Controllers.Api
 
         [Route("goods/addcustomproduct")]
         [HttpPost]
-        public ActionResult AddOrUpdateCustomProduct(Product product)
+        public ActionResult AddOrUpdateCustomProduct(CustomerProduct product)
         {
             if (product.Id > 0)
             {

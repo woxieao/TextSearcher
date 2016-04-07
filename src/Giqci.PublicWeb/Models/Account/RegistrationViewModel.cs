@@ -1,4 +1,4 @@
-﻿using Giqci.Chapi.Customers.Models;
+﻿using Giqci.Chapi.Models.Customer;
 
 namespace Giqci.PublicWeb.Models.Account
 {
