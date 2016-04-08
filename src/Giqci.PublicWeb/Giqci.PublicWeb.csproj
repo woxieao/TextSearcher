@@ -213,7 +213,7 @@
     <Content Include="Global\js\angular-1.4.7.min.js" />
     <Content Include="Global\js\app.js" />
     <Content Include="Global\js\bootstrap-datetimepicker.min.js" />
-    <Content Include="Global\js\commalert.js" />
+    <Content Include="Global\js\service.js" />
     <Content Include="Global\js\directive.js" />
     <Content Include="Global\js\locales\bootstrap-datetimepicker.zh-CN.js" />
     <Content Include="Global\js\locales\select2.zh-CN.js" />
