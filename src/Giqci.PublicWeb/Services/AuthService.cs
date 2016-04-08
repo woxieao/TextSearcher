@@ -38,7 +38,7 @@ namespace Giqci.PublicWeb.Services
             var user = HttpContext.Current.User;
             if (!user.Identity.IsAuthenticated)
                 return;
-
+            var reNew = HttpContext.Current.Session[SESSION_KEY];
             FormsAuthentication.SetAuthCookie(user.Identity.Name, false);
         }
 

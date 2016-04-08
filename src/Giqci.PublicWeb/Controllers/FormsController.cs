@@ -20,7 +20,6 @@ using Newtonsoft.Json;
 
 namespace Giqci.PublicWeb.Controllers
 {
-    [Authorize]
     public class FormsController : Ktech.Mvc.ControllerBase
     {
         private readonly IMerchantApiProxy _merchantRepo;
@@ -46,6 +45,7 @@ namespace Giqci.PublicWeb.Controllers
 
         [Route("forms/app/")]
         [HttpGet]
+        [Authorize]
         public ActionResult Application(string applicantCode)
         {
             var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
@@ -96,6 +96,7 @@ namespace Giqci.PublicWeb.Controllers
 
         [Route("forms/app/{id:int}")]
         [HttpGet]
+        [Authorize]
         public ActionResult Application(int id)
         {
             var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
@@ -170,13 +171,13 @@ namespace Giqci.PublicWeb.Controllers
             switch (application.Status)
             {
                 case ApplicationStatus.New:
-                {
-                    return View(model);
-                }
+                    {
+                        return View(model);
+                    }
                 default:
-                {
-                    return View("ViewApp", model);
-                }
+                    {
+                        return View("ViewApp", model);
+                    }
             }
         }
 
@@ -194,15 +195,17 @@ namespace Giqci.PublicWeb.Controllers
             cookieHelper.SetApplication("application", model);
             // check user status
             var userName = User.Identity.Name;
+            var isLogin = true;
             if (string.IsNullOrEmpty(userName))
             {
+                isLogin = false;
                 appNo = null;
-                errors = new List<string>() {"登录状态已失效，请您重新登录系统"};
+                errors = new List<string>() { "登录状态已失效，请您重新登录系统" };
             }
 
-            var merchantId = _merchantRepo.GetMerchant(User.Identity.Name).Id;
             if (!errors.Any())
             {
+                var merchantId = _merchantRepo.GetMerchant(User.Identity.Name).Id;
                 var exampleCertList = cookieHelper.GetExampleList(true);
                 if (id > 0)
                 {
@@ -216,11 +219,12 @@ namespace Giqci.PublicWeb.Controllers
                 errors = null;
                 cookieHelper.DeleteApplication("application");
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new {appNo = appNo, id = id, errors = errors});
+            return new KtechJsonResult(HttpStatusCode.OK, new { appNo = appNo, id = id, isLogin = isLogin, errors = errors });
         }
 
         [Route("forms/uploadexample")]
         [HttpPost]
+        [Authorize]
         public ActionResult UploadExample(HttpPostedFileBase file0, HttpPostedFileBase file1, HttpPostedFileBase file2,
             HttpPostedFileBase file3, HttpPostedFileBase file4)
         {
@@ -234,7 +238,7 @@ namespace Giqci.PublicWeb.Controllers
                 FormatExampleCookieStr(SaveFile(file4)),
                 currentExampleListStr);
             cookie.OverrideCookies(cookie.ExampleFileListKeyName, pathList);
-            return new KtechJsonResult(HttpStatusCode.OK, new {});
+            return new KtechJsonResult(HttpStatusCode.OK, new { });
         }
 
         private string FormatExampleCookieStr(string exampleStr)
@@ -266,6 +270,7 @@ namespace Giqci.PublicWeb.Controllers
 
         [Route("forms/list")]
         [HttpGet]
+        [Authorize]
         public ActionResult UserFormsList()
         {
             return View();
