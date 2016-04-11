@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Giqci.Enums;
-using Giqci.Models;
+using Giqci.Chapi.Enums.App;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -27,8 +23,7 @@ namespace Giqci.PublicWeb.Models.Application
 
         public string ImBrokerPhone { get; set; }
 
-        public string PurchaseContract { get; set; }
-
+     
         public string ShippingDate { get; set; }
 
         public string InspectionAddr { get; set; }

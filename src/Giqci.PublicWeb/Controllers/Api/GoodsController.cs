@@ -88,9 +88,9 @@ namespace Giqci.PublicWeb.Controllers.Api
             {
                 _merchantRepository.AddCustomProduct(_auth.GetAuth().MerchantId, product);
             }
-
             return new KtechJsonResult(HttpStatusCode.OK, new {flag = true});
         }
+
 
         [Route("goods/getcustomproductlist")]
         [HttpPost]
@@ -104,7 +104,9 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult MerchantDeleteCustomProduct(int id)
         {
-            // _merchantRepository.RemoveProduct(_auth.GetAuth().MerchantId, id);
+            //todo 应该是ID
+            //_merchantRepository.RemoveProduct(_auth.GetAuth().MerchantId, id);
+            _merchantRepository.RemoveProduct(_auth.GetAuth().MerchantId, String.Empty);
             return new KtechJsonResult(HttpStatusCode.OK, new {result = true});
         }
     }

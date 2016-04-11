@@ -151,7 +151,7 @@ app.controller('CertificateSearchController', [
 
 /* forms list */
 app.controller('FormsListController', [
-    '$scope', '$http', function ($scope, $http) {
+    '$scope',"$log", '$http', function($scope, $log, $http) {
         $scope.paginationConf = {
             totalItems: 0
         };

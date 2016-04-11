@@ -3,11 +3,11 @@ using System.Web.Configuration;
 using Autofac;
 using Autofac.Core;
 using Giqci.ApiProxy;
+using Giqci.ApiProxy.App;
 using Giqci.ApiProxy.Logging;
 using Giqci.ApiProxy.Services;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Services;
-using Giqci.Repositories;
 
 namespace Giqci.PublicWeb
 {
@@ -15,11 +15,11 @@ namespace Giqci.PublicWeb
     {
         protected override void Load(ContainerBuilder builder)
         {
-            var connStr = WebConfigurationManager.AppSettings["connStr"];
             var dictApiUrl = WebConfigurationManager.AppSettings["dictApiUrl"];
             var prodApiUrl = WebConfigurationManager.AppSettings["prodApiUrl"];
             var custApiUrl = WebConfigurationManager.AppSettings["custApiUrl"];
             var logApiUrl = WebConfigurationManager.AppSettings["logApiUrl"];
+            var appApiUrl = WebConfigurationManager.AppSettings["appApiUrl"];
 
             builder.Register(x => RestClientFactory.Create(dictApiUrl, false))
                 .Keyed<HttpClient>(ApiType.Dict)
@@ -33,12 +33,14 @@ namespace Giqci.PublicWeb
             builder.Register(x => RestClientFactory.Create(logApiUrl, false))
                 .Keyed<HttpClient>(ApiType.Log)
                 .SingleInstance();
+            builder.Register(x => RestClientFactory.Create(appApiUrl, false))
+                .Keyed<HttpClient>(ApiType.AppApiUrl)
+                .SingleInstance();
 
-            builder.Register(context => new DatabaseSetting(connStr)).SingleInstance();
-            builder.RegisterType<ApplicationRepository>().As<IApplicationRepository>().InstancePerDependency();
-            builder.RegisterType<CertificateRepository>().As<ICertificateRepository>().InstancePerDependency();
-            builder.RegisterType<ContainerInfoRepository>().As<IContainerInfoRepository>().InstancePerDependency();
-            builder.RegisterType<ExampleCertRepository>().As<IExampleCertRepository>().InstancePerDependency();
+            //builder.RegisterType<MerchantApplicationApiProxy>()
+            //    .As<IMerchantApplicationApiProxy>()
+            //    .InstancePerDependency();
+            //builder.RegisterType<CertificateApiProxy>().As<ICertificateApiProxy>().InstancePerDependency();
 
             builder.RegisterType<ProductApiProxy>()
                 .As<IProductApiProxy>()
@@ -56,7 +58,19 @@ namespace Giqci.PublicWeb
                 .As<IApiUserApiProxy>()
                 .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers))
                 .InstancePerDependency();
-
+            //todo 
+            builder.RegisterType<MerchantApplicationApiProxy>()
+                .As<IMerchantApplicationApiProxy>()
+                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApiUrl))
+                .InstancePerDependency();
+            builder.RegisterType<ApplicationViewModelApiProxy>()
+                .As<IApplicationViewModelApiProxy>()
+                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApiUrl))
+                .InstancePerDependency();
+            builder.RegisterType<CertificateApiProxy>()
+                .As<ICertificateApiProxy>()
+                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApiUrl))
+                .InstancePerDependency();
 
             builder.RegisterType<CachedDictService>()
                 .As<IDictService>()
@@ -74,7 +88,8 @@ namespace Giqci.PublicWeb
             Dict,
             Products,
             Customers,
-            Log
+            Log,
+            AppApiUrl
         }
     }
 }

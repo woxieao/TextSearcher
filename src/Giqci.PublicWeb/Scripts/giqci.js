@@ -3,51 +3,33 @@ if (typeof jQuery === 'undefined') {
 }
 
 function PageHandler(postUrl, callBackFunc, customPageSize) {
+    var self = this;
     var url = postUrl;
     var func = callBackFunc;
     var pageSize = customPageSize == null ? 10 : customPageSize;
-    var pageIndex = 1;
-    var lastTimeResultCount = pageSize;
-    var queryCondition = {};
+    self.pageIndex = 1;
+    self.lastTimeResultCount = pageSize;
+    self.CanNext = true;
+    self.CanPrev = true;
+    self.queryCondition = {};
 
-    function canWeGo(currentPageIndex, type) {
-        var isEnabled;
-        switch (type) {
-        case -1:
-        {
-            isEnabled = currentPageIndex - 1 > 0;
-            if (isEnabled) {
-                --pageIndex;
-            }
-            return isEnabled;
-        }
-        case 1:
-        {
-            isEnabled = lastTimeResultCount === pageSize;
-            if (isEnabled) {
-                ++pageIndex;
-            }
-            return isEnabled;
-        }
-        default:
-        {
-            pageIndex = 1;
-            return false;
-        }
-        }
+    function canWeGo(currentPageIndex) {
+        self.CanPrev = currentPageIndex - 1 > 0;
+        self.CanNext = self.lastTimeResultCount === pageSize;
+        return { CanPrev: self.CanPrev, CanNext: self.CanNext };
     }
 
     function go(postData) {
-        queryCondition = postData == null ? queryCondition : postData;
-        postData = queryCondition;
-        postData["pageIndex"] = pageIndex;
+        self.queryCondition = postData == null ? self.queryCondition : postData;
+        postData = self.queryCondition;
+        postData["pageIndex"] = self.pageIndex;
         postData["pageSize"] = pageSize;
         $.ajax({
             url: url,
             data: postData,
             type: "POST",
             success: function(result) {
-                lastTimeResultCount = result.data.length;
+                self.lastTimeResultCount = result.data.length;
                 if (result.msg != null) {
                     alert(result.msg);
                 }
@@ -61,15 +43,23 @@ function PageHandler(postUrl, callBackFunc, customPageSize) {
     }
 
     this.FirstPage = function(postData) {
-        pageIndex = 1;
+        self.pageIndex = 1;
+        canWeGo(1);
         go(postData);
     }
     this.PrevPage = function(postData) {
-        if (canWeGo(pageIndex, -1))
+        canWeGo(self.pageIndex);
+        if (self.CanPrev) {
+            self.pageIndex--;
             go(postData);
+        }
+
     }
     this.NextPage = function(postData) {
-        if (canWeGo(pageIndex, 1))
+        canWeGo(self.pageIndex);
+        if (self.CanNext) {
+            self.pageIndex++;
             go(postData);
+        }
     }
 }
