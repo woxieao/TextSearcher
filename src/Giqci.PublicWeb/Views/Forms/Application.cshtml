@@ -167,13 +167,13 @@
                     $scope.model.Application.ApplicationProducts[p_index].ProductItemList.splice(_index, 1);
                 };
                 $scope.addZcodeItem = function(_index) {
-                    $scope.model.Application.Goods[_index].ApplicationZCodes.push({
+                    $scope.model.Application.ApplicationProducts[_index].ApplicationZCodes.push({
                         ZCodeStart:"",
                         ZCodeEnd:""
                     });
                 };
                 $scope.removeZcodeItem = function(_pindex,_index) {
-                    $scope.model.Application.Goods[_pindex].ApplicationZCodes.splice(_index, 1);
+                    $scope.model.Application.ApplicationProducts[_pindex].ApplicationZCodes.splice(_index, 1);
                 };
                 $scope.chooseGoods = function(method) {
                     switch (method) {
