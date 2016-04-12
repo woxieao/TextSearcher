@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Giqci.Enums;
-using Giqci.Models;
-using Giqci.Models.Core;
-using Giqci.PublicWeb.Models.Goods;
+﻿using System.Collections.Generic;
+using Giqci.Chapi.Enums.App;
+using Giqci.Chapi.Models.App;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
-using ApplicationProductView = Giqci.Models.ApplicationProductView;
 
 namespace Giqci.PublicWeb.Models.Application
 {
@@ -59,18 +53,18 @@ namespace Giqci.PublicWeb.Models.Application
         /// </summary>
         public string Voyage { get; set; }
 
-        public List<ApplicationProductView> Goods { get; set; }
+        public List<ApplicationProduct> Goods { get; set; }
 
-        public List<ContainerInfoView> ContainerInfoList { get; set; }
+        public List<ContainerInfo> ContainerInfoList { get; set; }
 
-        public List<ExampleCertView> ExampleCertList { get; set; }
+        public List<ExampleCert> ExampleCertList { get; set; }
 
 
         protected BaseApplication()
         {
-            Goods = new List<ApplicationProductView>();
-            ContainerInfoList = new List<ContainerInfoView>();
-            ExampleCertList = new List<ExampleCertView>();
+            Goods = new List<ApplicationProduct>();
+            ContainerInfoList = new List<ContainerInfo>();
+            ExampleCertList = new List<ExampleCert>();
         }
     }
 }

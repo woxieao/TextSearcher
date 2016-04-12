@@ -5,179 +5,96 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using Giqci.Enums;
+using Giqci.Chapi.Enums.App;
+using Giqci.Chapi.Models.App;
 using Giqci.Interfaces;
-using Giqci.Models;
 using Giqci.PublicWeb.Helpers;
 using Giqci.PublicWeb.Models;
-using Giqci.PublicWeb.Models.Application;
 using Giqci.PublicWeb.Services;
-using Giqci.Repositories;
 using Ktech.Extensions;
 using Ktech.Mvc.ActionResults;
-using Application = Giqci.Models.Application;
 using Newtonsoft.Json;
+using Application = Giqci.Chapi.Models.App.Application;
 
 namespace Giqci.PublicWeb.Controllers
 {
+    [Authorize]
     public class FormsController : Ktech.Mvc.ControllerBase
     {
         private readonly IMerchantApiProxy _merchantRepo;
         private readonly IDictService _cache;
-        private readonly IApplicationRepository _appRepo;
-        private readonly IContainerInfoRepository _conRepo;
-        private readonly IExampleCertRepository _exaRepo;
+        private readonly IMerchantApplicationApiProxy _appRepo;
         private readonly IProductApiProxy _prodApi;
         private readonly IAuthService _auth;
 
         public FormsController(IDictService cache,
-            IMerchantApiProxy merchantRepo, IApplicationRepository appRepo, IContainerInfoRepository conRepo,
-            IExampleCertRepository exaRepo, IProductApiProxy prodApi, IAuthService auth)
+            IMerchantApiProxy merchantRepo, IMerchantApplicationApiProxy appRepo, IProductApiProxy prodApi,
+            IAuthService auth)
         {
             _merchantRepo = merchantRepo;
             _cache = cache;
             _appRepo = appRepo;
-            _conRepo = conRepo;
-            _exaRepo = exaRepo;
             _prodApi = prodApi;
             _auth = auth;
         }
 
         [Route("forms/app/")]
         [HttpGet]
-        [Authorize]
         public ActionResult Application(string applicantCode)
         {
             var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
             ViewBag.id = 0;
-            //get cookies 
-            var cookie = new CookieHelper();
-            var appString = cookie.GetApplication("application");
-            Models.Application.Application application =
-                JsonConvert.DeserializeObject<Models.Application.Application>(appString);
-            ApplicationPageModel model;
-            if (application == null)
+            var model = new Application
             {
-                model = new ApplicationPageModel
+                ApplicantCode = applicantCode,
+                Applicant = merchant.Name,
+                ApplicantAddr = merchant.Address,
+                ApplicantContact = merchant.Contact,
+                ApplicantPhone = merchant.Phone,
+                ApplicantEmail = merchant.Email,
+                InspectionDate = DateTime.Now,
+                ContainerInfos = new List<ContainerInfo>
                 {
-                    Application = new Models.Application.Application
+                    new ContainerInfo()
                     {
-                        ApplicantCode = applicantCode,
-                        Applicant = merchant.Name,
-                        ApplicantAddr = merchant.Address,
-                        ApplicantContact = merchant.Contact,
-                        ApplicantPhone = merchant.Phone,
-                        ApplicantEmail = merchant.Email,
-                        InspectionDate = DateTime.Now,
-                        //Goods = new List<GoodsItem> {new GoodsItem {ManufacturerCountry = "036"}},
-                        ContainerInfoList = new List<ContainerInfoView>
-                        {
-                            new ContainerInfoView()
-                            {
-                                ContainerNumber = String.Empty,
-                                SealNumber = String.Empty,
-                            }
-                        },
+                        ContainerNumber = String.Empty,
+                        SealNumber = String.Empty,
                     }
-                };
-            }
-            else
-            {
-                application.ExampleCertList = cookie.GetExampleList();
-                model = new ApplicationPageModel
-                {
-                    Application = application
-                };
-            }
-            ModelBuilder.SetHelperFields(_cache, model);
+                }
+            };
             return View(model);
         }
 
 
         [Route("forms/app/{id:int}")]
         [HttpGet]
-        [Authorize]
         public ActionResult Application(int id)
         {
             var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
-            var application = _appRepo.GetApplication(id, merchant.Id);
+            var application = _appRepo.Get(merchant.Id, id);
             //非该登录人的申请||不是新申请
             if (application == null)
             {
                 throw new ApplicationException(":(   You Can Not View This Application");
             }
             ViewBag.id = id;
-            var goodsItemList = _appRepo.SelectGoodsItems(application.Id);
-            var containerInfos = _conRepo.GetContainerInfoList(application.Id);
-            var exampleCerts = _exaRepo.GetExampleCertList(application.Id);
-            var cookieHelper = new CookieHelper();
-            var exampleListStr = string.Empty;
-            foreach (var exampleCerat in exampleCerts)
-            {
-                exampleListStr += string.Format("|{0}|", exampleCerat.CertFilePath);
-            }
-            cookieHelper.OverrideCookies(cookieHelper.ExampleFileListKeyName, exampleListStr);
-            var model = new ApplicationPageModel
-            {
-                Application = new Models.Application.Application
-                {
-                    ApplicantCode = application.ApplicantCode,
-                    Applicant = application.Applicant,
-                    ApplicantAddr = application.ApplicantAddr,
-                    ApplicantContact = application.ApplicantContact,
-                    ApplicantPhone = application.ApplicantPhone,
-                    ApplicantEmail = application.ApplicantEmail,
-                    BillNo = application.BillNo,
-                    C101 = application.C101,
-                    C102 = application.C102,
-                    C103 = application.C103,
-                    DestPort = application.DestPort,
-                    Exporter = application.Exporter,
-                    ExporterAddr = application.ExporterAddr,
-                    ExporterContact = application.ExporterContact,
-                    ExporterPhone = application.ExporterPhone,
-                    ImBroker = application.ImBroker,
-                    ImBrokerAddr = application.ImBrokerAddr,
-                    ImBrokerContact = application.ImBrokerContact,
-                    ImBrokerPhone = application.ImBrokerPhone,
-                    Importer = application.Importer,
-                    ImporterAddr = application.ImporterAddr,
-                    ImporterContact = application.ImporterContact,
-                    ImporterPhone = application.ImporterPhone,
-                    InspectionAddr = application.InspectionAddr,
-                    InspectionDate = application.InspectionDate,
-                    LoadingPort = application.LoadingPort,
-                    OtherBillNo = application.OtherBillNo,
-                    PurchaseContract = application.PurchaseContract,
-                    ShippingDate = application.ShippingDate,
-                    ShippingMethod = application.ShippingMethod,
-                    TotalUnits = application.TotalUnits,
-                    TotalWeight = application.TotalWeight,
-                    TradeType = application.TradeType,
-                    Vesselcn = application.Vesselcn,
-                    Voyage = application.Voyage,
-                    Goods = goodsItemList,
-                    ContainerInfoList = containerInfos,
-                    ExampleCertList = exampleCerts,
-                    CreateDate = application.CreateDate,
-                    DeclineReason = application.DeclineReason,
-                    Key = application.Key,
-                    StatusDescription = application.Status.ToDescription()
-                }
-            };
-
-            ModelBuilder.SetHelperFields(_cache, model);
-
             switch (application.Status)
             {
                 case ApplicationStatus.New:
+                {
+                    var cookieHelper = new CookieHelper();
+                    var exampleListStr = string.Empty;
+                    foreach (var exampleCerat in application.ExampleCertList)
                     {
-                        return View(model);
+                        exampleListStr += string.Format("|{0}|", exampleCerat.CertFilePath);
                     }
+                    cookieHelper.OverrideCookies(cookieHelper.ExampleFileListKeyName, exampleListStr);
+                    return View(application);
+                }
                 default:
-                    {
-                        return View("ViewApp", model);
-                    }
+                {
+                    return View("ViewApp", application);
+                }
             }
         }
 
@@ -186,45 +103,35 @@ namespace Giqci.PublicWeb.Controllers
         [HttpPost]
         public ActionResult SubmitApplication(Application model, int id = 0)
         {
-            // trade type must be 电商贸易
-            //model.TradeType = TradeType.C;
-            var errors = _appRepo.HasError(model);
+            //todo  var errors = _appRepo.HasError(model);
+            var errors = new List<string>();
             string appNo = null;
-            //set cookies 
-            var cookieHelper = new CookieHelper();
-            cookieHelper.SetApplication("application", model);
-            // check user status
             var userName = User.Identity.Name;
-            var isLogin = true;
             if (string.IsNullOrEmpty(userName))
             {
-                isLogin = false;
-                appNo = null;
-                errors = new List<string>() { "登录状态已失效，请您重新登录系统" };
+                errors = new List<string>() {"登录状态已失效，请您重新登录系统"};
             }
 
+            var merchantId = _merchantRepo.GetMerchant(User.Identity.Name).Id;
             if (!errors.Any())
             {
-                var merchantId = _merchantRepo.GetMerchant(User.Identity.Name).Id;
-                var exampleCertList = cookieHelper.GetExampleList(true);
+                var exampleCertList = GetExampleList(true);
+                model.ExampleCertList = exampleCertList;
                 if (id > 0)
                 {
-                    _appRepo.UpdateApplication(id, merchantId, model, _prodApi.GetProduct, exampleCertList);
+                    _appRepo.Update(merchantId, id, model);
                 }
                 else
                 {
-                    appNo = _appRepo.CreateApplication(_auth.GetAuth().MerchantId, model, _prodApi.GetProduct,
-                        exampleCertList);
+                    appNo = _appRepo.CreateApplication(_auth.GetAuth().MerchantId, model);
                 }
                 errors = null;
-                cookieHelper.DeleteApplication("application");
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { appNo = appNo, id = id, isLogin = isLogin, errors = errors });
+            return new KtechJsonResult(HttpStatusCode.OK, new {appNo = appNo, id = id, errors = errors});
         }
 
         [Route("forms/uploadexample")]
         [HttpPost]
-        [Authorize]
         public ActionResult UploadExample(HttpPostedFileBase file0, HttpPostedFileBase file1, HttpPostedFileBase file2,
             HttpPostedFileBase file3, HttpPostedFileBase file4)
         {
@@ -238,7 +145,26 @@ namespace Giqci.PublicWeb.Controllers
                 FormatExampleCookieStr(SaveFile(file4)),
                 currentExampleListStr);
             cookie.OverrideCookies(cookie.ExampleFileListKeyName, pathList);
-            return new KtechJsonResult(HttpStatusCode.OK, new { });
+            return new KtechJsonResult(HttpStatusCode.OK, new {});
+        }
+
+        public List<ExampleCert> GetExampleList(bool deleteExampleList = false)
+        {
+            var cookie = new CookieHelper();
+            var exampleFilePathList = cookie.GetExampleListStr().Split('|');
+            var list = new List<ExampleCert>();
+            foreach (var exampleFilePath in exampleFilePathList)
+            {
+                if (!string.IsNullOrWhiteSpace(exampleFilePath))
+                {
+                    list.Add(new ExampleCert {CertFilePath = exampleFilePath});
+                }
+            }
+            if (deleteExampleList)
+            {
+                cookie.DeleteExampleList();
+            }
+            return list;
         }
 
         private string FormatExampleCookieStr(string exampleStr)
@@ -270,7 +196,6 @@ namespace Giqci.PublicWeb.Controllers
 
         [Route("forms/list")]
         [HttpGet]
-        [Authorize]
         public ActionResult UserFormsList()
         {
             return View();

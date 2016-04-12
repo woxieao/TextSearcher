@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Giqci.PublicWeb</RootNamespace>
     <AssemblyName>Giqci.PublicWeb</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -57,24 +57,20 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Giqci.ApiProxy, Version=1.0.52.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.ApiProxy.1.0.52\lib\net45\Giqci.ApiProxy.dll</HintPath>
+    <Reference Include="Giqci.ApiProxy, Version=1.0.61.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.ApiProxy.1.0.61\lib\net461\Giqci.ApiProxy.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Chapi.Contract, Version=1.0.13.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.Chapi.Contract.1.0.13\lib\net20\Giqci.Chapi.Contract.dll</HintPath>
+    <Reference Include="Giqci.Chapi.Contract, Version=1.0.80.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.Chapi.Contract.1.0.80\lib\net20\Giqci.Chapi.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Contract, Version=1.1.75.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.Contract.1.1.75\lib\net45\Giqci.Contract.dll</HintPath>
+    <Reference Include="Giqci.Contract, Version=1.1.104.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.Contract.1.1.104\lib\net45\Giqci.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Repository, Version=1.1.99.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.Repository.1.1.99\lib\net45\Giqci.Repository.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ktech.Contract, Version=1.0.13.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ktech.Contract.1.0.13\lib\net45\Ktech.Contract.dll</HintPath>
+    <Reference Include="Ktech.Contract, Version=1.0.14.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ktech.Contract.1.0.14\lib\net35-Client\Ktech.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ktech.Core, Version=1.3.15.0, Culture=neutral, processorArchitecture=MSIL">
@@ -197,8 +193,8 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="favicon.png" />
     <Content Include="favicon.ico" />
+    <Content Include="favicon.png" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global\css\bootstrap-datetimepicker.min.css" />
     <Content Include="Global\css\default.css" />
@@ -213,7 +209,7 @@
     <Content Include="Global\js\angular-1.4.7.min.js" />
     <Content Include="Global\js\app.js" />
     <Content Include="Global\js\bootstrap-datetimepicker.min.js" />
-    <Content Include="Global\js\service.js" />
+    <Content Include="Global\js\commalert.js" />
     <Content Include="Global\js\directive.js" />
     <Content Include="Global\js\locales\bootstrap-datetimepicker.zh-CN.js" />
     <Content Include="Global\js\locales\select2.zh-CN.js" />
