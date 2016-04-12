@@ -206,10 +206,10 @@
     <Content Include="Global\images\cnas-small.jpg" />
     <Content Include="Global\images\giqci-logo-finalised-withC.png" />
     <Content Include="Global\images\iqtc-footer.jpg" />
+    <Content Include="Global\images\loading.gif" />
     <Content Include="Global\js\angular-1.4.7.min.js" />
     <Content Include="Global\js\app.js" />
     <Content Include="Global\js\bootstrap-datetimepicker.min.js" />
-    <Content Include="Global\js\commalert.js" />
     <Content Include="Global\js\directive.js" />
     <Content Include="Global\js\locales\bootstrap-datetimepicker.zh-CN.js" />
     <Content Include="Global\js\locales\select2.zh-CN.js" />
@@ -229,6 +229,7 @@
     <Content Include="Global\js\jquery-2.1.4.js" />
     <Content Include="Global\js\jquery-2.1.4.min.js" />
     <Content Include="Global\js\select2\select2.min.js" />
+    <Content Include="Global\js\service.js" />
     <Content Include="Global\js\ui-bootstrap-tpls-1.1.2.min.js" />
     <Content Include="Scripts\giqci.js" />
     <Content Include="Scripts\bootstrap.js" />
