@@ -31,7 +31,11 @@
     </div>
     @Html.Partial("_Header")
     @Html.Partial("_TopNav")
-    <div class="row body-content">
+    <div id="loading-content">
+        <img src="~/Global/images/loading.gif" />
+        请稍后...
+    </div>
+    <div class="row body-content" id="body-content" style="display: none;">
         @RenderBody()
     </div>
     @Html.Partial("_Footer")
@@ -51,6 +55,8 @@
             }
         }
         window.onload = checkBrowser();
+        $("#loading-content").hide();
+        $("#body-content").show();
     </script>
 </body>
 </html>
