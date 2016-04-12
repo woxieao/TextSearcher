@@ -104,9 +104,7 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult MerchantDeleteCustomProduct(int id)
         {
-            //todo 应该是ID
-            //_merchantRepository.RemoveProduct(_auth.GetAuth().MerchantId, id);
-            _merchantRepository.RemoveProduct(_auth.GetAuth().MerchantId, String.Empty);
+            _merchantRepository.DeleteCustomerProduct(id);
             return new KtechJsonResult(HttpStatusCode.OK, new {result = true});
         }
     }
