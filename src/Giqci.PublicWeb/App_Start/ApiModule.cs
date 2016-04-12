@@ -58,7 +58,6 @@ namespace Giqci.PublicWeb
                 .As<IApiUserApiProxy>()
                 .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers))
                 .InstancePerDependency();
-            //todo 
             builder.RegisterType<MerchantApplicationApiProxy>()
                 .As<IMerchantApplicationApiProxy>()
                 .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApiUrl))

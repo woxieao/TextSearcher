@@ -103,8 +103,8 @@ namespace Giqci.PublicWeb.Controllers
         [HttpPost]
         public ActionResult SubmitApplication(Application model, int id = 0)
         {
-            //todo  var errors = _appRepo.HasError(model);
-            var errors = new List<string>();
+            //todo 统一前后台
+            var errors = HasError(model);
             string appNo = null;
             var userName = User.Identity.Name;
             var isLogin = true;
@@ -201,6 +201,218 @@ namespace Giqci.PublicWeb.Controllers
         public ActionResult UserFormsList()
         {
             return View();
+        }
+
+        protected List<string> HasError(Application item)
+        {
+            var errors = new List<string>();
+            try
+            {
+                #region Application Check
+
+                if (!item.C101 && !item.C102 && !item.C103)
+                {
+                    errors.Add("请选择证书类型");
+                }
+                if (!Enum.IsDefined(typeof (TradeType), item.TradeType))
+                {
+                    errors.Add("请选择商业目的");
+                }
+                if (string.IsNullOrEmpty(item.DestPort))
+                {
+                    errors.Add("请填写目标港口");
+                }
+                if (string.IsNullOrEmpty(item.LoadingPort))
+                {
+                    errors.Add("请填写发货港口");
+                }
+                if (item.DestPort == item.LoadingPort)
+                {
+                    errors.Add("目标港口不能与发货港口相同");
+                }
+                if (string.IsNullOrEmpty(item.InspectionAddr))
+                {
+                    errors.Add("请填写检验地点");
+                }
+                if (item.ShippingMethod == ShippingMethod.A)
+                {
+                    if (item.TotalUnits <= 0)
+                        errors.Add("运输总数量必须大于0");
+
+                    if (item.TotalWeight <= 0)
+                        errors.Add("运输总重量必须大于0");
+                }
+                if (string.IsNullOrEmpty(item.Importer))
+                {
+                    errors.Add("请填写进口商全称");
+                }
+                if (string.IsNullOrEmpty(item.ImporterAddr))
+                {
+                    errors.Add("请填写进口商地址");
+                }
+                if (string.IsNullOrEmpty(item.Exporter))
+                {
+                    errors.Add("请填写出口商全称");
+                }
+                if (string.IsNullOrEmpty(item.ExporterAddr))
+                {
+                    errors.Add("请填写出口商地址");
+                }
+
+                #endregion
+
+                #region Product Check
+
+                var applicationGoodsList = item.ApplicationProducts;
+                if (applicationGoodsList == null || !applicationGoodsList.Any())
+                {
+                    errors.Add("商品列表不能为空");
+                    return errors;
+                }
+
+                if (applicationGoodsList.Count(i => string.IsNullOrWhiteSpace(i.CiqCode)) > 0 &&
+                    applicationGoodsList.Count(i => !string.IsNullOrWhiteSpace(i.CiqCode)) > 0)
+                {
+                    errors.Add("在同一个申请中,多个商品的备案号只能全部为空,或者全不为空");
+                }
+                var batchNoList = new List<string>();
+                var zcodeStartList = new List<string>();
+                var zcodeEndList = new List<string>();
+                foreach (var applicationGoods in applicationGoodsList)
+                {
+                    var index1 = applicationGoodsList.IndexOf(applicationGoods) + 1;
+
+                    if (!string.IsNullOrEmpty(applicationGoods.CiqCode) &&
+                        applicationGoodsList.Count(i => i.CiqCode == applicationGoods.CiqCode) > 1)
+                    {
+                        errors.Add(string.Format("商品{0}备案号[{1}]不可重复添加", index1, applicationGoods.CiqCode));
+                    }
+                    var productItemList = applicationGoods.ProductItemList.ToList();
+                    var applicationZCodeList = applicationGoods.ApplicationZCodes.ToList();
+                    if (string.IsNullOrEmpty(applicationGoods.DescriptionEn)
+                        || string.IsNullOrEmpty(applicationGoods.HSCode)
+                        || string.IsNullOrEmpty(applicationGoods.Spec)
+                        || string.IsNullOrEmpty(applicationGoods.ManufacturerCountry)
+                        || string.IsNullOrEmpty(applicationGoods.Brand)
+                        || string.IsNullOrEmpty(applicationGoods.Package))
+                    {
+                        errors.Add(string.Format("商品{0}资料不完整", index1));
+                    }
+                    if (productItemList == null || !productItemList.Any())
+                    {
+                        errors.Add(string.Format("商品{0}批次资料不能为空", index1));
+                        return errors;
+                    }
+                    foreach (var productItem in productItemList)
+                    {
+                        batchNoList.Add(productItem.BatchNo);
+                        if (batchNoList.Count(i => i == productItem.BatchNo) > 1)
+                        {
+                            errors.Add("商品批次号不可重复");
+                            break;
+                        }
+                        var index2 = productItemList.IndexOf(productItem) + 1;
+                        if (!productItem.ExpiryDate.HasValue)
+                        {
+                            errors.Add(string.Format("请填写商品{0}[{1}]的保质期", index1, index2));
+                        }
+                        if (!string.IsNullOrEmpty(item.ShippingDate) &&
+                            productItem.ExpiryDate < DateTime.Parse(item.ShippingDate))
+                        {
+                            errors.Add(string.Format("商品{0}[{1}]的保质期不能小于发货日期", index1, index2));
+                        }
+                        if (productItem.ExpiryDate < item.InspectionDate)
+                        {
+                            errors.Add(string.Format("商品{0}[{1}]的保质期不能小于预约检查日期", index1, index2));
+                        }
+                        if (!productItem.ManufacturerDate.HasValue && string.IsNullOrEmpty(productItem.BatchNo))
+                        {
+                            errors.Add(string.Format("请正确填写商品{0}[{1}]的生产日期或批次号", index1, index2));
+                        }
+                        if (productItem.ManufacturerDate.HasValue && productItem.ManufacturerDate > DateTime.Now)
+                        {
+                            errors.Add(string.Format("商品{0}[{1}]的生产日期不能大于当前时间", index1, index2));
+                        }
+                        if (productItem.ManufacturerDate.HasValue &&
+                            productItem.ManufacturerDate >= productItem.ExpiryDate)
+                        {
+                            errors.Add(string.Format("商品{0}[{1}]的生产日期不能大于等于保质期", index1, index2));
+                        }
+                        if (productItem.Quantity <= 0)
+                        {
+                            errors.Add(string.Format("商品{0}[{1}]的数量必须大于0", index1, index2));
+                        }
+                    }
+                    if (applicationZCodeList != null)
+                    {
+                        foreach (var applicationZCode in applicationZCodeList)
+                        {
+                            zcodeStartList.Add(applicationZCode.ZCodeStart);
+                            if (zcodeStartList.Count(i => i == applicationZCode.ZCodeStart) > 1)
+                            {
+                                errors.Add("真知码首码不可重复");
+                                break;
+                            }
+                            zcodeEndList.Add(applicationZCode.ZCodeEnd);
+                            if (zcodeEndList.Count(i => i == applicationZCode.ZCodeEnd) > 1)
+                            {
+                                errors.Add("真知码尾码不可重复");
+                                break;
+                            }
+                            var index3 = applicationZCodeList.IndexOf(applicationZCode);
+                            if (string.IsNullOrEmpty(applicationZCode.ZCodeStart) ||
+                                string.IsNullOrEmpty(applicationZCode.ZCodeEnd) ||
+                                applicationZCode.ZCodeStart.Length != 16 ||
+                                applicationZCode.ZCodeEnd.Length != 16)
+                            {
+                                errors.Add(string.Format("商品{0}[{1}]的真知码首码和尾码长度只能为16位", index1, index3));
+                            }
+                        }
+                    }
+                }
+
+                #endregion
+
+                #region ContainerInfo Check
+
+                if (item.ShippingMethod == ShippingMethod.O)
+                {
+                    var containerInfoList = item.ContainerInfos;
+                    if ((containerInfoList == null || !containerInfoList.Any()))
+                    {
+                        errors.Add("当运输方式为海运时,装箱信息不能为空");
+                        return errors;
+                    }
+
+                    foreach (var containerInfo in containerInfoList)
+                    {
+                        if (containerInfoList.Count(i => i.ContainerNumber == containerInfo.ContainerNumber) > 1)
+                        {
+                            errors.Add("装箱号不能重复");
+                            break;
+                        }
+                        if (containerInfoList.Count(i => i.SealNumber == containerInfo.SealNumber) > 1)
+                        {
+                            errors.Add("铅封号不能重复");
+                            break;
+                        }
+                        if (string.IsNullOrWhiteSpace(containerInfo.ContainerNumber) ||
+                            string.IsNullOrWhiteSpace(containerInfo.SealNumber))
+                        {
+                            errors.Add(string.Format("装箱信息{0} [装箱号/铅封号]不能为空",
+                                containerInfoList.IndexOf(containerInfo) + 1));
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                errors.Add("检测提交信息时异常,请检测后再提交");
+            }
+
+            #endregion
+
+            return errors;
         }
     }
 }
