@@ -81,20 +81,20 @@ namespace Giqci.PublicWeb.Controllers
             switch (application.Status)
             {
                 case ApplicationStatus.New:
-                {
-                    var cookieHelper = new CookieHelper();
-                    var exampleListStr = string.Empty;
-                    foreach (var exampleCerat in application.ExampleCertList)
                     {
-                        exampleListStr += string.Format("|{0}|", exampleCerat.CertFilePath);
+                        var cookieHelper = new CookieHelper();
+                        var exampleListStr = string.Empty;
+                        foreach (var exampleCerat in application.ExampleCertList)
+                        {
+                            exampleListStr += string.Format("|{0}|", exampleCerat.CertFilePath);
+                        }
+                        cookieHelper.OverrideCookies(cookieHelper.ExampleFileListKeyName, exampleListStr);
+                        return View(application);
                     }
-                    cookieHelper.OverrideCookies(cookieHelper.ExampleFileListKeyName, exampleListStr);
-                    return View(application);
-                }
                 default:
-                {
-                    return View("ViewApp", application);
-                }
+                    {
+                        return View("ViewApp", application);
+                    }
             }
         }
 
@@ -107,9 +107,11 @@ namespace Giqci.PublicWeb.Controllers
             var errors = new List<string>();
             string appNo = null;
             var userName = User.Identity.Name;
+            var isLogin = true;
             if (string.IsNullOrEmpty(userName))
             {
-                errors = new List<string>() {"登录状态已失效，请您重新登录系统"};
+                isLogin = false;
+                errors = new List<string>() { "登录状态已失效，请您重新登录系统" };
             }
 
             var merchantId = _merchantRepo.GetMerchant(User.Identity.Name).Id;
@@ -127,7 +129,7 @@ namespace Giqci.PublicWeb.Controllers
                 }
                 errors = null;
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new {appNo = appNo, id = id, errors = errors});
+            return new KtechJsonResult(HttpStatusCode.OK, new { appNo = appNo, id = id, isLogin = isLogin, errors = errors });
         }
 
         [Route("forms/uploadexample")]
@@ -145,7 +147,7 @@ namespace Giqci.PublicWeb.Controllers
                 FormatExampleCookieStr(SaveFile(file4)),
                 currentExampleListStr);
             cookie.OverrideCookies(cookie.ExampleFileListKeyName, pathList);
-            return new KtechJsonResult(HttpStatusCode.OK, new {});
+            return new KtechJsonResult(HttpStatusCode.OK, new { });
         }
 
         public List<ExampleCert> GetExampleList(bool deleteExampleList = false)
@@ -157,7 +159,7 @@ namespace Giqci.PublicWeb.Controllers
             {
                 if (!string.IsNullOrWhiteSpace(exampleFilePath))
                 {
-                    list.Add(new ExampleCert {CertFilePath = exampleFilePath});
+                    list.Add(new ExampleCert { CertFilePath = exampleFilePath });
                 }
             }
             if (deleteExampleList)
