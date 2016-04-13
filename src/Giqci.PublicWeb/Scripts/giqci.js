@@ -16,10 +16,12 @@ function PageHandler(postUrl, callBackFunc, customPageSize) {
     function canWeGo(currentPageIndex) {
         self.CanPrev = currentPageIndex - 1 > 0;
         self.CanNext = self.lastTimeResultCount === pageSize;
-        return { CanPrev: self.CanPrev, CanNext: self.CanNext };
     }
 
     function go(postData) {
+        //防止数据加载完前点击
+        self.CanNext = false;
+        self.CanPrev = false;
         self.queryCondition = postData == null ? self.queryCondition : postData;
         postData = self.queryCondition;
         postData["pageIndex"] = self.pageIndex;
@@ -28,35 +30,33 @@ function PageHandler(postUrl, callBackFunc, customPageSize) {
             url: url,
             data: postData,
             type: "POST",
-            success: function(result) {
+            success: function (result) {
                 self.lastTimeResultCount = result.data.length;
+                canWeGo(self.pageIndex);
                 if (result.msg != null) {
                     alert(result.msg);
                 }
                 func(result);
             },
-            error: function(result) {
+            error: function (result) {
                 console.log(result);
                 alert(":(\nWhoops,looks like something went wrong");
             }
         });
     }
 
-    this.FirstPage = function(postData) {
+    this.FirstPage = function (postData) {
         self.pageIndex = 1;
-        canWeGo(1);
         go(postData);
     }
-    this.PrevPage = function(postData) {
-        canWeGo(self.pageIndex);
+    this.PrevPage = function (postData) {
         if (self.CanPrev) {
             self.pageIndex--;
             go(postData);
         }
 
     }
-    this.NextPage = function(postData) {
-        canWeGo(self.pageIndex);
+    this.NextPage = function (postData) {
         if (self.CanNext) {
             self.pageIndex++;
             go(postData);
