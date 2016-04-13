@@ -40,7 +40,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="Product in merchantProductList">
-                    <td>{{Product.HSCode}}</td>
+                    <td>{{Product.HsCode}}</td>
                     <td>{{Product.Description}}</td>
                     <td>{{Product.DescriptionEn}}</td>
                     <td>{{Product.Spec}}</td>
@@ -49,9 +49,9 @@
                     <td>{{Product.Package}}</td>
                     <td>
                         <div class="btn-group" role="group">
-                            <div ng-show="Product.IsApproved"><a href="/goods/showcustomproduct?id={{Product.Id}}">编辑</a>
+                            <div ng-show="!Product.IsApproved"><a href="/goods/showcustomproduct?id={{Product.Id}}">编辑</a>
                             </div>
-                            <div ng-show="!Product.IsApproved">
+                            <div ng-show="Product.IsApproved">
                                <strong>不可编辑</strong>
                             </div>
                         </div>
