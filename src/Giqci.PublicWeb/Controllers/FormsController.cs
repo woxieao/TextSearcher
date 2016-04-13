@@ -81,20 +81,20 @@ namespace Giqci.PublicWeb.Controllers
             switch (application.Status)
             {
                 case ApplicationStatus.New:
+                {
+                    var cookieHelper = new CookieHelper();
+                    var exampleListStr = string.Empty;
+                    foreach (var exampleCerat in application.ExampleCertList)
                     {
-                        var cookieHelper = new CookieHelper();
-                        var exampleListStr = string.Empty;
-                        foreach (var exampleCerat in application.ExampleCertList)
-                        {
-                            exampleListStr += string.Format("|{0}|", exampleCerat.CertFilePath);
-                        }
-                        cookieHelper.OverrideCookies(cookieHelper.ExampleFileListKeyName, exampleListStr);
-                        return View(application);
+                        exampleListStr += string.Format("|{0}|", exampleCerat.CertFilePath);
                     }
+                    cookieHelper.OverrideCookies(cookieHelper.ExampleFileListKeyName, exampleListStr);
+                    return View(application);
+                }
                 default:
-                    {
-                        return View("ViewApp", application);
-                    }
+                {
+                    return View("ViewApp", application);
+                }
             }
         }
 
@@ -111,7 +111,7 @@ namespace Giqci.PublicWeb.Controllers
             if (string.IsNullOrEmpty(userName))
             {
                 isLogin = false;
-                errors = new List<string>() { "登录状态已失效，请您重新登录系统" };
+                errors = new List<string>() {"登录状态已失效，请您重新登录系统"};
             }
 
             var merchantId = _merchantRepo.GetMerchant(User.Identity.Name).Id;
@@ -129,7 +129,8 @@ namespace Giqci.PublicWeb.Controllers
                 }
                 errors = null;
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { appNo = appNo, id = id, isLogin = isLogin, errors = errors });
+            return new KtechJsonResult(HttpStatusCode.OK,
+                new {appNo = appNo, id = id, isLogin = isLogin, errors = errors});
         }
 
         [Route("forms/uploadexample")]
@@ -147,7 +148,7 @@ namespace Giqci.PublicWeb.Controllers
                 FormatExampleCookieStr(SaveFile(file4)),
                 currentExampleListStr);
             cookie.OverrideCookies(cookie.ExampleFileListKeyName, pathList);
-            return new KtechJsonResult(HttpStatusCode.OK, new { });
+            return new KtechJsonResult(HttpStatusCode.OK, new {});
         }
 
         public List<ExampleCert> GetExampleList(bool deleteExampleList = false)
@@ -159,7 +160,7 @@ namespace Giqci.PublicWeb.Controllers
             {
                 if (!string.IsNullOrWhiteSpace(exampleFilePath))
                 {
-                    list.Add(new ExampleCert { CertFilePath = exampleFilePath });
+                    list.Add(new ExampleCert {CertFilePath = exampleFilePath});
                 }
             }
             if (deleteExampleList)
@@ -238,10 +239,9 @@ namespace Giqci.PublicWeb.Controllers
                 {
                     if (item.TotalUnits <= 0)
                         errors.Add("运输总数量必须大于0");
-
-                    if (item.TotalWeight <= 0)
-                        errors.Add("运输总重量必须大于0");
                 }
+                if (item.TotalWeight <= 0)
+                    errors.Add("运输总重量必须大于0");
                 if (string.IsNullOrEmpty(item.Importer))
                 {
                     errors.Add("请填写进口商全称");
