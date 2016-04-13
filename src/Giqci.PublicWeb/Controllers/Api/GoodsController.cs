@@ -73,22 +73,35 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult AddOrUpdateCustomProduct(CustomerProduct product)
         {
-            if (product.Id > 0)
+            string msg;
+            bool flag;
+            try
             {
-                if (!product.IsApproved)
+                if (product.Id > 0)
                 {
-                    _merchantRepository.UpdateCustomerProducts(_auth.GetAuth().MerchantId, product);
+                    if (!product.IsApproved)
+                    {
+                        _merchantRepository.UpdateCustomerProducts(_auth.GetAuth().MerchantId, product);
+                    }
+                    else
+                    {
+                        msg = "不可更改已批准的商品";
+                        flag = false;
+                    }
                 }
                 else
                 {
-                    throw new Exception("不可更改已批准的商品");
+                    _merchantRepository.AddCustomProduct(_auth.GetAuth().MerchantId, product);
                 }
+                msg = "提交成功";
+                flag = true;
             }
-            else
+            catch
             {
-                _merchantRepository.AddCustomProduct(_auth.GetAuth().MerchantId, product);
+                flag = false;
+                msg = "提交信息不完整";
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new {flag = true});
+            return new KtechJsonResult(HttpStatusCode.OK, new {flag = flag, msg = msg});
         }
 
 

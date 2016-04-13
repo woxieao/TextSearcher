@@ -7,20 +7,20 @@
     <script type="text/javascript">
 
         app.controller("AddCustomProductController", [
-            '$http', '$scope', '$location', '$log', 'alertService', function ($http, $scope, $location,$log ,alertService) {
+            '$http', '$scope', '$location', '$log', 'alertService', function($http, $scope, $location, $log, alertService) {
                 $scope.model = @Html.Raw(JsonConvert.SerializeObject(Model));
-                $scope.result = null;
-                $(function () {
+                $scope.flag = null;
+                $(function() {
                     $('.datetimepicker').datetimepicker({
                         language: 'zh-CN',
                         format: 'yyyy/mm/dd',
                         autoclose: true,
                         minView: "month",
                         todayBtn: true,
-                    }).on("hide", function () {
+                    }).on("hide", function() {
                         var $this = $(this);
                         var _this = this;
-                        $scope.$apply(function () {
+                        $scope.$apply(function() {
                             $scope[$this.attr('ng-model')] = _this.value;
                         });
                     });
@@ -28,32 +28,25 @@
                         $(".panel-title").html("编辑商品");
                     }
                 });
-                $scope.countryClickHandler = function (event) {
+                $scope.countryClickHandler = function(event) {
                     var currentElement = event.target;
                     $(currentElement).select2({ theme: "bootstrap", width: 'resolve' });
                 };
                 $scope.loadCountriesDict = null;
-                $scope.loadCountries = function () {
+                $scope.loadCountries = function() {
                     $http.get("/api/dict/countries", {
                         params: { 'code': "" }
-                    }).success(function (data) {
+                    }).success(function(data) {
                         $scope.loadCountriesDict = data.items;
                     });
                 };
                 $scope.model.ManufacturerCountry = '036';
                 $scope.loadCountries();
 
-                $scope.submitForm = function () {
-                    $http.post('/api/goods/addcustomproduct', $scope.model).then(function (response) {
-                        $log.log(response);
-                        if (response.data.result) {
-                            $scope.result = response.data.result;
-                        } else {
-                            //$scope.errors = response.data.errors;
-                            //$location.hash("h1");
-                            // $anchorScroll();
-                            alertService.add('danger', response.data.errors);
-                        }
+                $scope.submitForm = function() {
+                    $http.post('/api/goods/addcustomproduct', $scope.model).success(function(response) {
+                        $scope.msg = response.msg;
+                        $scope.flag = response.flag;
                     });
                 };
             }
@@ -67,62 +60,71 @@
         </div>
         <div class="panel-body">
             <div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
-                <button aria-label="Close" data-dismiss="alert" ng-click="alert.close()" class="close" type="button"><span aria-hidden="true">×</span></button>
+                <button aria-label="Close" data-dismiss="alert" ng-click="alert.close()" class="close" type="button">
+                    <span aria-hidden="true">×</span></button>
                 <span ng-bind="alert.msg"></span>
             </div>
-            <h1 ng-show="result">提交成功</h1>
-            <div ng-show="!result">
-                <div class="has-error" ng-show="errors.length > 0">
-                    <ul class="help-block">
-                        <li ng-repeat="err in errors">{{err}}</li>
-                    </ul>
-                </div>
-                <form name="appform" class="form-horizontal" method="POST" novalidate>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">名称(英文) *</label>
-                        <div class="col-sm-10">
-                            <input type="text" ng-model="model.DescriptionEn" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">名称(中文)</label>
-                        <div class="col-sm-10">
-                            <input type="text" ng-model="model.Description" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">品牌 *</label>
-                        <div class="col-sm-10">
-                            <input type="text" ng-model="model.Brand" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">HS编码 *</label>
-                        <div class="col-sm-10">
-                            <select ajax-select ajax-url="commonhscodes" ng-model="model.HSCode" class="form-control" style="width: 100%"></select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">规格型号 *</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" ng-model="model.Spec" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">制造国代码 *</label>
-                        <div class="col-sm-10">
-                            <select ng-model="model.ManufacturerCountry" class="form-control" ng-mouseover="countryClickHandler($event)" ng-options="country.Code as country.CnName for country in loadCountriesDict" style="width: 100%"></select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button class="btn btn-default" ng-click="submitForm()">
-                                <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
-                            </button>
-                        </div>
-                    </div>
-                </form>
+            <div class="" ng-show="msg!=null">
+                <ul class="help-block">
+                    <li class="{{flag?'alert alert-success':'alert alert-danger'}}">{{msg}}</li>
+                </ul>
             </div>
+            <form name="appform" class="form-horizontal" method="POST" novalidate>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">名称(英文) *</label>
+                    <div class="col-sm-10">
+                        <input type="text" ng-model="model.DescriptionEn" class="form-control"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">名称(中文)</label>
+                    <div class="col-sm-10">
+                        <input type="text" ng-model="model.Description" class="form-control"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">品牌 *</label>
+                    <div class="col-sm-10">
+                        <input type="text" ng-model="model.Brand" class="form-control"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">HS编码 *</label>
+                    <div class="col-sm-10">
+                        <select ajax-select ajax-url="commonhscodes" ng-model="model.HsCode" class="form-control" style="width: 100%"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">包装 *</label>
+                    <div class="col-sm-10">
+                        <select ng-model="model.Package" class="form-control half-form-control">
+                            <option value="罐装">罐装</option>
+                            <option value="瓶装">瓶装</option>
+                            <option value="袋装">袋装</option>
+                            <option value="盒装">盒装</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">规格型号 *</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" ng-model="model.Spec"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">制造国代码 *</label>
+                    <div class="col-sm-10">
+                        <select ng-model="model.ManufacturerCountry" class="form-control" ng-mouseover="countryClickHandler($event)" ng-options="country.Code as country.CnName for country in loadCountriesDict" style="width: 100%"></select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button class="btn btn-default" ng-click="submitForm()">
+                            <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
