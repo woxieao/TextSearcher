@@ -108,7 +108,7 @@
                     }).success(function(response) {
                         $scope.merchantProductList = response.result;
                         $scope.MerchantGoodsListTotalCount = response.result.count;
-                    }).error(function(data, header, config, status) {
+                    }).error(function(response) {
                         $log.warn(response);
                     });
                 }
@@ -159,7 +159,7 @@
                         ManufacturerDate: "",
                         ExpiryDate: "",
                         BatchNo: "",
-                        Quantity: ""
+                        Quantity: 0
                     });
                 };
 
@@ -293,7 +293,7 @@
                             certFilePath: certFilePath
                         }
                     }).success(function(data) {
-                    }).error(function(data, header, config, status) {
+                    }).error(function(response) {
                         $log.warn(response);
                     });
                 }
@@ -890,7 +890,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">运输总重量</label>
+                    <label class="col-sm-2 control-label">运输总重量 *</label>
                     <div class="col-sm-5">
                         <input type="number" ng-model="model.Application.TotalWeight" class="form-control" min="0" placeholder="运输总重量" />
                     </div>
