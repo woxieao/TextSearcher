@@ -94,9 +94,9 @@ namespace Giqci.PublicWeb.Controllers.Api
 
         [Route("goods/getcustomproductlist")]
         [HttpPost]
-        public ActionResult MerchantGetCustomProductList(string ciqcode = "", string name = "")
+        public ActionResult MerchantGetCustomProductList(string keywords = "")
         {
-            var result = _merchantRepository.SelectCustomerProducts(_auth.GetAuth().MerchantId, name);
+            var result = _merchantRepository.SelectCustomerProducts(_auth.GetAuth().MerchantId, keywords);
             return new KtechJsonResult(HttpStatusCode.OK, new {result = result});
         }
 
