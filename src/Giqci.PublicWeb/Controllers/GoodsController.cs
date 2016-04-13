@@ -1,27 +1,19 @@
 ﻿using System;
-using System.Net;
 using System.Web.Mvc;
 using Giqci.Chapi.Models.Customer;
-using Giqci.Chapi.Models.Product;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Services;
-using Ktech.Mvc.ActionResults;
 
 namespace Giqci.PublicWeb.Controllers
 {
     public class GoodsController : Controller
     {
-        private readonly IMerchantApiProxy _merchantRepo;
         private readonly IMerchantProductApiProxy _merchantRepository;
-        private readonly IProductApiProxy _prodApi;
         private readonly IAuthService _auth;
 
-        public GoodsController(IMerchantProductApiProxy merchantRepository, IMerchantApiProxy merchantRepo,
-            IProductApiProxy prodApi, IAuthService auth)
+        public GoodsController(IMerchantProductApiProxy merchantRepository, IAuthService auth)
         {
             _merchantRepository = merchantRepository;
-            _merchantRepo = merchantRepo;
-            _prodApi = prodApi;
             _auth = auth;
         }
 
