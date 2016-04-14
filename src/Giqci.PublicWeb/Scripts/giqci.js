@@ -9,8 +9,8 @@ function PageHandler(postUrl, callBackFunc, customPageSize) {
     var pageSize = customPageSize == null ? 10 : customPageSize;
     self.pageIndex = 1;
     self.lastTimeResultCount = pageSize;
-    self.CanNext = true;
-    self.CanPrev = true;
+    self.CanNext = false;
+    self.CanPrev = false;
     self.queryCondition = {};
 
     function canWeGo(currentPageIndex) {
@@ -30,7 +30,7 @@ function PageHandler(postUrl, callBackFunc, customPageSize) {
             url: url,
             data: postData,
             type: "POST",
-            success: function (result) {
+            success: function(result) {
                 self.lastTimeResultCount = result.data.length;
                 canWeGo(self.pageIndex);
                 if (result.msg != null) {
@@ -38,25 +38,25 @@ function PageHandler(postUrl, callBackFunc, customPageSize) {
                 }
                 func(result);
             },
-            error: function (result) {
+            error: function(result) {
                 console.log(result);
                 alert(":(\nWhoops,looks like something went wrong");
             }
         });
     }
 
-    this.FirstPage = function (postData) {
+    this.FirstPage = function(postData) {
         self.pageIndex = 1;
         go(postData);
     }
-    this.PrevPage = function (postData) {
+    this.PrevPage = function(postData) {
         if (self.CanPrev) {
             self.pageIndex--;
             go(postData);
         }
 
     }
-    this.NextPage = function (postData) {
+    this.NextPage = function(postData) {
         if (self.CanNext) {
             self.pageIndex++;
             go(postData);
