@@ -15,7 +15,7 @@ app.directive("ajaxSelect", function ($timeout, $http) {
                         params: { 'code': model.$viewValue }
                     }).success(function (data) {
                         if (data.items.length === 1) {
-                            var newVal = (url === "commonhscodes") ? data.items[0].Name : data.items[0].CnName;
+                            var newVal = (url === "commonhscodes") ? data.items[0].Code + '-' + data.items[0].Name : data.items[0].Code + '-' + data.items[0].CnName;
                             //console.log(newVal);
                             $(element).next().find("span.select2-selection__rendered").html(newVal);
                             scope.isLoading = true;
