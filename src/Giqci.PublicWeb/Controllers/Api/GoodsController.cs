@@ -117,8 +117,8 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult MerchantDeleteCustomProduct(int id)
         {
-            _merchantRepository.DeleteCustomerProduct(id);
-            return new KtechJsonResult(HttpStatusCode.OK, new {result = true});
+            _merchantRepository.DeleteCustomerProduct(_auth.GetAuth().MerchantId, id);
+            return new KtechJsonResult(HttpStatusCode.OK, new {flag = true});
         }
     }
 }

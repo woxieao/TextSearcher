@@ -117,6 +117,7 @@ namespace Giqci.PublicWeb.Controllers
             var merchantId = _merchantRepo.GetMerchant(User.Identity.Name).Id;
             if (!errors.Any())
             {
+                GetTotalUnits(ref model);
                 var exampleCertList = GetExampleList(true);
                 model.ExampleCertList = exampleCertList;
                 if (id > 0)
@@ -418,6 +419,13 @@ namespace Giqci.PublicWeb.Controllers
             #endregion
 
             return errors;
+        }
+
+        protected static void GetTotalUnits(ref Application input)
+        {
+            input.TotalUnits = input.ShippingMethod == ShippingMethod.O
+                ? (input.ContainerInfos == null ? 0 : input.ContainerInfos.Count())
+                : input.TotalUnits;
         }
     }
 }
