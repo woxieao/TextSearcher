@@ -880,7 +880,7 @@
                         <button class="btn btn-default" type="button" ng-click="addContainerInfo()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加装箱信息</button>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ng-show="model.Application.ShippingMethod == 1">
                     <label class="col-sm-2 control-label">运输总数量 *</label>
                     <div class="col-sm-5">
                         <input type="number" ng-model="model.Application.TotalUnits" class="form-control" min="0" placeholder="运输总数量" />
