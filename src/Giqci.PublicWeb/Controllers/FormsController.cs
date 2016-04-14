@@ -274,6 +274,7 @@ namespace Giqci.PublicWeb.Controllers
                     applicationGoodsList.Count(i => !string.IsNullOrWhiteSpace(i.CiqCode)) > 0)
                 {
                     errors.Add("在同一个申请中,多个商品的备案号只能全部为空,或者全不为空");
+                    return errors;
                 }
                 var batchNoList = new List<string>();
                 var zcodeStartList = new List<string>();
@@ -287,8 +288,12 @@ namespace Giqci.PublicWeb.Controllers
                     {
                         errors.Add(string.Format("商品{0}备案号[{1}]不可重复添加", index1, applicationGoods.CiqCode));
                     }
-                    var productItemList = applicationGoods.ProductItemList.ToList();
-                    var applicationZCodeList = applicationGoods.ApplicationZCodes.ToList();
+                    var productItemList = applicationGoods.ProductItemList == null
+                        ? null
+                        : applicationGoods.ProductItemList.ToList();
+                    var applicationZCodeList = applicationGoods.ApplicationZCodes == null
+                        ? null
+                        : applicationGoods.ApplicationZCodes.ToList();
                     if (string.IsNullOrEmpty(applicationGoods.DescriptionEn)
                         || string.IsNullOrEmpty(applicationGoods.HSCode)
                         || string.IsNullOrEmpty(applicationGoods.Spec)
@@ -309,7 +314,7 @@ namespace Giqci.PublicWeb.Controllers
                         if (batchNoList.Count(i => i == productItem.BatchNo) > 1)
                         {
                             errors.Add("商品批次号不可重复");
-                            break;
+                            return errors;
                         }
                         var index2 = productItemList.IndexOf(productItem) + 1;
                         if (!productItem.ExpiryDate.HasValue)
@@ -347,19 +352,19 @@ namespace Giqci.PublicWeb.Controllers
                     {
                         foreach (var applicationZCode in applicationZCodeList)
                         {
+                            var index3 = applicationZCodeList.IndexOf(applicationZCode);
                             zcodeStartList.Add(applicationZCode.ZCodeStart);
                             if (zcodeStartList.Count(i => i == applicationZCode.ZCodeStart) > 1)
                             {
-                                errors.Add("真知码首码不可重复");
+                                errors.Add(string.Format("商品{0}[{1}]真知码首码不可重复", index1, index3));
                                 break;
                             }
                             zcodeEndList.Add(applicationZCode.ZCodeEnd);
                             if (zcodeEndList.Count(i => i == applicationZCode.ZCodeEnd) > 1)
                             {
-                                errors.Add("真知码尾码不可重复");
+                                errors.Add(string.Format("商品{0}[{1}]真知码尾码不可重复", index1, index3));
                                 break;
                             }
-                            var index3 = applicationZCodeList.IndexOf(applicationZCode);
                             if (string.IsNullOrEmpty(applicationZCode.ZCodeStart) ||
                                 string.IsNullOrEmpty(applicationZCode.ZCodeEnd) ||
                                 applicationZCode.ZCodeStart.Length != 16 ||
@@ -389,12 +394,12 @@ namespace Giqci.PublicWeb.Controllers
                         if (containerInfoList.Count(i => i.ContainerNumber == containerInfo.ContainerNumber) > 1)
                         {
                             errors.Add("装箱号不能重复");
-                            break;
+                            return errors;
                         }
                         if (containerInfoList.Count(i => i.SealNumber == containerInfo.SealNumber) > 1)
                         {
                             errors.Add("铅封号不能重复");
-                            break;
+                            return errors;
                         }
                         if (string.IsNullOrWhiteSpace(containerInfo.ContainerNumber) ||
                             string.IsNullOrWhiteSpace(containerInfo.SealNumber))
