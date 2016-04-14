@@ -317,11 +317,8 @@ app.controller('MerchantCustomProductListController', [
 
         $scope.remove = function (id, index) {
             if (confirm("您确定要删除该商品吗?")) {
-                $scope.merchantProductList.splice(index, 1);
-                $http.post('/api/goods/deletecustomproduct', { id: id }).then(function (response) {
-                    if (response.data.result) {
-
-                    }
+              $http.post('/api/goods/deletecustomproduct', { id: id }).then(function (response) {
+                    $scope.merchantProductList.splice(index, 1);
                 });
             }
         }
