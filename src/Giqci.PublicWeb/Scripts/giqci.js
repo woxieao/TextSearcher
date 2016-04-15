@@ -67,5 +67,10 @@ function PageHandler(postUrl, callBackFunc, customPageSize) {
 function HtmlDecode(htmlEncodeStr) {
     var elem = document.createElement('textarea');
     elem.innerHTML = htmlEncodeStr;
-    return JSON.parse(elem.value);
+    return elem.value;
+}
+
+function ObjDecodeToJson(htmlEncodeStr) {
+    return JSON.parse(HtmlDecode(htmlEncodeStr));
+
 }
