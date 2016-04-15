@@ -57,12 +57,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Giqci.ApiProxy, Version=1.0.78.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.ApiProxy.1.0.78\lib\net461\Giqci.ApiProxy.dll</HintPath>
+    <Reference Include="Giqci.ApiProxy, Version=1.0.82.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.ApiProxy.1.0.82\lib\net461\Giqci.ApiProxy.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Chapi.Contract, Version=1.0.83.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.Chapi.Contract.1.0.83\lib\net461\Giqci.Chapi.Contract.dll</HintPath>
+    <Reference Include="Giqci.Chapi.Contract, Version=2.0.18.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.Chapi.Contract.2.0.18\lib\net461\Giqci.Chapi.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Giqci.Contract, Version=1.1.111.0, Culture=neutral, processorArchitecture=MSIL">

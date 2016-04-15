@@ -14,69 +14,7 @@
                     <a class="btn btn-primary btn-sm" href="/goods/add">按备案号添加商品</a> &nbsp;&nbsp;<a class="btn btn-primary btn-sm" href="/goods/showcustomproduct">添加自定义商品</a>
                 </li>
             </ul>
-            <table class="table table-striped">
-                <colgroup>
-                    <col width='140'/>
-                    <col width='140'/>
-                    <col width='140'/>
-                    <col width='140'/>
-                    <col width='140'/>
-                    <col width='140'/>
-                    <col width='140'/>
-                    <col width='140'/>
-                    <col width='80'/>
-                </colgroup>
-                <thead>
-                <tr>
-                    <th>HS编码</th>
-                    <th>中文名</th>
-                    <th>英文名</th>
-                    <th>规格</th>
-                    <th>品牌</th>
-                    <th>制造国代码</th>
-                    <th>数量/包装</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="Product in merchantProductList">
-                    <td>{{Product.HsCode}}</td>
-                    <td>{{Product.Description}}</td>
-                    <td>{{Product.DescriptionEn}}</td>
-                    <td>{{Product.Spec}}</td>
-                    <td>{{Product.Brand}}</td>
-                    <td>{{Product.ManufacturerCountry}}</td>
-                    <td>{{Product.Package}}</td>
-                    <td>
-                        <div class="btn-group" role="group">
-                            <button type="button" class="btn btn-danger btn-sm" ng-click="remove(Product.Id,$index)">删除</button>
-                        </div>
-                        <div class="btn-group" role="group">
-                            <div ng-show="!Product.IsApproved">
-                                <a href="/goods/showcustomproduct?id={{Product.Id}}">编辑</a>
-                            </div>
-                            <div ng-show="Product.IsApproved">
-                                <strong>不可编辑</strong>
-                            </div>
-                        </div>
-
-                    </td>
-
-                </tr>
-                </tbody>
-            </table>
-            <div class="page-list">
-                <ul class="pagination" ng-show="paginationConf.totalItems > 0">
-                    <li ng-class="{disabled: postData.pageIndex == 1}" ng-click="indexPage()">
-                        <span>首页</span></li>
-                    <li ng-class="{disabled: postData.pageIndex == 1}" ng-click="prevPage()">
-                        <span>上一页</span></li>
-                    <li class="disabled">
-                        <span>第{{postData.pageIndex}}页</span></li>
-                    <li ng-class="{disabled: paginationConf.totalItems < postData.pageSize}" ng-click="nextPage()">
-                        <span>下一页</span></li>
-                </ul>
-            </div>
+       
         </div>
     </div>
 </div>

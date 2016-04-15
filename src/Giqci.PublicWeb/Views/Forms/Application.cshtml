@@ -353,19 +353,7 @@
                         $log.warn(response);
                     });
                 };
-
-                if ($scope.model.Application.ShippingMethod == 1) {
-                    $scope.unit = "Pallets";
-                } else {
-                    $scope.unit = "Containers";
-                }
-                $scope.check_A = function() {
-                    $scope.unit = "Pallets";
-                };
-                $scope.check_O = function() {
-                    $scope.unit = "Containers";
-                };
-
+                
                 $scope.updateClock = function() {
                     $http.post('/api/account/heartbeat').then(function() {});
                 };
@@ -840,8 +828,9 @@
     <label class="col-sm-2 control-label">运输方式</label>
     <div class="col-sm-10">
         <div class="radio">
-            <label><input type="radio" ng-model="model.Application.ShippingMethod" value="1" ng-click="check_A();"/> 空运</label>
-            <label><input type="radio" ng-model="model.Application.ShippingMethod" value="2" ng-click="check_O();"/> 海运</label>
+            <label><input type="radio" ng-model="model.Application.ShippingMethod" value="1"/>空运</label>
+            <label><input type="radio" ng-model="model.Application.ShippingMethod" value="2"/>海运</label>
+            <label><input type="radio" ng-model="model.Application.ShippingMethod" value="3"/>陆运</label>
         </div>
     </div>
 </div>
@@ -871,15 +860,21 @@
         <button class="btn btn-default" type="button" ng-click="addContainerInfo()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加装箱信息</button>
     </div>
 </div>
-<div class="form-group" ng-show="model.Application.ShippingMethod == 1">
-    <label class="col-sm-2 control-label">运输总数量 *</label>
-    <div class="col-sm-5">
-        <input type="number" ng-model="model.Application.TotalUnits" class="form-control" min="0" placeholder="运输总数量"/>
+    <div class="form-group"ng-show="model.Application.ShippingMethod == 3">
+        <label class="col-sm-2 control-label">车牌号</label>
+        <div class="col-sm-5">
+            <input type="text" ng-model="model.Application.PlateNumber" class="form-control"  placeholder="车牌号" />
+        </div>
     </div>
-    <div class="col-sm-5">
-        <p class="form-control-static">{{unit}}</p>
+    <div class="form-group" ng-show="model.Application.ShippingMethod != 2">
+        <label class="col-sm-2 control-label">运输总数量 *</label>
+        <div class="col-sm-5">
+            <input type="number" ng-model="model.Application.TotalUnits" class="form-control" min="0" placeholder="运输总数量"/>
+        </div>
+        <div class="col-sm-5">
+            <p class="form-control-static">Pallets</p>
+        </div>
     </div>
-</div>
 <div class="form-group">
     <label class="col-sm-2 control-label">运输总重量 *</label>
     <div class="col-sm-5">
