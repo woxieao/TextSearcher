@@ -163,10 +163,9 @@ namespace Giqci.PublicWeb.Controllers
                 {
                     errors.Add("请填写检验地点");
                 }
-                if (item.ShippingMethod == ShippingMethod.A)
+                if (item.ShippingMethod != ShippingMethod.O && item.TotalUnits <= 0)
                 {
-                    if (item.TotalUnits <= 0)
-                        errors.Add("运输总数量必须大于0");
+                    errors.Add("运输总数量必须大于0");
                 }
                 if (item.TotalWeight <= 0)
                     errors.Add("运输总重量必须大于0");
@@ -204,7 +203,6 @@ namespace Giqci.PublicWeb.Controllers
                     errors.Add("在同一个申请中,多个商品的备案号只能全部为空,或者全不为空");
                     return errors;
                 }
-                var batchNoList = new List<string>();
                 var zcodeStartList = new List<string>();
                 var zcodeEndList = new List<string>();
                 foreach (var applicationGoods in applicationGoodsList)
@@ -238,12 +236,6 @@ namespace Giqci.PublicWeb.Controllers
                     }
                     foreach (var productItem in productItemList)
                     {
-                        batchNoList.Add(productItem.BatchNo);
-                        if (batchNoList.Count(i => i == productItem.BatchNo) > 1)
-                        {
-                            errors.Add("商品批次号不可重复");
-                            return errors;
-                        }
                         var index2 = productItemList.IndexOf(productItem) + 1;
                         if (!productItem.ExpiryDate.HasValue)
                         {
