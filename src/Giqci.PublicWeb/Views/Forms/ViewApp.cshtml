@@ -100,135 +100,141 @@
                 <p class="form-control-static">联系电话: {{model.Application.ImBrokerPhone}}</p>
             </div>
         </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">商品资料</label>
-            <div class="col-sm-10">
-                <div ng-repeat="item in model.Application.ApplicationProducts">
-                    <table class="table table-striped">
-                        <colgroup>
-                            <col width="120" />
-                            <col width="360" />
-                            <col width="120" />
-                            <col width="360" />
-                        </colgroup>
-                        <tr>
-                            <th>商品 {{$index+1}}</th>
-                            <td colspan="3"></td>
-                        </tr>
-                        <tr>
-                            <th>商品备案号</th>
-                            <td colspan="3">
-                                {{item.CiqCode}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>名称(英文) *</th>
-                            <td>
-                                {{item.DescriptionEn}}
-                            </td>
-                            <th>名称(中文)</th>
-                            <td>
-                                {{item.Description}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>品牌 *</th>
-                            <td>
-                                {{item.Brand}}
-                            </td>
-                            <th>包装 *</th>
-                            <td>
-                                {{item.Package}}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>规格型号 *</th>
-                            <td>
-                                {{item.Spec}}
-                            </td>
-                            <th>制造国代码 *</th>
-                            <td>
-                                <p ajax-label ajax-url="countries" ng-model="item.ManufacturerCountry"></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>HS编码 *</th>
-                            <td colspan="3">
-                                <p ajax-label ajax-url="commonhscodes" ng-model="item.HSCode"></p>
-                            </td>
-                        </tr>
-                        <tr ng-show="model.Application.C102">
-                            <th>品质检验</th>
-                            <td>
-                                {{item.C102?'是':'否'}}
-                            </td>
-                            <th>
-                                检测项目
-                            </th>
-                            <td>
-                                {{item.C102Comment}}
-                            </td>
-                        </tr>
-                    </table>
-                    <!--批次-->
-                    <div ng-repeat="batch in item.ProductItemList">
-                        <table class="table table-striped">
-                            <colgroup>
-                                <col width="120" />
-                                <col width="360" />
-                                <col width="120" />
-                                <col width="360" />
-                            </colgroup>
-                            <tr>
-                                <th>生产日期</th>
-                                <td>
-                                    {{batch.ManufacturerDate|date:'yyyy/MM/dd'}}
-                                </td>
-                                <th>保质期 *</th>
-                                <td>
-                                    {{batch.ExpiryDate|date:'yyyy/MM/dd'}}
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>批次号</th>
-                                <td>
-                                    {{batch.BatchNo}}
-                                </td>
-                                <th>数量 *</th>
-                                <td>
-                                    {{batch.Quantity}}
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-                    <!--end批次-->
-                    <!--真知码-->
-                    <table class="table table-striped">
-                        <colgroup>
-                            <col width="120" />
-                            <col width="360" />
-                            <col width="120" />
-                            <col width="360" />
-                        </colgroup>
-                        <tr ng-repeat="zcode in item.ApplicationZCodes">
-                            <th>首码</th>
-                            <td>
-                                {{zcode.ZCodeStart}}
-                            </td>
-                            <th>尾码</th>
-                            <td>
-                                {{zcode.ZCodeEnd}}
-                            </td>
-                        </tr>
-                    </table>
-                    <!--end真知码-->
-                </div>
+<div class="form-group">
+    <label class="col-sm-2 control-label">商品资料</label>
+    <div class="col-sm-10">
+        <div ng-repeat="item in model.Application.ApplicationProducts">
+            <table class="table table-striped">
+                <colgroup>
+                    <col width="120"/>
+                    <col width="360"/>
+                    <col width="120"/>
+                    <col width="360"/>
+                </colgroup>
+                <tr>
+                    <th>商品 {{$index+1}}</th>
+                    <td colspan="3"></td>
+                </tr>
+                <tr>
+                    <th>商品备案号</th>
+                    <td colspan="3">
+                        {{item.CiqCode}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>名称(英文) *</th>
+                    <td>
+                        {{item.DescriptionEn}}
+                    </td>
+                    <th>名称(中文)</th>
+                    <td>
+                        {{item.Description}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>品牌 *</th>
+                    <td>
+                        {{item.Brand}}
+                    </td>
+                    <th>包装 *</th>
+                    <td>
+                        {{item.Package}}
+                    </td>
+                </tr>
+                <tr>
+                    <th>规格型号 *</th>
+                    <td>
+                        {{item.Spec}}
+                    </td>
+                    <th>制造国代码 *</th>
+                    <td>
+                        <p ajax-label ajax-url="countries" ng-model="item.ManufacturerCountry"></p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>HS编码 *</th>
+                    <td colspan="3">
+                        <p ajax-label ajax-url="commonhscodes" ng-model="item.HSCode"></p>
+                    </td>
+                </tr>
+                <tr ng-show="model.Application.C102">
+                    <th>品质检验</th>
+                    <td>
+                        {{item.C102?'是':'否'}}
+                    </td>
+                    <th>
+                        检测项目
+                    </th>
+                    <td>
+                        {{item.C102Comment}}
+                    </td>
+                </tr>
+            </table>
+            <!--批次-->
+            <div ng-repeat="batch in item.ProductItemList">
+                <table class="table table-striped">
+                    <colgroup>
+                        <col width="120"/>
+                        <col width="360"/>
+                        <col width="120"/>
+                        <col width="360"/>
+                    </colgroup>
+                    <tr>
+                        <th>生产日期</th>
+                        <td>
+                            {{batch.ManufacturerDate|date:'yyyy/MM/dd'}}
+                        </td>
+                        <th>保质期 *</th>
+                        <td>
+                            {{batch.ExpiryDate|date:'yyyy/MM/dd'}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>批次号</th>
+                        <td>
+                            {{batch.BatchNo}}
+                        </td>
+                        <th>数量 *</th>
+                        <td>
+                            {{batch.Quantity}}
+                        </td>
+                    </tr>
+                </table>
             </div>
+            <!--end批次-->
+            <!--真知码-->
+            <table class="table table-striped">
+                <colgroup>
+                    <col width="120"/>
+                    <col width="360"/>
+                    <col width="120"/>
+                    <col width="360"/>
+                </colgroup>
+                <tr ng-repeat="zcode in item.ApplicationZCodes">
+                    <th>首码</th>
+                    <td>
+                        {{zcode.ZCodeStart}}
+                    </td>
+                    <th>尾码</th>
+                    <td>
+                        {{zcode.ZCodeEnd}}
+                    </td>
+                </tr>
+            </table>
+            <!--end真知码-->
         </div>
-        <div class="form-group" ng-show="model.Application.ShippingMethod == 1">
+    </div>
+</div>
+    <div class="form-group" ng-show="model.Application.ShippingMethod == 3">
+        <label class="col-sm-2 control-label">车牌号</label>
+        <div class="col-sm-10">
+            <p class="form-control-static">{{model.Application.PlateNumber}}</p>
+        </div>
+    </div>
+        <div class="form-group" ng-show="model.Application.ShippingMethod != 2">
             <label class="col-sm-2 control-label">运输总数量</label>
             <div class="col-sm-10">
-                <p class="form-control-static">{{model.Application.TotalUnits}} {{model.Application.ShippingMethod == 1 ? "Pallets" : "Containers"}}</p>
+                <p class="form-control-static">{{model.Application.TotalUnits}}Pallets</p>
             </div>
         </div>
         <div class="form-group">

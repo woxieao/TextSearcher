@@ -216,48 +216,12 @@ app.controller('FormsListController', [
 /* goods lists */
 app.controller('GoodsListController', [
     '$scope', '$http', function ($scope, $http) {
-        $scope.paginationConf = {
-            totalItems: 0
-        };
-        $scope.postData = {
-            pageIndex: 1,
-            pageSize: 10
-        }
-        $scope.prevPage = function () {
-            if ($scope.postData.pageIndex > 1) {
-                $scope.postData.pageIndex -= 1;
-                $scope.list($scope.postData);
-            }
-        };
-        $scope.nextPage = function () {
-            if ($scope.paginationConf.totalItems == $scope.postData.pageSize) {
-                $scope.postData.pageIndex += 1;
-                $scope.list($scope.postData);
-            }
-        };
-        $scope.indexPage = function () {
-            if ($scope.postData.pageIndex > 1) {
-                $scope.postData.pageIndex = 1;
-                $scope.list($scope.postData);
-            }
-        }
-        $scope.searchGoods = function () {
-            $scope.postData = {
-                keywords: $scope.keywords || "",
-                pageIndex: 1,
-                pageSize: $scope.postData.pageSize
-            };
-            $scope.list($scope.postData);
-        }
-
-        $scope.list = function (postData) {
+    $scope.list = function (postData) {
             $http.post('/api/goods/getproductlist', postData).success(function (response) {
-                $scope.paginationConf.totalItems = response.result.count;
-                $scope.merchantProductList = response.result;
+            $scope.merchantProductList = response.result;
             });
         };
         $scope.list($scope.postData);
-
         $scope.remove = function (ciqCode, index) {
             if (confirm("您确定要删除该商品吗?")) {
                 $scope.merchantProductList.splice(index, 1);
@@ -268,62 +232,23 @@ app.controller('GoodsListController', [
                 });
             }
         }
-    }
-]);
-
-app.controller('MerchantCustomProductListController', [
-    '$scope', '$http', function ($scope, $http) {
-        $scope.paginationConf = {
-            totalItems: 0
-        };
-        $scope.postData = {
-            pageIndex: 1,
-            pageSize: 10
-        }
-        $scope.prevPage = function () {
-            if ($scope.postData.pageIndex > 1) {
-                $scope.postData.pageIndex -= 1;
-                $scope.list($scope.postData);
-            }
-        };
-        $scope.nextPage = function () {
-            if ($scope.paginationConf.totalItems == $scope.postData.pageSize) {
-                $scope.postData.pageIndex += 1;
-                $scope.list($scope.postData);
-            }
-        };
-        $scope.indexPage = function () {
-            if ($scope.postData.pageIndex > 1) {
-                $scope.postData.pageIndex = 1;
-                $scope.list($scope.postData);
-            }
-        }
-        $scope.searchGoods = function () {
-            $scope.postData = {
-                keywords: $scope.keywords || "",
-                pageIndex: 1,
-                pageSize: $scope.postData.pageSize
-            };
-            $scope.list($scope.postData);
-        }
-
-        $scope.list = function (postData) {
+        $scope.list2 = function (postData) {
             $http.post('/api/goods/getcustomproductlist', postData).success(function (response) {
-                $scope.paginationConf.totalItems = response.result.count;
-                $scope.merchantProductList = response.result;
+                $scope.customProductList = response.result;
             });
         };
-        $scope.list($scope.postData);
-
-        $scope.remove = function (id, index) {
+        $scope.list2($scope.postData);
+        $scope.remove2 = function (id, index) {
             if (confirm("您确定要删除该商品吗?")) {
-              $http.post('/api/goods/deletecustomproduct', { id: id }).then(function (response) {
-                    $scope.merchantProductList.splice(index, 1);
+                $http.post('/api/goods/deletecustomproduct', { id: id }).then(function (response) {
+                    $scope.customProductList.splice(index, 1);
                 });
             }
         }
     }
 ]);
+
+
 
 /**
  * Goods add

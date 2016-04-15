@@ -26,7 +26,7 @@ namespace Giqci.PublicWeb.Controllers.Api
 
         [Route("goods/getproductlist")]
         [HttpPost]
-        public ActionResult MerchantGetProductList(int pageIndex = 1, int pageSize = 10)
+        public ActionResult MerchantGetProductList(int pageIndex = 1, int pageSize = 100)
         {
             var productList = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, pageIndex, pageSize);
             var result = _productApiProxy.SearchProduct(productList);
