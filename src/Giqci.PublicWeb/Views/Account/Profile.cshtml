@@ -62,7 +62,7 @@
     <script type="text/javascript">
         //var app = angular.module("giqci", ['commonAlert']);
         app.controller("ProfileController", ['$http', '$scope', '$location','alertService', function ($http, $scope, $location, alertService) {
-            $scope.user = @Html.Raw(JsonConvert.SerializeObject(Model));
+            $scope.user =HtmlDecode('@JsonConvert.SerializeObject(Model)');
             $scope.submitButton = ' 提交 ';
             $scope.submitForm = function (isValid, PasswordValid) {
                 if (isValid) {
