@@ -3,12 +3,15 @@ using Ktech.Mvc.ActionResults;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
+using System.Web;
 using System.Web.Mvc;
 using Giqci.Chapi.Enums.App;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Helpers;
+using Giqci.PublicWeb.Models;
 using Giqci.PublicWeb.Services;
 using Ktech.Extensions;
 
@@ -53,15 +56,29 @@ namespace Giqci.PublicWeb.Controllers.Api
             return new KtechJsonResult(HttpStatusCode.OK, new {items = statusValues});
         }
 
-        [Route("forms/deleteexample")]
+
+        [Route("forms/savefile")]
         [HttpPost]
-        public ActionResult DeleteExample(string certFilePath)
+        public ActionResult SaveFile(HttpPostedFileBase file)
         {
-            var cookieHelper = new CookieHelper();
-            var currentExampleStr = cookieHelper.GetExampleListStr();
-            var newExampleStr = currentExampleStr.Replace(certFilePath, string.Empty);
-            cookieHelper.OverrideCookies(cookieHelper.ExampleFileListKeyName, newExampleStr);
-            return new KtechJsonResult(HttpStatusCode.OK, new {});
+            if (file != null && file.ContentLength > 0)
+            {
+                var fileName = string.Format("{0}{1}", Guid.NewGuid().ToString("N"),
+                    file.FileName.Substring(file.FileName.LastIndexOf(".", StringComparison.Ordinal)));
+                var filePath = string.Format("/{0}/{1}", Config.Current.UserExampleFilePath, fileName);
+                var fileRealPath = Server.MapPath(string.Format("~{0}", filePath));
+                var fileInfo = new FileInfo(fileRealPath);
+                if (fileInfo.Directory != null && !fileInfo.Directory.Exists)
+                {
+                    fileInfo.Directory.Create();
+                }
+                file.SaveAs(fileRealPath);
+                return new KtechJsonResult(HttpStatusCode.OK, new {filepath = filePath});
+            }
+            else
+            {
+                return new KtechJsonResult(HttpStatusCode.OK, new {});
+            }
         }
     }
 }
