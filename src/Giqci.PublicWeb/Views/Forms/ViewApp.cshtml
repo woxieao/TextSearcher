@@ -60,44 +60,44 @@
         <div class="form-group" ng-if="model.Application.DeclineReason">
             <label class="col-sm-2 control-label">驳回理由</label>
             <div class="col-sm-10">
-                <p class="form-control-static">{{model.Application.DeclineReason|decodeHtml}}</p>
+                <p class="form-control-static">{{model.Application.DeclineReason}}</p>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">申请人</label>
             <div class="col-sm-10">
-                <p class="form-control-static">全称: {{model.Application.Applicant|decodeHtml}}</p>
-                <p class="form-control-static">地址: {{model.Application.ApplicantAddr|decodeHtml}}</p>
-                <p class="form-control-static">联系人: {{model.Application.ApplicantContact|decodeHtml}}</p>
-                <p class="form-control-static">联系电话: {{model.Application.ApplicantPhone|decodeHtml}}</p>
-                <p class="form-control-static">邮箱:{{model.Application.ApplicantEmail|decodeHtml}}</p>
+                <p class="form-control-static">全称: {{model.Application.Applicant}}</p>
+                <p class="form-control-static">地址: {{model.Application.ApplicantAddr}}</p>
+                <p class="form-control-static">联系人: {{model.Application.ApplicantContact}}</p>
+                <p class="form-control-static">联系电话: {{model.Application.ApplicantPhone}}</p>
+                <p class="form-control-static">邮箱:{{model.Application.ApplicantEmail}}</p>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">出口商</label>
             <div class="col-sm-10">
-                <p class="form-control-static">全称: {{model.Application.Exporter|decodeHtml}}</p>
-                <p class="form-control-static">地址: {{model.Application.ExporterAddr|decodeHtml}}</p>
-                <p class="form-control-static">联系人: {{model.Application.ExporterContact|decodeHtml}}</p>
-                <p class="form-control-static">联系电话: {{model.Application.ExporterPhone|decodeHtml}}</p>
+                <p class="form-control-static">全称: {{model.Application.Exporter}}</p>
+                <p class="form-control-static">地址: {{model.Application.ExporterAddr}}</p>
+                <p class="form-control-static">联系人: {{model.Application.ExporterContact}}</p>
+                <p class="form-control-static">联系电话: {{model.Application.ExporterPhone}}</p>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">进口商</label>
             <div class="col-sm-10">
-                <p class="form-control-static">全称:{{model.Application.Importer|decodeHtml}}</p>
-                <p class="form-control-static">地址: {{model.Application.ImporterAddr|decodeHtml}}</p>
-                <p class="form-control-static">联系人: {{model.Application.ImporterContact|decodeHtml}}</p>
-                <p class="form-control-static">联系电话: {{model.Application.ImporterPhone|decodeHtml}}</p>
+                <p class="form-control-static">全称:{{model.Application.Importer}}</p>
+                <p class="form-control-static">地址: {{model.Application.ImporterAddr}}</p>
+                <p class="form-control-static">联系人: {{model.Application.ImporterContact}}</p>
+                <p class="form-control-static">联系电话: {{model.Application.ImporterPhone}}</p>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">进口商代理</label>
             <div class="col-sm-10">
-                <p class="form-control-static">全称: {{model.Application.ImBroker|decodeHtml}}</p>
-                <p class="form-control-static">地址: {{model.Application.ImBrokerAddr|decodeHtml}}</p>
-                <p class="form-control-static">联系人: {{model.Application.ImBrokerContact|decodeHtml}}</p>
-                <p class="form-control-static">联系电话: {{model.Application.ImBrokerPhone|decodeHtml}}</p>
+                <p class="form-control-static">全称: {{model.Application.ImBroker}}</p>
+                <p class="form-control-static">地址: {{model.Application.ImBrokerAddr}}</p>
+                <p class="form-control-static">联系人: {{model.Application.ImBrokerContact}}</p>
+                <p class="form-control-static">联系电话: {{model.Application.ImBrokerPhone}}</p>
             </div>
         </div>
         <div class="form-group">
@@ -118,33 +118,33 @@
                         <tr>
                             <th>商品备案号</th>
                             <td colspan="3">
-                                {{item.CiqCode|decodeHtml}}
+                                {{item.CiqCode}}
                             </td>
                         </tr>
                         <tr>
                             <th>名称(英文) *</th>
                             <td>
-                                {{item.DescriptionEn|decodeHtml}}
+                                {{item.DescriptionEn}}
                             </td>
                             <th>名称(中文)</th>
                             <td>
-                                {{item.Description|decodeHtml}}
+                                {{item.Description}}
                             </td>
                         </tr>
                         <tr>
                             <th>品牌 *</th>
                             <td>
-                                {{item.Brand|decodeHtml}}
+                                {{item.Brand}}
                             </td>
                             <th>包装 *</th>
                             <td>
-                                {{item.Package|decodeHtml}}
+                                {{item.Package}}
                             </td>
                         </tr>
                         <tr>
                             <th>规格型号 *</th>
                             <td>
-                                {{item.Spec|decodeHtml}}
+                                {{item.Spec}}
                             </td>
                             <th>制造国代码 *</th>
                             <td>
@@ -166,7 +166,7 @@
                                 检测项目
                             </th>
                             <td>
-                                {{item.C102Comment|decodeHtml}}
+                                {{item.C102Comment}}
                             </td>
                         </tr>
                     </table>
@@ -301,25 +301,25 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">航空运单号/提单号</label>
             <div class="col-sm-10">
-                <p class="form-control-static">{{model.Application.BillNo|decodeHtml}}</p>
+                <p class="form-control-static">{{model.Application.BillNo}}</p>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">副提单号</label>
             <div class="col-sm-10">
-                <p class="form-control-static">{{model.Application.OtherBillNo|decodeHtml}}</p>
+                <p class="form-control-static">{{model.Application.OtherBillNo}}</p>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">船名</label>
             <div class="col-sm-10">
-                <p class="form-control-static">{{model.Application.Vesselcn|decodeHtml}}</p>
+                <p class="form-control-static">{{model.Application.Vesselcn}}</p>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">航次</label>
             <div class="col-sm-10">
-                <p class="form-control-static">{{model.Application.Voyage|decodeHtml}}</p>
+                <p class="form-control-static">{{model.Application.Voyage}}</p>
             </div>
         </div>
     </div>
@@ -331,7 +331,7 @@
         app.controller('ViewAppController', [
             '$scope', function($scope) {
                 $scope.model = {};
-                $scope.model.Application = @Html.Raw(JsonConvert.SerializeObject(Model));
+                $scope.model.Application =HtmlDecode('@JsonConvert.SerializeObject(Model)');
                 $scope.StatusDescription = "@Model.Status.ToDescription()";
                 $scope.ShippingMethodDescription = "@Model.ShippingMethod.ToDescription()";
                 console.log($scope.model.Application.ShippingMethod );

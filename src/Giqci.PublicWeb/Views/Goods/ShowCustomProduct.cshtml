@@ -8,7 +8,7 @@
 
         app.controller("AddCustomProductController", [
             '$http', '$scope', '$location', '$log', 'alertService', function($http, $scope, $location, $log, alertService) {
-                $scope.model = @Html.Raw(JsonConvert.SerializeObject(Model));
+                $scope.model =HtmlDecode('@JsonConvert.SerializeObject(Model)');
                 $scope.flag = null;
                 $(function() {
                     $('.datetimepicker').datetimepicker({
