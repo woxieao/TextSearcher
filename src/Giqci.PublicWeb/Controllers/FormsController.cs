@@ -204,7 +204,6 @@ namespace Giqci.PublicWeb.Controllers
                     errors.Add("在同一个申请中,多个商品的备案号只能全部为空,或者全不为空");
                     return errors;
                 }
-                var batchNoList = new List<string>();
                 var zcodeStartList = new List<string>();
                 var zcodeEndList = new List<string>();
                 foreach (var applicationGoods in applicationGoodsList)
@@ -238,12 +237,6 @@ namespace Giqci.PublicWeb.Controllers
                     }
                     foreach (var productItem in productItemList)
                     {
-                        batchNoList.Add(productItem.BatchNo);
-                        if (batchNoList.Count(i => i == productItem.BatchNo) > 1)
-                        {
-                            errors.Add("商品批次号不可重复");
-                            return errors;
-                        }
                         var index2 = productItemList.IndexOf(productItem) + 1;
                         if (!productItem.ExpiryDate.HasValue)
                         {
