@@ -604,38 +604,38 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">申请人</label>
                     <div class="col-sm-10">
-                        <input type="text" name="Application.Applicant" ng-model="model.Application.Applicant" class="form-control" placeholder="全称" />
-                        <input type="text" name="Application.ApplicantAddr" ng-model="model.Application.ApplicantAddr" class="form-control" placeholder="地址" />
-                        <input type="text" name="Application.ApplicantContact" ng-model="model.Application.ApplicantContact" class="form-control" placeholder="联系人" />
-                        <input type="text" name="Application.ApplicantPhone" ng-model="model.Application.ApplicantPhone" class="form-control" placeholder="联系电话" />
-                        <input type="text" name="Application.ApplicantEmail" ng-model="model.Application.ApplicantEmail" class="form-control" placeholder="邮箱" />
+                        <input type="text" name="Application.Applicant" ng-model="model.Application.Applicant" decode-html class="form-control" placeholder="全称" />
+                        <input type="text" name="Application.ApplicantAddr" ng-model="model.Application.ApplicantAddr" decode-html class="form-control" placeholder="地址" />
+                        <input type="text" name="Application.ApplicantContact" ng-model="model.Application.ApplicantContact" decode-html class="form-control" placeholder="联系人" />
+                        <input type="text" name="Application.ApplicantPhone" ng-model="model.Application.ApplicantPhone" decode-html class="form-control" placeholder="联系电话" />
+                        <input type="text" name="Application.ApplicantEmail" ng-model="model.Application.ApplicantEmail" decode-html class="form-control" placeholder="邮箱" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">出口商 * </label>
                     <div class="col-sm-10">
-                        <input type="text" name="Application.Exporter" ng-model="model.Application.Exporter" class="form-control" placeholder="全称" />
-                        <input type="text" name="Application.ExporterAddr" ng-model="model.Application.ExporterAddr" class="form-control" placeholder="地址" />
-                        <input type="text" name="Application.ExporterContact" ng-model="model.Application.ExporterContact" class="form-control" placeholder="联系人" />
-                        <input type="text" name="Application.ExporterPhone" ng-model="model.Application.ExporterPhone" class="form-control" placeholder="联系电话" />
+                        <input type="text" name="Application.Exporter" ng-model="model.Application.Exporter" decode-html class="form-control" placeholder="全称" />
+                        <input type="text" name="Application.ExporterAddr" ng-model="model.Application.ExporterAddr" decode-html class="form-control" placeholder="地址" />
+                        <input type="text" name="Application.ExporterContact" ng-model="model.Application.ExporterContact" decode-html class="form-control" placeholder="联系人" />
+                        <input type="text" name="Application.ExporterPhone" ng-model="model.Application.ExporterPhone" decode-html class="form-control" placeholder="联系电话" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">进口商 * </label>
                     <div class="col-sm-10">
-                        <input type="text" name="Application.Importer" ng-model="model.Application.Importer" class="form-control" placeholder="全称" />
-                        <input type="text" name="Application.ImporterAddr" ng-model="model.Application.ImporterAddr" class="form-control" placeholder="地址" />
-                        <input type="text" name="Application.ImporterContact" ng-model="model.Application.ImporterContact" class="form-control" placeholder="联系人" />
-                        <input type="text" name="Application.ImporterPhone" ng-model="model.Application.ImporterPhone" class="form-control" placeholder="联系电话" />
+                        <input type="text" name="Application.Importer" ng-model="model.Application.Importer" decode-html class="form-control" placeholder="全称" />
+                        <input type="text" name="Application.ImporterAddr" ng-model="model.Application.ImporterAddr" decode-html class="form-control" placeholder="地址" />
+                        <input type="text" name="Application.ImporterContact" ng-model="model.Application.ImporterContact" decode-html class="form-control" placeholder="联系人" />
+                        <input type="text" name="Application.ImporterPhone" ng-model="model.Application.ImporterPhone" decode-html class="form-control" placeholder="联系电话" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">进口商代理</label>
                     <div class="col-sm-10">
-                        <input type="text" name="Application.ImBroker" ng-model="model.Application.ImBroker" class="form-control" placeholder="全称" />
-                        <input type="text" name="Application.ImBrokerAddr" ng-model="model.Application.ImBrokerAddr" class="form-control" placeholder="地址" />
-                        <input type="text" name="Application.ImBrokerContact" ng-model="model.Application.ImBrokerContact" class="form-control" placeholder="联系人" />
-                        <input type="text" name="Application.ImBrokerPhone" ng-model="model.Application.ImBrokerPhone" class="form-control" placeholder="联系电话" />
+                        <input type="text" name="Application.ImBroker" ng-model="model.Application.ImBroker" decode-html class="form-control" placeholder="全称" />
+                        <input type="text" name="Application.ImBrokerAddr" ng-model="model.Application.ImBrokerAddr" decode-html class="form-control" placeholder="地址" />
+                        <input type="text" name="Application.ImBrokerContact" ng-model="model.Application.ImBrokerContact" decode-html class="form-control" placeholder="联系人" />
+                        <input type="text" name="Application.ImBrokerPhone" ng-model="model.Application.ImBrokerPhone" decode-html class="form-control" placeholder="联系电话" />
                     </div>
                 </div>
                 <div class="form-group">
@@ -664,7 +664,7 @@
                                     <td colspan="3">
                                         <div class="form-group">
                                             <div class="col-sm-6">
-                                                <input type="text" ng-model="item.CiqCode" class="form-control" />
+                                                <input type="text" ng-model="item.CiqCode" decode-html class="form-control" />
                                                 <!--
                                                 <p class="form-control-static" ng-if="(isEdit&&item.isEditSelectDefault)">{{item.CiqCode}}</p>
                                                 <select ng-if="!isEdit||(isEdit&&!item.isEditSelectDefault)" class="form-control" ng-change="selectProduct(item.Selected,$index)" ng-model="item.Selected" ng-options="mp.CiqCode for mp in merchantProductList">
@@ -688,14 +688,14 @@
                                     </th>
                                     <td>
                                         <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.DescriptionEn}}</p>
-                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" type="text" ng-model="item.DescriptionEn" class="form-control" />
+                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" decode-html type="text" ng-model="item.DescriptionEn" class="form-control" />
                                     </td>
                                     <th>
                                         <p class="form-control-static">名称(中文)</p>
                                     </th>
                                     <td>
                                         <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.Description}}</p>
-                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" type="text" ng-model="item.Description" class="form-control" />
+                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" decode-html type="text" ng-model="item.Description" class="form-control" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -704,7 +704,7 @@
                                     </th>
                                     <td>
                                         <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.Brand}}</p>
-                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" type="text" ng-model="item.Brand" class="form-control" />
+                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" decode-html type="text" ng-model="item.Brand" class="form-control" />
                                     </td>
                                     <th>
                                         <p class="form-control-static">包装 *</p>
@@ -725,7 +725,7 @@
                                     </th>
                                     <td>
                                         <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.Spec}}</p>
-                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" type="text" class="form-control" ng-model="item.Spec" />
+                                        <input ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" decode-html type="text" class="form-control" ng-model="item.Spec" />
                                     </td>
                                     <th>
                                         <p class="form-control-static">制造国代码 *</p>
@@ -757,7 +757,7 @@
                                         <span ng-show="item.C102">检测项目</span>
                                     </th>
                                     <td>
-                                        <span ng-show="item.C102"><input type="text" ng-model="item.C102Comment" class="form-control" maxlength="100" /></span>
+                                        <span ng-show="item.C102"><input type="text" ng-model="item.C102Comment" decode-html class="form-control" maxlength="100" /></span>
                                     </td>
                                 </tr>
                             </table>
@@ -795,7 +795,7 @@
                                             <p class="form-control-static">批次号</p>
                                         </th>
                                         <td>
-                                            <input type="text" ng-model="batch.BatchNo" class="form-control" maxlength="100" />
+                                            <input type="text" ng-model="batch.BatchNo" decode-html class="form-control" maxlength="100" />
                                         </td>
                                         <th>
                                             <p class="form-control-static">数量 *</p>
@@ -913,7 +913,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">检验地点 *</label>
                     <div class="col-sm-10">
-                        <input type="text" ng-model="model.Application.InspectionAddr" class="form-control" placeholder="检验地点" />
+                        <input type="text" ng-model="model.Application.InspectionAddr" decode-html class="form-control" placeholder="检验地点" />
                     </div>
                 </div>
                 <div class="form-group">
@@ -935,25 +935,25 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">航空运单号/提单号</label>
                     <div class="col-sm-10">
-                        <input type="text" ng-model="model.Application.BillNo" class="form-control" placeholder="航空运单号/提单号" />
+                        <input type="text" ng-model="model.Application.BillNo" decode-html class="form-control" placeholder="航空运单号/提单号" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">副提单号</label>
                     <div class="col-sm-10">
-                        <input type="text" ng-model="model.Application.OtherBillNo" class="form-control" placeholder="副提单号" />
+                        <input type="text" ng-model="model.Application.OtherBillNo" decode-html class="form-control" placeholder="副提单号" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">船舶/航班/火车/汽车号</label>
                     <div class="col-sm-10">
-                        <input type="text" ng-model="model.Application.Vesselcn" class="form-control" placeholder="船名" />
+                        <input type="text" ng-model="model.Application.Vesselcn" decode-html class="form-control" placeholder="船名" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">航次</label>
                     <div class="col-sm-10">
-                        <input type="text" ng-model="model.Application.Voyage" class="form-control" placeholder="航次" />
+                        <input type="text" ng-model="model.Application.Voyage" decode-html class="form-control" placeholder="航次" />
                     </div>
                 </div>
                 <div class="form-group">
