@@ -163,10 +163,9 @@ namespace Giqci.PublicWeb.Controllers
                 {
                     errors.Add("请填写检验地点");
                 }
-                if (item.ShippingMethod == ShippingMethod.A)
+                if (item.ShippingMethod != ShippingMethod.O && item.TotalUnits <= 0)
                 {
-                    if (item.TotalUnits <= 0)
-                        errors.Add("运输总数量必须大于0");
+                    errors.Add("运输总数量必须大于0");
                 }
                 if (item.TotalWeight <= 0)
                     errors.Add("运输总重量必须大于0");
