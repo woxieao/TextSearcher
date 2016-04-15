@@ -8,8 +8,6 @@ namespace Giqci.PublicWeb.Helpers
 {
     public class CookieHelper
     {
-        public readonly string ExampleFileListKeyName = "ExampleFileList";
-
         public bool SetApplication(string key, Application application)
         {
             setCookies(key, JsonConvert.SerializeObject(application), 7);
@@ -26,26 +24,6 @@ namespace Giqci.PublicWeb.Helpers
             deleteCookies(key);
             return true;
         }
-
-        #region 上传的样张文件路径记录在cookies里面
-
-        public void SetExampleList(string exampleFilePath)
-        {
-            setCookies(ExampleFileListKeyName, exampleFilePath);
-        }
-
-        public string GetExampleListStr()
-        {
-            return getCookies(ExampleFileListKeyName);
-        }
-
-
-        public void DeleteExampleList()
-        {
-            deleteCookies(ExampleFileListKeyName);
-        }
-
-        #endregion
 
         private void setCookies(string key, string value, int expiryDays = 7)
         {

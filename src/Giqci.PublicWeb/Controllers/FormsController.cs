@@ -82,13 +82,6 @@ namespace Giqci.PublicWeb.Controllers
             {
                 case ApplicationStatus.New:
                 {
-                    var cookieHelper = new CookieHelper();
-                    var exampleListStr = string.Empty;
-                    foreach (var exampleCerat in application.ExampleCertList)
-                    {
-                        exampleListStr += string.Format("|{0}|", exampleCerat.CertFilePath);
-                    }
-                    cookieHelper.OverrideCookies(cookieHelper.ExampleFileListKeyName, exampleListStr);
                     return View(application);
                 }
                 default:
@@ -113,13 +106,10 @@ namespace Giqci.PublicWeb.Controllers
                 isLogin = false;
                 errors = new List<string>() {"登录状态已失效，请您重新登录系统"};
             }
-
             var merchantId = _merchantRepo.GetMerchant(User.Identity.Name).Id;
             if (!errors.Any())
             {
                 GetTotalUnits(ref model);
-                var exampleCertList = GetExampleList(true);
-                model.ExampleCertList = exampleCertList;
                 if (id > 0)
                 {
                     _appRepo.Update(merchantId, id, model);
@@ -134,69 +124,6 @@ namespace Giqci.PublicWeb.Controllers
                 new {appNo = appNo, id = id, isLogin = isLogin, errors = errors});
         }
 
-        [Route("forms/uploadexample")]
-        [HttpPost]
-        public ActionResult UploadExample(HttpPostedFileBase file0, HttpPostedFileBase file1, HttpPostedFileBase file2,
-            HttpPostedFileBase file3, HttpPostedFileBase file4)
-        {
-            var cookie = new CookieHelper();
-            var currentExampleListStr = cookie.GetExampleListStr();
-            var pathList = string.Format("{0}{1}{2}{3}{4}{5}",
-                FormatExampleCookieStr(SaveFile(file0)),
-                FormatExampleCookieStr(SaveFile(file1)),
-                FormatExampleCookieStr(SaveFile(file2)),
-                FormatExampleCookieStr(SaveFile(file3)),
-                FormatExampleCookieStr(SaveFile(file4)),
-                currentExampleListStr);
-            cookie.OverrideCookies(cookie.ExampleFileListKeyName, pathList);
-            return new KtechJsonResult(HttpStatusCode.OK, new {});
-        }
-
-        public List<ExampleCert> GetExampleList(bool deleteExampleList = false)
-        {
-            var cookie = new CookieHelper();
-            var exampleFilePathList = cookie.GetExampleListStr().Split('|');
-            var list = new List<ExampleCert>();
-            foreach (var exampleFilePath in exampleFilePathList)
-            {
-                if (!string.IsNullOrWhiteSpace(exampleFilePath))
-                {
-                    list.Add(new ExampleCert {CertFilePath = exampleFilePath});
-                }
-            }
-            if (deleteExampleList)
-            {
-                cookie.DeleteExampleList();
-            }
-            return list;
-        }
-
-        private string FormatExampleCookieStr(string exampleStr)
-        {
-            return string.IsNullOrWhiteSpace(exampleStr) ? string.Empty : string.Format("|{0}|", exampleStr);
-        }
-
-        private string SaveFile(HttpPostedFileBase file)
-        {
-            if (file != null && file.ContentLength > 0)
-            {
-                var fileName = string.Format("{0}{1}", Guid.NewGuid().ToString("n"),
-                    file.FileName.Substring(file.FileName.LastIndexOf(".", StringComparison.Ordinal)));
-                var filePath = string.Format("/{0}/{1}", Config.Current.UserExampleFilePath, fileName);
-                var fileRealPath = Server.MapPath(string.Format("~{0}", filePath));
-                var fileInfo = new FileInfo(fileRealPath);
-                if (fileInfo.Directory != null && !fileInfo.Directory.Exists)
-                {
-                    fileInfo.Directory.Create();
-                }
-                file.SaveAs(fileRealPath);
-                return filePath;
-            }
-            else
-            {
-                return string.Empty;
-            }
-        }
 
         [Route("forms/list")]
         [HttpGet]
