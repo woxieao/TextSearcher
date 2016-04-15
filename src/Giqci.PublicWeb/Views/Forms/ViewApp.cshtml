@@ -1,4 +1,5 @@
-﻿@using Ktech.Extensions
+﻿@using Giqci.PublicWeb.Extensions
+@using Ktech.Extensions
 @using Newtonsoft.Json
 @model Giqci.Chapi.Models.App.Application
 <div class="row" ng-controller="ViewAppController">
@@ -337,7 +338,7 @@
         app.controller('ViewAppController', [
             '$scope', function($scope) {
                 $scope.model = {};
-                $scope.model.Application = ObjDecodeToJson('@JsonConvert.SerializeObject(Model)');
+                $scope.model.Application = ObjDecodeToJson(@HtmlExtensions.RawJson(Model));
                 $scope.StatusDescription = "@Model.Status.ToDescription()";
                 $scope.ShippingMethodDescription = "@Model.ShippingMethod.ToDescription()";
                 console.log($scope.model.Application.ShippingMethod );

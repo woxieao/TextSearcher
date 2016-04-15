@@ -1,4 +1,5 @@
 ﻿@using Giqci.Chapi.Enums.App
+@using Giqci.PublicWeb.Extensions
 @using Newtonsoft.Json
 @model Giqci.Chapi.Models.App.Application
 @{
@@ -14,7 +15,7 @@
         app.controller("GlobalController", [
             '$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', '$filter', function($http, $scope, $log, $location, $anchorScroll, $timeout, $filter) {
                 $scope.model = {};
-                $scope.model.Application = ObjDecodeToJson('@JsonConvert.SerializeObject(Model)');
+                $scope.model.Application = ObjDecodeToJson(@HtmlExtensions.RawJson(Model));
                 //$log.log($scope.model);
                 $scope.model.Application.Id = @ViewBag.id;
 
