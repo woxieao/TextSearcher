@@ -248,7 +248,6 @@
     <Content Include="Global\js\jquery-2.1.4.min.map" />
     <Content Include="Views\Shared\EditorTemplates\ShippingMethod.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\Enum.cshtml" />
-    <Content Include="appSettings.config" />
     <Content Include="Views\Shared\_Header.cshtml" />
     <Content Include="Views\Shared\_TopNav.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
