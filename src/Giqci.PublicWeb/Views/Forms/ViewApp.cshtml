@@ -1,346 +1,349 @@
-﻿@using Ktech.Extensions
+﻿@using Giqci.PublicWeb.Extensions
+@using Ktech.Extensions
 @using Newtonsoft.Json
 @model Giqci.Chapi.Models.App.Application
 <div class="row" ng-controller="ViewAppController">
-<div class="col-md-12">
-<h1>查看 - {{model.Application.Key}}</h1>
-<div class="form-horizontal">
-<div class="form-horizontal">
-<div class="form-group">
-    <label class="col-sm-2 control-label">申请号</label>
-    <div class="col-sm-10">
-        <p class="form-control-static">{{model.Application.Key}}</p>
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-sm-2 control-label">证书类别</label>
-    <div class="col-sm-10">
-        <p class="form-control-static" ng-show="model.Application.C101">溯源证书</p>
-        <p class="form-control-static" ng-show="model.Application.C102">品质证书</p>
-        <p class="form-control-static" ng-show="model.Application.C103">标签证书</p>
-    </div>
-</div>
-    <div class="form-group" ng-show="false">
-        <label class="col-sm-2 control-label">样张列表</label>
-            <div class="col-sm-10">
-                <div ng-repeat="item in model.Application.ExampleCertList">
-                    <table class="table table-striped">
-                        <colgroup>
-                            <col width="100" />
-                            <col width="100" />
-                        </colgroup>
-                        <tr>
-                            <th>样张{{$index+1}}</th>
-                            <td>
-                                <a href="{{item.CertFilePath}}" target="_black">查看文件</a>
-                            </td>
-                        </tr>
-                    </table>
+    <div class="col-md-12">
+        <h1>查看 - {{model.Application.Key}}</h1>
+        <div class="form-horizontal">
+            <div class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">申请号</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{model.Application.Key}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">证书类别</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" ng-show="model.Application.C101">溯源证书</p>
+                        <p class="form-control-static" ng-show="model.Application.C102">品质证书</p>
+                        <p class="form-control-static" ng-show="model.Application.C103">标签证书</p>
+                    </div>
+                </div>
+                <div class="form-group" ng-show="false">
+                    <label class="col-sm-2 control-label">样张列表</label>
+                    <div class="col-sm-10">
+                        <div ng-repeat="item in model.Application.ExampleCertList">
+                            <table class="table table-striped">
+                                <colgroup>
+                                    <col width="100" />
+                                    <col width="100" />
+                                </colgroup>
+                                <tr>
+                                    <th>样张{{$index+1}}</th>
+                                    <td>
+                                        <a href="{{item.CertFilePath}}" target="_black">查看文件</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">商业目的</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{model.Application.TradeType === "T"?"一般贸易":"电商贸易"}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">创建日期</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{model.Application.CreateDate | date:'yyyy/MM/dd'}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">当前状态</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{StatusDescription}}</p>
+                    </div>
+                </div>
+                <div class="form-group" ng-if="model.Application.DeclineReason">
+                    <label class="col-sm-2 control-label">驳回理由</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{model.Application.DeclineReason}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">申请人</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">全称: {{model.Application.Applicant}}</p>
+                        <p class="form-control-static">地址: {{model.Application.ApplicantAddr}}</p>
+                        <p class="form-control-static">联系人: {{model.Application.ApplicantContact}}</p>
+                        <p class="form-control-static">联系电话: {{model.Application.ApplicantPhone}}</p>
+                        <p class="form-control-static">邮箱:{{model.Application.ApplicantEmail}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">出口商</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">全称: {{model.Application.Exporter}}</p>
+                        <p class="form-control-static">地址: {{model.Application.ExporterAddr}}</p>
+                        <p class="form-control-static">联系人: {{model.Application.ExporterContact}}</p>
+                        <p class="form-control-static">联系电话: {{model.Application.ExporterPhone}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">进口商</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">全称:{{model.Application.Importer}}</p>
+                        <p class="form-control-static">地址: {{model.Application.ImporterAddr}}</p>
+                        <p class="form-control-static">联系人: {{model.Application.ImporterContact}}</p>
+                        <p class="form-control-static">联系电话: {{model.Application.ImporterPhone}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">进口商代理</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">全称: {{model.Application.ImBroker}}</p>
+                        <p class="form-control-static">地址: {{model.Application.ImBrokerAddr}}</p>
+                        <p class="form-control-static">联系人: {{model.Application.ImBrokerContact}}</p>
+                        <p class="form-control-static">联系电话: {{model.Application.ImBrokerPhone}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">商品资料</label>
+                    <div class="col-sm-10">
+                        <div ng-repeat="item in model.Application.ApplicationProducts">
+                            <table class="table table-striped">
+                                <colgroup>
+                                    <col width="120" />
+                                    <col width="360" />
+                                    <col width="120" />
+                                    <col width="360" />
+                                </colgroup>
+                                <tr>
+                                    <th>商品 {{$index+1}}</th>
+                                    <td colspan="3"></td>
+                                </tr>
+                                <tr>
+                                    <th>商品备案号</th>
+                                    <td colspan="3">
+                                        {{item.CiqCode}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>名称(英文) *</th>
+                                    <td>
+                                        {{item.DescriptionEn}}
+                                    </td>
+                                    <th>名称(中文)</th>
+                                    <td>
+                                        {{item.Description}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>品牌 *</th>
+                                    <td>
+                                        {{item.Brand}}
+                                    </td>
+                                    <th>包装 *</th>
+                                    <td>
+                                        {{item.Package}}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>规格型号 *</th>
+                                    <td>
+                                        {{item.Spec}}
+                                    </td>
+                                    <th>制造国代码 *</th>
+                                    <td>
+                                        <p ajax-label ajax-url="countries" ng-model="item.ManufacturerCountry"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>HS编码 *</th>
+                                    <td colspan="3">
+                                        <p ajax-label ajax-url="commonhscodes" ng-model="item.HSCode"></p>
+                                    </td>
+                                </tr>
+                                <tr ng-show="model.Application.C102">
+                                    <th>品质检验</th>
+                                    <td>
+                                        {{item.C102?'是':'否'}}
+                                    </td>
+                                    <th>
+                                        检测项目
+                                    </th>
+                                    <td>
+                                        {{item.C102Comment}}
+                                    </td>
+                                </tr>
+                            </table>
+                            <!--批次-->
+                            <div ng-repeat="batch in item.ProductItemList">
+                                <table class="table table-striped">
+                                    <colgroup>
+                                        <col width="120" />
+                                        <col width="360" />
+                                        <col width="120" />
+                                        <col width="360" />
+                                    </colgroup>
+                                    <tr>
+                                        <th>生产日期</th>
+                                        <td>
+                                            {{batch.ManufacturerDate|date:'yyyy/MM/dd'}}
+                                        </td>
+                                        <th>保质期 *</th>
+                                        <td>
+                                            {{batch.ExpiryDate|date:'yyyy/MM/dd'}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>批次号</th>
+                                        <td>
+                                            {{batch.BatchNo}}
+                                        </td>
+                                        <th>数量 *</th>
+                                        <td>
+                                            {{batch.Quantity}}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <!--end批次-->
+                            <!--真知码-->
+                            <table class="table table-striped">
+                                <colgroup>
+                                    <col width="120" />
+                                    <col width="360" />
+                                    <col width="120" />
+                                    <col width="360" />
+                                </colgroup>
+                                <tr ng-repeat="zcode in item.ApplicationZCodes">
+                                    <th>首码</th>
+                                    <td>
+                                        {{zcode.ZCodeStart}}
+                                    </td>
+                                    <th>尾码</th>
+                                    <td>
+                                        {{zcode.ZCodeEnd}}
+                                    </td>
+                                </tr>
+                            </table>
+                            <!--end真知码-->
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group" ng-show="model.Application.ShippingMethod == 3">
+                    <label class="col-sm-2 control-label">车牌号</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{model.Application.PlateNumber}}</p>
+                    </div>
+                </div>
+                <div class="form-group" ng-show="model.Application.ShippingMethod != 2">
+                    <label class="col-sm-2 control-label">运输总数量</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{model.Application.TotalUnits}}Pallets</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">运输总重量</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{model.Application.TotalWeight | currency:"":2}}KG</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">计划发货日期</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{model.Application.ShippingDate | date:'yyyy/MM/dd'}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">预约检查日期</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{model.Application.InspectionDate | date:'yyyy/MM/dd'}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">检验地点</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{model.Application.InspectionAddr}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">运输方式</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" ng-if="model.Application.ShippingMethod==1">空运</p>
+                        <p class="form-control-static" ng-if="model.Application.ShippingMethod==2">海运</p>
+                        <p class="form-control-static" ng-if="model.Application.ShippingMethod==3">陆运</p>
+                    </div>
+                </div>
+                <div class="form-group" ng-show="model.Application.ShippingMethod === 2">
+                    <label class="col-sm-2 control-label">船舶资料</label>
+                    <div class="col-sm-10">
+                        <div ng-repeat="item in model.Application.ContainerInfos">
+                            <table class="table table-striped">
+                                <colgroup>
+                                    <col width="100" />
+                                    <col width="100" />
+                                </colgroup>
+                                <tr>
+                                    <th>装箱信息{{$index+1}}</th>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <th>装箱号</th>
+                                    <td>{{item.ContainerNumber}}</td>
+                                </tr>
+                                <tr>
+                                    <th>铅封号</th>
+                                    <td>{{item.SealNumber}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">发货港口</label>
+                    <div class="col-sm-10">
+                        <p ajax-label ajax-url="ports" ng-model="model.Application.LoadingPort" class="form-control-static"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">目的港口</label>
+                    <div class="col-sm-10">
+                        <p ajax-label ajax-url="ports" ng-model="model.Application.DestPort" class="form-control-static"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">航空运单号/提单号</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{model.Application.BillNo}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">副提单号</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{model.Application.OtherBillNo}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">船名</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{model.Application.Vesselcn}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">航次</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{model.Application.Voyage}}</p>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">商业目的</label>
-            <div class="col-sm-10">
-                <p class="form-control-static">{{model.Application.TradeType === "T"?"一般贸易":"电商贸易"}}</p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">创建日期</label>
-            <div class="col-sm-10">
-                <p class="form-control-static">{{model.Application.CreateDate | date:'yyyy/MM/dd'}}</p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">当前状态</label>
-            <div class="col-sm-10">
-                <p class="form-control-static">{{StatusDescription}}</p>
-            </div>
-        </div>
-        <div class="form-group" ng-if="model.Application.DeclineReason">
-            <label class="col-sm-2 control-label">驳回理由</label>
-            <div class="col-sm-10">
-                <p class="form-control-static">{{model.Application.DeclineReason}}</p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">申请人</label>
-            <div class="col-sm-10">
-                <p class="form-control-static">全称: {{model.Application.Applicant}}</p>
-                <p class="form-control-static">地址: {{model.Application.ApplicantAddr}}</p>
-                <p class="form-control-static">联系人: {{model.Application.ApplicantContact}}</p>
-                <p class="form-control-static">联系电话: {{model.Application.ApplicantPhone}}</p>
-                <p class="form-control-static">邮箱:{{model.Application.ApplicantEmail}}</p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">出口商</label>
-            <div class="col-sm-10">
-                <p class="form-control-static">全称: {{model.Application.Exporter}}</p>
-                <p class="form-control-static">地址: {{model.Application.ExporterAddr}}</p>
-                <p class="form-control-static">联系人: {{model.Application.ExporterContact}}</p>
-                <p class="form-control-static">联系电话: {{model.Application.ExporterPhone}}</p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">进口商</label>
-            <div class="col-sm-10">
-                <p class="form-control-static">全称:{{model.Application.Importer}}</p>
-                <p class="form-control-static">地址: {{model.Application.ImporterAddr}}</p>
-                <p class="form-control-static">联系人: {{model.Application.ImporterContact}}</p>
-                <p class="form-control-static">联系电话: {{model.Application.ImporterPhone}}</p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">进口商代理</label>
-            <div class="col-sm-10">
-                <p class="form-control-static">全称: {{model.Application.ImBroker}}</p>
-                <p class="form-control-static">地址: {{model.Application.ImBrokerAddr}}</p>
-                <p class="form-control-static">联系人: {{model.Application.ImBrokerContact}}</p>
-                <p class="form-control-static">联系电话: {{model.Application.ImBrokerPhone}}</p>
-            </div>
-        </div>
-<div class="form-group">
-    <label class="col-sm-2 control-label">商品资料</label>
-    <div class="col-sm-10">
-        <div ng-repeat="item in model.Application.ApplicationProducts">
-            <table class="table table-striped">
-                <colgroup>
-                    <col width="120"/>
-                    <col width="360"/>
-                    <col width="120"/>
-                    <col width="360"/>
-                </colgroup>
-                <tr>
-                    <th>商品 {{$index+1}}</th>
-                    <td colspan="3"></td>
-                </tr>
-                <tr>
-                    <th>商品备案号</th>
-                    <td colspan="3">
-                        {{item.CiqCode}}
-                    </td>
-                </tr>
-                <tr>
-                    <th>名称(英文) *</th>
-                    <td>
-                        {{item.DescriptionEn}}
-                    </td>
-                    <th>名称(中文)</th>
-                    <td>
-                        {{item.Description}}
-                    </td>
-                </tr>
-                <tr>
-                    <th>品牌 *</th>
-                    <td>
-                        {{item.Brand}}
-                    </td>
-                    <th>包装 *</th>
-                    <td>
-                        {{item.Package}}
-                    </td>
-                </tr>
-                <tr>
-                    <th>规格型号 *</th>
-                    <td>
-                        {{item.Spec}}
-                    </td>
-                    <th>制造国代码 *</th>
-                    <td>
-                        <p ajax-label ajax-url="countries" ng-model="item.ManufacturerCountry"></p>
-                    </td>
-                </tr>
-                <tr>
-                    <th>HS编码 *</th>
-                    <td colspan="3">
-                        <p ajax-label ajax-url="commonhscodes" ng-model="item.HSCode"></p>
-                    </td>
-                </tr>
-                <tr ng-show="model.Application.C102">
-                    <th>品质检验</th>
-                    <td>
-                        {{item.C102?'是':'否'}}
-                    </td>
-                    <th>
-                        检测项目
-                    </th>
-                    <td>
-                        {{item.C102Comment}}
-                    </td>
-                </tr>
-            </table>
-            <!--批次-->
-            <div ng-repeat="batch in item.ProductItemList">
-                <table class="table table-striped">
-                    <colgroup>
-                        <col width="120"/>
-                        <col width="360"/>
-                        <col width="120"/>
-                        <col width="360"/>
-                    </colgroup>
-                    <tr>
-                        <th>生产日期</th>
-                        <td>
-                            {{batch.ManufacturerDate|date:'yyyy/MM/dd'}}
-                        </td>
-                        <th>保质期 *</th>
-                        <td>
-                            {{batch.ExpiryDate|date:'yyyy/MM/dd'}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>批次号</th>
-                        <td>
-                            {{batch.BatchNo}}
-                        </td>
-                        <th>数量 *</th>
-                        <td>
-                            {{batch.Quantity}}
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <!--end批次-->
-            <!--真知码-->
-            <table class="table table-striped">
-                <colgroup>
-                    <col width="120"/>
-                    <col width="360"/>
-                    <col width="120"/>
-                    <col width="360"/>
-                </colgroup>
-                <tr ng-repeat="zcode in item.ApplicationZCodes">
-                    <th>首码</th>
-                    <td>
-                        {{zcode.ZCodeStart}}
-                    </td>
-                    <th>尾码</th>
-                    <td>
-                        {{zcode.ZCodeEnd}}
-                    </td>
-                </tr>
-            </table>
-            <!--end真知码-->
-        </div>
     </div>
-</div>
-    <div class="form-group" ng-show="model.Application.ShippingMethod == 3">
-        <label class="col-sm-2 control-label">车牌号</label>
-        <div class="col-sm-10">
-            <p class="form-control-static">{{model.Application.PlateNumber}}</p>
-        </div>
-    </div>
-        <div class="form-group" ng-show="model.Application.ShippingMethod != 2">
-            <label class="col-sm-2 control-label">运输总数量</label>
-            <div class="col-sm-10">
-                <p class="form-control-static">{{model.Application.TotalUnits}}Pallets</p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">运输总重量</label>
-            <div class="col-sm-10">
-                <p class="form-control-static">{{model.Application.TotalWeight | currency:"":2}}KG</p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">计划发货日期</label>
-            <div class="col-sm-10">
-                <p class="form-control-static">{{model.Application.ShippingDate | date:'yyyy/MM/dd'}}</p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">预约检查日期</label>
-            <div class="col-sm-10">
-                <p class="form-control-static">{{model.Application.InspectionDate | date:'yyyy/MM/dd'}}</p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">检验地点</label>
-            <div class="col-sm-10">
-                <p class="form-control-static">{{model.Application.InspectionAddr}}</p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">运输方式</label>
-            <div class="col-sm-10">
-                <p class="form-control-static">{{model.Application.ShippingMethod==2?"海运":"空运"}}</p>
-            </div>
-        </div>
-        <div class="form-group" ng-show="model.Application.ShippingMethod === 2">
-            <label class="col-sm-2 control-label">船舶资料</label>
-            <div class="col-sm-10">
-                <div ng-repeat="item in model.Application.ContainerInfos">
-                    <table class="table table-striped">
-                        <colgroup>
-                            <col width="100" />
-                            <col width="100" />
-                        </colgroup>
-                        <tr>
-                            <th>装箱信息{{$index+1}}</th>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <th>装箱号</th>
-                            <td>{{item.ContainerNumber}}</td>
-                        </tr>
-                        <tr>
-                            <th>铅封号</th>
-                            <td>{{item.SealNumber}}</td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">发货港口</label>
-            <div class="col-sm-10">
-                <p ajax-label ajax-url="ports" ng-model="model.Application.LoadingPort" class="form-control-static"></p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">目的港口</label>
-            <div class="col-sm-10">
-                <p ajax-label ajax-url="ports" ng-model="model.Application.DestPort" class="form-control-static"></p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">航空运单号/提单号</label>
-            <div class="col-sm-10">
-                <p class="form-control-static">{{model.Application.BillNo}}</p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">副提单号</label>
-            <div class="col-sm-10">
-                <p class="form-control-static">{{model.Application.OtherBillNo}}</p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">船名</label>
-            <div class="col-sm-10">
-                <p class="form-control-static">{{model.Application.Vesselcn}}</p>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-2 control-label">航次</label>
-            <div class="col-sm-10">
-                <p class="form-control-static">{{model.Application.Voyage}}</p>
-            </div>
-        </div>
-    </div>
-</div>
-</div>
 </div>
 @section Footer{
     <script type="text/javascript">
         app.controller('ViewAppController', [
-            '$scope', function($scope) {
+            '$scope', function ($scope) {
                 $scope.model = {};
-                $scope.model.Application = ObjDecodeToJson('@JsonConvert.SerializeObject(Model)');
+                $scope.model.Application = ObjDecodeToJson(@HtmlExtensions.RawJson(Model));
                 $scope.StatusDescription = "@Model.Status.ToDescription()";
                 $scope.ShippingMethodDescription = "@Model.ShippingMethod.ToDescription()";
-                console.log($scope.model.Application.ShippingMethod );
+                console.log($scope.model.Application.ShippingMethod);
             }
         ]);
     </script>

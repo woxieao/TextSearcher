@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Ktech.Mvc.ActionResults;
 using System.Net;
 using System.Web.Mvc;
 using Giqci.Chapi.Models.Customer;
+using Giqci.Chapi.Models.Product;
 using Giqci.Interfaces;
+using Giqci.PublicWeb.Models.Goods;
 using Giqci.PublicWeb.Services;
 
 namespace Giqci.PublicWeb.Controllers.Api
@@ -119,6 +123,31 @@ namespace Giqci.PublicWeb.Controllers.Api
         {
             _merchantRepository.DeleteCustomerProduct(_auth.GetAuth().MerchantId, id);
             return new KtechJsonResult(HttpStatusCode.OK, new {flag = true});
+        }
+
+        [Route("goods/GetAllProduct")]
+        [HttpPost]
+        public ActionResult GetAllProduct()
+        {
+            var productList = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, 1, 100);
+            var allProduct = _productApiProxy.SearchProduct(productList).ToList();
+            var customProductList = _merchantRepository.SelectCustomerProducts(_auth.GetAuth().MerchantId, string.Empty);
+            foreach (var customProduct in customProductList)
+            {
+                allProduct.Add(new Product
+                {
+                    IsApproved = customProduct.IsApproved,
+                    Brand = customProduct.Brand,
+                    Description = customProduct.Description,
+                    DescriptionEn = customProduct.DescriptionEn,
+                    HsCode = customProduct.HsCode,
+                    CiqCode = string.Empty,
+                    ManufacturerCountry = customProduct.ManufacturerCountry,
+                    Package = customProduct.Package,
+                    Spec = customProduct.Spec,
+                });
+            }
+            return new KtechJsonResult(HttpStatusCode.OK, new {result = allProduct});
         }
     }
 }
