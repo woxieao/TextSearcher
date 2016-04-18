@@ -1,4 +1,5 @@
-﻿@using Newtonsoft.Json
+﻿@using Giqci.PublicWeb.Extensions
+@using Newtonsoft.Json
 @model Giqci.Chapi.Models.Customer.Merchant
 
 @{
@@ -62,7 +63,7 @@
     <script type="text/javascript">
         //var app = angular.module("giqci", ['commonAlert']);
         app.controller("ProfileController", ['$http', '$scope', '$location','alertService', function ($http, $scope, $location, alertService) {
-            $scope.user = ObjDecodeToJson('@JsonConvert.SerializeObject(Model)');
+            $scope.user = ObjDecodeToJson(@HtmlExtensions.RawJson( Model));
             $scope.submitButton = ' 提交 ';
             $scope.submitForm = function (isValid, PasswordValid) {
                 if (isValid) {

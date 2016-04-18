@@ -2,13 +2,14 @@
     ViewBag.Title = "新增自定义商品";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@using Giqci.PublicWeb.Extensions
 @using Newtonsoft.Json
 @section Footer{
     <script type="text/javascript">
 
         app.controller("AddCustomProductController", [
             '$http', '$scope', '$location', '$log', 'alertService', function($http, $scope, $location, $log, alertService) {
-                $scope.model = ObjDecodeToJson('@JsonConvert.SerializeObject(Model)');
+                $scope.model = ObjDecodeToJson(@HtmlExtensions.RawJson(Model));
                 $scope.flag = null;
                 $(function() {
                     $('.datetimepicker').datetimepicker({
