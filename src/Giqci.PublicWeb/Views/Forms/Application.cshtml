@@ -27,8 +27,7 @@
                             $scope.model.Application.ApplicationProducts[i].ProductItemList[j].ExpiryDate = $filter('date')($scope.model.Application.ApplicationProducts[i].ProductItemList[j].ExpiryDate, 'yyyy/MM/dd');
                         }
                         $scope.model.Application.ApplicationProducts[i].isEditSelectDefault = true;
-                        //兼容旧版本数据逻辑
-                        $scope.model.Application.ApplicationProducts[i].isEditInputDefault = true;
+                        $scope.model.Application.ApplicationProducts[i].isEditInputDefault = false;
                     }
                 };
                 if ($scope.model.Application.Id == 0) {
@@ -100,7 +99,7 @@
                 };
                 $scope.getGoodsList = function(pageIndex, pageSize) {
                     $http({
-                        url: '/api/goods/getproductlist',
+                        url: '/api/goods/GetAllProduct',
                         method: 'POST',
                         data: {
                             pageIndex: pageIndex,
@@ -124,16 +123,13 @@
                             DescriptionEn: _selected.DescriptionEn,
                             Description: _selected.Description,
                             Brand: _selected.Brand,
-                            HSCode: _selected.HSCode,
+                            HSCode: _selected.HsCode,
                             Spec: _selected.Spec,
                             CiqCode: _selected.CiqCode,
                             ManufacturerCountry: _selected.ManufacturerCountry,
                             Package: _selected.Package,
-                            ProductItemList: [
-                                {
-
-                                }
-                            ]
+                            ProductItemList: [{}],
+                            ApplicationZCodes:[]
                         };
                     } else {
                         $scope.model.Application.ApplicationProducts[_index] = {
@@ -145,11 +141,8 @@
                             CiqCode: "",
                             ManufacturerCountry: "",
                             Package: "",
-                            ProductItemList: [
-                                {
-
-                                }
-                            ]
+                            ProductItemList: [{}],
+                            ApplicationZCodes:[]
                         };
                         $scope.model.Application.ApplicationProducts[_index].isEditInputDefault = true;
                     }
@@ -176,38 +169,7 @@
                 $scope.removeZcodeItem = function(_pindex, _index) {
                     $scope.model.Application.ApplicationProducts[_pindex].ApplicationZCodes.splice(_index, 1);
                 };
-                $scope.chooseGoods = function(method) {
-                    switch (method) {
-                    case -1:
-                    {
-                        if ($scope.merchantGoodsListPageIndex > 1) {
-                            $scope.merchantGoodsListPageIndex--;
-                            $scope.getGoodsList($scope.merchantGoodsListPageIndex, $scope.merchantGoodsListPageSize);
-                        }
-                        break;
-                    }
-                    case 0:
-                    {
-                        if ($scope.merchantGoodsListPageIndex > 1) {
-                            $scope.merchantGoodsListPageIndex = 1;
-                            $scope.getGoodsList($scope.merchantGoodsListPageIndex, $scope.merchantGoodsListPageSize);
-                        }
-                        break;
-                    }
-                    case 1:
-                    {
-                        if ($scope.MerchantGoodsListTotalCount == $scope.merchantGoodsListPageSize) {
-                            $scope.merchantGoodsListPageIndex++;
-                            $scope.getGoodsList($scope.merchantGoodsListPageIndex, $scope.merchantGoodsListPageSize);
-                        }
-                        break;
-                    }
-                    default:
-                    {
-                        break;
-                    }
-                    }
-                };
+
                 $scope.Product = null;
                 $scope.getproductlist = function() {
                     if ($scope.CiqCode != "") {
@@ -580,7 +542,7 @@
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-2 control-label">申请人</label>
+    <label class="col-sm-2 control-label">申请人 *</label>
     <div class="col-sm-10">
         <input type="text" name="Application.Applicant" ng-model="model.Application.Applicant" class="form-control" placeholder="全称"/>
         <input type="text" name="Application.ApplicantAddr" ng-model="model.Application.ApplicantAddr" class="form-control" placeholder="地址"/>
@@ -642,14 +604,11 @@
         <td colspan="3">
             <div class="form-group">
                 <div class="col-sm-6">
-                    <input type="text" ng-model="item.CiqCode" class="form-control"/>
-                    <!--
-                    <p class="form-control-static" ng-if="(isEdit&&item.isEditSelectDefault)">{{item.CiqCode}}</p>
-                    <select ng-if="!isEdit||(isEdit&&!item.isEditSelectDefault)" class="form-control" ng-change="selectProduct(item.Selected,$index)" ng-model="item.Selected" ng-options="mp.CiqCode for mp in merchantProductList">
+                    <p class="form-control-static" ng-if="isEdit&&item.isEditSelectDefault">{{item.CiqCode?item.CiqCode:"-"}}</p>
+                    <select class="form-control" ng-if="!isEdit||(isEdit&&!item.isEditSelectDefault)" ng-change="selectProduct(item.Selected,$index)" ng-model="item.Selected" ng-options="mp.CiqCode?(mp.CiqCode +'('+ mp.Description+')'):('-('+ mp.Description+')') for mp in merchantProductList">
                         <option value="">--请选择--</option>
                     </select>
                     <input ng-if="!isEdit||(isEdit&&!item.isEditSelectDefault)" type="hidden" ng-model="item.CiqCode"/>
-                    -->
                 </div>
                 <div class="col-sm-6">
                     <a class="btn btn-default" ng-click="addItemByBatchNo($index)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;添加批次号</a>
@@ -718,7 +677,7 @@
             <p class="form-control-static">HS编码 *</p>
         </th>
         <td colspan="3">
-            <p class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.HSCode}}</p>
+            <p ajax-label ajax-url="commonhscodes" ng-model="item.HSCode" class="form-control-static" ng-if="(item.Selected!=null&&!isEdit)||(isEdit&&!item.isEditInputDefault)">{{item.HSCode}}</p>
             <select ajax-select ajax-url="commonhscodes" ng-if="(item.Selected==null&&!isEdit)||(isEdit&&item.isEditInputDefault)" ng-model="item.HSCode" class="form-control" style="width: 100%"></select>
         </td>
     </tr>
