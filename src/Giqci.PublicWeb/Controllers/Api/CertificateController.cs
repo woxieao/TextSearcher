@@ -25,8 +25,8 @@ namespace Giqci.PublicWeb.Controllers.Api
         public ActionResult FormsSearch(string certNo)
         {
             //     var model = _certRepo.SearchCertificate(certNo);
-            //todo appId=-1???
-            var model = _certRepo.Get(-1, certNo);
+            //todo appId=???
+            var model = _certRepo.Get(string.Empty, certNo);
             return new KtechJsonResult(HttpStatusCode.OK, new {items = model},
                 new JsonSerializerSettings {Converters = new List<JsonConverter> {new DescriptionEnumConverter()}});
         }

@@ -40,10 +40,9 @@ namespace Giqci.PublicWeb.Controllers
 
         [Route("forms/app/")]
         [HttpGet]
-        public ActionResult Application(string applicantCode)
+        public ActionResult InitApplication(string applicantCode)
         {
             var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
-            ViewBag.id = 0;
             var model = new Application
             {
                 ApplicantCode = applicantCode,
@@ -62,22 +61,21 @@ namespace Giqci.PublicWeb.Controllers
                     }
                 }
             };
-            return View(model);
+            return View("Application",model);
         }
 
 
-        [Route("forms/app/{id:int}")]
+        [Route("forms/app/{appkey}")]
         [HttpGet]
-        public ActionResult Application(int id)
+        public ActionResult Application(string appkey)
         {
             var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
-            var application = _appRepo.Get(merchant.Id, id);
+            var application = _appRepo.Get(merchant.Id, appkey);
             //非该登录人的申请||不是新申请
             if (application == null)
             {
                 throw new ApplicationException(":(   You Can Not View This Application");
             }
-            ViewBag.id = id;
             switch (application.Status)
             {
                 case ApplicationStatus.New:
@@ -94,7 +92,7 @@ namespace Giqci.PublicWeb.Controllers
 
         [Route("forms/app")]
         [HttpPost]
-        public ActionResult SubmitApplication(Application model, int id = 0)
+        public ActionResult SubmitApplication(Application model, string appkey="")
         {
             //todo 统一前后台
             var errors = HasError(model);
@@ -110,9 +108,9 @@ namespace Giqci.PublicWeb.Controllers
             if (!errors.Any())
             {
                 GetTotalUnits(ref model);
-                if (id > 0)
+                if (!string.IsNullOrEmpty(appkey))
                 {
-                    _appRepo.Update(merchantId, id, model);
+                    _appRepo.Update(merchantId, appkey, model);
                 }
                 else
                 {
@@ -121,7 +119,7 @@ namespace Giqci.PublicWeb.Controllers
                 errors = null;
             }
             return new KtechJsonResult(HttpStatusCode.OK,
-                new {appNo = appNo, id = id, isLogin = isLogin, errors = errors});
+                new {appNo = appNo, appkey = appkey, isLogin = isLogin, errors = errors});
         }
 
 
