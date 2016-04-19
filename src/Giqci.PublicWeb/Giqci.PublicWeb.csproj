@@ -178,6 +178,7 @@
     <Compile Include="Models\Application\BaseApplication.cs" />
     <Compile Include="Models\Config.cs" />
     <Compile Include="Models\EmailTemplate.cs" />
+    <Compile Include="Models\Goods\CommonProduct.cs" />
     <Compile Include="Models\Goods\GoodsItemModel.cs" />
     <Compile Include="Models\Goods\GoodsItemPageModel.cs" />
     <Compile Include="Models\Goods\GoodsPageModel.cs" />
