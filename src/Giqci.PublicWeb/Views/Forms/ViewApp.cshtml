@@ -343,8 +343,7 @@
                 $scope.model.Application = ObjDecodeToJson(@HtmlExtensions.RawJson(Model));
                 $scope.StatusDescription = "@Model.Status.ToDescription()";
                 $scope.ShippingMethodDescription = "@Model.ShippingMethod.ToDescription()";
-                console.log($scope.model.Application.ShippingMethod);
-            }
+              }
         ]);
     </script>
 }
