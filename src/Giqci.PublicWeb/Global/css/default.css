@@ -714,3 +714,4 @@ ul,li,ol{
 
 .table-layout-fixed{table-layout: fixed;}
 .td-ellipsis{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;}
+.giqci-modal-dialog{ max-height: 450px;overflow: auto;}
