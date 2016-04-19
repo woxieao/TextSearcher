@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ktech.Mvc.ActionResults;
@@ -129,12 +129,29 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult GetAllProduct()
         {
-            var productList = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, 1, 100);
-            var allProduct = _productApiProxy.SearchProduct(productList).ToList();
+            var allProduct = new List<CommonProduct>();
+            var productStrList = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, 1, 100);
+            var ciqProductList = _productApiProxy.SearchProduct(productStrList);
+
             var customProductList = _merchantRepository.SelectCustomerProducts(_auth.GetAuth().MerchantId, string.Empty);
+            foreach (var product in ciqProductList)
+            {
+                allProduct.Add(new CommonProduct
+                {
+                    IsApproved = product.IsApproved,
+                    Brand = product.Brand,
+                    Description = product.Description,
+                    DescriptionEn = product.DescriptionEn,
+                    HsCode = product.HsCode,
+                    CiqCode = product.CiqCode,
+                    ManufacturerCountry = product.ManufacturerCountry,
+                    Package = product.Package,
+                    Spec = product.Spec,
+                });
+            }
             foreach (var customProduct in customProductList)
             {
-                allProduct.Add(new Product
+                allProduct.Add(new CommonProduct
                 {
                     IsApproved = customProduct.IsApproved,
                     Brand = customProduct.Brand,
@@ -145,6 +162,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                     ManufacturerCountry = customProduct.ManufacturerCountry,
                     Package = customProduct.Package,
                     Spec = customProduct.Spec,
+                    Id = customProduct.Id,
                 });
             }
             return new KtechJsonResult(HttpStatusCode.OK, new {result = allProduct});
