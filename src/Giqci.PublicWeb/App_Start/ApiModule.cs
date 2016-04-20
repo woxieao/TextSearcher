@@ -80,6 +80,9 @@ namespace Giqci.PublicWeb
                 .As<ILoggingApiProxy>()
                 .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Log))
                 .InstancePerDependency();
+            builder.RegisterType<DataChecker>()
+                .As<IDataChecker>()
+                .InstancePerDependency();
         }
 
         private enum ApiType
