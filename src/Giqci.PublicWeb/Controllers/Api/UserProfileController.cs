@@ -61,5 +61,21 @@ namespace Giqci.PublicWeb.Controllers.Api
             }
             return new KtechJsonResult(HttpStatusCode.OK, new {flag = flag});
         }
+
+        [Route("GetProfileDeatil")]
+        [HttpPost]
+        public ActionResult GetProfileDeatil(int profileId)
+        {
+            UserProfile result;
+            try
+            {
+                result = _userProfileApiProxy.Get(_auth.GetAuth().MerchantId, profileId);
+            }
+            catch
+            {
+                result = null;
+            }
+            return new KtechJsonResult(HttpStatusCode.OK, new {result = result});
+        }
     }
 }

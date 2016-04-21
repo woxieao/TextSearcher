@@ -46,6 +46,12 @@ namespace Giqci.PublicWeb
                 .As<IProductApiProxy>()
                 .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Products))
                 .InstancePerDependency();
+
+            builder.RegisterType<UserProfileApiProxy>()
+                .As<IUserProfileApiProxy>()
+                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers))
+                .InstancePerDependency();
+
             builder.RegisterType<MerchantApiProxy>()
                 .As<IMerchantApiProxy>()
                 .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers))
