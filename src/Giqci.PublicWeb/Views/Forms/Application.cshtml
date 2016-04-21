@@ -774,15 +774,18 @@
                                         <p class="form-control-static">品质检验</p>
                                     </th>
                                     <td>
-                                        <div class="checkbox">
+                                        <div class="checkbox" ng-if="item.HandlerType==1">
                                             <label><input type="checkbox" ng-model="item.C102" />是否检查</label>
                                         </div>
+                                        <p ng-if="item.C102&&item.HandlerType==0" ng-model="item.C102" class="form-control-static">是</p>
+                                        <p ng-if="!item.C102&&item.HandlerType==0" ng-model="item.C102" class="form-control-static">否</p>
                                     </td>
                                     <th>
-                                        <span ng-show="item.C102">检测项目</span>
+                                        <p class="form-control-static" ng-show="item.C102">检测项目</p>
                                     </th>
                                     <td>
-                                        <span ng-show="item.C102"><input type="text" ng-model="item.C102Comment" class="form-control" maxlength="100" /></span>
+                                        <span ng-show="item.C102&&item.HandlerType==1"><input type="text" ng-if="item.HandlerType==1" ng-model="item.C102Comment" class="form-control" maxlength="100" /></span>
+                                        <p ng-if="item.C102&&item.HandlerType==0" class="form-control-static" ng-model="item.C102Comment">{{item.C102Comment}}</p>
                                     </td>
                                 </tr>
                             </table>
@@ -800,7 +803,7 @@
                                             <p class="form-control-static">商品批次 {{$index+1}}</p>
                                         </th>
                                         <td colspan="3">
-                                            <button ng-show="$index!=0" class="btn btn-default" type="button" ng-click="removeItemByBatchNo(batch)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除批次</button>
+                                            <button class="btn btn-default" type="button" ng-click="removeItemByBatchNo(batch)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除批次</button>
                                         </td>
                                     </tr>
                                     <tr>
@@ -808,13 +811,15 @@
                                             <p class="form-control-static">生产日期</p>
                                         </th>
                                         <td>
-                                            <input type="text" ng-model="batch.ManufacturerDate" class="form-control datetimepicker" ng-mousedown="itemClickHandler($event)" />
+                                            <input ng-if="batch.HandlerType==1" type="text" ng-model="batch.ManufacturerDate" class="form-control datetimepicker" ng-mousedown="itemClickHandler($event)" />
+                                            <p ng-if="batch.HandlerType==0" ng-model="batch.ManufacturerDate" class="form-control-static">{{batch.ManufacturerDate}}</p>
                                         </td>
                                         <th>
                                             <p class="form-control-static">保质期 *</p>
                                         </th>
                                         <td>
-                                            <input type="text" ng-model="batch.ExpiryDate" class="form-control datetimepicker" ng-mousedown="itemClickHandler($event)" />
+                                            <input ng-if="batch.HandlerType==1" type="text" ng-model="batch.ExpiryDate" class="form-control datetimepicker" ng-mousedown="itemClickHandler($event)" />
+                                            <p ng-if="batch.HandlerType==0" ng-model="batch.ExpiryDate" class="form-control-static">{{batch.ExpiryDate}}</p>
                                         </td>
                                     </tr>
                                     <tr>
@@ -822,13 +827,15 @@
                                             <p class="form-control-static">批次号</p>
                                         </th>
                                         <td>
-                                            <input type="text" ng-model="batch.BatchNo" class="form-control" maxlength="100" />
+                                            <input ng-if="batch.HandlerType==1" type="text" ng-model="batch.BatchNo" class="form-control" maxlength="100" />
+                                            <p ng-if="batch.HandlerType==0" ng-model="batch.BatchNo" class="form-control-static">{{batch.BatchNo}}</p>
                                         </td>
                                         <th>
                                             <p class="form-control-static">数量 *</p>
                                         </th>
                                         <td>
-                                            <input type="number" ng-model="batch.Quantity" min="0" class="form-control half-form-control" />
+                                            <input ng-if="batch.HandlerType==1" type="number" ng-model="batch.Quantity" min="0" class="form-control half-form-control" />
+                                            <p ng-if="batch.HandlerType==0" ng-model="batch.Quantity" class="form-control-static">{{batch.Quantity}}</p>
                                         </td>
                                     </tr>
                                 </table>
@@ -856,13 +863,15 @@
                                             <p class="form-control-static">首码</p>
                                         </th>
                                         <td>
-                                            <input type="text" ng-model="zcode.ZCodeStart" class="form-control" />
+                                            <input ng-if="zcode.HandlerType==1" type="text" ng-model="zcode.ZCodeStart" class="form-control" />
+                                            <p ng-if="zcode.HandlerType==0" ng-model="zcode.ZCodeStart" class="form-control-static">{{zcode.ZCodeStart}}</p>
                                         </td>
                                         <th>
                                             <p class="form-control-static">尾码</p>
                                         </th>
                                         <td>
-                                            <input type="text" ng-model="zcode.ZCodeEnd" class="form-control" />
+                                            <input ng-if="zcode.HandlerType==1" type="text" ng-model="zcode.ZCodeEnd" class="form-control" />
+                                            <p ng-if="zcode.HandlerType==0" ng-model="zcode.ZCodeEnd" class="form-control-static">{{zcode.ZCodeEnd}}</p>
                                         </td>
                                     </tr>
                                 </table>
@@ -909,27 +918,55 @@
                         <button class="btn btn-default" type="button" ng-click="addContainerInfo()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加装箱信息</button>
                     </div>
                 </div>
-                <div class="form-group" ng-show="model.Application.ShippingMethod == 3">
-                    <label class="col-sm-2 control-label">车牌号</label>
-                    <div class="col-sm-5">
-                        <input type="text" ng-model="model.Application.PlateNumber" class="form-control" placeholder="车牌号" />
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        提单号
+                    </label>
+                    <div class="col-sm-6">
+                        <input type="text" ng-model="model.Application.BillNo" class="form-control" placeholder="提单号" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        副提单号
+                    </label>
+                    <div class="col-sm-6">
+                        <input type="text" ng-model="model.Application.OtherBillNo" class="form-control" placeholder="副提单号" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">
+                        <p ng-if="model.Application.ShippingMethod == 1">航班号</p>
+                        <p ng-if="model.Application.ShippingMethod == 2">船舶号</p>
+                        <p ng-if="model.Application.ShippingMethod == 3">车牌号</p>
+                    </label>
+                    <div class="col-sm-6">
+                        <input type="text" ng-if="model.Application.ShippingMethod == 1" ng-model="model.Application.Vesselcn" class="form-control" placeholder="航班号" />
+                        <input type="text" ng-if="model.Application.ShippingMethod == 2" ng-model="model.Application.Vesselcn" class="form-control" placeholder="船舶号" />
+                        <input type="text" ng-if="model.Application.ShippingMethod == 3" ng-model="model.Application.Vesselcn" class="form-control" placeholder="车牌号" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">出发日期</label>
+                    <div class="col-sm-6">
+                        <input type="text" ng-model="model.Application.Voyage" class="form-control datetimepicker" placeholder="出发日期" />
                     </div>
                 </div>
                 <div class="form-group" ng-show="model.Application.ShippingMethod != 2">
                     <label class="col-sm-2 control-label">运输总数量 *</label>
-                    <div class="col-sm-5">
+                    <div class="col-sm-6">
                         <input type="number" ng-model="model.Application.TotalUnits" class="form-control" min="0" placeholder="运输总数量" />
                     </div>
-                    <div class="col-sm-5">
+                    <div class="col-sm-4">
                         <p class="form-control-static">Pallets</p>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">运输总重量 *</label>
-                    <div class="col-sm-5">
+                    <div class="col-sm-6">
                         <input type="number" ng-model="model.Application.TotalWeight" class="form-control" min="0" placeholder="运输总重量" />
                     </div>
-                    <div class="col-sm-5">
+                    <div class="col-sm-4">
                         <p class="form-control-static">KG</p>
                     </div>
                 </div>
@@ -965,30 +1002,6 @@
                         <select ajax-select ajax-url="ports" ng-model="model.Application.DestPort" ng-options="i.Code as i.CnName group by i.Country for i in model.DestPorts" class="form-control selectDestPorts" style="width: 100%">
                             <option value="">&lt; - 其他港口 - &gt;</option>
                         </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">航空运单号/提单号</label>
-                    <div class="col-sm-10">
-                        <input type="text" ng-model="model.Application.BillNo" class="form-control" placeholder="航空运单号/提单号" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">副提单号</label>
-                    <div class="col-sm-10">
-                        <input type="text" ng-model="model.Application.OtherBillNo" class="form-control" placeholder="副提单号" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">船舶/航班/火车/汽车号</label>
-                    <div class="col-sm-10">
-                        <input type="text" ng-model="model.Application.Vesselcn" class="form-control" placeholder="船名" />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">航次</label>
-                    <div class="col-sm-10">
-                        <input type="text" ng-model="model.Application.Voyage" class="form-control" placeholder="航次" />
                     </div>
                 </div>
                 <div class="form-group">
