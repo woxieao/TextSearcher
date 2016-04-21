@@ -54,14 +54,7 @@ namespace Giqci.PublicWeb.Controllers
                 ApplicantPhone = merchant.Phone,
                 ApplicantEmail = merchant.Email,
                 InspectionDate = DateTime.Now,
-                ContainerInfos = new List<ContainerInfo>
-                {
-                    new ContainerInfo()
-                    {
-                        ContainerNumber = String.Empty,
-                        SealNumber = String.Empty,
-                    }
-                }
+                ContainerInfos = new List<ContainerInfo>()
             };
             return View("Application", model);
         }
