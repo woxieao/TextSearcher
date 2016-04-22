@@ -90,8 +90,8 @@ namespace Giqci.PublicWeb.Controllers
         public ActionResult SubmitApplication(Application model)
         {
             var appkey = model.Key;
+            var isNew = string.IsNullOrEmpty(appkey);
             var errors = _dataChecker.ApplicationHasErrors(model);
-            string appNo = null;
             var userName = User.Identity.Name;
             var isLogin = true;
             if (string.IsNullOrEmpty(userName))
@@ -103,18 +103,18 @@ namespace Giqci.PublicWeb.Controllers
             if (!errors.Any())
             {
                 GetTotalUnits(ref model);
-                if (!string.IsNullOrEmpty(appkey))
+                if (isNew)
                 {
-                    _appRepo.Update(merchantId, appkey, model);
+                    appkey = _appRepo.CreateApplication(_auth.GetAuth().MerchantId, model);
                 }
                 else
                 {
-                    appNo = _appRepo.CreateApplication(_auth.GetAuth().MerchantId, model);
+                    _appRepo.Update(merchantId, appkey, model);
                 }
                 errors = null;
             }
             return new KtechJsonResult(HttpStatusCode.OK,
-                new {appNo = appNo, appkey = appkey, isLogin = isLogin, errors = errors});
+                new {isNew = isNew, appkey = appkey, isLogin = isLogin, errors = errors});
         }
 
 

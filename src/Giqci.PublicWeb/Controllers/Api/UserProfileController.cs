@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Ktech.Mvc.ActionResults;
 using System.Net;
 using System.Web.Mvc;
@@ -6,6 +8,7 @@ using Giqci.Chapi.Enums.App;
 using Giqci.Chapi.Models.App;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Services;
+using Giqci.Validations;
 using Newtonsoft.Json;
 
 namespace Giqci.PublicWeb.Controllers.Api
@@ -35,32 +38,34 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult AddProfile(UserProfile userProfile)
         {
-            bool flag = true;
+            var errorMsg = new List<string>();
             try
             {
+                errorMsg = new UserProfileValidation().Validate(userProfile).Errors.Select(i => i.ErrorMessage).ToList();
                 _userProfileApiProxy.Add(_auth.GetAuth().MerchantId, userProfile);
             }
             catch
             {
-                flag = false;
+                errorMsg.Add("提交异常");
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new {flag = flag});
+            return new KtechJsonResult(HttpStatusCode.OK, new {flag = !errorMsg.Any(), errorMsg = errorMsg});
         }
 
         [Route("UpdateProfile")]
         [HttpPost]
         public ActionResult UpdateProfile(UserProfile userProfile)
         {
-            bool flag = true;
+            var errorMsg = new List<string>();
             try
             {
+                errorMsg = new UserProfileValidation().Validate(userProfile).Errors.Select(i => i.ErrorMessage).ToList();
                 _userProfileApiProxy.Update(_auth.GetAuth().MerchantId, userProfile);
             }
             catch
             {
-                flag = false;
+                errorMsg.Add("提交异常");
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new {flag = flag});
+            return new KtechJsonResult(HttpStatusCode.OK, new {flag = !errorMsg.Any(), errorMsg = errorMsg});
         }
 
         [Route("RemoveProfile")]
