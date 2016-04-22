@@ -46,7 +46,7 @@ namespace Giqci.PublicWeb.Controllers.Api
             }
             catch
             {
-                errorMsg.Add("提交异常");
+                errorMsg.Add("鎻愪氦寮傚父");
             }
             return new KtechJsonResult(HttpStatusCode.OK, new {flag = !errorMsg.Any(), errorMsg = errorMsg});
         }
@@ -63,7 +63,7 @@ namespace Giqci.PublicWeb.Controllers.Api
             }
             catch
             {
-                errorMsg.Add("提交异常");
+                errorMsg.Add("鎻愪氦寮傚父");
             }
             return new KtechJsonResult(HttpStatusCode.OK, new {flag = !errorMsg.Any(), errorMsg = errorMsg});
         }
