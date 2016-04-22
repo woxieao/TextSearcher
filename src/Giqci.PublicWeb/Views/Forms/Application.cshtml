@@ -428,8 +428,12 @@
                             data: {
                                 ciqCode: $scope.DialogProductCiqCode
                             }
-                        }).success(function(data) {
-                            $scope.dialogProductList = data.result;
+                        }).success(function (data) {
+                            if (data.result == null) {
+                                alertService.add('danger', "该备案号不存在", 3000);
+                            }else{
+                                $scope.dialogProductList = data.result;
+                            }
                         }).error(function() {
                         });
                     } else {
