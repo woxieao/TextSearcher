@@ -302,15 +302,13 @@
                     $scope.submitApp = true;
                     $http.post('/forms/app', $scope.model.Application).then(function(response) {
                         if (response.data.isLogin) {
-                            if (response.data.appNo && response.data.appkey == "" && !response.data.errors) {
-                                $scope.resultMessage = "证书申请成功！申请编号为" + response.data.appNo;
-                            } else if (!response.data.appNo && response.data.appkey != "" && !response.data.errors) {
-                                $scope.resultMessage = "数据更新成功";
-                            } else {
+                            if (response.data.errors) {
                                 $scope.errors = response.data.errors;
                                 $location.hash("h1");
                                 $anchorScroll();
                                 $scope.dataInit();
+                            } else {
+                                $scope.resultMessage = response.data.isNew ? "证书申请成功！申请编号为" + response.data.appkey : "数据更新成功";
                             }
                         } else {
                             $scope.login = {
