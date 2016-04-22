@@ -151,7 +151,7 @@ app.controller('CertificateSearchController', [
 
 /* forms list */
 app.controller('FormsListController', [
-    '$scope',"$log", '$http', function($scope, $log, $http) {
+    '$scope', "$log", '$http', function ($scope, $log, $http) {
         $scope.paginationConf = {
             totalItems: 0
         };
@@ -216,9 +216,9 @@ app.controller('FormsListController', [
 /* goods lists */
 app.controller('GoodsListController', [
     '$scope', '$http', function ($scope, $http) {
-    $scope.list = function (postData) {
+        $scope.list = function (postData) {
             $http.post('/api/goods/getproductlist', postData).success(function (response) {
-            $scope.merchantProductList = response.result;
+                $scope.merchantProductList = response.result;
             });
         };
         $scope.list($scope.postData);
@@ -291,4 +291,73 @@ app.controller("GoodsAddController", [
             }
         }
     }
+]);
+
+
+
+/**
+ * MerchantList 常用商户列表
+ */
+app.controller("MerchantListController", ['$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', 'alertService', function ($http, $scope, $log, $location, $anchorScroll, $timeout, alertService) {
+    $scope.loadMerchantList = null;
+    $scope.dialogModelMerchant = {
+        UserName: "",
+        UserAddress: "",
+        UserContact: "",
+        UserPhone: "",
+        UserType:0
+    };
+    $scope.loadMerchant = function () {
+        $http.post("/api/UserProfile/GetProfileList", {
+        }).success(function (data) {
+            $scope.loadMerchantList = data.result;
+        }).error(function (data) {
+        });
+    };
+    $scope.loadMerchant();
+
+    $scope.submitAddMerchant = function () {
+        var _url = "";
+        if ($scope.dialogModelMerchant.Id == null) {
+            _url = '/api/UserProfile/AddProfile';
+        } else {
+            _url = '/api/UserProfile/UpdateProfile';
+        }
+        $http({
+            url: _url,
+            method: 'POST',
+            data: {
+                userProfile:$scope.dialogModelMerchant
+            }
+        }).success(function (data) {
+            if (data.flag) {
+                $scope.loadMerchant();
+                $("#merchant-add").modal("hide");
+            }
+        }).error(function (response) {
+            alertService.add("danger", response.msg || "未知错误", 3000);
+        });
+    };
+    $scope.edit = function (_object) {
+        console.log(_object);
+        $scope.dialogModelMerchant = _object;
+        $("#merchant-add").modal("show");
+    };
+    $scope.remove = function (_object) {
+        $http({
+            url: '/api/UserProfile/RemoveProfile',
+            method: 'POST',
+            data: {
+                ProfileId: _object.Id
+            }
+        }).success(function (data) {
+            if (data.flag) {
+                $scope.loadMerchant();
+                $("#merchant-add").modal("hide");
+            }
+        }).error(function (response) {
+            alertService.add("danger", response.msg || "未知错误", 3000);
+        });
+    };
+}
 ]);
