@@ -24,7 +24,6 @@
                             $scope.model.Application.ApplicationProducts[i].ProductItemList[j].ManufacturerDate = $filter('date')($scope.model.Application.ApplicationProducts[i].ProductItemList[j].ManufacturerDate, 'yyyy/MM/dd');
                             $scope.model.Application.ApplicationProducts[i].ProductItemList[j].ExpiryDate = $filter('date')($scope.model.Application.ApplicationProducts[i].ProductItemList[j].ExpiryDate, 'yyyy/MM/dd');
                         }
-                        $scope.model.Application.ApplicationProducts[i].isEditSelectDefault = true;
                     }
                 };
                 if ($scope.model.Application.Key == null) {
@@ -64,8 +63,7 @@
                                 HandlerType: 1
                             }
                         ],
-                        HandlerType: 1,
-                        isEditSelectDefault: false
+                        HandlerType: 1
                     });
                 };
                 $(function() {
@@ -741,8 +739,8 @@
                                     <td colspan="3">
                                         <div class="form-group">
                                             <div class="col-sm-6">
-                                                <p class="form-control-static" ng-if="isEdit&&item.isEditSelectDefault">{{item.CiqCode?item.CiqCode:"-"}}</p>
-                                                <select class="form-control" ng-if="!isEdit||(isEdit&&!item.isEditSelectDefault)" ng-change="selectProduct(item.Selected,item)" ng-model="item.Selected" ng-options="mp.CiqCode?(mp.CiqCode +'('+ mp.Description+')'):('-('+ mp.Description+')') for mp in merchantProductList">
+                                                <p class="form-control-static" ng-if="isEdit&&item.HandlerType!=1">{{item.CiqCode?item.CiqCode:"-"}}</p>
+                                                <select class="form-control" ng-if="!isEdit||(isEdit&&item.HandlerType==1)" ng-change="selectProduct(item.Selected,item)" ng-model="item.Selected" ng-options="mp.CiqCode?(mp.CiqCode +'('+ mp.Description+')'):('-('+ mp.Description+')') for mp in merchantProductList">
                                                     <option value="">--请选择--</option>
                                                 </select>
                                                 <input type="hidden" ng-model="item.CiqCode" />
