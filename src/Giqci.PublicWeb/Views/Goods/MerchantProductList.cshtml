@@ -23,7 +23,8 @@
                     <col width='140'/>
                     <col width='140'/>
                     <col width='100'/>
-                    <col width='100'/>
+                    <col width='100' />
+                    <col width='100' />
                     <col width='120'/>
                 </colgroup>
                 <thead>
@@ -36,6 +37,7 @@
                     <th>品牌</th>
                     <th>制造国代码</th>
                     <th>数量/包装</th>
+                    <th>制造商</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -49,14 +51,14 @@
                     <td class="td-ellipsis" title="{{Product.Brand}}">{{Product.Brand}}</td>
                     <td>{{Product.ManufacturerCountry}}</td>
                     <td>{{Product.Package}}</td>
+                    <td class="td-ellipsis" title="{{Product.Manufacturer}}">{{Product.Manufacturer}}</td>
                     <td>
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-danger btn-sm" ng-click="remove2(Product.Id,$index)">删除</button>
                             <a ng-if="!Product.IsApproved" class="btn btn-primary btn-sm" href="/goods/showcustomproduct?id={{Product.Id}}">编辑</a>
                         </div>
                     </td>
-
-                </tr>
+                    </tr>
                 <tr ng-repeat="Product in merchantProductList">
                     <td class="td-ellipsis" title="{{Product.CiqCode}}">{{Product.CiqCode}}</td>
                     <td class="td-ellipsis" title="{{Product.HsCode}}">{{Product.HsCode}}</td>
@@ -66,6 +68,7 @@
                     <td class="td-ellipsis" title="{{Product.Brand}}">{{Product.Brand}}</td>
                     <td>{{Product.ManufacturerCountry}}</td>
                     <td>{{Product.Package}}</td>
+                    <td class="td-ellipsis" title="{{Product.Manufacturer}}">{{Product.Manufacturer}}</td>
                     <td>
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-danger btn-sm" ng-click="remove(Product.CiqCode,$index)">删除</button>

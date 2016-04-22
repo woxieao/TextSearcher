@@ -147,6 +147,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                     ManufacturerCountry = product.ManufacturerCountry,
                     Package = product.Package,
                     Spec = product.Spec,
+                    Manufacturer = product.Manufacturer
                 });
             }
             foreach (var customProduct in customProductList)
@@ -163,6 +164,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                     Package = customProduct.Package,
                     Spec = customProduct.Spec,
                     Id = customProduct.Id,
+                    Manufacturer = customProduct.Manufacturer,
                 });
             }
             return new KtechJsonResult(HttpStatusCode.OK, new {result = allProduct});
