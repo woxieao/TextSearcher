@@ -930,20 +930,28 @@
                     <div class="col-sm-10">
                         <div ng-repeat="item in model.Application.ContainerInfos | filter:listFilter">
                             <table class="table table-striped goodsItems">
+                                <colgroup>
+                                    <col width="120" />
+                                    <col width="360" />
+                                    <col width="120" />
+                                    <col width="360" />
+                                </colgroup>
                                 <tr>
-                                    <th>装箱信息 {{$index+1}}</th>
+                                    <th><p class="form-control-static">装箱信息 {{$index+1}}</p></th>
                                     <td colspan="3">
                                         <button class="btn btn-default" type="button" ng-click="removeContainerInfo(item)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>装箱号</th>
+                                    <th><p class="form-control-static">装箱号</p></th>
                                     <td>
-                                        <input type="text" ng-model="item.ContainerNumber" class="form-control" placeholder="装箱号" />
+                                        <p class="form-control-static" ng-if="item.HandlerType==0" ng-model="item.ContainerNumber">{{item.ContainerNumber}}</p>
+                                        <input type="text" ng-if="item.HandlerType==1" ng-model="item.ContainerNumber" class="form-control" placeholder="装箱号" />
                                     </td>
-                                    <th>铅封号</th>
+                                    <th><p class="form-control-static">铅封号</p></th>
                                     <td>
-                                        <input type="text" ng-model="item.SealNumber" class="form-control" placeholder="铅封号" />
+                                        <p class="form-control-static" ng-if="item.HandlerType==0" ng-model="item.SealNumber">{{item.SealNumber}}</p>
+                                        <input type="text" ng-if="item.HandlerType==1" ng-model="item.SealNumber" class="form-control" placeholder="铅封号" />
                                     </td>
                                 </tr>
                             </table>
