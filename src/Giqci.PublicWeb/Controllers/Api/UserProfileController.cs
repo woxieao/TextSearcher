@@ -6,6 +6,7 @@ using Giqci.Chapi.Enums.App;
 using Giqci.Chapi.Models.App;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Services;
+using Newtonsoft.Json;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {
@@ -22,22 +23,38 @@ namespace Giqci.PublicWeb.Controllers.Api
             _userProfileApiProxy = userProfileApiProxy;
         }
 
-        [Route("GetUserProfileList")]
+        [Route("GetProfileList")]
         [HttpPost]
-        public ActionResult GetUserProfileList(UserType? userType)
+        public ActionResult GetProfileList(UserType? userType)
         {
             var profileList = _userProfileApiProxy.Select(_auth.GetAuth().MerchantId, userType);
-            return new KtechJsonResult(HttpStatusCode.OK, new {result = profileList});
+            return new KtechJsonResult(HttpStatusCode.OK, new {result = profileList}, new JsonSerializerSettings());
         }
 
-        [Route("UserAddProfile")]
+        [Route("AddProfile")]
         [HttpPost]
-        public ActionResult UserAddProfile(UserProfile userProfile)
+        public ActionResult AddProfile(UserProfile userProfile)
         {
             bool flag = true;
             try
             {
                 _userProfileApiProxy.Add(_auth.GetAuth().MerchantId, userProfile);
+            }
+            catch
+            {
+                flag = false;
+            }
+            return new KtechJsonResult(HttpStatusCode.OK, new {flag = flag});
+        }
+
+        [Route("UpdateProfile")]
+        [HttpPost]
+        public ActionResult UpdateProfile(UserProfile userProfile)
+        {
+            bool flag = true;
+            try
+            {
+                _userProfileApiProxy.Update(_auth.GetAuth().MerchantId, userProfile);
             }
             catch
             {
@@ -75,7 +92,7 @@ namespace Giqci.PublicWeb.Controllers.Api
             {
                 result = null;
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new {result = result});
+            return new KtechJsonResult(HttpStatusCode.OK, new {result = result}, new JsonSerializerSettings());
         }
     }
 }
