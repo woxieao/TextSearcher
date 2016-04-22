@@ -89,10 +89,10 @@
                 };
 
                 $scope.addContainerInfo = function() {
-                    $scope.model.Application.ContainerInfos.push({ ContainerNumber: "", SealNumber: "" });
+                    $scope.model.Application.ContainerInfos.push({ ContainerNumber: "", SealNumber: "", HandlerType: 1 });
                 };
-                $scope.removeContainerInfo = function(index) {
-                    $scope.model.Application.ContainerInfos.splice(index, 1);
+                $scope.removeContainerInfo = function (_object) {
+                    _object.HandlerType = -1;
                 };
                 $scope.merchantProductList = { CiqCode: 0, Description: "" };
                 $scope.removeitem = function(_object) {
@@ -347,6 +347,35 @@
                 };
                 $scope.loadCountries();
                 $("#accept-form").show();
+
+                $scope.loadMerchantInfo = null;
+                $scope.loadMerchant = function () {
+                    $http.post("/api/UserProfile/GetProfileList", {
+                        params: {  }
+                    }).success(function (data) {
+                        $scope.loadMerchantInfo = data.result;
+                    }).error(function (data) {
+                    });
+                };
+                $scope.loadMerchant();
+                $scope.selectExporter = function (_object) {
+                    $scope.model.Application.Exporter = _object.UserName;
+                    $scope.model.Application.ExporterAddr = _object.UserAddress;
+                    $scope.model.Application.ExporterContact = _object.UserContact;
+                    $scope.model.Application.ExporterPhone = _object.UserPhone;
+                };
+                $scope.selectImporter = function (_object) {
+                    $scope.model.Application.Importer = _object.UserName;
+                    $scope.model.Application.ImporterAddr = _object.UserAddress;
+                    $scope.model.Application.ImporterContact = _object.UserContact;
+                    $scope.model.Application.ImporterPhone = _object.UserPhone;
+                };
+                $scope.selectImBroker = function (_object) {
+                    $scope.model.Application.ImBroker = _object.UserName;
+                    $scope.model.Application.ImBrokerAddr = _object.UserAddress;
+                    $scope.model.Application.ImBrokerContact = _object.UserContact;
+                    $scope.model.Application.ImBrokerPhone = _object.UserPhone;
+                };
 
                 $scope.UploadExample = function() {
                     $('#uploadForm').ajaxSubmit({
@@ -653,28 +682,37 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">出口商 * </label>
                     <div class="col-sm-10">
-                        <input type="text" name="Application.Exporter" ng-model="model.Application.Exporter" class="form-control" placeholder="全称" />
-                        <input type="text" name="Application.ExporterAddr" ng-model="model.Application.ExporterAddr" class="form-control" placeholder="地址" />
-                        <input type="text" name="Application.ExporterContact" ng-model="model.Application.ExporterContact" class="form-control" placeholder="联系人" />
-                        <input type="text" name="Application.ExporterPhone" ng-model="model.Application.ExporterPhone" class="form-control" placeholder="联系电话" />
+                        <select class="form-control" ng-change="selectExporter(Exporter)" ng-model="Exporter" ng-options="merchant.UserName for merchant in loadMerchantInfo">
+                            <option value="">--请选择--</option>
+                        </select>
+                        <input type="text" name="Application.Exporter" ng-model="model.Application.Exporter" class="form-control" placeholder="全称" disabled/>
+                        <input type="text" name="Application.ExporterAddr" ng-model="model.Application.ExporterAddr" class="form-control" placeholder="地址" disabled/>
+                        <input type="text" name="Application.ExporterContact" ng-model="model.Application.ExporterContact" class="form-control" placeholder="联系人" disabled/>
+                        <input type="text" name="Application.ExporterPhone" ng-model="model.Application.ExporterPhone" class="form-control" placeholder="联系电话" disabled/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">进口商 * </label>
                     <div class="col-sm-10">
-                        <input type="text" name="Application.Importer" ng-model="model.Application.Importer" class="form-control" placeholder="全称" />
-                        <input type="text" name="Application.ImporterAddr" ng-model="model.Application.ImporterAddr" class="form-control" placeholder="地址" />
-                        <input type="text" name="Application.ImporterContact" ng-model="model.Application.ImporterContact" class="form-control" placeholder="联系人" />
-                        <input type="text" name="Application.ImporterPhone" ng-model="model.Application.ImporterPhone" class="form-control" placeholder="联系电话" />
+                        <select class="form-control" ng-change="selectImporter(Importer)" ng-model="Importer" ng-options="merchant.UserName for merchant in loadMerchantInfo">
+                            <option value="">--请选择--</option>
+                        </select>
+                        <input type="text" name="Application.Importer" ng-model="model.Application.Importer" class="form-control" placeholder="全称" disabled/>
+                        <input type="text" name="Application.ImporterAddr" ng-model="model.Application.ImporterAddr" class="form-control" placeholder="地址" disabled/>
+                        <input type="text" name="Application.ImporterContact" ng-model="model.Application.ImporterContact" class="form-control" placeholder="联系人" disabled/>
+                        <input type="text" name="Application.ImporterPhone" ng-model="model.Application.ImporterPhone" class="form-control" placeholder="联系电话" disabled/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">进口商代理</label>
                     <div class="col-sm-10">
-                        <input type="text" name="Application.ImBroker" ng-model="model.Application.ImBroker" class="form-control" placeholder="全称" />
-                        <input type="text" name="Application.ImBrokerAddr" ng-model="model.Application.ImBrokerAddr" class="form-control" placeholder="地址" />
-                        <input type="text" name="Application.ImBrokerContact" ng-model="model.Application.ImBrokerContact" class="form-control" placeholder="联系人" />
-                        <input type="text" name="Application.ImBrokerPhone" ng-model="model.Application.ImBrokerPhone" class="form-control" placeholder="联系电话" />
+                        <select class="form-control" ng-change="selectImBroker(ImBroker)" ng-model="ImBroker" ng-options="merchant.UserName for merchant in loadMerchantInfo">
+                            <option value="">--请选择--</option>
+                        </select>
+                        <input type="text" name="Application.ImBroker" ng-model="model.Application.ImBroker" class="form-control" placeholder="全称" disabled/>
+                        <input type="text" name="Application.ImBrokerAddr" ng-model="model.Application.ImBrokerAddr" class="form-control" placeholder="地址" disabled/>
+                        <input type="text" name="Application.ImBrokerContact" ng-model="model.Application.ImBrokerContact" class="form-control" placeholder="联系人" disabled/>
+                        <input type="text" name="Application.ImBrokerPhone" ng-model="model.Application.ImBrokerPhone" class="form-control" placeholder="联系电话" disabled/>
                     </div>
                 </div>
                 <div class="form-group">
@@ -892,12 +930,12 @@
                 <div class="form-group" ng-show="model.Application.ShippingMethod == 2">
                     <label class="col-sm-2 control-label">船舶资料</label>
                     <div class="col-sm-10">
-                        <div ng-repeat="item in model.Application.ContainerInfos">
+                        <div ng-repeat="item in model.Application.ContainerInfos | filter:listFilter">
                             <table class="table table-striped goodsItems">
                                 <tr>
                                     <th>装箱信息 {{$index+1}}</th>
                                     <td colspan="3">
-                                        <button class="btn btn-default" type="button" ng-click="removeContainerInfo($index)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button>
+                                        <button class="btn btn-default" type="button" ng-click="removeContainerInfo(item)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button>
                                     </td>
                                 </tr>
                                 <tr>

@@ -84,5 +84,12 @@ namespace Giqci.PublicWeb.Controllers
             ViewBag.message = message;
             return View();
         }
+
+        [Route("merchant")]
+        [HttpGet]
+        public ActionResult MerchantList()
+        {
+            return View();
+        }
     }
 }
