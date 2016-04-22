@@ -300,8 +300,7 @@
                         }
                     }
                     $scope.submitApp = true;
-                    $http.post('/forms/app', $scope.model.Application, $scope.model.Application.Key).then(function(response) {
-                        //$log.log(response);
+                    $http.post('/forms/app', $scope.model.Application).then(function(response) {
                         if (response.data.isLogin) {
                             if (response.data.appNo && response.data.appkey == "" && !response.data.errors) {
                                 $scope.resultMessage = "证书申请成功！申请编号为" + response.data.appNo;

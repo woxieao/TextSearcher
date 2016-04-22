@@ -87,8 +87,9 @@ namespace Giqci.PublicWeb.Controllers
 
         [Route("forms/app")]
         [HttpPost]
-        public ActionResult SubmitApplication(Application model, string appkey = "")
+        public ActionResult SubmitApplication(Application model)
         {
+            var appkey = model.Key;
             var errors = _dataChecker.ApplicationHasErrors(model);
             string appNo = null;
             var userName = User.Identity.Name;
