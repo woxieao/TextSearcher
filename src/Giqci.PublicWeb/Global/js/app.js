@@ -284,7 +284,7 @@ app.controller("GoodsAddController", [
                     }).success(function (data) {
                         //$scope.addProductMsg = data.msg;
                         var _tipType = data.result ? "success" : "danger";
-                        alertService.add(_tipType, data.msg || "未知错误");
+                        alertService.add(_tipType, data.msg || "未知错误", 3000);
                     }).error(function (data, header, config, status) {
                     });
                 }
