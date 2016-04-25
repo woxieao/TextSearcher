@@ -438,6 +438,7 @@
                             }
                         }).success(function (data) {
                             if (data.result == null) {
+                                $scope.dialogProductList = {};
                                 alertService.add('danger', "该备案号不存在", 3000);
                             }else{
                                 $scope.dialogProductList = data.result;
