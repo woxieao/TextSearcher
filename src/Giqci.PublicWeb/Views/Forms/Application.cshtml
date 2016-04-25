@@ -402,6 +402,8 @@
                 $scope.addGoodsProduct = function() {
                     $("#form-product").modal("hide");
                     $("#form-add-goods-product").modal("show");
+                    $scope.DialogProductCiqCode = "";
+                    $scope.dialogProductList = {};
                     //$scope.alerts = "";
                 };
                 $scope.submitAddCustomProduct = function() {
