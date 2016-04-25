@@ -226,54 +226,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group" ng-show="model.Application.ShippingMethod == 3">
-                    <label class="col-sm-2 control-label">车牌号</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.PlateNumber}}</p>
-                    </div>
-                </div>
-                <div class="form-group" ng-show="model.Application.ShippingMethod != 2">
-                    <label class="col-sm-2 control-label">运输总数量</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.TotalUnits}}Pallets</p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">运输总重量</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.TotalWeight | currency:"":2}}KG</p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">计划发货日期</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.ShippingDate | date:'yyyy/MM/dd'}}</p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">预约检查日期</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.InspectionDate | date:'yyyy/MM/dd'}}</p>
-                    </div>
-                </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">检验地点</label>
-                <div class="col-sm-10">
-                    <p class="form-control-static">{{model.Application.InspectionAddr}}</p>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">检验人</label>
-                <div class="col-sm-10">
-                    <p class="form-control-static">{{model.Application.Inspector}}</p>
-                </div>
-            </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">检验人电话</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.InspectorTel}}</p>
-                    </div>
-                </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">运输方式</label>
                     <div class="col-sm-10">
@@ -308,19 +260,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">发货港口</label>
-                    <div class="col-sm-10">
-                        <p ajax-label ajax-url="ports" ng-model="model.Application.LoadingPort" class="form-control-static"></p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">目的港口</label>
-                    <div class="col-sm-10">
-                        <p ajax-label ajax-url="ports" ng-model="model.Application.DestPort" class="form-control-static"></p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">航空运单号/提单号</label>
+                    <label class="col-sm-2 control-label">提单号</label>
                     <div class="col-sm-10">
                         <p class="form-control-static">{{model.Application.BillNo}}</p>
                     </div>
@@ -332,15 +272,73 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">船名</label>
+                    <label class="col-sm-2 control-label">
+                        <p ng-if="model.Application.ShippingMethod == 1">航班号</p>
+                        <p ng-if="model.Application.ShippingMethod == 2">船舶号</p>
+                        <p ng-if="model.Application.ShippingMethod == 3">车牌号</p>
+                    </label>
                     <div class="col-sm-10">
                         <p class="form-control-static">{{model.Application.Vesselcn}}</p>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">航次</label>
+                    <label class="col-sm-2 control-label">出发日期</label>
                     <div class="col-sm-10">
                         <p class="form-control-static">{{model.Application.Voyage}}</p>
+                    </div>
+                </div>
+                <div class="form-group" ng-show="model.Application.ShippingMethod != 2">
+                    <label class="col-sm-2 control-label">运输总数量</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{model.Application.TotalUnits}}Pallets</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">运输总重量</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{model.Application.TotalWeight | currency:"":2}}KG</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">计划发货日期</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{model.Application.ShippingDate | date:'yyyy/MM/dd'}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">预约检查日期</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{model.Application.InspectionDate | date:'yyyy/MM/dd'}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">检验地点</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{model.Application.InspectionAddr}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">检验人</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{model.Application.Inspector}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">检验人电话</label>
+                    <div class="col-sm-10">
+                        <p class="form-control-static">{{model.Application.InspectorTel}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">发货港口</label>
+                    <div class="col-sm-10">
+                        <p ajax-label ajax-url="ports" ng-model="model.Application.LoadingPort" class="form-control-static"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">目的港口</label>
+                    <div class="col-sm-10">
+                        <p ajax-label ajax-url="ports" ng-model="model.Application.DestPort" class="form-control-static"></p>
                     </div>
                 </div>
             </div>
@@ -355,7 +353,7 @@
                 $scope.model.Application = ObjDecodeToJson(@HtmlExtensions.RawJson(Model));
                 $scope.StatusDescription = "@Model.Status.ToDescription()";
                 $scope.ShippingMethodDescription = "@Model.ShippingMethod.ToDescription()";
-              }
+            }
         ]);
     </script>
 }
