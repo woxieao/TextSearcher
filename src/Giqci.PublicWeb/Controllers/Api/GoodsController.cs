@@ -53,7 +53,7 @@ namespace Giqci.PublicWeb.Controllers.Api
             }
 
             return new KtechJsonResult(HttpStatusCode.OK,
-                new {result = result, msg = msg == null ? "添加失败,可能的原因:该商品已添加" : "添加成功"});
+                new {result = result, msg = msg == null ? "添加成功" : "添加失败,可能的原因:该商品已添加"});
         }
 
         [Route("goods/delete")]
