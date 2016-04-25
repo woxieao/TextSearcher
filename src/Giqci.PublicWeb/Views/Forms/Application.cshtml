@@ -403,7 +403,7 @@
                     $("#form-product").modal("hide");
                     $("#form-add-goods-product").modal("show");
                     $scope.DialogProductCiqCode = "";
-                    $scope.dialogProductList = {};
+                    $scope.dialogProductList = null;
                     //$scope.alerts = "";
                 };
                 $scope.submitAddCustomProduct = function() {
@@ -438,7 +438,7 @@
                             }
                         }).success(function (data) {
                             if (data.result == null) {
-                                $scope.dialogProductList = {};
+                                $scope.dialogProductList = null;
                                 alertService.add('danger', "该备案号不存在", 3000);
                             }else{
                                 $scope.dialogProductList = data.result;

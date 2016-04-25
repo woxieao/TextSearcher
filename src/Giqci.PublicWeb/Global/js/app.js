@@ -266,7 +266,12 @@ app.controller("GoodsAddController", [
                         ciqCode: $scope.CiqCode
                     }
                 }).success(function (data) {
-                    $scope.Product = data.result;
+                    if (data.result == null) {
+                        $scope.Product = null;
+                        alertService.add('danger', "该备案号不存在", 3000);
+                    } else {
+                        $scope.Product = data.result;
+                    }
                 }).error(function (data, header, config, status) {
                 });
             }
