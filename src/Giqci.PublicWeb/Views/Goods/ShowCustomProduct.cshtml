@@ -8,20 +8,20 @@
     <script type="text/javascript">
 
         app.controller("AddCustomProductController", [
-            '$http', '$scope', '$location', '$log', 'alertService', function ($http, $scope, $location, $log, alertService) {
+            '$http', '$scope', '$location', '$log', 'alertService', function($http, $scope, $location, $log, alertService) {
                 $scope.model = ObjDecodeToJson(@HtmlExtensions.RawJson(Model));
                 $scope.flag = null;
-                $(function () {
+                $(function() {
                     $('.datetimepicker').datetimepicker({
                         language: 'zh-CN',
                         format: 'yyyy/mm/dd',
                         autoclose: true,
                         minView: "month",
                         todayBtn: true,
-                    }).on("hide", function () {
+                    }).on("hide", function() {
                         var $this = $(this);
                         var _this = this;
-                        $scope.$apply(function () {
+                        $scope.$apply(function() {
                             $scope[$this.attr('ng-model')] = _this.value;
                         });
                     });
@@ -29,23 +29,23 @@
                         $(".panel-title").html("编辑商品<span class=\"small pull-right\"><span class=\"glyphicon glyphicon-arrow-left\" aria-hidden=\"true\"></span>&nbsp;<a href=\"/goods/list\">返回列表</a></span>");
                     }
                 });
-                $scope.countryClickHandler = function (event) {
+                $scope.countryClickHandler = function(event) {
                     var currentElement = event.target;
                     $(currentElement).select2({ theme: "bootstrap", width: 'resolve' });
                 };
                 $scope.loadCountriesDict = null;
-                $scope.loadCountries = function () {
+                $scope.loadCountries = function() {
                     $http.get("/api/dict/countries", {
                         params: { 'code': "" }
-                    }).success(function (data) {
+                    }).success(function(data) {
                         $scope.loadCountriesDict = data.items;
                     });
                 };
                 $scope.model.ManufacturerCountry = '036';
                 $scope.loadCountries();
 
-                $scope.submitForm = function () {
-                    $http.post('/api/goods/addcustomproduct', $scope.model).success(function (response) {
+                $scope.submitForm = function() {
+                    $http.post('/api/goods/addcustomproduct', $scope.model).success(function(response) {
                         $scope.msg = response.msg;
                         $scope.flag = response.flag;
                     });
@@ -80,19 +80,19 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">名称(英文) *</label>
                     <div class="col-sm-10">
-                        <input type="text" ng-model="model.DescriptionEn" class="form-control" />
+                        <input type="text" ng-model="model.DescriptionEn" class="form-control"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">名称(中文)</label>
                     <div class="col-sm-10">
-                        <input type="text" ng-model="model.Description" class="form-control" />
+                        <input type="text" ng-model="model.Description" class="form-control"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">品牌 *</label>
                     <div class="col-sm-10">
-                        <input type="text" ng-model="model.Brand" class="form-control" />
+                        <input type="text" ng-model="model.Brand" class="form-control"/>
                     </div>
                 </div>
                 <div class="form-group">
@@ -115,7 +115,13 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">规格型号 *</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" ng-model="model.Spec" />
+                        <input type="text" class="form-control" ng-model="model.Spec"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">制造商 </label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" ng-model="model.Manufacturer"/>
                     </div>
                 </div>
                 <div class="form-group">
@@ -124,6 +130,7 @@
                         <select ng-model="model.ManufacturerCountry" class="form-control" ng-mouseover="countryClickHandler($event)" ng-options="country.Code as country.CnName for country in loadCountriesDict" style="width: 100%"></select>
                     </div>
                 </div>
+
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button class="btn btn-default" ng-click="submitForm()">
