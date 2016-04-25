@@ -43,16 +43,17 @@ namespace Giqci.PublicWeb.Controllers.Api
             bool result;
             try
             {
+                //todo  服务器返回信息乱码
                 result = _merchantRepository.AddProduct(_auth.GetAuth().MerchantId, ciqCode, out msg);
             }
             catch (Exception ex)
             {
-                //todo  服务器返回信息乱码
                 msg = ex.Message;
-                msg = "添加失败,可能的原因:该商品已添加";
                 result = false;
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new {result = result, msg = msg ?? "添加成功"});
+
+            return new KtechJsonResult(HttpStatusCode.OK,
+                new {result = result, msg = msg == null ? "添加失败,可能的原因:该商品已添加" : "添加成功"});
         }
 
         [Route("goods/delete")]
@@ -97,7 +98,6 @@ namespace Giqci.PublicWeb.Controllers.Api
             }
             catch
             {
-                //todo  服务器返回信息乱码
                 flag = false;
                 msg = "提交信息不完整";
             }
