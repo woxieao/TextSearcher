@@ -305,7 +305,7 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
         UserAddress: "",
         UserContact: "",
         UserPhone: "",
-        UserType:0
+        UserType: 0
     };
     $scope.loadMerchant = function () {
         $http.post("/api/UserProfile/GetProfileList", {
@@ -315,6 +315,17 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
         });
     };
     $scope.loadMerchant();
+
+    $scope.add = function () {
+        $scope.dialogModelMerchant = {
+            UserName: "",
+            UserAddress: "",
+            UserContact: "",
+            UserPhone: "",
+            UserType: 0
+        };
+        $("#merchant-add").modal("show");
+    };
 
     $scope.submitAddMerchant = function () {
         var _url = "";
@@ -327,7 +338,7 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
             url: _url,
             method: 'POST',
             data: {
-                userProfile:$scope.dialogModelMerchant
+                userProfile: $scope.dialogModelMerchant
             }
         }).success(function (data) {
             if (data.flag) {
@@ -338,9 +349,17 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
             alertService.add("danger", response.msg || "未知错误", 3000);
         });
     };
-    $scope.edit = function (_object) {
-        console.log(_object);
-        $scope.dialogModelMerchant = _object;
+    $scope.edit = function (_id) {
+        $http({
+            url: '/api/UserProfile/GetProfileDeatil',
+            method: 'POST',
+            data: {
+                ProfileId: _id
+            }
+        }).success(function (data) {
+            $scope.dialogModelMerchant = data.result;
+        }).error(function (response) {
+        });
         $("#merchant-add").modal("show");
     };
     $scope.remove = function (_object) {
