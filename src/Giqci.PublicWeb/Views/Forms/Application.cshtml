@@ -255,8 +255,8 @@
                     }
                 };
 
-                $scope.removeExample = function(index) {
-                    $scope.model.Application.ExampleCertList.splice(index, 1);
+                $scope.removeExample = function (_object) {
+                    _object.HandlerType = -1;
                 };
                 $scope.check_type_c102();
 
@@ -381,7 +381,7 @@
                         url: "/api/forms/savefile",
                         success: function(data) {
                             if (data.filepath != "") {
-                                $scope.model.Application.ExampleCertList.push({ CertFilePath: data.filepath });
+                                $scope.model.Application.ExampleCertList.push({ CertFilePath: data.filepath, HandlerType:1 });
                                 $scope.$apply();
                             }
                         }
@@ -633,12 +633,12 @@
                     <label class="col-sm-2 control-label">上传标签证书样张</label>
                     <div class="col-sm-10">
                         <input type="file" name="file" onchange="if ($(this).val() != '') {angular.element(this).scope().UploadExample()}" />
-                        <div ng-repeat="item in model.Application.ExampleCertList">
+                        <div ng-repeat="item in model.Application.ExampleCertList | filter:listFilter">
                             <table class="table table-striped goodsItems">
                                 <tr>
                                     <th>样张{{$index+1}}</th>
                                     <td>
-                                        <button class="btn btn-default" ng-click="removeExample($index)">
+                                        <button class="btn btn-default" ng-click="removeExample(item)">
                                             <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除
                                         </button>
                                     </td>
