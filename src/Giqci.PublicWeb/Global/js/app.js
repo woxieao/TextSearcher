@@ -274,6 +274,9 @@ app.controller("GoodsAddController", [
                     }
                 }).error(function (data, header, config, status) {
                 });
+            } else {
+                $scope.Product = null;
+                alertService.add('danger', "请输入备案编号", 3000);
             }
         }
         $scope.addProductMsg = null;
