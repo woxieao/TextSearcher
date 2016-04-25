@@ -48,8 +48,11 @@
                     $http.post('/api/goods/addcustomproduct', $scope.model).success(function(response) {
                         $scope.msg = response.msg;
                         $scope.flag = response.flag;
-                        $scope.model = {};
-                        $("#commonhscodes").next().find("span.select2-selection__rendered").html("");
+                        if ($scope.flag) {
+                            $scope.model = {};
+                            $("#commonhscodes").next().find("span.select2-selection__rendered").html("");
+                            $("#ManufacturerCountry").next().find("span.select2-selection__rendered").html("");
+                        }
                     });
                 };
             }
@@ -129,7 +132,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">制造国代码 *</label>
                     <div class="col-sm-10">
-                        <select ng-model="model.ManufacturerCountry" class="form-control" ng-mouseover="countryClickHandler($event)" ng-options="country.Code as country.CnName for country in loadCountriesDict" style="width: 100%"></select>
+                        <select id="ManufacturerCountry" ng-model="model.ManufacturerCountry" class="form-control" ng-mouseover="countryClickHandler($event)" ng-options="country.Code as country.CnName for country in loadCountriesDict" style="width: 100%"></select>
                     </div>
                 </div>
 
