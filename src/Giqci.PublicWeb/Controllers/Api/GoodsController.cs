@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Ktech.Mvc.ActionResults;
 using System.Net;
 using System.Web.Mvc;
 using Giqci.Chapi.Models.Customer;
-using Giqci.Chapi.Models.Product;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Models.Goods;
 using Giqci.PublicWeb.Services;
@@ -49,7 +47,9 @@ namespace Giqci.PublicWeb.Controllers.Api
             }
             catch (Exception ex)
             {
+                //todo  服务器返回信息乱码
                 msg = ex.Message;
+                msg = "添加失败,可能的原因:该商品已添加";
                 result = false;
             }
             return new KtechJsonResult(HttpStatusCode.OK, new {result = result, msg = msg ?? "添加成功"});
@@ -87,11 +87,6 @@ namespace Giqci.PublicWeb.Controllers.Api
                     {
                         _merchantRepository.UpdateCustomerProducts(_auth.GetAuth().MerchantId, product);
                     }
-                    else
-                    {
-                        msg = "不可更改已批准的商品";
-                        flag = false;
-                    }
                 }
                 else
                 {
@@ -102,6 +97,7 @@ namespace Giqci.PublicWeb.Controllers.Api
             }
             catch
             {
+                //todo  服务器返回信息乱码
                 flag = false;
                 msg = "提交信息不完整";
             }
