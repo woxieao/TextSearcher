@@ -2,136 +2,85 @@
     ViewBag.Title = "新增商品";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@using Newtonsoft.Json
-@model Giqci.PublicWeb.Models.Goods.GoodsPageModel
-
-@section Footer{
-    <script type="text/javascript">
-        app.controller("GoodsAddController", ['$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', function ($http, $scope, $log, $location, $anchorScroll, $timeout) {
-            $scope.model = @Html.Raw(JsonConvert.SerializeObject(Model));
-            $(function(){
-                $('.datetimepicker').datetimepicker({
-                    language:  'zh-CN',
-                    format: 'yyyy/mm/dd',
-                    autoclose: true,
-                    minView: "month",
-                    todayBtn: true
-                }).on("hide",function(){
-                    var $this = $(this);
-                    var _this = this;
-                    $scope.$apply(function(){
-                        $scope[$this.attr('ng-model')] = _this.value;
-                    });
-                });
-                if($scope.model.goods.Id>0)
-                {
-                    $(".panel-title").html("编辑商品");
-                }
-            });
-            $scope.submit = function() {
-                console.log($scope.model.Goods);
-                $http.post('/goods/add', $scope.model.Goods).then(function(response) {
-                    $log.log(response);
-                    if (response.data.result) {
-                        window.location.href = "/goods/list";
-                    } else {
-                        $scope.errors = response.data.errors;
-                        $location.hash("h1");
-                        $anchorScroll();
-                    }
-                }, function(response) {
-                    $log.warn(response);
-                });
-            };
-        }
-        ]);
-    </script>
-}
 <div ng-controller="GoodsAddController">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <span class="panel-title">新增商品</span><a href="/goods/list" style="float: right;">返回列表</a>
-
+            <h3 class="panel-title">
+                新增商品
+                <span class="small pull-right">
+                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<a href="/goods/list">返回列表</a>
+                </span>
+            </h3>
         </div>
         <div class="panel-body">
-            <h1 ng-show="result">提交成功</h1>
-            <div ng-show="!result">
-                <div class="has-error" ng-show="errors.length > 0">
-                    <ul class="help-block">
-                        <li ng-repeat="err in errors">{{err}}</li>
-                    </ul>
-                </div>
-                <form name="appform" class="form-horizontal" method="POST" novalidate>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">名称(英文) *</label>
-                        <div class="col-sm-10">
-                            <input type="text" ng-model="model.Goods.DescriptionEn" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">名称(中文)</label>
-                        <div class="col-sm-10">
-                            <input type="text" ng-model="model.Goods.Description" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">品牌 *</label>
-                        <div class="col-sm-10">
-                            <input type="text" ng-model="model.Goods.Brand" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">HS编码 *</label>
-                        <div class="col-sm-10">
-                            <select ajax-select ajax-url="commonhscodes" ng-model="model.Goods.HSCode" class="form-control">
-                                <option value="">&lt; - 请选择HS编码 - &gt;</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">规格型号 *</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" ng-model="model.Goods.Spec" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">制造国代码 *</label>
-                        <div class="col-sm-10">
-                            <select ajax-select ajax-url="countries" ng-model="model.Goods.ManufacturerCountry" class="form-control"></select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">商品货号</label>
-                        <div class="col-sm-10">
-                            <input type="text" ng-model="model.Goods.Code" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">商品备案号 *</label>
-                        <div class="col-sm-10">
-                            <input type="text" ng-model="model.Goods.CiqCode" class="form-control" />
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">商品包装 *</label>
-                        <div class="col-sm-10">
-                            <select ng-model="model.Goods.Package" class="form-control">
-                                <option value="罐装">罐装</option>
-                                <option value="瓶装">瓶装</option>
-                                <option value="袋装">袋装</option>
-                                <option value="盒装">盒装</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button class="btn btn-default" ng-click="submit()">
-                                <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
-                            </button>
-                        </div>
-                    </div>
-                </form>
+            <div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
+                <button aria-label="Close" data-dismiss="alert" ng-click="alert.close()" class="close" type="button"><span aria-hidden="true">×</span></button>
+                <span ng-bind="alert.msg"></span>
             </div>
+            <h1>{{addProductMsg}}</h1>
+            <form name="appform" class="form-horizontal" novalidate>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">商品备案号</label>
+                    <div class="col-sm-8">
+                        <div class="input-group">
+                            <input type="text" placeholder="请输入完整的商品备案号" ng-model="CiqCode" class="form-control" />
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" ng-click="getproductlist()">
+                                    <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 搜索
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="Product!=null">
+                    <table class="table table-striped table-layout-fixed">
+                        <colgroup>
+                            <col width='100' />
+                            <col width='80' />
+                            <col />
+                            <col />
+                            <col width='80' />
+                            <col width='140' />
+                            <col width='80' />
+                            <col width='80' />
+                            <col width='80' />
+                            <col width='80' />
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>商品备案号</th>
+                                <th>HS编码</th>
+                                <th>中文名</th>
+                                <th>英文名</th>
+                                <th>规格</th>
+                                <th>品牌</th>
+                                <th>制造国代码</th>
+                                <th>数量/包装</th>
+                                <th>制造商</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="td-ellipsis" title="{{Product.CiqCode}}">{{Product.CiqCode}}</td>
+                                <td class="td-ellipsis" title="{{Product.HSCode}}">{{Product.HSCode}}</td>
+                                <td class="td-ellipsis" title="{{Product.Description}}">{{Product.Description}}</td>
+                                <td class="td-ellipsis" title="{{Product.DescriptionEn}}">{{Product.DescriptionEn}}</td>
+                                <td class="td-ellipsis" title="{{Product.Spec}}">{{Product.Spec}}</td>
+                                <td class="td-ellipsis" title="{{Product.Brand}}">{{Product.Brand}}</td>
+                                <td class="td-ellipsis" title="{{Product.ManufacturerCountry}}">{{Product.ManufacturerCountry}}</td>
+                                <td class="td-ellipsis" title="{{Product.Package}}">{{Product.Package}}</td>
+                                <td class="td-ellipsis" title="{{Product.Manufacturer}}">{{Product.Manufacturer}}</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-primary btn-sm" ng-click="addproduct()">添加</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
         </div>
     </div>
 </div>

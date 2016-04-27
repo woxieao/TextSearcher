@@ -18,6 +18,12 @@
     <script src="~/Global/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
     <script src="~/Global/js/select2/select2.min.js"></script>
     <script src="~/Global/js/locales/select2.zh-CN.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Global/js/service.js"></script>
+    <script src="~/Global/js/app.js"></script>
+    <script src="~/Global/js/directive.js"></script>
+    <script src="~/Scripts/giqci.js"></script>
+    <script src="~/Scripts/jquery.form.js"></script>
     @RenderSection("Header", false)
 </head>
 <body>
@@ -27,14 +33,14 @@
     </div>
     @Html.Partial("_Header")
     @Html.Partial("_TopNav")
-    <div class="row body-content">
+    <div id="loading-content">
+        <img src="~/Global/images/loading.gif" />
+        请稍后...
+    </div>
+    <div class="row body-content" id="body-content" style="display: none;">
         @RenderBody()
     </div>
     @Html.Partial("_Footer")
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Global/js/commalert.js"></script>
-    <script src="~/Global/js/app.js"></script>
-    <script src="~/Global/js/directive.js"></script>
     @RenderSection("Footer", false)
     <script>
         var _Browser = {};
@@ -51,6 +57,8 @@
             }
         }
         window.onload = checkBrowser();
+        $("#loading-content").hide();
+        $("#body-content").show();
     </script>
 </body>
 </html>

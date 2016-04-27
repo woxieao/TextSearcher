@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Giqci.Enums;
-using Giqci.Models;
-using Giqci.PublicWeb.Models.Goods;
+﻿using System.Collections.Generic;
+using Giqci.Chapi.Enums.App;
+using Giqci.Chapi.Models.App;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -46,9 +42,9 @@ namespace Giqci.PublicWeb.Models.Application
         /// <summary>
         /// 提单号
         /// </summary>
-        public string Billno { get; set; }
+        public string BillNo { get; set; }
 
-        public string OtherBillno { get; set; }
+        public string OtherBillNo { get; set; }
 
         public string Vesselcn { get; set; }
 
@@ -57,18 +53,18 @@ namespace Giqci.PublicWeb.Models.Application
         /// </summary>
         public string Voyage { get; set; }
 
-        public List<GoodsItemModel> Goods { get; set; }
+        public List<ApplicationProduct> Goods { get; set; }
 
         public List<ContainerInfo> ContainerInfoList { get; set; }
 
-        public List<ExampleCertView> ExampleCertList { get; set; }
+        public List<ExampleCert> ExampleCertList { get; set; }
 
 
         protected BaseApplication()
         {
-            Goods = new List<GoodsItemModel>();
+            Goods = new List<ApplicationProduct>();
             ContainerInfoList = new List<ContainerInfo>();
-            ExampleCertList = new List<ExampleCertView>();
+            ExampleCertList = new List<ExampleCert>();
         }
     }
 }

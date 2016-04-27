@@ -1,11 +1,10 @@
 ﻿using System.Net;
 using System.Web.Mvc;
-using Giqci.Repositories;
 using Ktech.Mvc.ActionResults;
 using System;
 using System.Collections.Generic;
+using Giqci.Interfaces;
 using Newtonsoft.Json;
-using Giqci.Enums;
 using Giqci.PublicWeb.Converters;
 
 namespace Giqci.PublicWeb.Controllers.Api
@@ -13,9 +12,9 @@ namespace Giqci.PublicWeb.Controllers.Api
     [RoutePrefix("api")]
     public class CertificateController : Controller
     {
-        private readonly ICertificateRepository _certRepo;
+        private readonly ICertificateApiProxy _certRepo;
 
-        public CertificateController(ICertificateRepository certRepo)
+        public CertificateController(ICertificateApiProxy certRepo)
         {
             _certRepo = certRepo;
         }
@@ -25,10 +24,11 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult FormsSearch(string certNo)
         {
-            var model = _certRepo.SearchCertificate(certNo);
-
-            //return new KtechJsonResult(HttpStatusCode.OK, new { items = model });
-            return new KtechJsonResult(HttpStatusCode.OK, new { items = model }, new JsonSerializerSettings { Converters = new List<JsonConverter> { new DescriptionEnumConverter() } });
+            //     var model = _certRepo.SearchCertificate(certNo);
+            //todo appId=???
+            var model = _certRepo.Get(string.Empty, certNo);
+            return new KtechJsonResult(HttpStatusCode.OK, new {items = model},
+                new JsonSerializerSettings {Converters = new List<JsonConverter> {new DescriptionEnumConverter()}});
         }
     }
 }

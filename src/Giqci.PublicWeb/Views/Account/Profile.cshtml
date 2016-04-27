@@ -1,5 +1,6 @@
-﻿@using Newtonsoft.Json
-@model Giqci.Models.MerchantViewModel
+﻿@using Giqci.PublicWeb.Extensions
+@using Newtonsoft.Json
+@model Giqci.Chapi.Models.Customer.Merchant
 
 @{
     ViewBag.Title = "商家资料";
@@ -61,8 +62,8 @@
 @section Footer{
     <script type="text/javascript">
         //var app = angular.module("giqci", ['commonAlert']);
-        app.controller("ProfileController", ['$http', '$scope', '$location','commAlertService', function ($http, $scope, $location, commAlertService) {
-            $scope.user = @Html.Raw(JsonConvert.SerializeObject(Model));
+        app.controller("ProfileController", ['$http', '$scope', '$location','alertService', function ($http, $scope, $location, alertService) {
+            $scope.user = ObjDecodeToJson(@HtmlExtensions.RawJson( Model));
             $scope.submitButton = ' 提交 ';
             $scope.submitForm = function (isValid, PasswordValid) {
                 if (isValid) {
@@ -77,9 +78,9 @@
                     };
                     $http.post('/api/account/updateprofile', $scope.formData).then(function (response) {
                         if (!response.data.result) {
-                            commAlertService.alertService().add('danger', response.data.message);
+                            alertService.add('danger', response.data.message);
                         }else{
-                            commAlertService.alertService().add('success', '资料修改成功');
+                            alertService.add('success', '资料修改成功');
                         }
                         $scope.enableDisableButton = false;
                         $scope.submitButton = ' 提交 ';

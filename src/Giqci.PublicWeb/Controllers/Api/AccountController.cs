@@ -1,37 +1,41 @@
 ﻿using System.Net;
 using System.Web.Mvc;
-using Giqci.Repositories;
 using Ktech.Mvc.ActionResults;
 using System.Web.Security;
 using System;
-using Giqci.Models;
+using Giqci.Chapi.Models.Customer;
+using Giqci.Interfaces;
 using Giqci.PublicWeb.Models.Account;
 using Giqci.PublicWeb.Models;
 using Ktech.Core.Mail;
 using Giqci.PublicWeb.Helpers;
+using Giqci.PublicWeb.Services;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {
     [RoutePrefix("api")]
     public class AccountController : Controller
     {
-        private IMerchantRepository _repo;
+        private IMerchantApiProxy _repo;
 
-        public AccountController(IMerchantRepository repo)
+        private IAuthService _auth;
+
+        public AccountController(IMerchantApiProxy repo, IAuthService auth)
         {
             _repo = repo;
+            _auth = auth;
         }
 
         [Route("account/reg")]
         [HttpPost]
-        public ActionResult Register(MerchantReg input)
+        public ActionResult Register(Merchant input, string Password)
         {
             bool result;
             string message;
             try
             {
                 Guid authCode;
-                result = _repo.RegMerchant(input, out authCode, out message);
+                result = _repo.Register(input, Password, out authCode, out message);
                 if (result)
                 {
                     var msg = new SendEmailTemplate
@@ -59,13 +63,14 @@ namespace Giqci.PublicWeb.Controllers.Api
 
         [Route("account/updateprofile")]
         [HttpPost]
-        public ActionResult UpdateProfile(MerchantViewModel model)
+        [Authorize]
+        public ActionResult UpdateProfile(Merchant model)
         {
             bool result = true;
             string message = "";
             try
             {
-                _repo.UpdateMerchant(User.Identity.Name, model);
+                _repo.Update(_auth.GetAuth().MerchantId, model);
             }
             catch (Exception ex)
             {
@@ -81,9 +86,10 @@ namespace Giqci.PublicWeb.Controllers.Api
         {
             bool result = true;
             string message = "";
-            if (_repo.MerchantLogin(input.Email, input.Password))
+            var m = _repo.MerchantLogin(input.Email, input.Password);
+            if (m != null)
             {
-                FormsAuthentication.SetAuthCookie(input.Email, false);
+                _auth.SetAuth(m);
             }
             else
             {
@@ -102,7 +108,7 @@ namespace Giqci.PublicWeb.Controllers.Api
             string message = "";
             try
             {
-                result = _repo.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword);
+                result = _repo.ChangePassword(_auth.GetAuth().MerchantId, model.OldPassword, model.NewPassword);
             }
             catch (Exception ex)
             {
@@ -151,7 +157,7 @@ namespace Giqci.PublicWeb.Controllers.Api
         {
             if (User.Identity.IsAuthenticated)
             {
-                FormsAuthentication.SetAuthCookie(User.Identity.Name, false);
+                _auth.Renew();
             }
             return new KtechJsonResult(HttpStatusCode.OK, new { result = true, message = "" });
         }

@@ -3,10 +3,11 @@ using System.Web.Configuration;
 using Autofac;
 using Autofac.Core;
 using Giqci.ApiProxy;
+using Giqci.ApiProxy.App;
+using Giqci.ApiProxy.Logging;
 using Giqci.ApiProxy.Services;
 using Giqci.Interfaces;
-using Giqci.Repositories;
-using Giqci.Services;
+using Giqci.PublicWeb.Services;
 
 namespace Giqci.PublicWeb
 {
@@ -14,33 +15,89 @@ namespace Giqci.PublicWeb
     {
         protected override void Load(ContainerBuilder builder)
         {
-            var connStr = WebConfigurationManager.AppSettings["connStr"];
             var dictApiUrl = WebConfigurationManager.AppSettings["dictApiUrl"];
             var prodApiUrl = WebConfigurationManager.AppSettings["prodApiUrl"];
+            var custApiUrl = WebConfigurationManager.AppSettings["custApiUrl"];
+            var logApiUrl = WebConfigurationManager.AppSettings["logApiUrl"];
+            var appApiUrl = WebConfigurationManager.AppSettings["appApiUrl"];
 
-            builder.Register(x => RestClientFactory.Create(dictApiUrl, false)).Keyed<HttpClient>(ApiType.Dict).SingleInstance();
-            builder.Register(x => RestClientFactory.Create(prodApiUrl, false)).Keyed<HttpClient>(ApiType.Products).SingleInstance();
+            builder.Register(x => RestClientFactory.Create(dictApiUrl, false))
+                .Keyed<HttpClient>(ApiType.Dict)
+                .SingleInstance();
+            builder.Register(x => RestClientFactory.Create(prodApiUrl, false))
+                .Keyed<HttpClient>(ApiType.Products)
+                .SingleInstance();
+            builder.Register(x => RestClientFactory.Create(custApiUrl, false))
+                .Keyed<HttpClient>(ApiType.Customers)
+                .SingleInstance();
+            builder.Register(x => RestClientFactory.Create(logApiUrl, false))
+                .Keyed<HttpClient>(ApiType.Log)
+                .SingleInstance();
+            builder.Register(x => RestClientFactory.Create(appApiUrl, false))
+                .Keyed<HttpClient>(ApiType.AppApiUrl)
+                .SingleInstance();
 
-            builder.Register(context => new DatabaseSetting(connStr)).SingleInstance();
-            builder.RegisterType<PublicRepository>().As<IPublicRepository>().InstancePerDependency();
-            builder.RegisterType<MerchantRepository>().As<IMerchantRepository>().InstancePerDependency();
-            builder.RegisterType<LoggerRepository>().As<ILoggerRepository>().InstancePerDependency();
-            builder.RegisterType<ApplicationRepository>().As<IApplicationRepository>().InstancePerDependency();
-            builder.RegisterType<CertificateRepository>().As<ICertificateRepository>().InstancePerDependency();
-            builder.RegisterType<ContainerInfoRepository>().As<IContainerInfoRepository>().InstancePerDependency();
-            builder.RegisterType<ExampleCertRepository>().As<IExampleCertRepository>().InstancePerDependency();
-            builder.RegisterType<CacheService>().As<ICacheService>().InstancePerDependency();
+            //builder.RegisterType<MerchantApplicationApiProxy>()
+            //    .As<IMerchantApplicationApiProxy>()
+            //    .InstancePerDependency();
+            //builder.RegisterType<CertificateApiProxy>().As<ICertificateApiProxy>().InstancePerDependency();
 
-            builder.RegisterType<DictApiProxy>().As<IDictApiProxy>().WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Dict)).InstancePerDependency();
-            builder.RegisterType<ProductApiProxy>().As<IProductApiProxy>().WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Products)).InstancePerDependency();
+            builder.RegisterType<ProductApiProxy>()
+                .As<IProductApiProxy>()
+                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Products))
+                .InstancePerDependency();
 
-            builder.RegisterType<CachedDictService>().As<IDictService>().InstancePerDependency();
+            builder.RegisterType<UserProfileApiProxy>()
+                .As<IUserProfileApiProxy>()
+                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers))
+                .InstancePerDependency();
+
+            builder.RegisterType<MerchantApiProxy>()
+                .As<IMerchantApiProxy>()
+                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers))
+                .InstancePerDependency();
+            builder.RegisterType<MerchantProductApiProxy>()
+                .As<IMerchantProductApiProxy>()
+                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers))
+                .InstancePerDependency();
+            builder.RegisterType<ApiUserApiProxy>()
+                .As<IApiUserApiProxy>()
+                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers))
+                .InstancePerDependency();
+            builder.RegisterType<MerchantApplicationApiProxy>()
+                .As<IMerchantApplicationApiProxy>()
+                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApiUrl))
+                .InstancePerDependency();
+            builder.RegisterType<ApplicationViewModelApiProxy>()
+                .As<IApplicationViewModelApiProxy>()
+                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApiUrl))
+                .InstancePerDependency();
+            builder.RegisterType<CertificateApiProxy>()
+                .As<ICertificateApiProxy>()
+                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApiUrl))
+                .InstancePerDependency();
+
+            builder.RegisterType<CachedDictService>()
+                .As<IDictService>()
+                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Dict))
+                .InstancePerDependency();
+            builder.RegisterType<AuthService>().As<IAuthService>().InstancePerDependency();
+            builder.RegisterType<LoggingApiProxy>()
+                .As<ILoggingApiProxy>()
+                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Log))
+                .InstancePerDependency();
+            builder.RegisterType<DataChecker>()
+                .As<IDataChecker>()
+                .InstancePerDependency();
         }
 
         private enum ApiType
         {
             Dict,
             Products,
+            Customers,
+            Log,
+            AppApiUrl
         }
     }
 }

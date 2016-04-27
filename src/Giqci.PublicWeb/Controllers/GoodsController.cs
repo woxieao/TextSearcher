@@ -1,26 +1,34 @@
-﻿using Giqci.PublicWeb.Helpers;
-using Giqci.Repositories;
-using System;
+﻿using System;
 using System.Web.Mvc;
+using Giqci.Chapi.Models.Customer;
 using Giqci.Interfaces;
+using Giqci.PublicWeb.Services;
 
 namespace Giqci.PublicWeb.Controllers
 {
     public class GoodsController : Controller
     {
-        private readonly IMerchantRepository _merchantRepo;
-        private readonly IProductApiProxy _prodApi;
+        private readonly IMerchantProductApiProxy _merchantRepository;
+        private readonly IAuthService _auth;
 
-        public GoodsController(IMerchantRepository merchantRepo, IProductApiProxy prodApi)
+        public GoodsController(IMerchantProductApiProxy merchantRepository, IAuthService auth)
         {
-            _merchantRepo = merchantRepo;
-            _prodApi = prodApi;
+            _merchantRepository = merchantRepository;
+            _auth = auth;
         }
 
         [Route("goods/list")]
         [HttpGet]
         [Authorize]
-        public ActionResult List()
+        public ActionResult MerchantProductList()
+        {
+            return View();
+        }
+
+        [Route("goods/customproductlist")]
+        [HttpGet]
+        [Authorize]
+        public ActionResult MerchantCustomProductList()
         {
             return View();
         }
@@ -28,49 +36,27 @@ namespace Giqci.PublicWeb.Controllers
         [Route("goods/add")]
         [HttpGet]
         [Authorize]
-        public ActionResult AddGoods(string applicantCode)
+        public ActionResult GoodsAdd()
         {
-            // TODO
-            throw new NotImplementedException();
-            //var model = new GoodsPageModel
-            //{
-            //    Goods = new GoodsModel
-            //    {
-            //        ManufacturerCountry = "036"
-            //    }
-            //};
-            //ModelBuilder.SetHelperGoodsModel(_cache, model);
-            //return View("GoodsAdd", model);
+            return View();
         }
 
-
-        [Route("goods/add/{id:int}")]
+        [Route("goods/showcustomproduct")]
         [HttpGet]
         [Authorize]
-        public ActionResult AddGoods(int id = 0)
+        public ActionResult ShowCustomProduct(int id = 0)
         {
-            // TODO
-            throw new NotImplementedException();
-            //var model = new GoodsPageModel();
-            //var goodmodel = _goodsRepo.GetGoods(id);
-            //model.Goods = goodmodel;
-
-            //var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
-            //if (merchant.Id != goodmodel.MerchantId)
-            //{
-            //    Response.Redirect("/goods/list");
-            //}
-            //else
-            //{
-            //    model.Goods = goodmodel;
-            //}
-            //ModelBuilder.SetHelperGoodsModel(_cache, model);
-            //return View("GoodsAdd", model);
+            var product = id == 0
+                ? new CustomerProduct()
+                : _merchantRepository.GetCustomerProduct(_auth.GetAuth().MerchantId, id);
+            //防止编辑已批准的商品
+            product = product.IsApproved ? new CustomerProduct() : product;
+            return View(product);
         }
 
 
-        [Route("goods/add")]
-        [HttpPost]
+        //[Route("goods/add")]
+        //[HttpPost]
         public ActionResult SubmitApplication(string ciqCode)
         {
             throw new NotImplementedException();

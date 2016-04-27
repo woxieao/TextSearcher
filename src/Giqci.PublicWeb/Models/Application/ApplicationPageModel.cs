@@ -1,9 +1,8 @@
-﻿using Giqci.Chapi.Dict.Models;
+﻿using Giqci.Chapi.Models.Dict;
 
 namespace Giqci.PublicWeb.Models.Application
 {
-    public class 
-        ApplicationPageModel
+    public class ApplicationPageModel
     {
         public Application Application { get; set; }
 
@@ -11,7 +10,7 @@ namespace Giqci.PublicWeb.Models.Application
 
         public Country[] Countries { get; set; }
 
-        public HSCode[] CommonHSCodes { get; set; }
+        public HsCode[] CommonHSCodes { get; set; }
 
         public Port[] DestPorts { get; set; }
 

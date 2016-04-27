@@ -5,13 +5,14 @@
 <div ng-controller="FormsListController">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <a href="javascript:history.go(-1)"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>返回</a>
-            <h3 class="panel-title">申请列表</h3>
+            <h3 class="panel-title">
+                申请列表
+            </h3>
         </div>
         <div class="panel-body">
             <form class="form-inline">
                 <div class="form-group">
-                    <input ng-model="applyNo" placeholder="申请号" class="form-control"/>
+                    <input ng-model="applyNo" placeholder="申请号" class="form-control" />
                     状态: <select ng-model="status" ng-options="s.value as s.name for s in statusValues" class="form-control">
                         <option value="">-- 全部 --</option>
                     </select>
@@ -24,48 +25,55 @@
             </form>
             <table class="table table-striped">
                 <colgroup>
-                    <col width='100'/>
-                    <col width='240'/>
-                    <col width='100'/>
-                    <col width='220'/>
-                    <col width='120'/>
+                    <col width='100' />
+                    <col width='240' />
+                    <col width='100' />
+                    <col width='120' />
+                    <col width='120' />
+                    <col width='260' />
                     <col>
                 </colgroup>
                 <thead>
-                <tr>
-                    <th>申请号</th>
-                    <th>证书类别</th>
-                    <th>商业目的</th>
-                    <th>创建日期</th>
-                    <th>当前状态</th>
-                    <th>申请人</th>
-                    <th>E-Mail</th>
-                </tr>
+                    <tr>
+                        <th>申请号</th>
+                        <th>证书类别</th>
+                        <th>商业目的</th>
+                        <th>创建日期</th>
+                        <th>当前状态</th>
+                        <th>申请人</th>
+                        <th>E-Mail</th>
+                    </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="emp in persons">
-                    <td>
-                        <a href="/forms/app/{{emp.Id}}" ng-if="emp.Status=='新申请'">{{emp.Key}}</a><span ng-show="emp.Status!='新申请'">{{emp.Key}}</span></td>
-                    <td>
-                        <span ng-show="emp.C101">溯源证书&nbsp;</span><span ng-show="emp.C102">品质证书&nbsp;</span><span ng-show="emp.C103">标签证书&nbsp;</span></td>
-                    <td>{{emp.TradeType}}</td>
-                    <td>{{emp.CreateDate|date:"yyyy/MM/dd"}}</td>
-                    <td>{{emp.Status}}</td>
-                    <td>{{emp.Applicant}}</td>
-                    <td>{{emp.MerchantEmail}}</td>
-                </tr>
+                    <tr ng-repeat="emp in persons">
+                        <td>
+                            <a href="/forms/app/{{emp.Key}}">{{emp.Key}}</a>
+                        </td>
+                        <td>
+                            <span ng-show="emp.C101">溯源证书&nbsp;</span><span ng-show="emp.C102">品质证书&nbsp;</span><span ng-show="emp.C103">标签证书&nbsp;</span>
+                        </td>
+                        <td>{{emp.TradeType}}</td>
+                        <td>{{emp.CreateDate|date:"yyyy/MM/dd"}}</td>
+                        <td>{{emp.Status}}</td>
+                        <td>{{emp.Applicant}}</td>
+                        <td>{{emp.MerchantEmail}}</td>
+                    </tr>
                 </tbody>
             </table>
             <div class="page-list">
                 <ul class="pagination" ng-show="paginationConf.totalItems > 0">
                     <li ng-class="{disabled: postData.pageIndex == 1}" ng-click="indexPage()">
-                        <span>首页</span></li>
+                        <span>首页</span>
+                    </li>
                     <li ng-class="{disabled: postData.pageIndex == 1}" ng-click="prevPage()">
-                        <span>上一页</span></li>
+                        <span>上一页</span>
+                    </li>
                     <li class="disabled">
-                        <span>第{{postData.pageIndex}}页</span></li>
+                        <span>第{{postData.pageIndex}}页</span>
+                    </li>
                     <li ng-class="{disabled: paginationConf.totalItems < postData.pageSize}" ng-click="nextPage()">
-                        <span>下一页</span></li>
+                        <span>下一页</span>
+                    </li>
                 </ul>
             </div>
         </div>

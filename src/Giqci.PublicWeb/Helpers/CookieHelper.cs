@@ -1,16 +1,13 @@
-﻿using Giqci.Models;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
+using Giqci.Chapi.Models.App;
 
 namespace Giqci.PublicWeb.Helpers
 {
     public class CookieHelper
     {
-        public readonly string ExampleFileListKeyName = "ExampleFileList";
-
         public bool SetApplication(string key, Application application)
         {
             setCookies(key, JsonConvert.SerializeObject(application), 7);
@@ -28,47 +25,9 @@ namespace Giqci.PublicWeb.Helpers
             return true;
         }
 
-        #region 上传的样张文件路径记录在cookies里面
-
-        public void SetExampleList(string exampleFilePath)
-        {
-            setCookies(ExampleFileListKeyName, exampleFilePath);
-        }
-
-        public string GetExampleListStr()
-        {
-            return getCookies(ExampleFileListKeyName);
-        }
-
-        public List<ExampleCertView> GetExampleList(bool deleteExampleList = false)
-        {
-            var exampleFilePathList = getCookies(ExampleFileListKeyName).Split('|');
-            var list = new List<ExampleCertView>();
-            foreach (var exampleFilePath in exampleFilePathList)
-            {
-                if (!string.IsNullOrWhiteSpace(exampleFilePath))
-                {
-                    list.Add(new ExampleCertView {CertFilePath = exampleFilePath});
-                }
-            }
-            if (deleteExampleList)
-            {
-                DeleteExampleList();
-            }
-            return list;
-        }
-
-        public void DeleteExampleList()
-        {
-            deleteCookies(ExampleFileListKeyName);
-        }
-
-        #endregion
-
         private void setCookies(string key, string value, int expiryDays = 7)
         {
-            var cookie = new HttpCookie(key, encrypt(value));
-            cookie.Expires = DateTime.Now.AddDays(expiryDays);
+            var cookie = new HttpCookie(key, encrypt(value)) {Expires = DateTime.Now.AddDays(expiryDays)};
 
             HttpContext.Current.Response.Cookies.Add(cookie);
         }
@@ -101,10 +60,13 @@ namespace Giqci.PublicWeb.Helpers
             return value;
         }
 
-        public void OverrideCookies(string keyName, string keyValue)
+        public void OverrideCookies(string keyName, string keyValue, int expiryDays = 7)
         {
-            deleteCookies(keyName);
-            setCookies(keyName, keyValue);
+            var cookie = new HttpCookie(keyName, encrypt(keyValue));
+            cookie.Expires = DateTime.Now.AddDays(expiryDays);
+            HttpContext.Current.Response.Cookies.Set(cookie);
+            //deleteCookies(keyName);
+            //setCookies(keyName, keyValue);
         }
     }
 }
