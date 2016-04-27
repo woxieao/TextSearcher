@@ -312,9 +312,8 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
         UserName: "",
         UserAddress: "",
         UserContact: "",
-        UserPhone: "",
-        UserType: 0
-    };
+        UserPhone: ""
+        };
     $scope.loadMerchant = function () {
         $http.post("/api/UserProfile/GetProfileList", {
         }).success(function (data) {
@@ -329,9 +328,8 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
             UserName: "",
             UserAddress: "",
             UserContact: "",
-            UserPhone: "",
-            UserType: 0
-        };
+            UserPhone: ""
+            };
         $("#merchant-add").modal("show");
     };
 

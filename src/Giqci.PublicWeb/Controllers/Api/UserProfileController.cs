@@ -28,9 +28,9 @@ namespace Giqci.PublicWeb.Controllers.Api
 
         [Route("GetProfileList")]
         [HttpPost]
-        public ActionResult GetProfileList(UserType? userType)
+        public ActionResult GetProfileList()
         {
-            var profileList = _userProfileApiProxy.Select(_auth.GetAuth().MerchantId, userType);
+            var profileList = _userProfileApiProxy.Select(_auth.GetAuth().MerchantId);
             return new KtechJsonResult(HttpStatusCode.OK, new {result = profileList}, new JsonSerializerSettings());
         }
 
