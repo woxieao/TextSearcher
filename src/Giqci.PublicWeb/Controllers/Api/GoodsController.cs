@@ -33,7 +33,7 @@ namespace Giqci.PublicWeb.Controllers.Api
         {
             var productList = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, pageIndex, pageSize);
             var result = _productApiProxy.SearchProduct(productList);
-            return new KtechJsonResult(HttpStatusCode.OK, new {result = result});
+            return new KtechJsonResult(HttpStatusCode.OK, new { result = result });
         }
 
         [Route("goods/addproduct")]
@@ -54,7 +54,7 @@ namespace Giqci.PublicWeb.Controllers.Api
             }
 
             return new KtechJsonResult(HttpStatusCode.OK,
-                new {result = result, msg = msg == null ? "添加成功" : "添加失败,可能的原因:该商品已添加"});
+                new { result = result, msg = msg == null ? "添加成功" : "添加失败,可能的原因:该商品已添加" });
         }
 
         [Route("goods/delete")]
@@ -63,7 +63,7 @@ namespace Giqci.PublicWeb.Controllers.Api
         {
             _merchantRepository.RemoveProduct(_auth.GetAuth().MerchantId, ciqCode);
 
-            return new KtechJsonResult(HttpStatusCode.OK, new {result = true});
+            return new KtechJsonResult(HttpStatusCode.OK, new { result = true });
         }
 
         [Route("goods/searchproduct")]
@@ -71,7 +71,7 @@ namespace Giqci.PublicWeb.Controllers.Api
         public ActionResult SearchProductList(string ciqCode)
         {
             var result = _productApiProxy.GetProduct(ciqCode);
-            return new KtechJsonResult(HttpStatusCode.OK, new {result = result});
+            return new KtechJsonResult(HttpStatusCode.OK, new { result = result });
         }
 
 
@@ -102,7 +102,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                 flag = false;
                 msg = "提交信息不完整";
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new {flag = flag, msg = msg});
+            return new KtechJsonResult(HttpStatusCode.OK, new { flag = flag, msg = msg });
         }
 
 
@@ -111,7 +111,7 @@ namespace Giqci.PublicWeb.Controllers.Api
         public ActionResult MerchantGetCustomProductList(string keywords = "")
         {
             var result = _merchantRepository.SelectCustomerProducts(_auth.GetAuth().MerchantId, keywords);
-            return new KtechJsonResult(HttpStatusCode.OK, new {result = result});
+            return new KtechJsonResult(HttpStatusCode.OK, new { result = result });
         }
 
         [Route("goods/deletecustomproduct")]
@@ -119,7 +119,7 @@ namespace Giqci.PublicWeb.Controllers.Api
         public ActionResult MerchantDeleteCustomProduct(int id)
         {
             _merchantRepository.DeleteCustomerProduct(_auth.GetAuth().MerchantId, id);
-            return new KtechJsonResult(HttpStatusCode.OK, new {flag = true});
+            return new KtechJsonResult(HttpStatusCode.OK, new { flag = true });
         }
 
         [Route("goods/GetAllProduct")]
@@ -131,10 +131,12 @@ namespace Giqci.PublicWeb.Controllers.Api
                 string.IsNullOrEmpty(keyWords) ? 10000 : 10);
             var ciqProductList = _productApiProxy.SearchProduct(productStrList);
             var customProductList = _merchantRepository.SelectCustomerProducts(_auth.GetAuth().MerchantId, string.Empty);
+            var ran = new Random();
             foreach (var product in ciqProductList)
             {
                 allProduct.Add(new CommonProduct
                 {
+                    Id = ran.Next(100000, 999999),
                     IsApproved = product.IsApproved,
                     Brand = product.Brand,
                     Description = product.Description,
@@ -174,7 +176,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                      || (i.Package != null && i.Package.Contains(keyWords))
                      || (i.Spec != null && i.Spec.Contains(keyWords))
                      || (i.DescriptionEn != null && i.DescriptionEn.Contains(keyWords)));
-            return new KtechJsonResult(HttpStatusCode.OK, new {result = filterResult});
+            return new KtechJsonResult(HttpStatusCode.OK, new { result = filterResult });
         }
     }
 }
