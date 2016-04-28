@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Ktech.Mvc.ActionResults;
 using System.Net;
 using System.Web.Mvc;
@@ -28,7 +29,7 @@ namespace Giqci.PublicWeb.Controllers.Api
 
         [Route("goods/getproductlist")]
         [HttpPost]
-        public ActionResult MerchantGetProductList(int pageIndex = 1, int pageSize = 100)
+        public ActionResult MerchantGetProductList(int pageIndex = 1, int pageSize = 20)
         {
             var productList = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, pageIndex, pageSize);
             var result = _productApiProxy.SearchProduct(productList);
@@ -123,12 +124,12 @@ namespace Giqci.PublicWeb.Controllers.Api
 
         [Route("goods/GetAllProduct")]
         [HttpPost]
-        public ActionResult GetAllProduct()
+        public ActionResult GetAllProduct(string keyWords = "")
         {
             var allProduct = new List<CommonProduct>();
-            var productStrList = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, 1, 100);
+            var productStrList = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, 1,
+                string.IsNullOrEmpty(keyWords) ? 10000 : 10);
             var ciqProductList = _productApiProxy.SearchProduct(productStrList);
-
             var customProductList = _merchantRepository.SelectCustomerProducts(_auth.GetAuth().MerchantId, string.Empty);
             foreach (var product in ciqProductList)
             {
@@ -163,7 +164,18 @@ namespace Giqci.PublicWeb.Controllers.Api
                     Manufacturer = customProduct.Manufacturer,
                 });
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new {result = allProduct});
+            var filterResult = allProduct.Where(
+                i => i.CiqCode.Contains(keyWords)
+                     || i.Description.Contains(keyWords)
+                     || i.Brand.Contains(keyWords)
+                     || i.HsCode.Contains(keyWords)
+                     || i.Manufacturer.Contains(keyWords)
+                     || i.ManufacturerCountry.Contains(keyWords)
+                     || i.ManufacturerCountryName.Contains(keyWords)
+                     || i.Package.Contains(keyWords)
+                     || i.Spec.Contains(keyWords)
+                     || i.DescriptionEn.Contains(keyWords));
+            return new KtechJsonResult(HttpStatusCode.OK, new {result = filterResult});
         }
     }
 }
