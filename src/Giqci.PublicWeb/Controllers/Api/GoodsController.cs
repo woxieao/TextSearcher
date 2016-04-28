@@ -165,16 +165,15 @@ namespace Giqci.PublicWeb.Controllers.Api
                 });
             }
             var filterResult = allProduct.Where(
-                i => i.CiqCode.Contains(keyWords)
-                     || i.Description.Contains(keyWords)
-                     || i.Brand.Contains(keyWords)
-                     || i.HsCode.Contains(keyWords)
-                     || i.Manufacturer.Contains(keyWords)
-                     || i.ManufacturerCountry.Contains(keyWords)
-                     || i.ManufacturerCountryName.Contains(keyWords)
-                     || i.Package.Contains(keyWords)
-                     || i.Spec.Contains(keyWords)
-                     || i.DescriptionEn.Contains(keyWords));
+                i => (i.CiqCode != null && i.CiqCode.Contains(keyWords))
+                     || (i.Description != null && i.Description.Contains(keyWords))
+                     || (i.Brand != null && i.Brand.Contains(keyWords))
+                     || (i.HsCode != null && i.HsCode.Contains(keyWords))
+                     || (i.Manufacturer != null && i.Manufacturer.Contains(keyWords))
+                     || (i.ManufacturerCountry != null && i.ManufacturerCountry.Contains(keyWords))
+                     || (i.Package != null && i.Package.Contains(keyWords))
+                     || (i.Spec != null && i.Spec.Contains(keyWords))
+                     || (i.DescriptionEn != null && i.DescriptionEn.Contains(keyWords)));
             return new KtechJsonResult(HttpStatusCode.OK, new {result = filterResult});
         }
     }
