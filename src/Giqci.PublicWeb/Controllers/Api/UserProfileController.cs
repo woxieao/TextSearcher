@@ -42,7 +42,8 @@ namespace Giqci.PublicWeb.Controllers.Api
             try
             {
                 errorMsg = new UserProfileValidation().Validate(userProfile).Errors.Select(i => i.ErrorMessage).ToList();
-                _userProfileApiProxy.Add(_auth.GetAuth().MerchantId, userProfile);
+                if (!errorMsg.Any())
+                    _userProfileApiProxy.Add(_auth.GetAuth().MerchantId, userProfile);
             }
             catch
             {
@@ -59,7 +60,8 @@ namespace Giqci.PublicWeb.Controllers.Api
             try
             {
                 errorMsg = new UserProfileValidation().Validate(userProfile).Errors.Select(i => i.ErrorMessage).ToList();
-                _userProfileApiProxy.Update(_auth.GetAuth().MerchantId, userProfile);
+                if (!errorMsg.Any())
+                    _userProfileApiProxy.Update(_auth.GetAuth().MerchantId, userProfile);
             }
             catch
             {

@@ -91,7 +91,7 @@ namespace Giqci.PublicWeb.Controllers
         {
             var appkey = model.Key;
             var isNew = string.IsNullOrEmpty(appkey);
-            var errors = _dataChecker.ApplicationHasErrors(model);
+            var errors = _dataChecker.ApplicationHasErrors(model,false);
             var userName = User.Identity.Name;
             var isLogin = true;
             if (string.IsNullOrEmpty(userName))
