@@ -76,7 +76,7 @@ app.directive("ajaxLabel", function ($timeout, $http) {
         link: function (scope, element, attrs, model) {
             var $element = $(element);
             var url = attrs["ajaxUrl"];
-            scope.$watch("ngModel", function (n, o) {
+            scope.$watch(attrs.ngModel, function (n, o) {
                 scope.isLoading = false;
                 if (!scope.isLoading && typeof (model.$viewValue) !== "undefined" && model.$viewValue) {
                     $http.get("/api/dict/" + url, {
