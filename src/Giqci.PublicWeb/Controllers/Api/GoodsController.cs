@@ -101,6 +101,19 @@ namespace Giqci.PublicWeb.Controllers.Api
                 {
                     return new KtechJsonResult(HttpStatusCode.OK, new {flag = false, msg = "该商品标识已重复"});
                 }
+                //todo 两个商品表合一之后用 FluentValidation
+                if (string.IsNullOrEmpty(product.Brand)
+                    || string.IsNullOrEmpty(product.Code)
+                    || string.IsNullOrEmpty(product.Description)
+                    || string.IsNullOrEmpty(product.DescriptionEn)
+                    || string.IsNullOrEmpty(product.HsCode)
+                    || string.IsNullOrEmpty(product.ManufacturerCountry)
+                    || string.IsNullOrEmpty(product.Package)
+                    || string.IsNullOrEmpty(product.Spec)
+                    || string.IsNullOrEmpty(product.Manufacturer))
+                {
+                    return new KtechJsonResult(HttpStatusCode.OK, new {flag = false, msg = "商品信息不完整"});
+                }
                 if (product.Id > 0)
                 {
                     if (!product.IsApproved)
