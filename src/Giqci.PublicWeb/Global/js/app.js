@@ -312,8 +312,7 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
         UserName: "",
         UserAddress: "",
         UserContact: "",
-        UserPhone: "",
-        UserType: 0
+        UserPhone: ""
     };
     $scope.loadMerchant = function () {
         $http.post("/api/UserProfile/GetProfileList", {
@@ -329,8 +328,7 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
             UserName: "",
             UserAddress: "",
             UserContact: "",
-            UserPhone: "",
-            UserType: 0
+            UserPhone: ""
         };
         $("#merchant-add").modal("show");
     };
@@ -352,6 +350,12 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
             if (data.flag) {
                 $scope.loadMerchant();
                 $("#merchant-add").modal("hide");
+            } else {
+                var _errormsg = '';
+                for (var i = data.errorMsg.length; i > 0 ; i--) {
+                    _errormsg += data.errorMsg[i - 1] + "\r\n";
+                }
+                alertService.add("danger", _errormsg || "未知错误", 3000);
             }
         }).error(function (response) {
             alertService.add("danger", response.msg || "未知错误", 3000);
@@ -381,6 +385,12 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
             if (data.flag) {
                 $scope.loadMerchant();
                 $("#merchant-add").modal("hide");
+            } else {
+                var _errormsg = '';
+                for (var i = data.errorMsg.length; i > 0 ; i--) {
+                    _errormsg += data.errorMsg[i - 1] + "\r\n";
+                }
+                alertService.add("danger", _errormsg || "未知错误", 3000);
             }
         }).error(function (response) {
             alertService.add("danger", response.msg || "未知错误", 3000);

@@ -85,6 +85,7 @@ namespace Giqci.PublicWeb.Controllers
             return View();
         }
 
+        [Authorize]
         [Route("merchant")]
         [HttpGet]
         public ActionResult MerchantList()

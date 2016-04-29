@@ -76,7 +76,7 @@ app.directive("ajaxLabel", function ($timeout, $http) {
         link: function (scope, element, attrs, model) {
             var $element = $(element);
             var url = attrs["ajaxUrl"];
-            scope.$watch("ngModel", function (n, o) {
+            scope.$watch(attrs.ngModel, function (n, o) {
                 scope.isLoading = false;
                 if (!scope.isLoading && typeof (model.$viewValue) !== "undefined" && model.$viewValue) {
                     $http.get("/api/dict/" + url, {
@@ -401,3 +401,80 @@ app.directive('decodeHtml', ['$filter', function ($filter) {
         }
     };
 }]);
+
+
+app.directive("ajaxProduct", function ($timeout, $http) {
+    return {
+        restrict: 'AC',
+        require: "ngModel",
+        link: function (scope, element, attrs, model) {
+            var $element = $(element);
+            var url = attrs["ajaxUrl"];
+            scope.dataList = [];
+            $element.select2({
+                placeholder: "请输入",
+                theme: "bootstrap",
+                minimumInputLength: 0,
+                language: "zh-CN",
+                ajax: {
+                    url: "/api/goods/GetAllProduct",
+                    dataType: 'json',
+                    delay: 250,
+                    type: "POST",
+                    data: function (params) {
+                        return {
+                            keyWords: params.term
+                        };
+                    },
+                    processResults: function (data, params) {
+                        var results = [];
+                        scope.dataList = [];
+                        $.each(data.result, function (i, v) {
+                            var o = {};
+                            o.id = v.Id;
+                            o.name = (v.CiqCode ? v.CiqCode : "-") + '(' + v.Description + ")";
+                            o.CiqCode = v.CiqCode;
+                            o.Brand = v.Brand;
+                            o.Description = v.Description;
+                            o.DescriptionEn = v.DescriptionEn;
+                            o.HsCode = v.HsCode;
+                            o.IsApproved = v.IsApproved;
+                            o.Manufacturer = v.Manufacturer;
+                            o.ManufacturerCountry = v.ManufacturerCountry;
+                            o.Spec = v.Spec;
+                            o.Package = v.Package;
+                            results.push(o);
+                            scope.dataList.push(o);
+                        });
+                        return {
+                            results: results,
+                        };
+                    },
+                    cache: true
+                },
+                templateResult: function (repo) {
+                    return repo.name;
+                },
+                templateSelection: function (repo) {
+                    return repo.name;
+                }
+            }).on('change', function () {
+                scope.$apply(function (repo) {
+                    //model.$setViewValue($element.val());
+                    //console.log($element.val());
+                    var newArr = null;
+                    var _id = $element.val();
+                    for (var i = 0; i < scope.dataList.length; i++) {
+                        if (scope.dataList[i].id == _id) {
+                            newArr = scope.dataList[i];
+                            break;
+                        }
+                    }
+                    model.$setViewValue(newArr);
+                    //model = newArr;
+                    //console.log(model);
+                });
+            });
+        }
+    };
+});
