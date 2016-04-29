@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var token = string.Format("token={0}", DateTime.Now.Ticks);
+}
+<!DOCTYPE html>
 <html ng-app="giqci">
 <head>
     <meta charset="utf-8" />
@@ -9,21 +12,21 @@
     <link href="/Global/css/default.css" rel="stylesheet" />
     @*<link rel="stylesheet" id="ls-google-fonts-css" href='http://fonts.useso.com/css?family=Lato:100,300,regular,700,900%7COpen+Sans:300%7CIndie+Flower:regular%7COswald:300,regular,700&#038;subset=latin%2Clatin-ext' type='text/css' media='all' />
         <link rel="stylesheet" id="redux-google-fonts-css" href='http://fonts.useso.com/css?family=Raleway%3A400&#038;subset=latin&#038;ver=1432745489' type='text/css' media='all' />*@
-    <script src="~/Global/js/jquery-2.1.4.min.js"></script>
-    <script src="~/Global/js/angular-1.4.7.min.js"></script>
-    <link href="~/Global/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-    <link href="~/Global/css/select2/select2.min.css" rel="stylesheet" />
-    <link href="~/Global/css/select2/select2-bootstrap.css" rel="stylesheet" />
-    <script src="~/Global/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="~/Global/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
-    <script src="~/Global/js/select2/select2.min.js"></script>
-    <script src="~/Global/js/locales/select2.zh-CN.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Global/js/service.js"></script>
-    <script src="~/Global/js/app.js"></script>
-    <script src="~/Global/js/directive.js"></script>
-    <script src="~/Scripts/giqci.js"></script>
-    <script src="~/Scripts/jquery.form.js"></script>
+    <script src="~/Global/js/jquery-2.1.4.min.js?@token"></script>
+    <script src="~/Global/js/angular-1.4.7.min.js?@token"></script>
+    <link href="~/Global/css/bootstrap-datetimepicker.min.css?@token" rel="stylesheet" />
+    <link href="~/Global/css/select2/select2.min.css?@token" rel="stylesheet" />
+    <link href="~/Global/css/select2/select2-bootstrap.css?@token" rel="stylesheet" />
+    <script src="~/Global/js/bootstrap-datetimepicker.min.js?@token"></script>
+    <script src="~/Global/js/locales/bootstrap-datetimepicker.zh-CN.js?@token"></script>
+    <script src="~/Global/js/select2/select2.min.js?@token"></script>
+    <script src="~/Global/js/locales/select2.zh-CN.js?@token"></script>
+    <script src="~/Scripts/bootstrap.min.js?@token"></script>
+    <script src="~/Global/js/service.js?@token"></script>
+    <script src="~/Global/js/app.js?@token"></script>
+    <script src="~/Global/js/directive.js?@token"></script>
+    <script src="~/Scripts/giqci.js?@token"></script>
+    <script src="~/Scripts/jquery.form.js?@token"></script>
     @RenderSection("Header", false)
 </head>
 <body>
