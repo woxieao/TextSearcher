@@ -391,6 +391,7 @@
                 }
             };
             $scope.addMerchant = function () {
+                $(".merchant-add-title").html("添加常用商户信息");
                 $scope.dialogModelMerchant = {
                     UserName: "",
                     UserAddress: "",
@@ -441,6 +442,7 @@
                     $scope.dialogModelMerchant = data.result;
                 }).error(function (response) {
                 });
+                $(".merchant-add-title").html("编辑常用商户信息");
                 $("#merchant-add").modal("show");
                 $("#form-merchant-list").modal("hide");
             };
@@ -476,10 +478,10 @@
             };
 
             $scope.addCustomProduct = function () {
+                $(".form-add-custom-product-title").html("添加自定义商品");
                 $("#form-product").modal("hide");
                 $("#form-add-custom-product").modal("show");
                 $("#CustomDialogModelHsCode").next().find("span.select2-selection__rendered").html("");
-                //$scope.alerts = "";
                 $scope.CustomDialogModel = { HsCode: '', ManufacturerCountry: 036 };
             };
             $scope.addGoodsProduct = function () {
@@ -487,7 +489,6 @@
                 $("#form-add-goods-product").modal("show");
                 $scope.DialogProductCiqCode = "";
                 $scope.dialogProductList = null;
-                //$scope.alerts = "";
             };
             $scope.submitAddCustomProduct = function () {
                 $http.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
@@ -544,7 +545,7 @@
                             }
                         }).success(function (data) {
                             if (data.result) {
-                                $scope.getGoodsList();
+                                //$scope.getGoodsList();
                             }
                             var _tipType = data.result ? "success" : "danger";
                             alertService.add(_tipType, data.msg || "未知错误", 3000);
@@ -572,6 +573,22 @@
                         });
                     }
                 }
+            };
+            $scope.editMerchantProduct = function (_id) {
+                $(".form-add-custom-product-title").html("编辑自定义商品");
+                $http({
+                    url: '/api/goods/GetCustomerProductDetail',
+                    method: 'POST',
+                    data: {
+                        productId: _id
+                    }
+                }).success(function (data) {
+                    $scope.CustomDialogModel = data.product;
+                }).error(function (response) {
+                });
+                $("#CustomDialogModelHsCode").next().find("span.select2-selection__rendered").html("");
+                $("#form-add-custom-product").modal("show");
+                $("#form-product").modal("hide");
             };
         }
     ]);
@@ -858,7 +875,7 @@
                                         <div class="form-group">
                                             <div class="col-sm-8">
                                                 <p class="form-control-static" ng-if="isEdit&&item.HandlerType!=1">{{item.CiqCode?item.CiqCode:"-"}}</p>
-                                                <select ajax-product class="form-control" ng-if="!isEdit||(isEdit&&item.HandlerType==1)" ng-change="selectProduct(select,item)" ng-model="select"></select>
+                                                <select ajax-product class="form-control" ng-if="!isEdit||(isEdit&&item.HandlerType==1)" ng-change="selectProduct(select,item)" ng-model="select" style="width:100%;"></select>
                                                 <input type="hidden" ng-model="item.CiqCode" />
                                             </div>
                                             <div class="col-sm-4">
@@ -1251,7 +1268,7 @@
                             <col />
                             <col />
                             <col width='80' />
-                            <col width='80' />
+                            <col width='120' />
                         </colgroup>
                         <thead>
                             <tr>
@@ -1270,6 +1287,7 @@
                                 <td class="td-ellipsis" title="{{Product.Spec}}">{{Product.Spec}}</td>
                                 <td>
                                     <div class="btn-group" role="group">
+                                        <button ng-if="!Product.IsApproved&&Product.CiqCode==''" class="btn btn-primary btn-sm" ng-click="editMerchantProduct(Product.Id)">编辑</button>
                                         <button type="button" class="btn btn-danger btn-sm" ng-click="removeMerchantProduct(Product,$index)">删除</button>
                                     </div>
                                 </td>
@@ -1293,7 +1311,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h5 class="modal-title">添加自定义商品</h5>
+                    <h5 class="modal-title form-add-custom-product-title">添加自定义商品</h5>
                 </div>
                 <div class="modal-body">
                     <form name="appform" class="form-horizontal" method="POST" novalidate>
@@ -1351,7 +1369,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">制造国代码 *</label>
                             <div class="col-sm-10">
-                                <select ng-model="CustomDialogModel.ManufacturerCountry" class="form-control" ng-mouseover="countryClickHandler($event)" ng-options="country.Code as country.CnName for country in loadCountriesDict" style="width: 100%"></select>
+                                <select id="CustomDialogModelManufacturerCountry" ng-model="CustomDialogModel.ManufacturerCountry" class="form-control" ng-options="country.Code as country.CnName for country in loadCountriesDict" style="width: 100%"></select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -1400,41 +1418,27 @@
                         <div ng-show="dialogProductList!=null">
                             <table class="table table-striped table-layout-fixed">
                                 <colgroup>
-                                    <col width='120' />
-                                    <col width='80' />
+                                    <col width='180' />
                                     <col />
                                     <col />
-                                    <col width='80' />
-                                    <col width='140' />
-                                    <col width='80' />
                                     <col width='80' />
                                     <col width='80' />
                                 </colgroup>
                                 <thead>
                                     <tr>
                                         <th>商品备案号</th>
-                                        <th>HS编码</th>
                                         <th>中文名</th>
                                         <th>英文名</th>
                                         <th>规格</th>
-                                        <th>品牌</th>
-                                        <th>制造国代码</th>
-                                        <th>数量/包装</th>
-                                        <th>制造商</th>
                                         <th>操作</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td class="td-ellipsis" title="{{dialogProductList.CiqCode}}">{{dialogProductList.CiqCode}}</td>
-                                        <td class="td-ellipsis" title="{{dialogProductList.HSCode}}">{{dialogProductList.HSCode}}</td>
                                         <td class="td-ellipsis" title="{{dialogProductList.Description}}">{{dialogProductList.Description}}</td>
                                         <td class="td-ellipsis" title="{{dialogProductList.DescriptionEn}}">{{dialogProductList.DescriptionEn}}</td>
                                         <td class="td-ellipsis" title="{{dialogProductList.Spec}}">{{dialogProductList.Spec}}</td>
-                                        <td class="td-ellipsis" title="{{dialogProductList.Brand}}">{{dialogProductList.Brand}}</td>
-                                        <td class="td-ellipsis" title="{{dialogProductList.ManufacturerCountry}}">{{dialogProductList.ManufacturerCountry}}</td>
-                                        <td class="td-ellipsis" title="{{dialogProductList.Package}}">{{dialogProductList.Package}}</td>
-                                        <td class="td-ellipsis" title="{{dialogProductList.Manufacturer}}">{{dialogProductList.Manufacturer}}</td>
                                         <td>
                                             <div class="btn-group" role="group">
                                                 <button type="button" class="btn btn-primary btn-sm" ng-click="addDialogGoodsProduct()">添加</button>
@@ -1510,7 +1514,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h5 class="modal-title">添加常用商户信息</h5>
+                    <h5 class="modal-title merchant-add-title">添加常用商户信息</h5>
                 </div>
                 <div class="modal-body">
                     <div class="form-horizontal">
