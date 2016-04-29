@@ -858,12 +858,11 @@
                                         <div class="form-group">
                                             <div class="col-sm-6">
                                                 <p class="form-control-static" ng-if="isEdit&&item.HandlerType!=1">{{item.CiqCode?item.CiqCode:"-"}}</p>
-                                                <select ajax-product class="form-control" ng-if="!isEdit||(isEdit&&item.HandlerType==1)" ng-change="selectProduct(select,item)" ng-model="select"></select>
+                                                <select ajax-product class="form-control" ng-if="!isEdit||(isEdit&&item.HandlerType==1)" ng-change="selectProduct(select,item)" ng-model="select" placeholder="输入商品关键词进行检索"></select>
                                                 <input type="hidden" ng-model="item.CiqCode" />
                                             </div>
                                             <div class="col-sm-6">
-                                                <a class="btn btn-default" ng-click="addItemByBatchNo(item)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;添加批次号</a>
-                                                <button class="btn btn-default" type="button" ng-click="addZcodeItem(item)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加真知码</button>
+                                                <a class="btn btn-default" data-toggle="modal" data-target="#form-product"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;常用商品管理</a>
                                             </div>
                                         </div>
                                     </td>
@@ -1032,9 +1031,17 @@
                                 </table>
                             </div>
                             <!--end真知码-->
+                            <div class="">
+                                <a class="btn btn-default" ng-click="addItemByBatchNo(item)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;添加批次号</a>
+                                <button class="btn btn-default" type="button" ng-click="addZcodeItem(item)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加真知码</button>
+                            </div>
+                            <div>
+                                &nbsp;
+                            </div>
                         </div>
-                        <button class="btn btn-default" type="button" ng-click="additem()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加商品</button>
-                        <a class="btn btn-default" data-toggle="modal" data-target="#form-product"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;商品管理</a>
+                        <div class="">
+                            <button class="btn btn-default" type="button" ng-click="additem()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加商品</button>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
