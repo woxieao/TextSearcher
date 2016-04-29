@@ -945,18 +945,15 @@
                                         <p class="form-control-static">品质检验</p>
                                     </th>
                                     <td>
-                                        <div class="checkbox" ng-if="item.HandlerType==1">
+                                        <div class="checkbox">
                                             <label><input type="checkbox" ng-model="item.C102" />是否检查</label>
                                         </div>
-                                        <p ng-if="item.C102&&item.HandlerType==0" ng-model="item.C102" class="form-control-static">是</p>
-                                        <p ng-if="!item.C102&&item.HandlerType==0" ng-model="item.C102" class="form-control-static">否</p>
                                     </td>
                                     <th>
                                         <p class="form-control-static" ng-show="item.C102">检测项目</p>
                                     </th>
                                     <td>
-                                        <span ng-show="item.C102&&item.HandlerType==1"><input type="text" ng-if="item.HandlerType==1" ng-model="item.C102Comment" class="form-control" maxlength="100" /></span>
-                                        <p ng-if="item.C102&&item.HandlerType==0" class="form-control-static" ng-model="item.C102Comment">{{item.C102Comment}}</p>
+                                        <span ng-show="item.C102"><input type="text" ng-model="item.C102Comment" class="form-control" maxlength="100" /></span>
                                     </td>
                                 </tr>
                             </table>
