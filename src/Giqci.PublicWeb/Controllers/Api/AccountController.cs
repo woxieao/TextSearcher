@@ -47,7 +47,8 @@ namespace Giqci.PublicWeb.Controllers.Api
                     };
                     var m = new SmartMail(msg);
                     m.AddParameter("ActiveUrl",
-                        string.Format(@"{0}account/active?code={1}&email={2}", Config.Current.Host, authCode, input.Email));
+                        string.Format(@"{0}account/active?code={1}&email={2}", Config.Current.Host, authCode,
+                            input.Email));
                     m.To.Add(input.Email);
                     m.SendEmail();
                 }
@@ -57,7 +58,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                 result = false;
                 message = ex.Message;
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = result, message = message });
+            return new KtechJsonResult(HttpStatusCode.OK, new {result = result, message = message});
         }
 
 
@@ -77,7 +78,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                 result = false;
                 message = ex.Message;
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = result, message = message });
+            return new KtechJsonResult(HttpStatusCode.OK, new {result = result, message = message});
         }
 
         [Route("account/login")]
@@ -96,7 +97,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                 result = false;
                 message = "用户名或密码错误!";
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = result, message = message });
+            return new KtechJsonResult(HttpStatusCode.OK, new {result = result, message = message});
         }
 
         [Route("account/chanagepassword")]
@@ -115,9 +116,9 @@ namespace Giqci.PublicWeb.Controllers.Api
                 result = false;
                 message = ex.Message;
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = result, message = message });
-
+            return new KtechJsonResult(HttpStatusCode.OK, new {result = result, message = message});
         }
+
         [Route("account/forgotpassword")]
         [HttpPost]
         public ActionResult ForgotPassword(ForgotPasswordViewModel model)
@@ -142,13 +143,18 @@ namespace Giqci.PublicWeb.Controllers.Api
                     m.To.Add(model.Email);
                     m.SendEmail();
                 }
+                else
+                {
+                    result = false;
+                    message = "邮箱不存在";
+                }
             }
             catch (Exception ex)
             {
                 result = false;
                 message = ex.Message;
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = result, message = message });
+            return new KtechJsonResult(HttpStatusCode.OK, new {result = result, message = message});
         }
 
         [Route("account/heartbeat")]
@@ -159,7 +165,7 @@ namespace Giqci.PublicWeb.Controllers.Api
             {
                 _auth.Renew();
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = true, message = "" });
+            return new KtechJsonResult(HttpStatusCode.OK, new {result = true, message = ""});
         }
     }
 }

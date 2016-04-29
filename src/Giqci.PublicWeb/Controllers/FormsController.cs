@@ -93,6 +93,11 @@ namespace Giqci.PublicWeb.Controllers
             var appkey = model.Key;
             var isNew = string.IsNullOrEmpty(appkey);
             var errors = _dataChecker.ApplicationHasErrors(model, false);
+            //todo 合并在ApplicationHasErrors中,但仅限前台网站
+            if (model.InspectionDate < DateTime.Now.Date)
+            {
+                errors.Add("预约检查日期需大于等于今天");
+            }
             var userName = User.Identity.Name;
             var isLogin = true;
             if (string.IsNullOrEmpty(userName))
