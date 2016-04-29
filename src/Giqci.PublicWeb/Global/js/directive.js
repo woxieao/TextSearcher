@@ -8,7 +8,7 @@ app.directive("ajaxSelect", function ($timeout, $http) {
             var $element = $(element);
             var url = attrs["ajaxUrl"];
 
-            scope.$watch("ngModel", function (n, o) {
+            scope.$watch(attrs.ngModel, function (n, o) {
                 $(element).next().find("span.select2-selection__rendered").html('<span class="select2-selection__placeholder">请输入关键词进行搜索</span>');
                 scope.isLoading = false;
                 if (!scope.isLoading && model.$viewValue) {
