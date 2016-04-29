@@ -372,6 +372,11 @@
                     $scope.model.Application.ExporterAddr = _object.UserAddress;
                     $scope.model.Application.ExporterContact = _object.UserContact;
                     $scope.model.Application.ExporterPhone = _object.UserPhone;
+                } else {
+                    $scope.model.Application.Exporter = "";
+                    $scope.model.Application.ExporterAddr = "";
+                    $scope.model.Application.ExporterContact = "";
+                    $scope.model.Application.ExporterPhone = "";
                 }
             };
             $scope.selectImporter = function (_object) {
@@ -380,6 +385,11 @@
                     $scope.model.Application.ImporterAddr = _object.UserAddress;
                     $scope.model.Application.ImporterContact = _object.UserContact;
                     $scope.model.Application.ImporterPhone = _object.UserPhone;
+                } else {
+                    $scope.model.Application.Importer = "";
+                    $scope.model.Application.ImporterAddr = "";
+                    $scope.model.Application.ImporterContact = "";
+                    $scope.model.Application.ImporterPhone = "";
                 }
             };
             $scope.selectImBroker = function (_object) {
@@ -388,6 +398,11 @@
                     $scope.model.Application.ImBrokerAddr = _object.UserAddress;
                     $scope.model.Application.ImBrokerContact = _object.UserContact;
                     $scope.model.Application.ImBrokerPhone = _object.UserPhone;
+                } else {
+                    $scope.model.Application.ImBroker = "";
+                    $scope.model.Application.ImBrokerAddr = "";
+                    $scope.model.Application.ImBrokerContact = "";
+                    $scope.model.Application.ImBrokerPhone = "";
                 }
             };
             $scope.addMerchant = function () {
