@@ -491,7 +491,12 @@
                     }
                 });
             };
-
+            $scope.showProductList = function () {
+                $(".form-add-custom-product-title").html("商品列表");
+                $("#form-product").modal("show");
+                $("#form-add-custom-product").modal("hide");
+                $("#form-add-goods-product").modal("hide");
+            };
             $scope.addCustomProduct = function () {
                 $(".form-add-custom-product-title").html("添加自定义商品");
                 $("#form-product").modal("hide");
@@ -1335,25 +1340,25 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">自定义标识</label>
                             <div class="col-sm-10">
-                                <input type="text" ng-model="CustomDialogModel.Code" class="form-control" />
+                                <input type="text" ng-model="CustomDialogModel.Code" class="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">名称(英文) *</label>
                             <div class="col-sm-10">
-                                <input type="text" ng-model="CustomDialogModel.DescriptionEn" class="form-control" />
+                                <input type="text" ng-model="CustomDialogModel.DescriptionEn" class="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">名称(中文) *</label>
                             <div class="col-sm-10">
-                                <input type="text" ng-model="CustomDialogModel.Description" class="form-control" />
+                                <input type="text" ng-model="CustomDialogModel.Description" class="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">品牌 *</label>
                             <div class="col-sm-10">
-                                <input type="text" ng-model="CustomDialogModel.Brand" class="form-control" />
+                                <input type="text" ng-model="CustomDialogModel.Brand" class="form-control"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -1376,13 +1381,13 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">规格型号 *</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" ng-model="CustomDialogModel.Spec" />
+                                <input type="text" class="form-control" ng-model="CustomDialogModel.Spec"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">制造商 *</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" ng-model="CustomDialogModel.Manufacturer" />
+                                <input type="text" class="form-control" ng-model="CustomDialogModel.Manufacturer"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -1401,8 +1406,11 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                </div>
-            </div><!-- /.modal-content -->
+                    <button type="button" class="btn btn-default" ng-click="showProductList()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> 返回</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                    </div>
+              </div>
+          <!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <!--goods product add modal-->
@@ -1470,6 +1478,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-default" ng-click="showProductList()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> 返回</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

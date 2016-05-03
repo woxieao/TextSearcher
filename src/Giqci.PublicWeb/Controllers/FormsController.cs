@@ -54,6 +54,20 @@ namespace Giqci.PublicWeb.Controllers
                 ApplicantPhone = merchant.Phone,
                 ApplicantEmail = merchant.Email,
                 InspectionDate = DateTime.Now,
+                ApplicationProducts = new List<ApplicationProduct>
+                {
+                    new ApplicationProduct
+                    {
+                        HandlerType = HandlerType.Add,
+                        ProductItemList = new List<ProductItem>
+                        {
+                            new ProductItem
+                            {
+                                HandlerType = HandlerType.Add,
+                            }
+                        }
+                    },
+                },
                 ContainerInfos = new List<ContainerInfo>()
             };
             return View("Application", model);
