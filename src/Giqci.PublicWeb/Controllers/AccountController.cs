@@ -20,6 +20,10 @@ namespace Giqci.PublicWeb.Controllers
         [HttpGet]
         public ActionResult Login()
         {
+            if (!string.IsNullOrEmpty(User.Identity.Name))
+            {
+                return Redirect("/");
+            }
             var model = new LoginViewModel();
             return View(model);
         }
