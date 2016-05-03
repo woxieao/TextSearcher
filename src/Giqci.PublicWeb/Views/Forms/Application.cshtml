@@ -52,7 +52,7 @@
                     Spec: "",
                     CiqCode: "",
                     Manufacturer: "",
-                    ManufacturerCountry: "036",
+                    ManufacturerCountry: "36",
                     Package: "",
                     ApplicationZCodes: [],
                     ProductItemList: [
@@ -144,7 +144,7 @@
                     _object.Spec = "";
                     _object.CiqCode = "";
                     _object.Manufacturer = "";
-                    _object.ManufacturerCountry = 036;
+                    _object.ManufacturerCountry = 36;
                     _object.Package = "";
                     _object.ProductItemList = [
                         {
@@ -502,7 +502,7 @@
                 $("#form-product").modal("hide");
                 $("#form-add-custom-product").modal("show");
                 $("#CustomDialogModelHsCode").next().find("span.select2-selection__rendered").html("");
-                $scope.CustomDialogModel = { HsCode: '', ManufacturerCountry: 036 };
+                $scope.CustomDialogModel = { HsCode: '', ManufacturerCountry: 36 };
             };
             $scope.addGoodsProduct = function () {
                 $("#form-product").modal("hide");
@@ -514,23 +514,25 @@
                 $http.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
                     if (response.flag) {
                         $scope.getGoodsList();
-                        $("#form-add-custom-product").modal("hide");
-                    } else {
-                        var _tipType = response.flag ? "success" : "danger";
-                        alertService.add(_tipType, response.msg || "未知错误", 3000);
+                        alert("添加成功");
+                        $scope.showProductList();
+                    //$("#form-add-custom-product").modal("hide");
                     }
-                });
+                    var _tipType = response.flag ? "success" : "danger";
+                        alertService.add(_tipType, response.msg || "未知错误", 3000);
+                    });
             };
             $scope.submitAddGoodsProduct = function () {
                 $http.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
                     if (response.flag) {
                         $scope.getGoodsList();
-                        $("#form-add-custom-product").modal("hide");
-                    } else {
+                        alert("添加成功");
+                        $scope.showProductList(); 
+                        //$("#form-add-custom-product").modal("hide");
+                    }
                         var _tipType = response.flag ? "success" : "danger";
                         alertService.add(_tipType, response.msg || "未知错误", 3000);
-                    }
-                });
+                    });
             };
             $scope.getDialogProductList = function () {
                 if ($scope.DialogProductCiqCode != "" && $scope.DialogProductCiqCode != null) {
@@ -565,7 +567,9 @@
                             }
                         }).success(function (data) {
                             if (data.result) {
-                                //$scope.getGoodsList();
+                                $scope.getGoodsList();
+                                alert("添加成功");
+                                $scope.showProductList();
                             }
                             var _tipType = data.result ? "success" : "danger";
                             alertService.add(_tipType, data.msg || "未知错误", 3000);
@@ -1396,18 +1400,12 @@
                                 <select id="CustomDialogModelManufacturerCountry" ng-model="CustomDialogModel.ManufacturerCountry" class="form-control" ng-options="country.Code as country.CnName for country in loadCountriesDict" style="width: 100%"></select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="col-sm-offset-2 col-sm-10">
-                                <button class="btn btn-default" ng-click="submitAddCustomProduct()">
-                                    <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
-                                </button>
-                            </div>
-                        </div>
+                     
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" ng-click="showProductList()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> 返回</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                    <button class="btn btn-default" ng-click="submitAddCustomProduct();"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交</button>
                     </div>
               </div>
           <!-- /.modal-content -->
@@ -1479,8 +1477,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" ng-click="showProductList()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> 返回</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
-                </div>
+                    </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
