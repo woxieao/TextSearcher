@@ -83,13 +83,19 @@
             </div>
             <form name="appform" class="form-horizontal" method="POST" novalidate>
                 <div class="form-group">
+                    <label class="col-sm-2 control-label">自定义标识</label>
+                    <div class="col-sm-10">
+                        <input type="text" ng-model="model.Code" maxlength="50" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="col-sm-2 control-label">名称(英文) *</label>
                     <div class="col-sm-10">
                         <input type="text" ng-model="model.DescriptionEn" class="form-control"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">名称(中文)</label>
+                    <label class="col-sm-2 control-label">名称(中文)*</label>
                     <div class="col-sm-10">
                         <input type="text" ng-model="model.Description" class="form-control"/>
                     </div>
@@ -124,13 +130,13 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">制造商 </label>
+                    <label class="col-sm-2 control-label">制造商 *</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" ng-model="model.Manufacturer"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">制造国代码 *</label>
+                    <label class="col-sm-2 control-label">制造国 *</label>
                     <div class="col-sm-10">
                         <select id="ManufacturerCountry" ng-model="model.ManufacturerCountry" class="form-control" ng-mouseover="countryClickHandler($event)" ng-options="country.Code as country.CnName for country in loadCountriesDict" style="width: 100%"></select>
                     </div>

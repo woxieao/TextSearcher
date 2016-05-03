@@ -8,7 +8,8 @@ app.directive("ajaxSelect", function ($timeout, $http) {
             var $element = $(element);
             var url = attrs["ajaxUrl"];
 
-            scope.$watch("ngModel", function (n, o) {
+            scope.$watch(attrs.ngModel, function (n, o) {
+                $(element).next().find("span.select2-selection__rendered").html('<span class="select2-selection__placeholder">请输入关键词进行搜索</span>');
                 scope.isLoading = false;
                 if (!scope.isLoading && model.$viewValue) {
                     $http.get("/api/dict/" + url, {
@@ -411,10 +412,14 @@ app.directive("ajaxProduct", function ($timeout, $http) {
             var $element = $(element);
             var url = attrs["ajaxUrl"];
             scope.dataList = [];
+
+            scope.$watch("ngModel", function (n, o) {
+                $(element).next().find("span.select2-selection__rendered").html('<span class="select2-selection__placeholder">请输入关键词进行搜索</span>');
+            }, true);
+
             $element.select2({
-                placeholder: "请输入",
                 theme: "bootstrap",
-                minimumInputLength: 0,
+                minimumInputLength: 1,
                 language: "zh-CN",
                 ajax: {
                     url: "/api/goods/GetAllProduct",
