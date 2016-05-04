@@ -112,6 +112,19 @@ namespace Giqci.PublicWeb.Controllers
             {
                 errors.Add("预约检查日期需大于等于今天");
             }
+            if (string.IsNullOrEmpty(model.InspectorTel))
+            {
+                errors.Add("检验联系人电话不能为空");
+            }
+            if (string.IsNullOrEmpty(model.Inspector))
+            {
+                errors.Add("检验联系人不能为空");
+            }
+            if (string.IsNullOrEmpty(model.InspectionAddr))
+            {
+                errors.Add("检验地点不能为空");
+            }
+
             var userName = User.Identity.Name;
             var isLogin = true;
             if (string.IsNullOrEmpty(userName))
