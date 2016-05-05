@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ktech.Mvc.ActionResults;
 using System.Net;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Giqci.Chapi.Models.Customer;
 using Giqci.Interfaces;
@@ -96,7 +97,13 @@ namespace Giqci.PublicWeb.Controllers.Api
                     ? Guid.NewGuid().ToString("N").Substring(0, 6)
                     : product.Code;
                 var isExit = _merchantRepository.IsExistsCustomProductCode(_auth.GetAuth().MerchantId, product.Id,
-                    product.Code);
+                    product.Code);   
+                //todo 两个商品表合一之后用 FluentValidation
+                var reg = new Regex("^[a-z0-9A-Z]+$");
+                if (!reg.IsMatch(product.Code))
+                {
+                    return new KtechJsonResult(HttpStatusCode.OK, new {flag = false, msg = "商品标识只能为数字或者字母"});
+                }
                 if (isExit)
                 {
                     return new KtechJsonResult(HttpStatusCode.OK, new {flag = false, msg = "该商品标识已重复"});
