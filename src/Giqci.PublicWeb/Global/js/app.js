@@ -375,6 +375,7 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
         $("#merchant-add").modal("show");
     };
     $scope.remove = function (_object) {
+        if(confirm("是否删除该常用商户")){
         $http({
             url: '/api/UserProfile/RemoveProfile',
             method: 'POST',
@@ -395,6 +396,7 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
         }).error(function (response) {
             alertService.add("danger", response.msg || "未知错误", 3000);
         });
+        }
     };
 }
 ]);

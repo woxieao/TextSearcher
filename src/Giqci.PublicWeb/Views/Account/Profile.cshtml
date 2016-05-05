@@ -22,28 +22,28 @@
                 </div>
             </div>
             <div class="form-group" ng-class="{ 'has-error' : appform.name.$error.required && !appform.name.$pristine }">
-                <label class="col-sm-2 control-label">公司名:</label>
+                <label class="col-sm-2 control-label">公司名 *:</label>
                 <div class="col-sm-10">
                     <input name="name" type="text" class="form-control" ng-model="user.Name" required />
                     <small ng-show="appform.name.$error.required" class="help-block">公司名不能为空</small>
                 </div>
             </div>
             <div class="form-group" ng-class="{ 'has-error' : appform.address.$error.required && !appform.address.$pristine }">
-                <label class="col-sm-2 control-label">公司地址:</label>
+                <label class="col-sm-2 control-label">公司地址 *:</label>
                 <div class="col-sm-10">
                     <input name="address" type="text" class="form-control" ng-model="user.Address" required />
                     <small ng-show="appform.address.$error.required" class="help-block">公司地址不能为空</small>
                 </div>
             </div>
             <div class="form-group" ng-class="{ 'has-error' : appform.contact.$error.required && !appform.contact.$pristine }">
-                <label class="col-sm-2 control-label">联系人: </label>
+                <label class="col-sm-2 control-label">联系人 *: </label>
                 <div class="col-sm-10">
                     <input name="contact" type="text" class="form-control" ng-model="user.Contact" required />
                     <small ng-show="appform.contact.$error.required" class="help-block">联系人不能为空</small>
                 </div>
             </div>
             <div class="form-group" ng-class="{ 'has-error' : appform.phone.$error.required  && !appform.phone.$pristine}">
-                <label class="col-sm-2 control-label">电话: </label>
+                <label class="col-sm-2 control-label">电话 *: </label>
                 <div class="col-sm-10">
                     <input name="phone" type="text" class="form-control" ng-model="user.Phone" required />
                     <small ng-show="appform.phone.$error.required" class="help-block">电话不能为空</small>
