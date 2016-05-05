@@ -170,10 +170,10 @@
                                         <p class="form-control-static">{{item.C102?'是':'否'}}</p>
                                     </td>
                                     <th>
-                                        <p class="form-control-static">检测项目</p>
+                                        <p class="form-control-static" ng-show="item.C102">检测项目</p>
                                     </th>
                                     <td>
-                                        <p class="form-control-static">{{item.C102Comment}}</p>
+                                        <p class="form-control-static" ng-show="item.C102">{{item.C102Comment}}</p>
                                     </td>
                                 </tr>
                             </table>
