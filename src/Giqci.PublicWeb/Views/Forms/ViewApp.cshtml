@@ -113,61 +113,67 @@
                                     <col width="360" />
                                 </colgroup>
                                 <tr>
-                                    <th>商品 {{$index+1}}</th>
+                                    <th><p class="form-control-static">商品 {{$index+1}}</p></th>
                                     <td colspan="3"></td>
                                 </tr>
                                 <tr>
-                                    <th>商品备案号</th>
+                                    <th><p class="form-control-static">常用商品</p></th>
                                     <td colspan="3">
-                                        {{item.CiqCode}}
+                                        <p class="form-control-static">{{item.CiqCode}}</p>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>名称(英文) *</th>
+                                    <th><p class="form-control-static">名称(英文)</p></th>
                                     <td>
-                                        {{item.DescriptionEn}}
+                                        <p class="form-control-static">{{item.DescriptionEn}}</p>
                                     </td>
-                                    <th>名称(中文)</th>
+                                    <th><p class="form-control-static">名称(中文)</p></th>
                                     <td>
-                                        {{item.Description}}
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>品牌 *</th>
-                                    <td>
-                                        {{item.Brand}}
-                                    </td>
-                                    <th>包装 *</th>
-                                    <td>
-                                        {{item.Package}}
+                                        <p class="form-control-static">{{item.Description}}</p>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>规格型号 *</th>
+                                    <th><p class="form-control-static">品牌</p></th>
                                     <td>
-                                        {{item.Spec}}
+                                        <p class="form-control-static">{{item.Brand}}</p>
                                     </td>
-                                    <th>制造国 *</th>
+                                    <th><p class="form-control-static">包装</p></th>
                                     <td>
-                                        <p ajax-label ajax-url="countries" ng-model="item.ManufacturerCountry"></p>
+                                        <p class="form-control-static">{{item.Package}}</p>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>HS编码 *</th>
-                                    <td colspan="3">
-                                        <p ajax-label ajax-url="commonhscodes" ng-model="item.HSCode"></p>
+                                    <th><p class="form-control-static">规格型号</p></th>
+                                    <td>
+                                        <p class="form-control-static">{{item.Spec}}</p>
+                                    </td>
+                                    <th><p class="form-control-static">制造国</p></th>
+                                    <td>
+                                        <p class="form-control-static" ajax-label ajax-url="countries" ng-model="item.ManufacturerCountry"></p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th><p class="form-control-static">HS编码</p></th>
+                                    <td>
+                                        <p class="form-control-static" ajax-label ajax-url="commonhscodes" ng-model="item.HSCode"></p>
+                                    </td>
+                                    <th>
+                                        <p class="form-control-static">制造商</p>
+                                    </th>
+                                    <td>
+                                        <p ng-model="item.Manufacturer" class="form-control-static">{{item.Manufacturer}}</p>
                                     </td>
                                 </tr>
                                 <tr ng-show="model.Application.C102">
-                                    <th>品质检验</th>
+                                    <th><p class="form-control-static">品质检验</p></th>
                                     <td>
-                                        {{item.C102?'是':'否'}}
+                                        <p class="form-control-static">{{item.C102?'是':'否'}}</p>
                                     </td>
                                     <th>
-                                        检测项目
+                                        <p class="form-control-static">检测项目</p>
                                     </th>
                                     <td>
-                                        {{item.C102Comment}}
+                                        <p class="form-control-static">{{item.C102Comment}}</p>
                                     </td>
                                 </tr>
                             </table>
@@ -181,23 +187,23 @@
                                         <col width="360" />
                                     </colgroup>
                                     <tr>
-                                        <th>生产日期</th>
+                                        <th><p class="form-control-static">生产日期</p></th>
                                         <td>
-                                            {{batch.ManufacturerDate|date:'yyyy/MM/dd'}}
+                                            <p class="form-control-static">{{batch.ManufacturerDate|date:'yyyy/MM/dd'}}</p>
                                         </td>
-                                        <th>保质期 *</th>
+                                        <th><p class="form-control-static">保质期 *</p></th>
                                         <td>
-                                            {{batch.ExpiryDate|date:'yyyy/MM/dd'}}
+                                            <p class="form-control-static">{{batch.ExpiryDate|date:'yyyy/MM/dd'}}</p>
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th>批次号</th>
+                                        <th><p class="form-control-static">批次号</p></th>
                                         <td>
-                                            {{batch.BatchNo}}
+                                            <p class="form-control-static">{{batch.BatchNo}}</p>
                                         </td>
-                                        <th>数量 *</th>
+                                        <th><p class="form-control-static">数量 *</p></th>
                                         <td>
-                                            {{batch.Quantity}}
+                                            <p class="form-control-static">{{batch.Quantity}}</p>
                                         </td>
                                     </tr>
                                 </table>
@@ -212,13 +218,13 @@
                                     <col width="360" />
                                 </colgroup>
                                 <tr ng-repeat="zcode in item.ApplicationZCodes">
-                                    <th>首码</th>
+                                    <th><p class="form-control-static">首码</p></th>
                                     <td>
-                                        {{zcode.ZCodeStart}}
+                                        <p class="form-control-static">{{zcode.ZCodeStart}}</p>
                                     </td>
-                                    <th>尾码</th>
+                                    <th><p class="form-control-static">尾码</p></th>
                                     <td>
-                                        {{zcode.ZCodeEnd}}
+                                        <p class="form-control-static">{{zcode.ZCodeEnd}}</p>
                                     </td>
                                 </tr>
                             </table>
