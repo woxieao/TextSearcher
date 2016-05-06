@@ -1,4 +1,6 @@
-﻿@using Giqci.PublicWeb.Extensions
+﻿@using Giqci.Chapi.Models.App
+@using Giqci.PublicWeb.Extensions
+@using Giqci.PublicWeb.Models
 @using Ktech.Extensions
 @using Newtonsoft.Json
 @model Giqci.Chapi.Models.App.Application
@@ -341,13 +343,32 @@
                         <p ajax-label ajax-url="ports" ng-model="model.Application.LoadingPort" class="form-control-static">{{model.Application.LoadingPort}}</p>
                     </div>
                 </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">目的港口</label>
-                    <div class="col-sm-10">
-                        <p ajax-label ajax-url="ports" ng-model="model.Application.DestPort" class="form-control-static">{{model.Application.DestPort}}</p>
-                    </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">目的港口</label>
+                <div class="col-sm-10">
+                    <p ajax-label ajax-url="ports" ng-model="model.Application.DestPort" class="form-control-static">{{model.Application.DestPort}}</p>
                 </div>
             </div>
+            @{
+                var validCerts= (List<Certificate>)ViewBag.ValidCerts;
+                if (validCerts.Any())
+                {
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">证书列表</label>
+                                <div class="col-sm-10">
+                                    @foreach (var item in validCerts)
+                                    {
+                                        <div class="form-control-static">
+                                            <strong>@item.CertType.ToDescription()</strong>：<a target="_blank" href="@string.Format("{0}/{1}/{2}", Config.Current.AdminWebUrl, Config.Current.CertFileSavePath, item.CertPath)">@item.CertNo</a> by @item.SignedBy @item.SignedDate
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+         </div>
         </div>
     </div>
 </div>
