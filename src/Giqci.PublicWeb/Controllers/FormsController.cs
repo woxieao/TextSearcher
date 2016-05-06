@@ -27,10 +27,11 @@ namespace Giqci.PublicWeb.Controllers
         private readonly IProductApiProxy _prodApi;
         private readonly IAuthService _auth;
         private readonly IDataChecker _dataChecker;
+        private readonly ICertificateApiProxy _certRepo;
 
         public FormsController(IDictService cache,
             IMerchantApiProxy merchantRepo, IMerchantApplicationApiProxy appRepo, IProductApiProxy prodApi,
-            IAuthService auth, IDataChecker dataChecker)
+            IAuthService auth, IDataChecker dataChecker, ICertificateApiProxy certRepo)
         {
             _merchantRepo = merchantRepo;
             _cache = cache;
@@ -38,6 +39,7 @@ namespace Giqci.PublicWeb.Controllers
             _prodApi = prodApi;
             _auth = auth;
             _dataChecker = dataChecker;
+            _certRepo = certRepo;
         }
 
         [Route("forms/app/")]
@@ -94,6 +96,11 @@ namespace Giqci.PublicWeb.Controllers
                 }
                 default:
                 {
+                    var certs = _certRepo.Select(appkey);
+                    var validCerts = certs.GroupBy(i => i.CertType);
+                    ViewBag.ValidCerts =
+                        validCerts.Select(certTypeList => certTypeList.OrderByDescending(i => i.SignedDate).First())
+                            .ToList();
                     return View("ViewApp", application);
                 }
             }
