@@ -325,6 +325,10 @@
                         }
                         $scope.submitApp = false;
                     }, function(response) {
+                        $scope.errors = ["服务器异常,请重试"];
+                        $location.hash("h1");
+                        $anchorScroll();
+                        $scope.submitApp = false;
                         $log.warn(response);
                     });
                 };
