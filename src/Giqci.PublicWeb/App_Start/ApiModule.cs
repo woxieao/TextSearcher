@@ -1,10 +1,10 @@
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Web.Configuration;
 using Autofac;
 using Autofac.Core;
 using Giqci.ApiProxy;
 using Giqci.ApiProxy.App;
-using Giqci.ApiProxy.Logging;
 using Giqci.ApiProxy.Services;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Services;
@@ -30,8 +30,8 @@ namespace Giqci.PublicWeb
             builder.Register(x => RestClientFactory.Create(custApiUrl, false))
                 .Keyed<HttpClient>(ApiType.Customers)
                 .SingleInstance();
-            builder.Register(x => RestClientFactory.Create(logApiUrl, false))
-                .Keyed<HttpClient>(ApiType.Log)
+            builder.Register(x => logApiUrl)
+                .Keyed<string>(ApiType.Log)
                 .SingleInstance();
             builder.Register(x => RestClientFactory.Create(appApiUrl, false))
                 .Keyed<HttpClient>(ApiType.AppApiUrl)
@@ -44,48 +44,81 @@ namespace Giqci.PublicWeb
 
             builder.RegisterType<ProductApiProxy>()
                 .As<IProductApiProxy>()
-                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Products))
+                .WithParameters(
+                    new List<ResolvedParameter>()
+                    {
+                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.Products),
+                        ResolvedParameter.ForKeyed<string>(ApiType.Log),
+                    })
                 .InstancePerDependency();
 
             builder.RegisterType<UserProfileApiProxy>()
-                .As<IUserProfileApiProxy>()
-                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers))
+                .As<IUserProfileApiProxy>().WithParameters(
+                    new List<ResolvedParameter>()
+                    {
+                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers),
+                        ResolvedParameter.ForKeyed<string>(ApiType.Log),
+                    })
                 .InstancePerDependency();
 
             builder.RegisterType<MerchantApiProxy>()
-                .As<IMerchantApiProxy>()
-                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers))
+                .As<IMerchantApiProxy>().WithParameters(
+                    new List<ResolvedParameter>()
+                    {
+                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers),
+                        ResolvedParameter.ForKeyed<string>(ApiType.Log),
+                    })
                 .InstancePerDependency();
             builder.RegisterType<MerchantProductApiProxy>()
-                .As<IMerchantProductApiProxy>()
-                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers))
+                .As<IMerchantProductApiProxy>().WithParameters(
+                    new List<ResolvedParameter>()
+                    {
+                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers),
+                        ResolvedParameter.ForKeyed<string>(ApiType.Log),
+                    })
                 .InstancePerDependency();
             builder.RegisterType<ApiUserApiProxy>()
-                .As<IApiUserApiProxy>()
-                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers))
+                .As<IApiUserApiProxy>().WithParameters(
+                    new List<ResolvedParameter>()
+                    {
+                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers),
+                        ResolvedParameter.ForKeyed<string>(ApiType.Log),
+                    })
                 .InstancePerDependency();
             builder.RegisterType<MerchantApplicationApiProxy>()
-                .As<IMerchantApplicationApiProxy>()
-                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApiUrl))
+                .As<IMerchantApplicationApiProxy>().WithParameters(
+                    new List<ResolvedParameter>()
+                    {
+                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApiUrl),
+                        ResolvedParameter.ForKeyed<string>(ApiType.Log),
+                    })
                 .InstancePerDependency();
             builder.RegisterType<ApplicationViewModelApiProxy>()
-                .As<IApplicationViewModelApiProxy>()
-                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApiUrl))
+                .As<IApplicationViewModelApiProxy>().WithParameters(
+                    new List<ResolvedParameter>()
+                    {
+                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApiUrl),
+                        ResolvedParameter.ForKeyed<string>(ApiType.Log),
+                    })
                 .InstancePerDependency();
             builder.RegisterType<CertificateApiProxy>()
-                .As<ICertificateApiProxy>()
-                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApiUrl))
+                .As<ICertificateApiProxy>().WithParameters(
+                    new List<ResolvedParameter>()
+                    {
+                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApiUrl),
+                        ResolvedParameter.ForKeyed<string>(ApiType.Log),
+                    })
                 .InstancePerDependency();
 
             builder.RegisterType<CachedDictService>()
-                .As<IDictService>()
-                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Dict))
+                .As<IDictService>().WithParameters(
+                    new List<ResolvedParameter>()
+                    {
+                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.Dict),
+                        ResolvedParameter.ForKeyed<string>(ApiType.Log),
+                    })
                 .InstancePerDependency();
             builder.RegisterType<AuthService>().As<IAuthService>().InstancePerDependency();
-            builder.RegisterType<LoggingApiProxy>()
-                .As<ILoggingApiProxy>()
-                .WithParameter(ResolvedParameter.ForKeyed<HttpClient>(ApiType.Log))
-                .InstancePerDependency();
             builder.RegisterType<DataChecker>()
                 .As<IDataChecker>()
                 .InstancePerDependency();
