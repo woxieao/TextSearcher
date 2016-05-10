@@ -91,18 +91,18 @@ namespace Giqci.PublicWeb.Controllers
             switch (application.Status)
             {
                 case ApplicationStatus.New:
-                {
-                    return View(application);
-                }
+                    {
+                        return View(application);
+                    }
                 default:
-                {
-                    var certs = _certRepo.Select(appkey);
-                    var validCerts = certs.GroupBy(i => i.CertType);
-                    ViewBag.ValidCerts =
-                        validCerts.Select(certTypeList => certTypeList.OrderByDescending(i => i.SignedDate).First())
-                            .ToList();
-                    return View("ViewApp", application);
-                }
+                    {
+                        var certs = _certRepo.Select(appkey);
+                        var validCerts = certs.GroupBy(i => i.CertType);
+                        ViewBag.ValidCerts =
+                            validCerts.Select(certTypeList => certTypeList.OrderByDescending(i => i.SignedDate).First())
+                                .ToList();
+                        return View("ViewApp", application);
+                    }
             }
         }
 
@@ -113,7 +113,8 @@ namespace Giqci.PublicWeb.Controllers
         {
             var appkey = model.Key;
             var isNew = string.IsNullOrEmpty(appkey);
-            var errors = _dataChecker.ApplicationHasErrors(model, false);
+            var port = _cache.GetPort(model.DestPort);
+            var errors = _dataChecker.ApplicationHasErrors(model, false, port.RequireCiqCode);
             //todo 合并在ApplicationHasErrors中,但仅限前台网站
             if (model.InspectionDate < DateTime.Now.Date)
             {
@@ -131,15 +132,23 @@ namespace Giqci.PublicWeb.Controllers
             {
                 errors.Add("检验地点不能为空");
             }
-
+            if (string.IsNullOrEmpty(model.Voyage) || (!string.IsNullOrEmpty(model.Voyage) && DateTime.Parse(model.Voyage) < DateTime.Now.Date))
+            {
+                errors.Add("出发日期应大于等于当前时间");
+            }
+            if (string.IsNullOrEmpty(model.ShippingDate) || (!string.IsNullOrEmpty(model.ShippingDate) && DateTime.Parse(model.ShippingDate) < DateTime.Now.Date))
+            {
+                errors.Add("计划发货日期应大于等于当前时间");
+            }
             var userName = User.Identity.Name;
             var isLogin = true;
             if (string.IsNullOrEmpty(userName))
             {
                 isLogin = false;
-                errors = new List<string>() {"登录状态已失效，请您重新登录系统"};
+                errors = new List<string>() { "登录状态已失效，请您重新登录系统" };
             }
             var merchantId = _merchantRepo.GetMerchant(User.Identity.Name).Id;
+
             if (!errors.Any())
             {
                 GetTotalUnits(ref model);
@@ -154,7 +163,7 @@ namespace Giqci.PublicWeb.Controllers
                 errors = null;
             }
             return new KtechJsonResult(HttpStatusCode.OK,
-                new {isNew = isNew, appkey = appkey, isLogin = isLogin, errors = errors});
+                new { isNew = isNew, appkey = appkey, isLogin = isLogin, errors = errors });
         }
 
 
@@ -202,7 +211,6 @@ namespace Giqci.PublicWeb.Controllers
                 }
             }
         }
-
         #endregion
     }
 }
