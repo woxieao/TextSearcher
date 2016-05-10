@@ -113,8 +113,14 @@ namespace Giqci.PublicWeb.Controllers
         {
             var appkey = model.Key;
             var isNew = string.IsNullOrEmpty(appkey);
-            var port = _cache.GetPort(model.DestPort);
-            var errors = _dataChecker.ApplicationHasErrors(model, false, port.RequireCiqCode);
+            bool isRequireCiqCode = false;
+            if (!string.IsNullOrEmpty(model.DestPort))
+            {
+                var port = _cache.GetPort(model.DestPort);
+                isRequireCiqCode = port.RequireCiqCode;
+            }
+
+            var errors = _dataChecker.ApplicationHasErrors(model, false, isRequireCiqCode);
             //todo 合并在ApplicationHasErrors中,但仅限前台网站
             if (model.InspectionDate < DateTime.Now.Date)
             {

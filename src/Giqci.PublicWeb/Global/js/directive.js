@@ -407,12 +407,11 @@ app.directive('decodeHtml', ['$filter', function ($filter) {
 app.directive("ajaxProduct", function ($timeout, $http) {
     return {
         restrict: 'AC',
-        require: "ngModel",
+        require: "^ngModel",
         link: function (scope, element, attrs, model) {
             var $element = $(element);
             var url = attrs["ajaxUrl"];
             scope.dataList = [];
-
             scope.$watch("ngModel", function (n, o) {
                 $(element).next().find("span.select2-selection__rendered").html('<span class="select2-selection__placeholder">请输入关键词进行搜索</span>');
             }, true);
@@ -428,7 +427,9 @@ app.directive("ajaxProduct", function ($timeout, $http) {
                     type: "POST",
                     data: function (params) {
                         return {
-                            keyWords: params.term
+                            keyWords: params.term,
+                            code: scope.model.Application.DestPort,
+                            tradetype: scope.model.Application.TradeType
                         };
                     },
                     processResults: function (data, params) {
