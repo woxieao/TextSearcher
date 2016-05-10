@@ -13,6 +13,19 @@ namespace Giqci.PublicWeb
 {
     public class ApiModule : Module
     {
+        private bool GetLogSwitch(string configName)
+        {
+            var logCinfig = WebConfigurationManager.AppSettings[configName] ?? string.Empty;
+            return logCinfig == "1" || logCinfig.ToLower() == "true";
+        }
+
+        private bool GetLogSwitch(LogSwitch logName)
+        {
+            var logCinfig = WebConfigurationManager.AppSettings[string.Format("{0}LogSwitch", logName)] ??
+                            string.Empty;
+            return logCinfig == "1" || logCinfig.ToLower() == "true";
+        }
+
         protected override void Load(ContainerBuilder builder)
         {
             var dictApiUrl = WebConfigurationManager.AppSettings["dictApiUrl"];
@@ -20,6 +33,8 @@ namespace Giqci.PublicWeb
             var custApiUrl = WebConfigurationManager.AppSettings["custApiUrl"];
             var logApiUrl = WebConfigurationManager.AppSettings["logApiUrl"];
             var appApiUrl = WebConfigurationManager.AppSettings["appApiUrl"];
+
+            #region init httpClient
 
             builder.Register(x => RestClientFactory.Create(dictApiUrl, false))
                 .Keyed<HttpClient>(ApiType.Dict)
@@ -30,17 +45,35 @@ namespace Giqci.PublicWeb
             builder.Register(x => RestClientFactory.Create(custApiUrl, false))
                 .Keyed<HttpClient>(ApiType.Customers)
                 .SingleInstance();
-            builder.Register(x => logApiUrl)
-                .Keyed<string>(ApiType.Log)
-                .SingleInstance();
             builder.Register(x => RestClientFactory.Create(appApiUrl, false))
-                .Keyed<HttpClient>(ApiType.AppApiUrl)
+                .Keyed<HttpClient>(ApiType.AppApi)
                 .SingleInstance();
+
+            #endregion
+
+            #region init str
+
+            builder.Register(x => logApiUrl)
+                .Keyed<string>(StrList.LogUrl)
+                .SingleInstance();
+
+            #endregion
 
             //builder.RegisterType<MerchantApplicationApiProxy>()
             //    .As<IMerchantApplicationApiProxy>()
             //    .InstancePerDependency();
             //builder.RegisterType<CertificateApiProxy>().As<ICertificateApiProxy>().InstancePerDependency();
+
+            #region init log switch 
+
+            builder.Register(x => GetLogSwitch(LogSwitch.Dict)).Keyed<bool>(LogSwitch.Dict).SingleInstance();
+            builder.Register(x => GetLogSwitch(LogSwitch.Products)).Keyed<bool>(LogSwitch.Products).SingleInstance();
+            builder.Register(x => GetLogSwitch(LogSwitch.Customers)).Keyed<bool>(LogSwitch.Customers).SingleInstance();
+            builder.Register(x => GetLogSwitch(LogSwitch.AppApi)).Keyed<bool>(LogSwitch.AppApi).SingleInstance();
+
+            #endregion
+
+            #region init interface
 
             builder.RegisterType<ProductApiProxy>()
                 .As<IProductApiProxy>()
@@ -48,7 +81,8 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.Products),
-                        ResolvedParameter.ForKeyed<string>(ApiType.Log),
+                        ResolvedParameter.ForKeyed<string>(StrList.LogUrl),
+                        ResolvedParameter.ForKeyed<bool>(LogSwitch.Products),
                     })
                 .InstancePerDependency();
 
@@ -57,7 +91,8 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers),
-                        ResolvedParameter.ForKeyed<string>(ApiType.Log),
+                        ResolvedParameter.ForKeyed<string>(StrList.LogUrl),
+                        ResolvedParameter.ForKeyed<bool>(LogSwitch.Customers),
                     })
                 .InstancePerDependency();
 
@@ -66,7 +101,8 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers),
-                        ResolvedParameter.ForKeyed<string>(ApiType.Log),
+                        ResolvedParameter.ForKeyed<string>(StrList.LogUrl),
+                        ResolvedParameter.ForKeyed<bool>(LogSwitch.Customers),
                     })
                 .InstancePerDependency();
             builder.RegisterType<MerchantProductApiProxy>()
@@ -74,7 +110,8 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers),
-                        ResolvedParameter.ForKeyed<string>(ApiType.Log),
+                        ResolvedParameter.ForKeyed<string>(StrList.LogUrl),
+                        ResolvedParameter.ForKeyed<bool>(LogSwitch.Customers),
                     })
                 .InstancePerDependency();
             builder.RegisterType<ApiUserApiProxy>()
@@ -82,31 +119,35 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers),
-                        ResolvedParameter.ForKeyed<string>(ApiType.Log),
+                        ResolvedParameter.ForKeyed<string>(StrList.LogUrl),
+                        ResolvedParameter.ForKeyed<bool>(LogSwitch.Customers),
                     })
                 .InstancePerDependency();
             builder.RegisterType<MerchantApplicationApiProxy>()
                 .As<IMerchantApplicationApiProxy>().WithParameters(
                     new List<ResolvedParameter>()
                     {
-                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApiUrl),
-                        ResolvedParameter.ForKeyed<string>(ApiType.Log),
+                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApi),
+                        ResolvedParameter.ForKeyed<string>(StrList.LogUrl),
+                        ResolvedParameter.ForKeyed<bool>(LogSwitch.AppApi),
                     })
                 .InstancePerDependency();
             builder.RegisterType<ApplicationViewModelApiProxy>()
                 .As<IApplicationViewModelApiProxy>().WithParameters(
                     new List<ResolvedParameter>()
                     {
-                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApiUrl),
-                        ResolvedParameter.ForKeyed<string>(ApiType.Log),
+                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApi),
+                        ResolvedParameter.ForKeyed<string>(StrList.LogUrl),
+                        ResolvedParameter.ForKeyed<bool>(LogSwitch.AppApi),
                     })
                 .InstancePerDependency();
             builder.RegisterType<CertificateApiProxy>()
                 .As<ICertificateApiProxy>().WithParameters(
                     new List<ResolvedParameter>()
                     {
-                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApiUrl),
-                        ResolvedParameter.ForKeyed<string>(ApiType.Log),
+                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApi),
+                        ResolvedParameter.ForKeyed<string>(StrList.LogUrl),
+                        ResolvedParameter.ForKeyed<bool>(LogSwitch.AppApi),
                     })
                 .InstancePerDependency();
 
@@ -115,13 +156,16 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.Dict),
-                        ResolvedParameter.ForKeyed<string>(ApiType.Log),
+                        ResolvedParameter.ForKeyed<string>(StrList.LogUrl),
+                        ResolvedParameter.ForKeyed<bool>(LogSwitch.Dict),
                     })
                 .InstancePerDependency();
             builder.RegisterType<AuthService>().As<IAuthService>().InstancePerDependency();
             builder.RegisterType<DataChecker>()
                 .As<IDataChecker>()
                 .InstancePerDependency();
+
+            #endregion
         }
 
         private enum ApiType
@@ -129,8 +173,20 @@ namespace Giqci.PublicWeb
             Dict,
             Products,
             Customers,
-            Log,
-            AppApiUrl
+            AppApi
+        }
+
+        private enum StrList
+        {
+            LogUrl,
+        }
+
+        private enum LogSwitch
+        {
+            Dict,
+            Products,
+            Customers,
+            AppApi
         }
     }
 }
