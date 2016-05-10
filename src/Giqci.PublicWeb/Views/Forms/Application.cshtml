@@ -6,633 +6,636 @@
     ViewBag.Title = "证书申请表格";
 }
 @section Footer{
-    <script type="text/javascript">
-        //var app = angular.module("giqci", []);
-        function getDate(str) {
-            return str ? new Date(str) : null;
-        }
+<script type="text/javascript">
+    //var app = angular.module("giqci", []);
+    function getDate(str) {
+        return str ? new Date(str) : null;
+    }
 
-        app.controller("GlobalController", [
-            '$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', '$filter', 'alertService', function ($http, $scope, $log, $location, $anchorScroll, $timeout, $filter, alertService) {
-                $scope.model = {};
-                $scope.model.Application = ObjDecodeToJson(@HtmlExtensions.RawJson(Model));
-                //$log.log($scope.model.Application);
-                $scope.dataInit = function () {
-                    $scope.model.Application.InspectionDate = $filter('date')($scope.model.Application.InspectionDate, 'yyyy/MM/dd');
-                    for (var i = 0; i < $scope.model.Application.ApplicationProducts.length; i++) {
-                        for (var j = 0; j < $scope.model.Application.ApplicationProducts[i].ProductItemList.length; j++) {
-                            $scope.model.Application.ApplicationProducts[i].ProductItemList[j].ManufacturerDate = $filter('date')($scope.model.Application.ApplicationProducts[i].ProductItemList[j].ManufacturerDate, 'yyyy/MM/dd');
-                            $scope.model.Application.ApplicationProducts[i].ProductItemList[j].ExpiryDate = $filter('date')($scope.model.Application.ApplicationProducts[i].ProductItemList[j].ExpiryDate, 'yyyy/MM/dd');
-                        }
+    app.controller("GlobalController", [
+        '$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', '$filter', 'alertService', function ($http, $scope, $log, $location, $anchorScroll, $timeout, $filter, alertService) {
+            $scope.model = {};
+            $scope.model.Application = ObjDecodeToJson(@HtmlExtensions.RawJson(Model));
+            //$log.log($scope.model.Application);
+            $scope.dataInit = function () {
+                $scope.model.Application.InspectionDate = $filter('date')($scope.model.Application.InspectionDate, 'yyyy/MM/dd');
+                for (var i = 0; i < $scope.model.Application.ApplicationProducts.length; i++) {
+                    for (var j = 0; j < $scope.model.Application.ApplicationProducts[i].ProductItemList.length; j++) {
+                        $scope.model.Application.ApplicationProducts[i].ProductItemList[j].ManufacturerDate = $filter('date')($scope.model.Application.ApplicationProducts[i].ProductItemList[j].ManufacturerDate, 'yyyy/MM/dd');
+                        $scope.model.Application.ApplicationProducts[i].ProductItemList[j].ExpiryDate = $filter('date')($scope.model.Application.ApplicationProducts[i].ProductItemList[j].ExpiryDate, 'yyyy/MM/dd');
                     }
-                };
-                if ($scope.model.Application.Key == null) {
-                    $scope.model.Application.TradeType = "4";
-                    $scope.model.Application.ShippingMethod = 1;
                 }
+            };
+            if ($scope.model.Application.Key == null) {
+                $scope.model.Application.TradeType = "4";
+                $scope.model.Application.ShippingMethod = 1;
+            }
 
-                $scope.isEdit = $scope.model.Application.Key != null;
-                $scope.dataInit();
-                $scope.errors = [];
-                if ($scope.model.Application.Key != null) {
-                    $scope.acceptshow = false;
-                    $scope.appshow = true;
-                    $("#appliction-form").show();
-                } else {
-                    $scope.acceptshow = true;
-                    $scope.appshow = false;
-                    $("#accept-form").hide();
-                }
-                $scope.additem = function () {
-                    $scope.model.Application.ApplicationProducts.push({
-                        DescriptionEn: "",
-                        Description: "",
-                        Brand: "",
-                        HSCode: "",
-                        Spec: "",
-                        CiqCode: "",
-                        Manufacturer: "",
-                        ManufacturerCountry: "036",
-                        Package: "",
-                        ApplicationZCodes: [],
-                        ProductItemList: [
-                            {
-                                BatchNo: "",
-                                Quantity: 0.0,
-                                ManufacturerDate: null,
-                                ExpiryDate: null,
-                                HandlerType: 1
-                            }
-                        ],
-                        HandlerType: 1
-                    });
-                };
-                $(function () {
-                    $('.datetimepicker').datetimepicker({
-                        language: 'zh-CN',
-                        format: 'yyyy/mm/dd',
-                        autoclose: true,
-                        minView: "month",
-                        todayBtn: true,
-                    }).on("hide", function () {
-                        var $this = $(this);
-                        var _this = this;
-                        $scope.$apply(function () {
-                            $scope[$this.attr('ng-model')] = _this.value;
-                        });
+            $scope.isEdit = $scope.model.Application.Key != null;
+            $scope.dataInit();
+            $scope.errors = [];
+            if ($scope.model.Application.Key != null) {
+                $scope.acceptshow = false;
+                $scope.appshow = true;
+                $("#appliction-form").show();
+            } else {
+                $scope.acceptshow = true;
+                $scope.appshow = false;
+                $("#accept-form").hide();
+            }
+            $scope.additem = function () {
+                $scope.model.Application.ApplicationProducts.push({
+                    DescriptionEn: "",
+                    Description: "",
+                    Brand: "",
+                    HSCode: "",
+                    Spec: "",
+                    CiqCode: "",
+                    Manufacturer: "",
+                    ManufacturerCountry: "036",
+                    Package: "",
+                    ApplicationZCodes: [],
+                    ProductItemList: [
+                        {
+                            BatchNo: "",
+                            Quantity: 0.0,
+                            ManufacturerDate: null,
+                            ExpiryDate: null,
+                            HandlerType: 1
+                        }
+                    ],
+                    HandlerType: 1
+                });
+            };
+            $(function () {
+                $('.datetimepicker').datetimepicker({
+                    language: 'zh-CN',
+                    format: 'yyyy/mm/dd',
+                    autoclose: true,
+                    minView: "month",
+                    todayBtn: true,
+                }).on("hide", function () {
+                    var $this = $(this);
+                    var _this = this;
+                    $scope.$apply(function () {
+                        $scope[$this.attr('ng-model')] = _this.value;
                     });
                 });
+            });
 
-                $scope.listFilter = function (item) {
-                    return item.HandlerType === 1 || item.HandlerType === 0;
-                };
+            $scope.listFilter = function (item) {
+                return item.HandlerType === 1 || item.HandlerType === 0;
+            };
 
-                $scope.addContainerInfo = function () {
-                    $scope.model.Application.ContainerInfos.push({ ContainerNumber: "", SealNumber: "", HandlerType: 1 });
-                };
-                $scope.removeContainerInfo = function (_object) {
-                    _object.HandlerType = -1;
-                };
-                $scope.merchantProductList = { CiqCode: 0, Description: "" };
-                $scope.removeitem = function (_object) {
-                    _object.HandlerType = -1;
-                    for (var j = 0; j < _object.ProductItemList.length; j++) {
-                        _object.ProductItemList[j].HandlerType = -1;
-                    }
-                    for (var j = 0; j < _object.ApplicationZCodes.length; j++) {
-                        _object.ApplicationZCodes[j].HandlerType = -1;
-                    }
-                };
-                $scope.getGoodsList = function () {
-                    $http({
-                        url: '/api/goods/GetAllProduct',
-                        method: 'POST'
-                    }).success(function (response) {
-                        $scope.merchantProductList = response.result;
-                    }).error(function (response) {
-                        $log.warn(response);
-                    });
+            $scope.addContainerInfo = function () {
+                $scope.model.Application.ContainerInfos.push({ ContainerNumber: "", SealNumber: "", HandlerType: 1 });
+            };
+            $scope.removeContainerInfo = function (_object) {
+                _object.HandlerType = -1;
+            };
+            $scope.merchantProductList = { CiqCode: 0, Description: "" };
+            $scope.removeitem = function (_object) {
+                _object.HandlerType = -1;
+                for (var j = 0; j < _object.ProductItemList.length; j++) {
+                    _object.ProductItemList[j].HandlerType = -1;
                 }
-                $scope.getGoodsList();
-
-                $scope.selectProduct = function (_selected, _object) {
-                    if (_selected != null) {
-                        _object.DescriptionEn = _selected.DescriptionEn;
-                        _object.Description = _selected.Description;
-                        _object.Brand = _selected.Brand;
-                        _object.HSCode = _selected.HsCode;
-                        _object.Spec = _selected.Spec;
-                        _object.CiqCode = _selected.CiqCode;
-                        _object.Manufacturer = _selected.Manufacturer;
-                        _object.ManufacturerCountry = _selected.ManufacturerCountry;
-                        _object.Package = _selected.Package;
-                        _object.ProductItemList = [
-                            {
-                                BatchNo: "",
-                                Quantity: 0.0,
-                                ManufacturerDate: null,
-                                ExpiryDate: null,
-                                HandlerType: 1
-                            }
-                        ];
-                        _object.ApplicationZCodes = [];
-                    } else {
-                        _object.DescriptionEn = "";
-                        _object.Description = "";
-                        _object.Brand = "";
-                        _object.HSCode = "";
-                        _object.Spec = "";
-                        _object.CiqCode = "";
-                        _object.Manufacturer = "";
-                        _object.ManufacturerCountry = "036";
-                        _object.Package = "";
-                        _object.ProductItemList = [
-                            {
-                                BatchNo: "",
-                                Quantity: 0.0,
-                                ManufacturerDate: null,
-                                ExpiryDate: null,
-                                HandlerType: 1
-                            }
-                        ];
-                        _object.ApplicationZCodes = [];
-                        _object.isEditInputDefault = true;
-                    }
-                    _object.Selected = _selected;
-                };
-                $scope.addItemByBatchNo = function (_object) {
-                    _object.ProductItemList.push({
-                        ManufacturerDate: "",
-                        ExpiryDate: "",
-                        BatchNo: "",
-                        Quantity: 0,
-                        HandlerType: 1
-                    });
-                };
-
-                $scope.removeItemByBatchNo = function (_object) {
-                    _object.HandlerType = -1;
-                };
-                $scope.addZcodeItem = function (_object) {
-                    _object.ApplicationZCodes.push({
-                        ZCodeStart: "",
-                        ZCodeEnd: "",
-                        HandlerType: 1
-                    });
-                };
-                $scope.removeZcodeItem = function (_object) {
-                    _object.HandlerType = -1;
-                };
-
-                $scope.Product = null;
-                $scope.getproductlist = function () {
-                    if ($scope.CiqCode != "") {
-                        $http({
-                            url: '/api/goods/searchproduct',
-                            method: 'POST',
-                            data: {
-                                ciqCode: $scope.CiqCode
-                            }
-                        }).success(function (data) {
-                            $scope.Product = data.result;
-                        }).error(function (data, header, config, status) {
-                        });
-                    }
+                for (var j = 0; j < _object.ApplicationZCodes.length; j++) {
+                    _object.ApplicationZCodes[j].HandlerType = -1;
                 }
+            };
+            $scope.getGoodsList = function () {
+                $http({
+                    url: '/api/goods/GetAllProduct',
+                    method: 'POST'
+                }).success(function (response) {
+                    $scope.merchantProductList = response.result;
+                }).error(function (response) {
+                    $log.warn(response);
+                });
+            }
+            $scope.getGoodsList();
 
-                $scope.selectGoods = function (index) {
+            $scope.selectProduct = function (_selected, _object) {
+                if (_selected != null) {
+                    _object.DescriptionEn = _selected.DescriptionEn;
+                    _object.IsEditDescriptionEn = _selected.DescriptionEn == "" || _selected.DescriptionEn == 'NIL';
+                    _object.Description = _selected.Description;
+                    _object.Brand = _selected.Brand;
+                    _object.HSCode = _selected.HsCode;
+                    _object.Spec = _selected.Spec;
+                    _object.CiqCode = _selected.CiqCode;
+                    _object.Manufacturer = _selected.Manufacturer;
+                    _object.IsEditManufacturer = _selected.Manufacturer == "" || _selected.Manufacturer == 'NIL';
+                    _object.ManufacturerCountry = _selected.ManufacturerCountry;
+                    _object.Package = _selected.Package;
+                    _object.IsEditPackage = _selected.Package == "" || _selected.Package == 'NIL';
+                    _object.ProductItemList = [
+                        {
+                            BatchNo: "",
+                            Quantity: 0.0,
+                            ManufacturerDate: null,
+                            ExpiryDate: null,
+                            HandlerType: 1
+                        }
+                    ];
+                    _object.ApplicationZCodes = [];
+                } else {
+                    _object.DescriptionEn = "";
+                    _object.Description = "";
+                    _object.Brand = "";
+                    _object.HSCode = "";
+                    _object.Spec = "";
+                    _object.CiqCode = "";
+                    _object.Manufacturer = "";
+                    _object.ManufacturerCountry = "036";
+                    _object.Package = "";
+                    _object.ProductItemList = [
+                        {
+                            BatchNo: "",
+                            Quantity: 0.0,
+                            ManufacturerDate: null,
+                            ExpiryDate: null,
+                            HandlerType: 1
+                        }
+                    ];
+                    _object.ApplicationZCodes = [];
+                    _object.isEditInputDefault = true;
+                }
+                _object.Selected = _selected;
+            };
+            $scope.addItemByBatchNo = function (_object) {
+                _object.ProductItemList.push({
+                    ManufacturerDate: "",
+                    ExpiryDate: "",
+                    BatchNo: "",
+                    Quantity: 0,
+                    HandlerType: 1
+                });
+            };
+
+            $scope.removeItemByBatchNo = function (_object) {
+                _object.HandlerType = -1;
+            };
+            $scope.addZcodeItem = function (_object) {
+                _object.ApplicationZCodes.push({
+                    ZCodeStart: "",
+                    ZCodeEnd: "",
+                    HandlerType: 1
+                });
+            };
+            $scope.removeZcodeItem = function (_object) {
+                _object.HandlerType = -1;
+            };
+
+            $scope.Product = null;
+            $scope.getproductlist = function () {
+                if ($scope.CiqCode != "") {
                     $http({
                         url: '/api/goods/searchproduct',
                         method: 'POST',
                         data: {
-                            ciqCode: $scope.merchantProductList[index].CiqCode
+                            ciqCode: $scope.CiqCode
                         }
                     }).success(function (data) {
-                        var product = data.result;
-                        $scope.model.Application.ApplicationProducts.push({
-                            CiqCode: product.CiqCode,
-                            HSCode: product.HSCode,
-                            Description: product.Description,
-                            DescriptionEn: product.DescriptionEn,
-                            Spec: product.Spec,
-                            Brand: product.Brand,
-                            Manufacturer: product.Manufacturer,
-                            ManufacturerCountry: product.ManufacturerCountry,
-                            Package: product.Package
-                        });
+                        $scope.Product = data.result;
                     }).error(function (data, header, config, status) {
                     });
                 }
-                $scope.itemClickHandler = function (event) {
-                    var currentElement = event.target;
-                    //console.log(currentElement);
-                    $(currentElement).datetimepicker({
-                        language: 'zh-CN',
-                        format: 'yyyy/mm/dd',
-                        autoclose: true,
-                        minView: "month",
-                        todayBtn: true,
-                    }).on("hide", function () {
-                        var $this = $(this);
-                        var _this = this;
-                        $scope.$apply(function () {
-                            $scope[$this.attr('ng-model')] = _this.value;
-                        });
-                    });
-                };
-                $scope.countryClickHandler = function (event) {
-                    var currentElement = event.target;
-                    $(currentElement).select2({ theme: "bootstrap", width: 'resolve' });
-                };
-                $scope.accept = function () {
-                    $scope.acceptshow = false;
-                    $scope.appshow = true;
-                    $("#accept-form").hide();
-                    $("#appliction-form").show();
-                };
+            }
 
-                $scope.check_type_c102 = function () {
-                    if ($scope.model.Application.C102) {
-                        $scope.show_c_102 = true;
-                    } else {
-                        $scope.show_c_102 = false;
+            $scope.selectGoods = function (index) {
+                $http({
+                    url: '/api/goods/searchproduct',
+                    method: 'POST',
+                    data: {
+                        ciqCode: $scope.merchantProductList[index].CiqCode
                     }
-                };
+                }).success(function (data) {
+                    var product = data.result;
+                    $scope.model.Application.ApplicationProducts.push({
+                        CiqCode: product.CiqCode,
+                        HSCode: product.HSCode,
+                        Description: product.Description,
+                        DescriptionEn: product.DescriptionEn,
+                        Spec: product.Spec,
+                        Brand: product.Brand,
+                        Manufacturer: product.Manufacturer,
+                        ManufacturerCountry: product.ManufacturerCountry,
+                        Package: product.Package
+                    });
+                }).error(function (data, header, config, status) {
+                });
+            }
+            $scope.itemClickHandler = function (event) {
+                var currentElement = event.target;
+                //console.log(currentElement);
+                $(currentElement).datetimepicker({
+                    language: 'zh-CN',
+                    format: 'yyyy/mm/dd',
+                    autoclose: true,
+                    minView: "month",
+                    todayBtn: true,
+                }).on("hide", function () {
+                    var $this = $(this);
+                    var _this = this;
+                    $scope.$apply(function () {
+                        $scope[$this.attr('ng-model')] = _this.value;
+                    });
+                });
+            };
+            $scope.countryClickHandler = function (event) {
+                var currentElement = event.target;
+                $(currentElement).select2({ theme: "bootstrap", width: 'resolve' });
+            };
+            $scope.accept = function () {
+                $scope.acceptshow = false;
+                $scope.appshow = true;
+                $("#accept-form").hide();
+                $("#appliction-form").show();
+            };
 
-                $scope.removeExample = function (_object) {
-                    _object.HandlerType = -1;
-                };
-                $scope.check_type_c102();
-
-                /*login model*/
-                $scope.login = {
-                    result: true,
-                    error: ""
-                };
-                $scope.user = {
-                    email: "",
-                    password: ""
+            $scope.check_type_c102 = function () {
+                if ($scope.model.Application.C102) {
+                    $scope.show_c_102 = true;
+                } else {
+                    $scope.show_c_102 = false;
                 }
-                $scope.submitLoginForm = function () {
-                    console.log($scope.user);
-                    $http.post('/api/account/login', $scope.user).then(function (response) {
-                        if (response.data.result) {
-                            $('#form-login').modal('hide');
+            };
+
+            $scope.removeExample = function (_object) {
+                _object.HandlerType = -1;
+            };
+            $scope.check_type_c102();
+
+            /*login model*/
+            $scope.login = {
+                result: true,
+                error: ""
+            };
+            $scope.user = {
+                email: "",
+                password: ""
+            }
+            $scope.submitLoginForm = function () {
+                console.log($scope.user);
+                $http.post('/api/account/login', $scope.user).then(function (response) {
+                    if (response.data.result) {
+                        $('#form-login').modal('hide');
+                    } else {
+                        //console.log(response.data);
+                        $scope.login.result = response.data.result;
+                        $scope.login.error = response.data.message;
+                    }
+                });
+            };
+
+            $scope.submit = function () {
+                if ($scope.model.Application.ShippingMethod == 1) {
+                    $scope.model.Application.ContainerInfos = [];
+                }
+                for (var i = 0; i < $scope.model.Application.ApplicationProducts.length; i++) {
+                    $scope.model.Application.ApplicationProducts[i].Index = i;
+                    for (var j = 0; j < $scope.model.Application.ApplicationProducts[i].ProductItemList.length; j++) {
+                        $scope.model.Application.ApplicationProducts[i].ProductItemList[j].ManufacturerDate = $filter('date')($scope.model.Application.ApplicationProducts[i].ProductItemList[j].ManufacturerDate, 'yyyy/MM/dd');
+                        $scope.model.Application.ApplicationProducts[i].ProductItemList[j].ExpiryDate = $filter('date')($scope.model.Application.ApplicationProducts[i].ProductItemList[j].ExpiryDate, 'yyyy/MM/dd');
+                    }
+                    if (!$scope.show_c_102) {
+                        $scope.model.Application.ApplicationProducts[i].C102 = false;
+                        $scope.model.Application.ApplicationProducts[i].C102Comment = "";
+                    }
+                }
+                $scope.submitApp = true;
+                $http.post('/forms/app', $scope.model.Application).then(function (response) {
+                    if (response.data.isLogin) {
+                        if (response.data.errors) {
+                            $scope.errors = response.data.errors;
+                            $location.hash("h1");
+                            $anchorScroll();
+                            $scope.dataInit();
                         } else {
-                            //console.log(response.data);
-                            $scope.login.result = response.data.result;
-                            $scope.login.error = response.data.message;
+                            $scope.resultMessage = response.data.isNew ? "证书申请成功！申请编号为" + response.data.appkey : "数据更新成功";
                         }
-                    });
-                };
-
-                $scope.submit = function () {
-                    if ($scope.model.Application.ShippingMethod == 1) {
-                        $scope.model.Application.ContainerInfos = [];
-                    }
-                    for (var i = 0; i < $scope.model.Application.ApplicationProducts.length; i++) {
-                        $scope.model.Application.ApplicationProducts[i].Index = i;
-                        for (var j = 0; j < $scope.model.Application.ApplicationProducts[i].ProductItemList.length; j++) {
-                            $scope.model.Application.ApplicationProducts[i].ProductItemList[j].ManufacturerDate = $filter('date')($scope.model.Application.ApplicationProducts[i].ProductItemList[j].ManufacturerDate, 'yyyy/MM/dd');
-                            $scope.model.Application.ApplicationProducts[i].ProductItemList[j].ExpiryDate = $filter('date')($scope.model.Application.ApplicationProducts[i].ProductItemList[j].ExpiryDate, 'yyyy/MM/dd');
+                    } else {
+                        $scope.login = {
+                            result: true,
+                            error: ""
+                        };
+                        $scope.user = {
+                            email: "",
+                            password: ""
                         }
-                        if (!$scope.show_c_102) {
-                            $scope.model.Application.ApplicationProducts[i].C102 = false;
-                            $scope.model.Application.ApplicationProducts[i].C102Comment = "";
+                        $('#form-login').modal();
+                    }
+                    $scope.submitApp = false;
+                }, function (response) {
+                    $scope.errors = ["服务器异常,请重试"];
+                    $location.hash("h1");
+                    $anchorScroll();
+                    $scope.submitApp = false;
+                    $log.warn(response);
+                });
+            };
+
+            $scope.updateClock = function () {
+                $http.post('/api/account/heartbeat').then(function () { });
+            };
+            setInterval(function () {
+                $scope.$apply($scope.updateClock);
+            }, 300000);
+
+            $scope.updateClock();
+
+            $scope.loadCountriesDict = null;
+            $scope.loadCountries = function () {
+                $http.get("/api/dict/countries", {
+                    params: { 'code': "" }
+                }).success(function (data) {
+                    $scope.loadCountriesDict = data.items;
+                }).error(function (data) {
+                });
+            };
+            $scope.loadCountries();
+            $("#accept-form").show();
+
+
+            //merchant list
+            $scope.merchantList = function () {
+                $("#form-merchant-list").modal("show");
+            };
+
+            $scope.loadMerchantInfo = null;
+            $scope.loadMerchant = function () {
+                $http.post("/api/UserProfile/GetProfileList", {
+                    params: {}
+                }).success(function (data) {
+                    $scope.loadMerchantInfo = data.result;
+                }).error(function (data) {
+                });
+            };
+            $scope.loadMerchant();
+            $scope.selectExporter = function (_object) {
+                if (_object) {
+                    $scope.model.Application.Exporter = _object.UserName;
+                    $scope.model.Application.ExporterAddr = _object.UserAddress;
+                    $scope.model.Application.ExporterContact = _object.UserContact;
+                    $scope.model.Application.ExporterPhone = _object.UserPhone;
+                } else {
+                    $scope.model.Application.Exporter = "";
+                    $scope.model.Application.ExporterAddr = "";
+                    $scope.model.Application.ExporterContact = "";
+                    $scope.model.Application.ExporterPhone = "";
+                }
+            };
+            $scope.selectImporter = function (_object) {
+                if (_object) {
+                    $scope.model.Application.Importer = _object.UserName;
+                    $scope.model.Application.ImporterAddr = _object.UserAddress;
+                    $scope.model.Application.ImporterContact = _object.UserContact;
+                    $scope.model.Application.ImporterPhone = _object.UserPhone;
+                } else {
+                    $scope.model.Application.Importer = "";
+                    $scope.model.Application.ImporterAddr = "";
+                    $scope.model.Application.ImporterContact = "";
+                    $scope.model.Application.ImporterPhone = "";
+                }
+            };
+            $scope.selectImBroker = function (_object) {
+                if (_object) {
+                    $scope.model.Application.ImBroker = _object.UserName;
+                    $scope.model.Application.ImBrokerAddr = _object.UserAddress;
+                    $scope.model.Application.ImBrokerContact = _object.UserContact;
+                    $scope.model.Application.ImBrokerPhone = _object.UserPhone;
+                } else {
+                    $scope.model.Application.ImBroker = "";
+                    $scope.model.Application.ImBrokerAddr = "";
+                    $scope.model.Application.ImBrokerContact = "";
+                    $scope.model.Application.ImBrokerPhone = "";
+                }
+            };
+            $scope.addMerchant = function () {
+                $(".merchant-add-title").html("添加常用商户信息");
+                $scope.dialogModelMerchant = {
+                    UserName: "",
+                    UserAddress: "",
+                    UserContact: "",
+                    UserPhone: ""
+                };
+                $("#merchant-add").modal("show");
+                $("#form-merchant-list").modal("hide");
+            };
+
+            $scope.submitAddMerchant = function () {
+                var _url = "";
+                if ($scope.dialogModelMerchant.Id == null) {
+                    _url = '/api/UserProfile/AddProfile';
+                } else {
+                    _url = '/api/UserProfile/UpdateProfile';
+                }
+                $http({
+                    url: _url,
+                    method: 'POST',
+                    data: {
+                        userProfile: $scope.dialogModelMerchant
+                    }
+                }).success(function (data) {
+                    if (data.flag) {
+                        $scope.loadMerchant();
+                        $("#merchant-add").modal("hide");
+                        $("#form-merchant-list").modal("show");
+                    } else {
+                        var _errormsg = '';
+                        for (var i = data.errorMsg.length; i > 0; i--) {
+                            _errormsg += data.errorMsg[i - 1] + "\r\n";
                         }
+                        alertService.add("danger", _errormsg || "未知错误", 3000);
                     }
-                    $scope.submitApp = true;
-                    $http.post('/forms/app', $scope.model.Application).then(function (response) {
-                        if (response.data.isLogin) {
-                            if (response.data.errors) {
-                                $scope.errors = response.data.errors;
-                                $location.hash("h1");
-                                $anchorScroll();
-                                $scope.dataInit();
-                            } else {
-                                $scope.resultMessage = response.data.isNew ? "证书申请成功！申请编号为" + response.data.appkey : "数据更新成功";
-                            }
-                        } else {
-                            $scope.login = {
-                                result: true,
-                                error: ""
-                            };
-                            $scope.user = {
-                                email: "",
-                                password: ""
-                            }
-                            $('#form-login').modal();
-                        }
-                        $scope.submitApp = false;
-                    }, function (response) {
-                        $scope.errors = ["服务器异常,请重试"];
-                        $location.hash("h1");
-                        $anchorScroll();
-                        $scope.submitApp = false;
-                        $log.warn(response);
-                    });
-                };
-
-                $scope.updateClock = function () {
-                    $http.post('/api/account/heartbeat').then(function () { });
-                };
-                setInterval(function () {
-                    $scope.$apply($scope.updateClock);
-                }, 300000);
-
-                $scope.updateClock();
-
-                $scope.loadCountriesDict = null;
-                $scope.loadCountries = function () {
-                    $http.get("/api/dict/countries", {
-                        params: { 'code': "" }
-                    }).success(function (data) {
-                        $scope.loadCountriesDict = data.items;
-                    }).error(function (data) {
-                    });
-                };
-                $scope.loadCountries();
-                $("#accept-form").show();
-
-
-                //merchant list
-                $scope.merchantList = function () {
-                    $("#form-merchant-list").modal("show");
-                };
-
-                $scope.loadMerchantInfo = null;
-                $scope.loadMerchant = function () {
-                    $http.post("/api/UserProfile/GetProfileList", {
-                        params: {}
-                    }).success(function (data) {
-                        $scope.loadMerchantInfo = data.result;
-                    }).error(function (data) {
-                    });
-                };
-                $scope.loadMerchant();
-                $scope.selectExporter = function (_object) {
-                    if (_object) {
-                        $scope.model.Application.Exporter = _object.UserName;
-                        $scope.model.Application.ExporterAddr = _object.UserAddress;
-                        $scope.model.Application.ExporterContact = _object.UserContact;
-                        $scope.model.Application.ExporterPhone = _object.UserPhone;
-                    } else {
-                        $scope.model.Application.Exporter = "";
-                        $scope.model.Application.ExporterAddr = "";
-                        $scope.model.Application.ExporterContact = "";
-                        $scope.model.Application.ExporterPhone = "";
+                }).error(function (response) {
+                    alertService.add("danger", response || "未知错误", 3000);
+                });
+            };
+            $scope.editMerchant = function (_id) {
+                $http({
+                    url: '/api/UserProfile/GetProfileDeatil',
+                    method: 'POST',
+                    data: {
+                        ProfileId: _id
                     }
-                };
-                $scope.selectImporter = function (_object) {
-                    if (_object) {
-                        $scope.model.Application.Importer = _object.UserName;
-                        $scope.model.Application.ImporterAddr = _object.UserAddress;
-                        $scope.model.Application.ImporterContact = _object.UserContact;
-                        $scope.model.Application.ImporterPhone = _object.UserPhone;
-                    } else {
-                        $scope.model.Application.Importer = "";
-                        $scope.model.Application.ImporterAddr = "";
-                        $scope.model.Application.ImporterContact = "";
-                        $scope.model.Application.ImporterPhone = "";
-                    }
-                };
-                $scope.selectImBroker = function (_object) {
-                    if (_object) {
-                        $scope.model.Application.ImBroker = _object.UserName;
-                        $scope.model.Application.ImBrokerAddr = _object.UserAddress;
-                        $scope.model.Application.ImBrokerContact = _object.UserContact;
-                        $scope.model.Application.ImBrokerPhone = _object.UserPhone;
-                    } else {
-                        $scope.model.Application.ImBroker = "";
-                        $scope.model.Application.ImBrokerAddr = "";
-                        $scope.model.Application.ImBrokerContact = "";
-                        $scope.model.Application.ImBrokerPhone = "";
-                    }
-                };
-                $scope.addMerchant = function () {
-                    $(".merchant-add-title").html("添加常用商户信息");
-                    $scope.dialogModelMerchant = {
-                        UserName: "",
-                        UserAddress: "",
-                        UserContact: "",
-                        UserPhone: ""
-                    };
-                    $("#merchant-add").modal("show");
-                    $("#form-merchant-list").modal("hide");
-                };
-
-                $scope.submitAddMerchant = function () {
-                    var _url = "";
-                    if ($scope.dialogModelMerchant.Id == null) {
-                        _url = '/api/UserProfile/AddProfile';
-                    } else {
-                        _url = '/api/UserProfile/UpdateProfile';
-                    }
+                }).success(function (data) {
+                    $scope.dialogModelMerchant = data.result;
+                }).error(function (response) {
+                });
+                $(".merchant-add-title").html("编辑常用商户信息");
+                $("#merchant-add").modal("show");
+                $("#form-merchant-list").modal("hide");
+            };
+            $scope.removeMerchant = function (_object) {
+                if (confirm("是否删除该常用商户")) {
                     $http({
-                        url: _url,
+                        url: '/api/UserProfile/RemoveProfile',
                         method: 'POST',
                         data: {
-                            userProfile: $scope.dialogModelMerchant
+                            ProfileId: _object.Id
                         }
                     }).success(function (data) {
                         if (data.flag) {
                             $scope.loadMerchant();
-                            $("#merchant-add").modal("hide");
-                            $("#form-merchant-list").modal("show");
-                        } else {
-                            var _errormsg = '';
-                            for (var i = data.errorMsg.length; i > 0; i--) {
-                                _errormsg += data.errorMsg[i - 1] + "\r\n";
-                            }
-                            alertService.add("danger", _errormsg || "未知错误", 3000);
+                            //$("#merchant-add").modal("hide");
                         }
                     }).error(function (response) {
-                        alertService.add("danger", response || "未知错误", 3000);
+                        alertService.add("danger", response.msg || "未知错误", 3000);
                     });
-                };
-                $scope.editMerchant = function (_id) {
+                }
+            };
+
+            //upload example
+            $scope.UploadExample = function () {
+                $('#uploadForm').ajaxSubmit({
+                    type: "post",
+                    url: "/api/forms/savefile",
+                    success: function (data) {
+                        if (data.filepath != "") {
+                            $scope.model.Application.ExampleCertList.push({ CertFilePath: data.filepath, HandlerType: 1 });
+                            $scope.$apply();
+                        }
+                    }
+                });
+            };
+            $scope.showProductList = function () {
+                $(".form-add-custom-product-title").html("商品列表");
+                $("#form-product").modal("show");
+                $("#form-add-custom-product").modal("hide");
+                $("#form-add-goods-product").modal("hide");
+            };
+            $scope.addCustomProduct = function () {
+                $(".form-add-custom-product-title").html("添加自定义商品");
+                $("#form-product").modal("hide");
+                $("#form-add-custom-product").modal("show");
+                $("#CustomDialogModelHsCode").next().find("span.select2-selection__rendered").html("");
+                $scope.CustomDialogModel = { HsCode: '', ManufacturerCountry: "036" };
+            };
+            $scope.addGoodsProduct = function () {
+                $("#form-product").modal("hide");
+                $("#form-add-goods-product").modal("show");
+                $scope.DialogProductCiqCode = "";
+                $scope.dialogProductList = null;
+            };
+            $scope.submitAddCustomProduct = function () {
+                $http.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
+                    if (response.flag) {
+                        $scope.getGoodsList();
+                        alert("添加成功");
+                        $scope.showProductList();
+                        //$("#form-add-custom-product").modal("hide");
+                    }
+                    var _tipType = response.flag ? "success" : "danger";
+                    alertService.add(_tipType, response.msg || "未知错误", 3000);
+                });
+            };
+            $scope.submitAddGoodsProduct = function () {
+                $http.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
+                    if (response.flag) {
+                        $scope.getGoodsList();
+                        alert("添加成功");
+                        $scope.showProductList();
+                        //$("#form-add-custom-product").modal("hide");
+                    }
+                    var _tipType = response.flag ? "success" : "danger";
+                    alertService.add(_tipType, response.msg || "未知错误", 3000);
+                });
+            };
+            $scope.getDialogProductList = function () {
+                if ($scope.DialogProductCiqCode != "" && $scope.DialogProductCiqCode != null) {
                     $http({
-                        url: '/api/UserProfile/GetProfileDeatil',
+                        url: '/api/goods/searchproduct',
                         method: 'POST',
                         data: {
-                            ProfileId: _id
+                            ciqCode: $scope.DialogProductCiqCode
                         }
                     }).success(function (data) {
-                        $scope.dialogModelMerchant = data.result;
-                    }).error(function (response) {
-                    });
-                    $(".merchant-add-title").html("编辑常用商户信息");
-                    $("#merchant-add").modal("show");
-                    $("#form-merchant-list").modal("hide");
-                };
-                $scope.removeMerchant = function (_object) {
-                    if (confirm("是否删除该常用商户")) {
-                        $http({
-                            url: '/api/UserProfile/RemoveProfile',
-                            method: 'POST',
-                            data: {
-                                ProfileId: _object.Id
-                            }
-                        }).success(function (data) {
-                            if (data.flag) {
-                                $scope.loadMerchant();
-                                //$("#merchant-add").modal("hide");
-                            }
-                        }).error(function (response) {
-                            alertService.add("danger", response.msg || "未知错误", 3000);
-                        });
-                    }
-                };
-
-                //upload example
-                $scope.UploadExample = function () {
-                    $('#uploadForm').ajaxSubmit({
-                        type: "post",
-                        url: "/api/forms/savefile",
-                        success: function (data) {
-                            if (data.filepath != "") {
-                                $scope.model.Application.ExampleCertList.push({ CertFilePath: data.filepath, HandlerType: 1 });
-                                $scope.$apply();
-                            }
+                        if (data.result == null) {
+                            $scope.dialogProductList = null;
+                            alertService.add('danger', "该备案号不存在", 3000);
+                        } else {
+                            $scope.dialogProductList = data.result;
                         }
+                    }).error(function () {
                     });
-                };
-                $scope.showProductList = function () {
-                    $(".form-add-custom-product-title").html("商品列表");
-                    $("#form-product").modal("show");
-                    $("#form-add-custom-product").modal("hide");
-                    $("#form-add-goods-product").modal("hide");
-                };
-                $scope.addCustomProduct = function () {
-                    $(".form-add-custom-product-title").html("添加自定义商品");
-                    $("#form-product").modal("hide");
-                    $("#form-add-custom-product").modal("show");
-                    $("#CustomDialogModelHsCode").next().find("span.select2-selection__rendered").html("");
-                    $scope.CustomDialogModel = { HsCode: '', ManufacturerCountry: "036" };
-                };
-                $scope.addGoodsProduct = function () {
-                    $("#form-product").modal("hide");
-                    $("#form-add-goods-product").modal("show");
-                    $scope.DialogProductCiqCode = "";
+                } else {
                     $scope.dialogProductList = null;
-                };
-                $scope.submitAddCustomProduct = function () {
-                    $http.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
-                        if (response.flag) {
-                            $scope.getGoodsList();
-                            alert("添加成功");
-                            $scope.showProductList();
-                            //$("#form-add-custom-product").modal("hide");
-                        }
-                        var _tipType = response.flag ? "success" : "danger";
-                        alertService.add(_tipType, response.msg || "未知错误", 3000);
-                    });
-                };
-                $scope.submitAddGoodsProduct = function () {
-                    $http.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
-                        if (response.flag) {
-                            $scope.getGoodsList();
-                            alert("添加成功");
-                            $scope.showProductList();
-                            //$("#form-add-custom-product").modal("hide");
-                        }
-                        var _tipType = response.flag ? "success" : "danger";
-                        alertService.add(_tipType, response.msg || "未知错误", 3000);
-                    });
-                };
-                $scope.getDialogProductList = function () {
-                    if ($scope.DialogProductCiqCode != "" && $scope.DialogProductCiqCode != null) {
+                    alertService.add('danger', "请输入备案编号", 3000);
+                }
+            };
+            $scope.addDialogGoodsProduct = function () {
+                if (confirm('是否添加该商品为常用商品')) {
+                    if ($scope.dialogProductList != null) {
                         $http({
-                            url: '/api/goods/searchproduct',
+                            url: '/api/goods/addproduct',
                             method: 'POST',
                             data: {
-                                ciqCode: $scope.DialogProductCiqCode
+                                ciqCode: $scope.dialogProductList.CiqCode
                             }
                         }).success(function (data) {
-                            if (data.result == null) {
-                                $scope.dialogProductList = null;
-                                alertService.add('danger', "该备案号不存在", 3000);
-                            } else {
-                                $scope.dialogProductList = data.result;
+                            if (data.result) {
+                                $scope.getGoodsList();
+                                alert("添加成功");
+                                $scope.showProductList();
                             }
+                            var _tipType = data.result ? "success" : "danger";
+                            alertService.add(_tipType, data.msg || "未知错误", 3000);
                         }).error(function () {
                         });
-                    } else {
-                        $scope.dialogProductList = null;
-                        alertService.add('danger', "请输入备案编号", 3000);
                     }
-                };
-                $scope.addDialogGoodsProduct = function () {
-                    if (confirm('是否添加该商品为常用商品')) {
-                        if ($scope.dialogProductList != null) {
-                            $http({
-                                url: '/api/goods/addproduct',
-                                method: 'POST',
-                                data: {
-                                    ciqCode: $scope.dialogProductList.CiqCode
-                                }
-                            }).success(function (data) {
-                                if (data.result) {
-                                    $scope.getGoodsList();
-                                    alert("添加成功");
-                                    $scope.showProductList();
-                                }
-                                var _tipType = data.result ? "success" : "danger";
-                                alertService.add(_tipType, data.msg || "未知错误", 3000);
-                            }).error(function () {
-                            });
-                        }
+                }
+            };
+            $scope.removeMerchantProduct = function (product, index) {
+                console.log(product);
+                if (product.CiqCode == '') {
+                    if (confirm("您确定要删除该商品吗?")) {
+                        $http.post('/api/goods/deletecustomproduct', { id: product.Id }).then(function (response) {
+                            if (response.data.flag) {
+                                $scope.getGoodsList();
+                            }
+                        });
                     }
-                };
-                $scope.removeMerchantProduct = function (product, index) {
-                    console.log(product);
-                    if (product.CiqCode == '') {
-                        if (confirm("您确定要删除该商品吗?")) {
-                            $http.post('/api/goods/deletecustomproduct', { id: product.Id }).then(function (response) {
-                                if (response.data.flag) {
-                                    $scope.getGoodsList();
-                                }
-                            });
-                        }
-                    } else {
-                        if (confirm("您确定要删除该商品吗?")) {
-                            $http.post('/api/goods/delete', { ciqCode: product.CiqCode }).then(function (response) {
-                                if (response.data.result) {
-                                    $scope.getGoodsList();
-                                }
-                            });
-                        }
+                } else {
+                    if (confirm("您确定要删除该商品吗?")) {
+                        $http.post('/api/goods/delete', { ciqCode: product.CiqCode }).then(function (response) {
+                            if (response.data.result) {
+                                $scope.getGoodsList();
+                            }
+                        });
                     }
-                };
-                $scope.editMerchantProduct = function (_id) {
-                    $(".form-add-custom-product-title").html("编辑自定义商品");
-                    $http({
-                        url: '/api/goods/GetCustomerProductDetail',
-                        method: 'POST',
-                        data: {
-                            productId: _id
-                        }
-                    }).success(function (data) {
-                        $scope.CustomDialogModel = data.product;
-                    }).error(function (response) {
-                    });
-                    $("#CustomDialogModelHsCode").next().find("span.select2-selection__rendered").html("");
-                    $("#form-add-custom-product").modal("show");
-                    $("#form-product").modal("hide");
-                };
-            }
-        ]);
-
-        function CheckIsUpload() {
-            var flag = $('#isUpload').val() * 1 === 1;
-            $('#isUpload').val(0);
-            return flag;
+                }
+            };
+            $scope.editMerchantProduct = function (_id) {
+                $(".form-add-custom-product-title").html("编辑自定义商品");
+                $http({
+                    url: '/api/goods/GetCustomerProductDetail',
+                    method: 'POST',
+                    data: {
+                        productId: _id
+                    }
+                }).success(function (data) {
+                    $scope.CustomDialogModel = data.product;
+                }).error(function (response) {
+                });
+                $("#CustomDialogModelHsCode").next().find("span.select2-selection__rendered").html("");
+                $("#form-add-custom-product").modal("show");
+                $("#form-product").modal("hide");
+            };
         }
+    ]);
 
-        function ChangeUploadStatus() {
-            $('#isUpload').val(1);
-        }
-    </script>
+    function CheckIsUpload() {
+        var flag = $('#isUpload').val() * 1 === 1;
+        $('#isUpload').val(0);
+        return flag;
+    }
+
+    function ChangeUploadStatus() {
+        $('#isUpload').val(1);
+    }
+</script>
 }
 
 <div ng-controller="GlobalController">
@@ -919,10 +922,10 @@
                                         <p class="form-control-static">名称(英文)</p>
                                     </th>
                                     <td>
-                                        <span ng-show="item.DescriptionEn!=''&&item.DescriptionEn!='NIL'">
+                                        <span ng-show="!item.IsEditDescriptionEn">
                                             <p class="form-control-static" ng-model="item.DescriptionEn">{{item.DescriptionEn}}</p>
                                         </span>
-                                        <span ng-show="item.DescriptionEn==''||item.DescriptionEn=='NIL'">
+                                        <span ng-show="item.IsEditDescriptionEn">
                                             <input type="text" ng-model="item.DescriptionEn" class="form-control" maxlength="100" />
                                         </span>
                                     </td>
@@ -945,10 +948,10 @@
                                         <p class="form-control-static">包装</p>
                                     </th>
                                     <td>
-                                        <span ng-show="item.Package!=''&&item.Package!='NIL'">
+                                        <span ng-show="!item.IsEditPackage">
                                             <p class="form-control-static" ng-model="item.Package">{{item.Package}}</p>
                                         </span>
-                                        <span ng-show="item.Package==''||item.Package=='NIL'">
+                                        <span ng-show="item.IsEditPackage">
                                             <input type="text" ng-model="item.Package" class="form-control" maxlength="100" />
                                         </span>
                                     </td>
@@ -978,10 +981,10 @@
                                         <p class="form-control-static">制造商</p>
                                     </th>
                                     <td>
-                                        <span ng-show="item.Manufacturer!=''&&item.Manufacturer!='NIL'">
+                                        <span ng-show="!item.IsEditManufacturer">
                                             <p class="form-control-static" ng-model="item.Manufacturer">{{item.Manufacturer}}</p>
                                         </span>
-                                        <span ng-show="item.Manufacturer==''||item.Manufacturer=='NIL'">
+                                        <span ng-show="item.IsEditManufacturer">
                                             <input type="text" ng-model="item.Manufacturer" class="form-control" maxlength="100" />
                                         </span>
                                     </td>
