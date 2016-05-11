@@ -14,16 +14,16 @@
         </div>
         <form name="appform" class="form-horizontal" method="POST" ng-submit="submitForm(appform.$valid)" novalidate>
             <div class="form-group " ng-class="{ 'has-error' : appform.email.$invalid && appform.email.$dirty }">
-                <span class="has-error"> <label class="col-sm-2 control-label ">邮箱 *: </label></span>
+                <label class="col-sm-2 control-label ">邮箱 <span style="color: red;">*</span>: </label>
                 <div class="col-sm-5 ">
                     <input name="email" type="email" class="form-control" required ng-model="user.email" />
                     <small ng-show="appform.email.$invalid" class="help-block">请填写正确的邮箱</small>
                 </div>
             </div>
             <div class="form-group" ng-class="{ 'has-error' : appform.password.$error.required && !appform.password.$pristine }">
-                <span class="has-error">
-                    <label class="col-sm-2 control-label">密码 *s: </label>
-                </span>
+
+                <label class="col-sm-2 control-label">密码 <span style="color: red;">* </span>: </label>
+
                 <div class="col-sm-5">
                     <input name="password" type="password" class="form-control" required ng-model="user.password" />
                     <small ng-show="appform.password.$error.required" class="help-block">请输入您的密码</small>
