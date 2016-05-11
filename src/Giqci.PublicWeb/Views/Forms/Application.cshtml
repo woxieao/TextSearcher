@@ -507,7 +507,7 @@
                     $("#form-add-goods-product").modal("hide");
                 };
                 $scope.addCustomProduct = function () {
-                    $(".form-add-custom-product-title").html("添加自定义商品");
+                    $(".form-add-custom-product-title").html("添加非备案商品");
                     $("#form-product").modal("hide");
                     $("#form-add-custom-product").modal("show");
                     $("#CustomDialogModelHsCode").next().find("span.select2-selection__rendered").html("");
@@ -608,7 +608,7 @@
                     }
                 };
                 $scope.editMerchantProduct = function (_id) {
-                    $(".form-add-custom-product-title").html("编辑自定义商品");
+                    $(".form-add-custom-product-title").html("编辑非备案商品");
                     $http({
                         url: '/api/goods/GetCustomerProductDetail',
                         method: 'POST',
@@ -1348,7 +1348,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" ng-click="addGoodsProduct()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加备案号商品</button>
-                    <button type="button" class="btn btn-default" ng-click="addCustomProduct()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加自定义商品</button>
+                    <button type="button" class="btn btn-default" ng-click="addCustomProduct()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加非备案商品</button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
                 </div>
             </div><!-- /.modal-content -->
@@ -1362,7 +1362,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h5 class="modal-title form-add-custom-product-title">添加自定义商品</h5>
+                    <h5 class="modal-title form-add-custom-product-title">添加非备案商品</h5>
                 </div>
                 <div class="modal-body">
                     <form name="appform" class="form-horizontal" method="POST" novalidate>
