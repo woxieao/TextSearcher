@@ -215,7 +215,7 @@ app.controller('FormsListController', [
 
 /* goods lists */
 app.controller('GoodsListController', [
-    '$scope', '$http', function ($scope, $http) {
+    '$scope', '$http', 'alertService', function ($scope, $http, alertService) {
         $scope.list = function (postData) {
             $http.post('/api/goods/getproductlist', postData).success(function (response) {
                 $scope.merchantProductList = response.result;
@@ -245,6 +245,38 @@ app.controller('GoodsListController', [
                 });
             }
         }
+        $scope.editMerchantProduct = function (index) {
+            $scope.CustomDialogModel = $scope.customProductList[index];
+            $(".form-add-custom-product-title").html("编辑非备案商品");
+            $("#CustomDialogModelHsCode").next().find("span.select2-selection__rendered").html("");
+            $("#form-add-custom-product").modal("show");
+            $("#form-product").modal("hide");
+        };
+        $scope.submitAddCustomProduct = function () {
+            $http.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
+                if (response.flag) {
+                    alert("提交成功");
+                    $("#form-add-custom-product").modal("hide");
+                }
+                var _tipType = response.flag ? "success" : "danger";
+                alertService.add(_tipType, response.msg || "未知错误", 3000);
+            });
+        };
+        $scope.loadCountries = function () {
+            $http.get("/api/dict/countries", {
+                params: { 'code': "" }
+            }).success(function (data) {
+                $scope.loadCountriesDict = data.items;
+            }).error(function (data) {
+            });
+        };
+        $scope.loadCountries();
+        $scope.showProductList = function () {
+            $(".form-add-custom-product-title").html("商品列表");
+            $("#form-product").modal("show");
+            $("#form-add-custom-product").modal("hide");
+            $("#form-add-goods-product").modal("hide");
+        };
     }
 ]);
 
