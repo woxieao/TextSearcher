@@ -155,7 +155,9 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th><p class="form-control-static">HS编码</p></th>
+                                    <th>
+                                        <p class="form-control-static">HS编码</p>
+                                    </th>
                                     <td>
                                         <p class="form-control-static" ajax-label ajax-url="commonhscodes" ng-model="item.HSCode">{{item.HSCode}}</p>
                                     </td>
@@ -165,6 +167,16 @@
                                     <td>
                                         <p ng-model="item.Manufacturer" class="form-control-static">{{item.Manufacturer}}</p>
                                     </td>
+                                </tr>
+                                <tr>
+                                    <th><p class="form-control-static">数量</p></th>
+                                    <td>
+                                        <p class="form-control-static" ng-model="item.Quantity">{{item.Quantity}}</p>
+                                    </td>
+                                    <th>
+
+                                    </th>
+                                    <td></td>
                                 </tr>
                                 <tr ng-show="model.Application.C102">
                                     <th><p class="form-control-static">品质检验</p></th>
@@ -203,10 +215,8 @@
                                         <td>
                                             <p class="form-control-static">{{batch.BatchNo}}</p>
                                         </td>
-                                        <th><p class="form-control-static">数量 *</p></th>
-                                        <td>
-                                            <p class="form-control-static">{{batch.Quantity}}</p>
-                                        </td>
+                                        <th></th>
+                                        <td></td>
                                     </tr>
                                 </table>
                             </div>
@@ -343,16 +353,16 @@
                         <p ajax-label ajax-url="ports" ng-model="model.Application.LoadingPort" class="form-control-static">{{model.Application.LoadingPort}}</p>
                     </div>
                 </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">目的港口</label>
-                <div class="col-sm-10">
-                    <p ajax-label ajax-url="ports" ng-model="model.Application.DestPort" class="form-control-static">{{model.Application.DestPort}}</p>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">目的港口</label>
+                    <div class="col-sm-10">
+                        <p ajax-label ajax-url="ports" ng-model="model.Application.DestPort" class="form-control-static">{{model.Application.DestPort}}</p>
+                    </div>
                 </div>
-            </div>
-            @{
-                var validCerts= (List<Certificate>)ViewBag.ValidCerts;
-                if (validCerts.Any())
-                {
+                @{
+                    var validCerts = (List<Certificate>)ViewBag.ValidCerts;
+                    if (validCerts.Any())
+                    {
                         <div class="form-horizontal">
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">证书列表</label>
@@ -368,7 +378,7 @@
                         </div>
                     }
                 }
-         </div>
+            </div>
         </div>
     </div>
 </div>
