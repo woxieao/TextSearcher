@@ -69,12 +69,12 @@
       <HintPath>..\..\packages\Giqci.Chapi.Contract.2.0.51\lib\net461\Giqci.Chapi.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Contract, Version=1.1.157.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.Contract.1.1.157\lib\net461\Giqci.Contract.dll</HintPath>
+    <Reference Include="Giqci.Contract, Version=1.1.158.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.Contract.1.1.158\lib\net461\Giqci.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Ktech.Contract, Version=1.0.15.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Ktech.Contract.1.0.15\lib\net461\Ktech.Contract.dll</HintPath>
+    <Reference Include="Ktech.Contract, Version=1.0.16.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Ktech.Contract.1.0.16\lib\net461\Ktech.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ktech.Core, Version=1.3.16.0, Culture=neutral, processorArchitecture=MSIL">

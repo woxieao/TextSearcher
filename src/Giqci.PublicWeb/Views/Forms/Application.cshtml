@@ -118,17 +118,16 @@
                 $scope.selectProduct = function (_selected, _object) {
                     if (_selected != null) {
                         _object.DescriptionEn = _selected.DescriptionEn;
-                        _object.IsEditDescriptionEn = _selected.DescriptionEn == "" || _selected.DescriptionEn == 'NIL';
+                        _object.IsEditDescriptionEn = _selected.DescriptionEn == "" &&!_selected.IsApproved;
                         _object.Description = _selected.Description;
                         _object.Brand = _selected.Brand;
                         _object.HSCode = _selected.HsCode;
                         _object.Spec = _selected.Spec;
                         _object.CiqCode = _selected.CiqCode;
                         _object.Manufacturer = _selected.Manufacturer;
-                        _object.IsEditManufacturer = _selected.Manufacturer == "" || _selected.Manufacturer == 'NIL';
+                        _object.IsEditManufacturer = _selected.Manufacturer == "" && !_selected.IsApproved;
                         _object.ManufacturerCountry = _selected.ManufacturerCountry;
                         _object.Package = _selected.Package;
-                        _object.IsEditPackage = _selected.Package == "" || _selected.Package == 'NIL';
                         _object.ProductItemList = [
                             {
                                 BatchNo: "",
