@@ -61,7 +61,6 @@ namespace Giqci.PublicWeb.Controllers
                     new ApplicationProduct
                     {
                         HandlerType = HandlerType.Add,
-                        ManufacturerCountry = "036",
                         ProductItemList = new List<ProductItem>
                         {
                             new ProductItem

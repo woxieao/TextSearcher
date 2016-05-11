@@ -52,7 +52,7 @@
                         Spec: "",
                         CiqCode: "",
                         Manufacturer: "",
-                        ManufacturerCountry: "036",
+                        ManufacturerCountry: "",
                         Package: "",
                         Quantity: 0,
                         ApplicationZCodes: [],
@@ -763,7 +763,9 @@
             <div>* 带星号的为必填项</div>
             <form name="appform" class="form-horizontal" method="POST" novalidate enctype="multipart/form-data" id="uploadForm" onsubmit="return CheckIsUpload();">
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">证书类别 *</label>
+                    <span class="has-error">
+                        <label class="col-sm-2 control-label">证书类别 *</label>
+                    </span>
                     <div class="col-sm-10">
                         <div class="checkbox">
                             <label><input type="checkbox" name="Application.C101" ng-model="model.Application.C101" /> 溯源证书</label>
@@ -798,7 +800,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">商业目的 *</label>
+                    <span class="has-error">
+                        <label class="col-sm-2 control-label">商业目的 *</label>
+                    </span>
                     <div class="col-sm-10">
                         <div class="radio">
                             <label><input type="radio" name="Application.TradeType" ng-model="model.Application.TradeType" value="4" /> 一般贸易</label>
@@ -815,7 +819,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">申请人 *</label>
+                    <span class="has-error">
+                        <label class="col-sm-2 control-label">申请人 *</label>
+                    </span>
                     <div class="col-sm-10">
                         <input type="text" name="Application.Applicant" ng-model="model.Application.Applicant" class="form-control" placeholder="全称" />
                         <input type="text" name="Application.ApplicantAddr" ng-model="model.Application.ApplicantAddr" class="form-control" placeholder="地址" />
@@ -825,7 +831,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">出口商 * </label>
+                    <span class="has-error">
+                        <label class="col-sm-2 control-label">出口商 * </label>
+                    </span>
                     <div class="col-sm-6">
                         <select class="form-control" ng-change="selectExporter(Exporter)" ng-model="Exporter" ng-options="merchant.UserName for merchant in loadMerchantInfo">
                             <option value="">--请选择--</option>
@@ -844,7 +852,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">进口商 * </label>
+                    <span class="has-error">
+                        <label class="col-sm-2 control-label">进口商 * </label>
+                    </span>
                     <div class="col-sm-6">
                         <select class="form-control" ng-change="selectImporter(Importer)" ng-model="Importer" ng-options="merchant.UserName for merchant in loadMerchantInfo">
                             <option value="">--请选择--</option>
@@ -986,7 +996,9 @@
                                 </tr>
                                 <tr>
                                     <th>
-                                        <p class="form-control-static">数量 *</p>
+                                        <p class="form-control-static" style="color: red;">
+                                            数量 *
+                                        </p>
                                     </th>
                                     <td>
                                         <input type="number" ng-model="item.Quantity" class="form-control" placeholder="数量" />
@@ -1039,7 +1051,7 @@
                                             <p ng-if="batch.HandlerType==0" ng-model="batch.ManufacturerDate" class="form-control-static">{{batch.ManufacturerDate}}</p>
                                         </td>
                                         <th>
-                                            <p class="form-control-static">保质期 *</p>
+                                            <p class="form-control-static" style="color: red;">保质期 *</p>
                                         </th>
                                         <td>
                                             <input ng-if="batch.HandlerType==1" type="text" ng-model="batch.ExpiryDate" class="form-control datetimepicker" ng-mousedown="itemClickHandler($event)" />
@@ -1190,7 +1202,7 @@
                     </div>
                 </div>
                 <div class="form-group" ng-show="model.Application.ShippingMethod != 2">
-                    <label class="col-sm-2 control-label">运输总数量 *</label>
+                    <span class="has-error"> <label class="col-sm-2 control-label">运输总数量 *</label></span>
                     <div class="col-sm-6">
                         <input type="number" ng-model="model.Application.TotalUnits" class="form-control" min="0" placeholder="运输总数量" />
                     </div>
@@ -1199,7 +1211,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">运输总重量 *</label>
+                    <span class="has-error">
+                        <label class="col-sm-2 control-label">运输总重量 *</label>
+                    </span>
                     <div class="col-sm-6">
                         <input type="number" ng-model="model.Application.TotalWeight" class="form-control" min="0" placeholder="运输总重量" />
                     </div>
@@ -1214,31 +1228,41 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">预约检查日期 *</label>
+                    <span class="has-error">
+                        <label class="col-sm-2 control-label">预约检查日期 *</label>
+                    </span>
                     <div class="col-sm-10">
                         <input type="text" ng-model="model.Application.InspectionDate" class="form-control datetimepicker" placeholder="yyyy-MM-dd" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">检验地点 *</label>
+                    <span class="has-error">
+                        <label class="col-sm-2 control-label">检验地点 *</label>
+                    </span>
                     <div class="col-sm-10">
                         <input type="text" ng-model="model.Application.InspectionAddr" class="form-control" placeholder="检验地点" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">检验联系人 *</label>
+                    <span class="has-error">
+                        <label class="col-sm-2 control-label">检验联系人 *</label>
+                    </span>
                     <div class="col-sm-10">
                         <input type="text" ng-model="model.Application.Inspector" class="form-control" placeholder="检验联系人" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">检验联系人电话 *</label>
+                    <span class="has-error">
+                        <label class="col-sm-2 control-label">检验联系人电话 *</label>
+                    </span>
                     <div class="col-sm-10">
                         <input type="text" ng-model="model.Application.InspectorTel" class="form-control" placeholder="检验联系人电话" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">发货港口 *</label>
+                    <span class="has-error">
+                        <label class="col-sm-2 control-label">发货港口 *</label>
+                    </span>
                     <div class="col-sm-10">
                         <select ajax-select ajax-url="ports" ng-model="model.Application.LoadingPort" ng-options="i.Code as i.CnName group by i.Country for i in model.LoadingPorts" class="form-control selectLoadingPort" style="width: 100%">
                             <option value="">&lt; - 请选择港口 - &gt;</option>
@@ -1246,7 +1270,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">目的港口 *</label>
+                    <span class="has-error">
+                        <label class="col-sm-2 control-label">目的港口 *</label>
+                    </span>
                     <div class="col-sm-10">
                         <select ajax-select ajax-url="ports" ng-model="model.Application.DestPort" ng-options="i.Code as i.CnName group by i.Country for i in model.DestPorts" class="form-control selectDestPorts" style="width: 100%">
                             <option value="">&lt; - 其他港口 - &gt;</option>
@@ -1279,14 +1305,18 @@
                             <p class="col-sm-offset-2 col-sm-8 help-block">{{login.error}}</p>
                         </div>
                         <div class="form-group" ng-class="{ 'has-error' : (appform.email.$invalid && appform.email.$dirty) || user.email=='' }">
-                            <label class="col-sm-2 control-label">邮箱: </label>
+                            <span class="has-error">
+                                <label class="col-sm-2 control-label">邮箱: </label>
+                            </span>
                             <div class="col-sm-8">
                                 <input name="email" type="email" class="form-control" required ng-model="user.email" />
                                 <small ng-show="appform.email.$invalid" class="help-block">请填写正确的邮箱</small>
                             </div>
                         </div>
                         <div class="form-group" ng-class="{ 'has-error' : (appform.password.$error.required && !appform.password.$pristine) || user.password=='' }">
-                            <label class="col-sm-2 control-label">密码: </label>
+                            <span class="has-error">
+                                <label class="col-sm-2 control-label">密码: </label>
+                            </span>
                             <div class="col-sm-8">
                                 <input name="password" type="password" class="form-control" required ng-model="user.password" />
                                 <small ng-show="appform.password.$error.required" class="help-block">请输入您的密码</small>
@@ -1356,6 +1386,30 @@
     </div><!-- /.modal -->
 <!--custom product add modal-->
     @Html.Partial("PopUp/EditProduct");
+                            <span class="has-error">
+                                <label class="col-sm-2 control-label">名称(英文) *</label>
+                            </span>
+                            <span class="has-error">
+                                <label class="col-sm-2 control-label">名称(中文) *</label>
+                            </span>
+                            <span class="has-error">
+                                <label class="col-sm-2 control-label">品牌 *</label>
+                            </span>
+                            <span class="has-error">
+                                <label class="col-sm-2 control-label">HS编码 *</label>
+                            </span>
+                            <span class="has-error">
+                                <label class="col-sm-2 control-label">包装 *</label>
+                            </span>
+                            <span class="has-error">
+                                <label class="col-sm-2 control-label">规格 *</label>
+                            </span>
+                            <span class="has-error">
+                                <label class="col-sm-2 control-label">制造商 *</label>
+                            </span>
+                            <span class="has-error">
+                                <label class="col-sm-2 control-label">原产国 *</label>
+                            </span>
     <!--goods product add modal-->
     <div class="modal" role="dialog" data-backdrop="static" data-keyboard="false" id="form-add-goods-product">
         <div class="modal-dialog modal-lg">
@@ -1494,25 +1548,33 @@
                             <span ng-bind="alert.msg"></span>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">全称 *</label>
+                            <span class="has-error">
+                                <label class="col-sm-2 control-label">全称 *</label>
+                            </span>
                             <div class="col-sm-10">
                                 <input type="text" ng-model="dialogModelMerchant.UserName" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">地址 *</label>
+                            <span class="has-error">
+                                <label class="col-sm-2 control-label">地址 *</label>
+                            </span>
                             <div class="col-sm-10">
                                 <input type="text" ng-model="dialogModelMerchant.UserAddress" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">联系人 *</label>
+                            <span class="has-error">
+                                <label class="col-sm-2 control-label">联系人 *</label>
+                            </span>
                             <div class="col-sm-10">
                                 <input type="text" ng-model="dialogModelMerchant.UserContact" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">联系电话 *</label>
+                            <span class="has-error">
+                                <label class="col-sm-2 control-label">联系电话 *</label>
+                            </span>
                             <div class="col-sm-10">
                                 <input type="text" ng-model="dialogModelMerchant.UserPhone" class="form-control" />
                             </div>
