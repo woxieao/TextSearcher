@@ -23,8 +23,8 @@
                     <col width='80'/>
                     <col width='140'/>
                     <col width='100'/>
-                    <col width='100' />
-                    <col width='100' />
+                    <col width='100'/>
+                    <col width='100'/>
                     <col width='120'/>
                 </colgroup>
                 <thead>
@@ -55,12 +55,12 @@
                     <td>
                         <div class="btn-group" role="group">
                             <button type="button" class="btn btn-danger btn-sm" ng-click="remove2(Product.Id,$index)">删除</button>
-                            <a ng-if="!Product.IsApproved" class="btn btn-primary btn-sm" href="/goods/showcustomproduct?id={{Product.Id}}">编辑</a>
+                            <button ng-if="!Product.IsApproved" class="btn btn-primary btn-sm" ng-click="editMerchantProduct($index)">编辑</button>
                         </div>
                     </td>
-                    </tr>
+                </tr>
                 <tr ng-repeat="Product in merchantProductList">
-                    <td class="td-ellipsis"  style="color: green" title="{{Product.CiqCode}}">{{Product.CiqCode}}</td>
+                    <td class="td-ellipsis" style="color: green" title="{{Product.CiqCode}}">{{Product.CiqCode}}</td>
                     <td class="td-ellipsis" title="{{Product.HsCode}}">{{Product.HsCode}}</td>
                     <td class="td-ellipsis" title="{{Product.Description}}">{{Product.Description}}</td>
                     <td class="td-ellipsis" title="{{Product.DescriptionEn}}">{{Product.DescriptionEn}}</td>
@@ -79,4 +79,5 @@
             </table>
         </div>
     </div>
+    @Html.Partial("PopUp/EditProduct");
 </div>

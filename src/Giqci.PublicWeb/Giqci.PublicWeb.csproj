@@ -69,8 +69,8 @@
       <HintPath>..\..\packages\Giqci.Chapi.Contract.2.0.51\lib\net461\Giqci.Chapi.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Contract, Version=1.1.159.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.Contract.1.1.159\lib\net461\Giqci.Contract.dll</HintPath>
+    <Reference Include="Giqci.Contract, Version=1.1.160.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.Contract.1.1.160\lib\net461\Giqci.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ktech.Contract, Version=1.0.16.0, Culture=neutral, processorArchitecture=MSIL">
@@ -276,6 +276,7 @@
     <Content Include="Views\Goods\ShowCustomProduct.cshtml" />
     <Content Include="Scripts\jquery-2.2.3.min.map" />
     <Content Include="Views\Account\MerchantList.cshtml" />
+    <Content Include="Views\Shared\PopUp\EditProduct.cshtml" />
     <None Include="Web.Prod.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
