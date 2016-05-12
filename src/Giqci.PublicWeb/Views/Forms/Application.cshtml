@@ -126,7 +126,6 @@
                         _object.Spec = _selected.Spec;
                         _object.CiqCode = _selected.CiqCode;
                         _object.Manufacturer = _selected.Manufacturer;
-                        _object.IsEditManufacturer = (_selected.Manufacturer == "" || _selected.Manufacturer == undefined) && !_selected.IsApproved;
                         _object.ManufacturerCountry = _selected.ManufacturerCountry;
                         _object.Package = _selected.Package;
                         _object.ProductItemList = [
@@ -952,10 +951,12 @@
 
                                     </td>
                                     <th>
-                                        <p class="form-control-static">包装</p>
+                                        <p class="form-control-static">
+                                            数量 <span style="color: red;">*</span>
+                                        </p>
                                     </th>
                                     <td>
-                                        <p class="form-control-static" ng-model="item.Package">{{item.Package}}</p>
+                                        <input type="number" ng-model="item.Quantity" class="form-control" placeholder="数量" min="0" />
                                     </td>
                                 </tr>
                                 <tr>
@@ -983,28 +984,12 @@
                                         <p class="form-control-static">制造商</p>
                                     </th>
                                     <td>
-                                        <span ng-show="!item.IsEditManufacturer">
-                                            <p class="form-control-static" ng-model="item.Manufacturer">{{item.Manufacturer}}</p>
-                                        </span>
-                                        <span ng-show="item.IsEditManufacturer">
-                                            <input type="text" ng-model="item.Manufacturer" class="form-control" maxlength="100" />
-                                        </span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>
-                                        <p class="form-control-static">
-                                            数量 <span style="color: red;">*</span>
-                                        </p>
-                                    </th>
-                                    <td>
-                                        <input type="number" ng-model="item.Quantity" class="form-control" placeholder="数量" />
-                                    </td>
-                                    <th>
 
-                                    </th>
-                                    <td></td>
+                                        <p class="form-control-static" ng-model="item.Manufacturer">{{item.Manufacturer}}</p>
+
+                                    </td>
                                 </tr>
+
                                 <tr ng-show="model.Application.C102">
                                     <th>
                                         <p class="form-control-static">品质检验</p>
