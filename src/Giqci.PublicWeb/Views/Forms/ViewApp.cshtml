@@ -45,7 +45,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">商业目的</label>
                     <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.TradeType === "4"?"一般贸易":"电商贸易"}}</p>
+                        <p class="form-control-static">{{model.Application.TradeType == 4?"一般贸易":"电商贸易"}}</p>
                     </div>
                 </div>
                 <div class="form-group">
@@ -139,9 +139,9 @@
                                     <td>
                                         <p class="form-control-static">{{item.Brand}}</p>
                                     </td>
-                                    <th><p class="form-control-static">数量</p></th>
+                                    <th><p class="form-control-static">包装</p></th>
                                     <td>
-                                        <p class="form-control-static" ng-model="item.Quantity">{{item.Quantity}}</p>
+                                        <p class="form-control-static">{{item.Package}}</p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -167,6 +167,14 @@
                                     <td>
                                         <p ng-model="item.Manufacturer" class="form-control-static">{{item.Manufacturer}}</p>
                                     </td>
+                                </tr>
+                                <tr>
+                                    <th><p class="form-control-static">数量</p></th>
+                                    <td>
+                                        <p class="form-control-static" ng-model="item.Quantity">{{item.Quantity}}</p>
+                                    </td>
+                                    <th></th>
+                                    <td></td>
                                 </tr>
                                 <tr ng-show="model.Application.C102">
                                     <th><p class="form-control-static">品质检验</p></th>
