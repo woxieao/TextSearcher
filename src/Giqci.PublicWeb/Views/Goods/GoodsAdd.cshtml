@@ -54,7 +54,7 @@
                                 <th>名称(英文)</th>
                                 <th>规格</th>
                                 <th>品牌</th>
-                                <th>原产国代码</th>
+                                <th>原产国</th>
                                 @*<th>包装</th>*@
                                 <th>制造商</th>
                                 <th>操作</th>
@@ -68,7 +68,9 @@
                                 <td class="td-ellipsis" title="{{Product.DescriptionEn}}">{{Product.DescriptionEn}}</td>
                                 <td class="td-ellipsis" title="{{Product.Spec}}">{{Product.Spec}}</td>
                                 <td class="td-ellipsis" title="{{Product.Brand}}">{{Product.Brand}}</td>
-                                <td class="td-ellipsis" title="{{Product.ManufacturerCountry}}">{{Product.ManufacturerCountry}}</td>
+                                <td class="td-ellipsis" title="{{Product.ManufacturerCountry}}">
+                                    <p class="form-control-static" ajax-label ajax-url="countries" ng-model="Product.ManufacturerCountry">{{Product.ManufacturerCountry}}</p>
+                                </td>
                                 @*<td class="td-ellipsis" title="{{Product.Package}}">{{Product.Package}}</td>*@
                                 <td class="td-ellipsis" title="{{Product.Manufacturer}}">{{Product.Manufacturer}}</td>
                                 <td>
