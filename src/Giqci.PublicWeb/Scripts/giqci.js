@@ -74,3 +74,28 @@ function ObjDecodeToJson(htmlEncodeStr) {
     return JSON.parse(HtmlDecode(htmlEncodeStr));
 
 }
+
+function IsJsonStr(value) {
+    try {
+        $.parseJSON(value);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+function CallByValue(obj) {
+    if ($.isPlainObject(obj) || $.isArray(obj)) {
+        var newObj = {};
+        for (var i in obj) {
+            if ($.isPlainObject(obj[i]) || $.isArray(obj[i])) {
+                newObj[i] = CallByValue(obj[i]);
+            } else {
+                newObj[i] = obj[i];
+            }
+        }
+        return newObj;
+    } else {
+        return obj;
+    }
+}
