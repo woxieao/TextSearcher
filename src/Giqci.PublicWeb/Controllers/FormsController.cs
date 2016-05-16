@@ -91,18 +91,18 @@ namespace Giqci.PublicWeb.Controllers
             switch (application.Status)
             {
                 case ApplicationStatus.New:
-                {
-                    return View(application);
-                }
+                    {
+                        return View(application);
+                    }
                 default:
-                {
-                    var certs = _certRepo.Select(appkey);
-                    var validCerts = certs.GroupBy(i => i.CertType);
-                    ViewBag.ValidCerts =
-                        validCerts.Select(certTypeList => certTypeList.OrderByDescending(i => i.SignedDate).First())
-                            .ToList();
-                    return View("ViewApp", application);
-                }
+                    {
+                        var certs = _certRepo.Select(appkey);
+                        var validCerts = certs.GroupBy(i => i.CertType);
+                        ViewBag.ValidCerts =
+                            validCerts.Select(certTypeList => certTypeList.OrderByDescending(i => i.SignedDate).First())
+                                .ToList();
+                        return View("ViewApp", application);
+                    }
             }
         }
 
@@ -151,7 +151,7 @@ namespace Giqci.PublicWeb.Controllers
             if (string.IsNullOrEmpty(userName))
             {
                 isLogin = false;
-                errors = new List<string>() {"登录状态已失效，请您重新登录系统"};
+                errors = new List<string>() { "登录状态已失效，请您重新登录系统" };
             }
             var merchantId = _merchantRepo.GetMerchant(User.Identity.Name).Id;
 
@@ -170,7 +170,7 @@ namespace Giqci.PublicWeb.Controllers
                 errors = null;
             }
             return new KtechJsonResult(HttpStatusCode.OK,
-                new {isNew = isNew, appkey = appkey, isLogin = isLogin, errors = errors});
+                new { isNew = isNew, appkey = appkey, isLogin = isLogin, errors = errors });
         }
 
 
@@ -209,8 +209,6 @@ namespace Giqci.PublicWeb.Controllers
                             ApplicationProductId = item.ApplicationProductId,
                             ExpiryDate = item.ExpiryDate,
                             BatchNo = item.BatchNo,
-                            Quantity = item.Quantity,
-                            ManufacturerDate = item.ManufacturerDate,
                             HandlerType = HandlerType.Add,
                         });
                     }
