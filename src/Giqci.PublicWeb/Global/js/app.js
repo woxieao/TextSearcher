@@ -257,6 +257,7 @@ app.controller('GoodsListController', [
                 if (response.flag) {
                     alert("提交成功");
                     $("#form-add-custom-product").modal("hide");
+                    window.location.reload();
                 }
                 var _tipType = response.flag ? "success" : "danger";
                 alertService.add(_tipType, response.msg || "未知错误", 3000);
