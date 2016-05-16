@@ -198,7 +198,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                     Package = product.Package,
                     Spec = product.Spec,
                     Manufacturer = product.Manufacturer,
-                    Code = String.Empty
+                    Code = String.Empty,
                 });
             }
             if (!requireciqcode)
@@ -233,7 +233,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                      || (i.Package != null && i.Package.Contains(keyWords))
                      || (i.Spec != null && i.Spec.Contains(keyWords))
                      || (i.DescriptionEn != null && i.DescriptionEn.Contains(keyWords))
-                     || (i.Code != null && i.Code.Contains(keyWords)));
+                     || (i.Code != null && i.Code.Contains(keyWords))).Skip(0).Take(10);
             return new KtechJsonResult(HttpStatusCode.OK, new { result = filterResult });
         }
     }
