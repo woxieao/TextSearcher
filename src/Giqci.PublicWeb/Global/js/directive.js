@@ -418,7 +418,7 @@ app.directive("ajaxProduct", function ($timeout, $http) {
 
             $element.select2({
                 theme: "bootstrap",
-                minimumInputLength: 1,
+                minimumInputLength: 0,
                 language: "zh-CN",
                 ajax: {
                     url: "/api/goods/GetAllProduct",
