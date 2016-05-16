@@ -14,69 +14,123 @@
                     <a class="btn btn-primary btn-sm" href="/goods/add">添加备案商品</a> &nbsp;&nbsp;<a class="btn btn-primary btn-sm" href="/goods/showcustomproduct">添加非备案商品</a>
                 </li>
             </ul>
-            <table class="table table-striped table-layout-fixed">
-                <colgroup>
-                    <col width='190' />
-                    <col width='120' />
-                    <col width='100' />
-                    <col width='100' />
-                    <col width='80' />
-                    <col width='100' />
-                    <col width='100' />
-                    <col width='100' />
-                    <col width='100' />
-                    <col width='120' />
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th><span style="color: green">商品备案号</span>/<span style="color: orangered">自定义标识</span></th>
-                        <th>HS编码</th>
-                        <th>名称(中文)</th>
-                        <th>名称(英文)</th>
-                        <th>规格</th>
-                        <th>品牌</th>
-                        <th>原产国</th>
-                        <th>包装</th>
-                        <th>制造商</th>
-                        <th>操作</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="Product in customProductList">
-                        <td class="td-ellipsis" style="color: orangered" title="{{Product.Code}}">{{Product.Code}}</td>
-                        <td class="td-ellipsis" title="{{Product.HsCode}}">{{Product.HsCode}}</td>
-                        <td class="td-ellipsis" title="{{Product.Description}}">{{Product.Description}}</td>
-                        <td class="td-ellipsis" title="{{Product.DescriptionEn}}">{{Product.DescriptionEn}}</td>
-                        <td class="td-ellipsis" title="{{Product.Spec}}">{{Product.Spec}}</td>
-                        <td class="td-ellipsis" title="{{Product.Brand}}">{{Product.Brand}}</td>
-                        <td><p class="form-control-static" ajax-label ajax-url="countries" ng-model="Product.ManufacturerCountry">{{Product.ManufacturerCountry}}</p></td>
-                        <td>{{Product.Package}}</td>
-                        <td class="td-ellipsis" title="{{Product.Manufacturer}}">{{Product.Manufacturer}}</td>
-                        <td>
-                            <div class="btn-group" role="group">
-                                <button ng-if="!Product.IsApproved" class="btn btn-primary btn-sm" ng-click="editMerchantProduct($index)">编辑</button>
-                                <button type="button" class="btn btn-danger btn-sm" ng-click="remove2(Product.Id,$index)">删除</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr ng-repeat="Product in merchantProductList">
-                        <td class="td-ellipsis" style="color: green" title="{{Product.CiqCode}}">{{Product.CiqCode}}</td>
-                        <td class="td-ellipsis" title="{{Product.HsCode}}">{{Product.HsCode}}</td>
-                        <td class="td-ellipsis" title="{{Product.Description}}">{{Product.Description}}</td>
-                        <td class="td-ellipsis" title="{{Product.DescriptionEn}}">{{Product.DescriptionEn}}</td>
-                        <td class="td-ellipsis" title="{{Product.Spec}}">{{Product.Spec}}</td>
-                        <td class="td-ellipsis" title="{{Product.Brand}}">{{Product.Brand}}</td>
-                        <td><p class="form-control-static" ajax-label ajax-url="countries" ng-model="Product.ManufacturerCountry">{{Product.ManufacturerCountry}}</p></td>
-                        <td>{{Product.Package}}</td>
-                        <td class="td-ellipsis" title="{{Product.Manufacturer}}">{{Product.Manufacturer}}</td>
-                        <td>
-                            <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-danger btn-sm" ng-click="remove(Product.CiqCode,$index)">删除</button>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#ciqProduct" data-toggle="tab">备案商品</a>
+                </li>
+                <li>
+                    <a href="#custProduct" data-toggle="tab">非备案商品</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" class="form-horizontal tab-pane fade in active" id="ciqProduct">
+                    <div class="form-group">
+                        <table class="table table-striped table-layout-fixed">
+                            <colgroup>
+                                <col width='190'/>
+                                <col width='120'/>
+                                <col width='100'/>
+                                <col width='100'/>
+                                <col width='100'/>
+                                <col width='100'/>
+                                <col width='100'/>
+                                <col width='100'/>
+                                <col width='120'/>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>
+                                    <span style="color: green">商品备案号</span>
+                                </th>
+                                <th>HS编码</th>
+                                <th>名称(中文)</th>
+                                <th>名称(英文)</th>
+                                <th>规格</th>
+                                <th>品牌</th>
+                                <th>原产国</th>
+                                <th>制造商</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr ng-repeat="Product in merchantProductList">
+                                <td class="td-ellipsis" style="color: green" title="{{Product.CiqCode}}">{{Product.CiqCode}}</td>
+                                <td class="td-ellipsis" title="{{Product.HsCode}}">{{Product.HsCode}}</td>
+                                <td class="td-ellipsis" title="{{Product.Description}}">{{Product.Description}}</td>
+                                <td class="td-ellipsis" title="{{Product.DescriptionEn}}">{{Product.DescriptionEn}}</td>
+                                <td class="td-ellipsis" title="{{Product.Spec}}">{{Product.Spec}}</td>
+                                <td class="td-ellipsis" title="{{Product.Brand}}">{{Product.Brand}}</td>
+                                <td>
+                                    <p class="form-control-static" ajax-label ajax-url="countries" ng-model="Product.ManufacturerCountry">{{Product.ManufacturerCountry}}</p>
+                                </td>
+                                <td class="td-ellipsis" title="{{Product.Manufacturer}}">{{Product.Manufacturer}}</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-danger btn-sm" ng-click="remove(Product.CiqCode,$index)">删除</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div role="tabpanel" class="form-horizontal tab-pane fade" id="custProduct">
+                    <div class="form-group">
+                        <table class="table table-striped table-layout-fixed">
+                            <colgroup>
+                                <col width='190'/>
+                                <col width='120'/>
+                                <col width='100'/>
+                                <col width='100'/>
+                                <col width='80'/>
+                                <col width='100'/>
+                                <col width='100'/>
+                                <col width='100'/>
+                                <col width='100'/>
+                                <col width='120'/>
+                            </colgroup>
+                            <thead>
+                            <tr>
+                                <th>
+                                    <span style="color: orangered">自定义标识</span>
+                                </th>
+                                <th>HS编码</th>
+                                <th>名称(中文)</th>
+                                <th>名称(英文)</th>
+                                <th>规格</th>
+                                <th>品牌</th>
+                                <th>原产国</th>
+                                <th>包装</th>
+                                <th>制造商</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="Product in customProductList">
+                                <td class="td-ellipsis" style="color: orangered" title="{{Product.Code}}">{{Product.Code}}</td>
+                                <td class="td-ellipsis" title="{{Product.HsCode}}">{{Product.HsCode}}</td>
+                                <td class="td-ellipsis" title="{{Product.Description}}">{{Product.Description}}</td>
+                                <td class="td-ellipsis" title="{{Product.DescriptionEn}}">{{Product.DescriptionEn}}</td>
+                                <td class="td-ellipsis" title="{{Product.Spec}}">{{Product.Spec}}</td>
+                                <td class="td-ellipsis" title="{{Product.Brand}}">{{Product.Brand}}</td>
+                                <td>
+                                    <p class="form-control-static" ajax-label ajax-url="countries" ng-model="Product.ManufacturerCountry">{{Product.ManufacturerCountry}}</p>
+                                </td>
+                                <td>{{Product.Package}}</td>
+                                <td class="td-ellipsis" title="{{Product.Manufacturer}}">{{Product.Manufacturer}}</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <button ng-if="!Product.IsApproved" class="btn btn-primary btn-sm" ng-click="editMerchantProduct($index)">编辑</button>
+                                        <button type="button" class="btn btn-danger btn-sm" ng-click="remove2(Product.Id,$index)">删除</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     @Html.Partial("PopUp/EditProduct");
