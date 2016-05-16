@@ -916,7 +916,7 @@
                                         <div class="form-group">
                                             <div class="col-sm-8">
                                                 <p class="form-control-static" ng-if="isEdit&&item.HandlerType!=1">{{item.CiqCode?item.CiqCode:"-"}}</p>
-                                                <select ajax-product class="form-control" ng-if="!isEdit||(isEdit&&item.HandlerType==1)" ng-change="selectProduct(select,item)" ng-model="select" style="width:100%;"></select>
+                                                <select ajax-product class="form-control" ng-if="!isEdit||(isEdit&&item.HandlerType==1)"  ng-change="selectProduct(select,item)" ng-model="select" style="width:100%;"></select>
                                                 <input type="hidden" ng-model="item.CiqCode" />
                                             </div>
                                             <div class="col-sm-4">
