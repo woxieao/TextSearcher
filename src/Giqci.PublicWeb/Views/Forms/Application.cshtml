@@ -11,7 +11,7 @@
         function getDate(str) {
             return str ? new Date(str) : null;
         }
-
+       
         app.controller("GlobalController", [
             '$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', '$filter', 'alertService', function ($http, $scope, $log, $location, $anchorScroll, $timeout, $filter, alertService) {
                 $scope.model = {};
@@ -862,10 +862,10 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <input type="text"  maxlength="50" name="Application.Importer" ng-model="model.Application.Importer" class="form-control" placeholder="全称" />
-                        <input type="text"  maxlength="400" name="Application.ImporterAddr" ng-model="model.Application.ImporterAddr" class="form-control" placeholder="地址" />
-                        <input type="text"  maxlength="50" name="Application.ImporterContact" ng-model="model.Application.ImporterContact" class="form-control" placeholder="联系人" />
-                        <input type="text"  maxlength="50" name="Application.ImporterPhone" ng-model="model.Application.ImporterPhone" class="form-control" placeholder="联系电话" />
+                        <input type="text" maxlength="50" name="Application.Importer" ng-model="model.Application.Importer" class="form-control" placeholder="全称" />
+                        <input type="text" maxlength="400" name="Application.ImporterAddr" ng-model="model.Application.ImporterAddr" class="form-control" placeholder="地址" />
+                        <input type="text" maxlength="50" name="Application.ImporterContact" ng-model="model.Application.ImporterContact" class="form-control" placeholder="联系人" />
+                        <input type="text" maxlength="50" name="Application.ImporterPhone" ng-model="model.Application.ImporterPhone" class="form-control" placeholder="联系电话" />
                     </div>
                 </div>
                 <div class="form-group">
@@ -995,14 +995,12 @@
                                         </p>
                                     </th>
                                     <td>
-                                        <input type="number" ng-model="item.Quantity" class="form-control" placeholder="数量" min="0"/>
+                                        <input type="number" ng-model="item.Quantity" class="form-control" placeholder="数量" min="0" />
                                     </td>
                                     <th>
-                                       
+
                                     </th>
-                                    <td>
-                                        
-                                    </td>
+                                    <td></td>
                                 </tr>
                                 <tr ng-show="model.Application.C102">
                                     <th>
@@ -1040,11 +1038,11 @@
                                     </tr>
                                     <tr>
                                         <th>
-                                            <p class="form-control-static">生产日期</p>
+                                            <p class="form-control-static">批次号</p>
                                         </th>
                                         <td>
-                                            <input ng-if="batch.HandlerType==1" type="text" ng-model="batch.ManufacturerDate" class="form-control datetimepicker" ng-mousedown="itemClickHandler($event)" />
-                                            <p ng-if="batch.HandlerType==0" ng-model="batch.ManufacturerDate" class="form-control-static">{{batch.ManufacturerDate}}</p>
+                                            <input ng-if="batch.HandlerType==1" type="text" ng-model="batch.BatchNo" class="form-control" maxlength="100" />
+                                            <p ng-if="batch.HandlerType==0" ng-model="batch.BatchNo" class="form-control-static">{{batch.BatchNo}}</p>
                                         </td>
                                         <th>
                                             <p class="form-control-static">保质期 <span style="color: red;">*</span></p>
@@ -1054,19 +1052,7 @@
                                             <p ng-if="batch.HandlerType==0" ng-model="batch.ExpiryDate" class="form-control-static">{{batch.ExpiryDate}}</p>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <th>
-                                            <p class="form-control-static">批次号</p>
-                                        </th>
-                                        <td>
-                                            <input ng-if="batch.HandlerType==1" type="text" ng-model="batch.BatchNo" class="form-control" maxlength="100" />
-                                            <p ng-if="batch.HandlerType==0" ng-model="batch.BatchNo" class="form-control-static">{{batch.BatchNo}}</p>
-                                        </td>
-                                        <th>
 
-                                        </th>
-                                        <td></td>
-                                    </tr>
                                 </table>
                             </div>
                             <!--end 批次号-->
@@ -1538,7 +1524,7 @@
                             <label class="col-sm-2 control-label">联系人 <span style="color: red;">*</span></label>
 
                             <div class="col-sm-10">
-                                <input type="text"  maxlength="50"ng-model="dialogModelMerchant.UserContact" class="form-control" />
+                                <input type="text" maxlength="50" ng-model="dialogModelMerchant.UserContact" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
@@ -1546,7 +1532,7 @@
                             <label class="col-sm-2 control-label">联系电话 <span style="color: red;">*</span></label>
 
                             <div class="col-sm-10">
-                                <input type="text"  maxlength="50"ng-model="dialogModelMerchant.UserPhone" class="form-control" />
+                                <input type="text" maxlength="50" ng-model="dialogModelMerchant.UserPhone" class="form-control" />
                             </div>
                         </div>
 

@@ -199,22 +199,14 @@
                                         <col width="360" />
                                     </colgroup>
                                     <tr>
-                                        <th><p class="form-control-static">生产日期</p></th>
+                                        <th><p class="form-control-static">批次号</p></th>
                                         <td>
-                                            <p class="form-control-static">{{batch.ManufacturerDate|date:'yyyy/MM/dd'}}</p>
+                                            <p class="form-control-static">{{batch.BatchNo}}</p>
                                         </td>
                                         <th><p class="form-control-static">保质期 *</p></th>
                                         <td>
                                             <p class="form-control-static">{{batch.ExpiryDate|date:'yyyy/MM/dd'}}</p>
                                         </td>
-                                    </tr>
-                                    <tr>
-                                        <th><p class="form-control-static">批次号</p></th>
-                                        <td>
-                                            <p class="form-control-static">{{batch.BatchNo}}</p>
-                                        </td>
-                                        <th></th>
-                                        <td></td>
                                     </tr>
                                 </table>
                             </div>
