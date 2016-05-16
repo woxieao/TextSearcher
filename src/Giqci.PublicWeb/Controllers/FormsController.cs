@@ -128,11 +128,11 @@ namespace Giqci.PublicWeb.Controllers
             }
             if (string.IsNullOrEmpty(model.InspectorTel))
             {
-                errors.Add("检验联系人电话不能为空");
+                errors.Add("联系人电话不能为空");
             }
             if (string.IsNullOrEmpty(model.Inspector))
             {
-                errors.Add("检验联系人不能为空");
+                errors.Add("联系人不能为空");
             }
             if (string.IsNullOrEmpty(model.InspectionAddr))
             {

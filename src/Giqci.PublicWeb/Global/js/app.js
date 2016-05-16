@@ -246,7 +246,7 @@ app.controller('GoodsListController', [
             }
         }
         $scope.editMerchantProduct = function (index) {
-            $scope.CustomDialogModel = $scope.customProductList[index];
+            $scope.CustomDialogModel = CallByValue($scope.customProductList[index]);
             $(".form-add-custom-product-title").html("编辑非备案商品");
             $("#CustomDialogModelHsCode").next().find("span.select2-selection__rendered").html("");
             $("#form-add-custom-product").modal("show");
