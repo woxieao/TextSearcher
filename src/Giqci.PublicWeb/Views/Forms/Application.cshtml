@@ -11,7 +11,9 @@
         function getDate(str) {
             return str ? new Date(str) : null;
         }
-       
+        window.onbeforeunload = function () {
+            return "";
+        }
         app.controller("GlobalController", [
             '$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', '$filter', 'alertService', function ($http, $scope, $log, $location, $anchorScroll, $timeout, $filter, alertService) {
                 $scope.model = {};
