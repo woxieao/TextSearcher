@@ -1,4 +1,5 @@
-﻿using System.Web.Configuration;
+﻿using System;
+using System.Web.Configuration;
 
 namespace Giqci.PublicWeb.Models
 {
@@ -53,10 +54,13 @@ namespace Giqci.PublicWeb.Models
             public static readonly bool FileLogSwitch = GetLogSwitch(nameof(FileLogSwitch));
         }
 
-        public struct Uploader
+        public struct Filer
         {
             public static readonly string[] AllowTypeList =
                 (WebConfigurationManager.AppSettings[nameof(AllowTypeList)] ?? "").Split('|');
+
+            public static readonly long FileMaxLength =
+                Convert.ToInt64(WebConfigurationManager.AppSettings[nameof(FileMaxLength)]);
         }
     }
 }

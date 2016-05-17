@@ -61,8 +61,8 @@
       <HintPath>..\..\packages\FluentValidation.6.2.1.0\lib\Net45\FluentValidation.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.ApiProxy, Version=1.0.119.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.ApiProxy.1.0.119\lib\net461\Giqci.ApiProxy.dll</HintPath>
+    <Reference Include="Giqci.ApiProxy, Version=1.0.120.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.ApiProxy.1.0.120\lib\net461\Giqci.ApiProxy.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Giqci.Chapi.Contract, Version=2.0.57.0, Culture=neutral, processorArchitecture=MSIL">
@@ -154,7 +154,7 @@
     <Compile Include="App_Start\RestClientFactory.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\Api\UpLoadController.cs" />
+    <Compile Include="Controllers\Api\FileController.cs" />
     <Compile Include="Controllers\Api\AccountController.cs" />
     <Compile Include="Controllers\Api\CertificateController.cs" />
     <Compile Include="Controllers\Api\DictionaryController.cs" />
@@ -278,6 +278,7 @@
     <Content Include="Scripts\jquery-2.2.3.min.map" />
     <Content Include="Views\Account\MerchantList.cshtml" />
     <Content Include="Views\Shared\PopUp\EditProduct.cshtml" />
+    <Content Include="Views\File\ViewFile.cshtml" />
     <None Include="Web.Prod.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
