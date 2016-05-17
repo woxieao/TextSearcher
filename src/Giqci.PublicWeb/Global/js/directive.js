@@ -436,9 +436,10 @@ app.directive("ajaxProduct", function ($timeout, $http) {
                         var results = [];
                         scope.dataList = [];
                         $.each(data.result, function (i, v) {
+                            console.log(v);
                             var o = {};
                             o.id = v.Id;
-                            o.name = (v.CiqCode ? v.CiqCode : "-") + '(' + v.Description + ")";
+                            o.name = (v.CiqCode ? v.CiqCode : "-") + '(' + (v.Description === undefined ? "" : v.Description) + ")";
                             o.CiqCode = v.CiqCode;
                             o.Brand = v.Brand;
                             o.Description = v.Description;
