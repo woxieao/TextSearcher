@@ -16,8 +16,8 @@ namespace Giqci.PublicWeb.Controllers.Api
         {
             var msg = new SendEmailTemplate
             {
-                FromEmail = Config.Current.NoReplyEmail,
-                Subject = Config.Current.FeedbackEmailSubject,
+                FromEmail = Config.Common.NoReplyEmail,
+                Subject = Config.Common.FeedbackEmailSubject,
                 TextTemplate = string.Format(
                     @"Firstname:
 {0}
@@ -35,7 +35,7 @@ Message:
 {4}", input.firstname, input.lastname, input.email, input.subject, input.message)
             };
             var m = new SmartMail(msg);
-            m.To.Add(Config.Current.AdminEmail);
+            m.To.Add(Config.Common.AdminEmail);
             m.SendEmail();
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }

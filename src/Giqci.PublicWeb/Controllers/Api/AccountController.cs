@@ -40,14 +40,14 @@ namespace Giqci.PublicWeb.Controllers.Api
                 {
                     var msg = new SendEmailTemplate
                     {
-                        FromEmail = Config.Current.NoReplyEmail,
-                        Subject = Config.Current.RegMerchantEmailSubject,
+                        FromEmail = Config.Common.NoReplyEmail,
+                        Subject = Config.Common.RegMerchantEmailSubject,
                         TextTemplate = EmailTemplateHelper.GetEmailTemplate("Active.txt"),
                         HtmlTemplate = EmailTemplateHelper.GetEmailTemplate("Active.html")
                     };
                     var m = new SmartMail(msg);
                     m.AddParameter("ActiveUrl",
-                        string.Format(@"{0}account/active?code={1}&email={2}", Config.Current.Host, authCode,
+                        string.Format(@"{0}account/active?code={1}&email={2}", Config.Common.Host, authCode,
                             input.Email));
                     m.To.Add(input.Email);
                     m.SendEmail();
@@ -133,8 +133,8 @@ namespace Giqci.PublicWeb.Controllers.Api
                 {
                     var msg = new SendEmailTemplate
                     {
-                        FromEmail = Config.Current.NoReplyEmail,
-                        Subject = Config.Current.ForgotPasswordEmailSubject,
+                        FromEmail = Config.Common.NoReplyEmail,
+                        Subject = Config.Common.ForgotPasswordEmailSubject,
                         TextTemplate = EmailTemplateHelper.GetEmailTemplate("ForgotPassword.txt"),
                         HtmlTemplate = EmailTemplateHelper.GetEmailTemplate("ForgotPassword.html"),
                     };
