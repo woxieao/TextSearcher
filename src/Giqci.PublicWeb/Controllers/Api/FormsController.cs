@@ -65,7 +65,7 @@ namespace Giqci.PublicWeb.Controllers.Api
             {
                 var fileName = string.Format("{0}{1}", Guid.NewGuid().ToString("N"),
                     file.FileName.Substring(file.FileName.LastIndexOf(".", StringComparison.Ordinal)));
-                var filePath = string.Format("/{0}/{1}", Config.Current.UserExampleFilePath, fileName);
+                var filePath = string.Format("/{0}/{1}", Config.Common.UserExampleFilePath, fileName);
                 var fileRealPath = Server.MapPath(string.Format("~{0}", filePath));
                 var fileInfo = new FileInfo(fileRealPath);
                 if (fileInfo.Directory != null && !fileInfo.Directory.Exists)

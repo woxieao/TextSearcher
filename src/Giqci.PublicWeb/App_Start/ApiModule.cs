@@ -1,59 +1,40 @@
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Web.Configuration;
 using Autofac;
 using Autofac.Core;
 using Giqci.ApiProxy;
 using Giqci.ApiProxy.App;
 using Giqci.ApiProxy.Services;
 using Giqci.Interfaces;
+using Giqci.PublicWeb.Models;
 using Giqci.PublicWeb.Services;
 
 namespace Giqci.PublicWeb
 {
     public class ApiModule : Module
     {
-        private bool GetLogSwitch(string configName)
-        {
-            var logCinfig = WebConfigurationManager.AppSettings[configName] ?? string.Empty;
-            return logCinfig == "1" || logCinfig.ToLower() == "true";
-        }
-
-        private bool GetLogSwitch(LogSwitch logName)
-        {
-            var logCinfig = WebConfigurationManager.AppSettings[string.Format("{0}LogSwitch", logName)] ??
-                            string.Empty;
-            return logCinfig == "1" || logCinfig.ToLower() == "true";
-        }
-
         protected override void Load(ContainerBuilder builder)
         {
-            var dictApiUrl = WebConfigurationManager.AppSettings["dictApiUrl"];
-            var prodApiUrl = WebConfigurationManager.AppSettings["prodApiUrl"];
-            var custApiUrl = WebConfigurationManager.AppSettings["custApiUrl"];
-            var logApiUrl = WebConfigurationManager.AppSettings["logApiUrl"];
-            var appApiUrl = WebConfigurationManager.AppSettings["appApiUrl"];
-
             #region init httpClient
 
-            builder.Register(x => RestClientFactory.Create(dictApiUrl, false))
+            builder.Register(x => RestClientFactory.Create(Config.ApiUrl.DictApiUrl, false))
                 .Keyed<HttpClient>(ApiType.Dict)
                 .SingleInstance();
-            builder.Register(x => RestClientFactory.Create(prodApiUrl, false))
+            builder.Register(x => RestClientFactory.Create(Config.ApiUrl.ProdApiUrl, false))
                 .Keyed<HttpClient>(ApiType.Products)
                 .SingleInstance();
-            builder.Register(x => RestClientFactory.Create(custApiUrl, false))
+            builder.Register(x => RestClientFactory.Create(Config.ApiUrl.CustApiUrl, false))
                 .Keyed<HttpClient>(ApiType.Customers)
                 .SingleInstance();
-            builder.Register(x => RestClientFactory.Create(appApiUrl, false))
-                .Keyed<HttpClient>(ApiType.AppApi)
+            builder.Register(x => RestClientFactory.Create(Config.ApiUrl.AppApiUrl, false))
+                .Keyed<HttpClient>(ApiType.App)
                 .SingleInstance();
 
             #endregion
 
             #region init str
 
-            builder.Register(x => logApiUrl)
+            builder.Register(x => Config.ApiUrl.LogApiUrl)
                 .Keyed<string>(StrList.LogUrl)
                 .SingleInstance();
 
@@ -66,10 +47,11 @@ namespace Giqci.PublicWeb
 
             #region init log switch 
 
-            builder.Register(x => GetLogSwitch(LogSwitch.Dict)).Keyed<bool>(LogSwitch.Dict).SingleInstance();
-            builder.Register(x => GetLogSwitch(LogSwitch.Products)).Keyed<bool>(LogSwitch.Products).SingleInstance();
-            builder.Register(x => GetLogSwitch(LogSwitch.Customers)).Keyed<bool>(LogSwitch.Customers).SingleInstance();
-            builder.Register(x => GetLogSwitch(LogSwitch.AppApi)).Keyed<bool>(LogSwitch.AppApi).SingleInstance();
+            builder.Register(x => Config.LogSwitch.DictLogSwitch).Keyed<bool>(LogSwitch.Dict).SingleInstance();
+            builder.Register(x => Config.LogSwitch.ProductsLogSwitch).Keyed<bool>(LogSwitch.Products).SingleInstance();
+            builder.Register(x => Config.LogSwitch.CustomersLogSwitch).Keyed<bool>(LogSwitch.Customers).SingleInstance();
+            builder.Register(x => Config.LogSwitch.AppLogSwitch).Keyed<bool>(LogSwitch.App).SingleInstance();
+            builder.Register(x => Config.LogSwitch.FileLogSwitch).Keyed<bool>(LogSwitch.File).SingleInstance();
 
             #endregion
 
@@ -127,27 +109,27 @@ namespace Giqci.PublicWeb
                 .As<IMerchantApplicationApiProxy>().WithParameters(
                     new List<ResolvedParameter>()
                     {
-                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApi),
+                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.App),
                         ResolvedParameter.ForKeyed<string>(StrList.LogUrl),
-                        ResolvedParameter.ForKeyed<bool>(LogSwitch.AppApi),
+                        ResolvedParameter.ForKeyed<bool>(LogSwitch.App),
                     })
                 .InstancePerDependency();
             builder.RegisterType<ApplicationViewModelApiProxy>()
                 .As<IApplicationViewModelApiProxy>().WithParameters(
                     new List<ResolvedParameter>()
                     {
-                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApi),
+                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.App),
                         ResolvedParameter.ForKeyed<string>(StrList.LogUrl),
-                        ResolvedParameter.ForKeyed<bool>(LogSwitch.AppApi),
+                        ResolvedParameter.ForKeyed<bool>(LogSwitch.App),
                     })
                 .InstancePerDependency();
             builder.RegisterType<CertificateApiProxy>()
                 .As<ICertificateApiProxy>().WithParameters(
                     new List<ResolvedParameter>()
                     {
-                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.AppApi),
+                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.App),
                         ResolvedParameter.ForKeyed<string>(StrList.LogUrl),
-                        ResolvedParameter.ForKeyed<bool>(LogSwitch.AppApi),
+                        ResolvedParameter.ForKeyed<bool>(LogSwitch.App),
                     })
                 .InstancePerDependency();
 
@@ -173,7 +155,7 @@ namespace Giqci.PublicWeb
             Dict,
             Products,
             Customers,
-            AppApi
+            App
         }
 
         private enum StrList
@@ -186,7 +168,8 @@ namespace Giqci.PublicWeb
             Dict,
             Products,
             Customers,
-            AppApi
+            App,
+            File
         }
     }
 }
