@@ -291,12 +291,14 @@ app.controller("GoodsAddController", [
         $scope.CiqCode = "";
         $scope.Product = null;
         $scope.getproductlist = function () {
-            var reg = /^\d{10}|(ICIP\d{14})$/i;
-            if (!reg.test($scope.CiqCode)) {
+            var reg = /^\d{10}$/;
+            var reg2=/^ICIP\d{14}$/i;
+            if (!(reg.test($scope.CiqCode) || reg2.test($scope.CiqCode))) {
                 $scope.Product = null;
-                alertService.add('danger', "请输入正确格式的备案编号", 3000);
+                alertService.add('danger', "正确的备案号格式为[ICIP+14个数字]或[10个数字]", 3000);
+                return;
             }
-            if ($scope.CiqCode != "") {
+            else {
                 $http({
                     url: '/api/goods/searchproduct',
                     method: 'POST',
@@ -312,9 +314,6 @@ app.controller("GoodsAddController", [
                     }
                 }).error(function (data, header, config, status) {
                 });
-            } else {
-                $scope.Product = null;
-                alertService.add('danger', "请输入备案编号", 3000);
             }
         }
         $scope.addProductMsg = null;
