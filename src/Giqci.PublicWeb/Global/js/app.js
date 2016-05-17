@@ -291,6 +291,11 @@ app.controller("GoodsAddController", [
         $scope.CiqCode = "";
         $scope.Product = null;
         $scope.getproductlist = function () {
+            var reg = /^\d{10}|(ICIP\d{14})$/i;
+            if (!reg.test($scope.CiqCode)) {
+                $scope.Product = null;
+                alertService.add('danger', "请输入正确格式的备案编号", 3000);
+            }
             if ($scope.CiqCode != "") {
                 $http({
                     url: '/api/goods/searchproduct',
@@ -408,27 +413,27 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
         $("#merchant-add").modal("show");
     };
     $scope.remove = function (_object) {
-        if(confirm("是否删除该常用商户")){
-        $http({
-            url: '/api/UserProfile/RemoveProfile',
-            method: 'POST',
-            data: {
-                ProfileId: _object.Id
-            }
-        }).success(function (data) {
-            if (data.flag) {
-                $scope.loadMerchant();
-                $("#merchant-add").modal("hide");
-            } else {
-                var _errormsg = '';
-                for (var i = data.errorMsg.length; i > 0 ; i--) {
-                    _errormsg += data.errorMsg[i - 1] + "\r\n";
+        if (confirm("是否删除该常用商户")) {
+            $http({
+                url: '/api/UserProfile/RemoveProfile',
+                method: 'POST',
+                data: {
+                    ProfileId: _object.Id
                 }
-                alertService.add("danger", _errormsg || "未知错误", 3000);
-            }
-        }).error(function (response) {
-            alertService.add("danger", response.msg || "未知错误", 3000);
-        });
+            }).success(function (data) {
+                if (data.flag) {
+                    $scope.loadMerchant();
+                    $("#merchant-add").modal("hide");
+                } else {
+                    var _errormsg = '';
+                    for (var i = data.errorMsg.length; i > 0 ; i--) {
+                        _errormsg += data.errorMsg[i - 1] + "\r\n";
+                    }
+                    alertService.add("danger", _errormsg || "未知错误", 3000);
+                }
+            }).error(function (response) {
+                alertService.add("danger", response.msg || "未知错误", 3000);
+            });
         }
     };
 }
