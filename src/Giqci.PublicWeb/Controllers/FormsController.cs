@@ -105,7 +105,26 @@ namespace Giqci.PublicWeb.Controllers
                     }
             }
         }
-
+        [Route("forms/app/print/{appkey}")]
+        [HttpGet]
+        public ActionResult PrintApplication(string appkey)
+        {
+            var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
+            var application = _appRepo.Get(merchant.Id, appkey);
+            ApplicationItemModifyAble(ref application);
+            //非该登录人的申请||不是新申请
+            if (application == null)
+            {
+                throw new ApplicationException(":(   You Can Not View This Application");
+            }
+            var certs = _certRepo.Select(appkey);
+            var validCerts = certs.GroupBy(i => i.CertType);
+            ViewBag.ValidCerts =
+                validCerts.Select(certTypeList => certTypeList.OrderByDescending(i => i.SignedDate).First())
+                    .ToList();
+            ViewBag.IsPrint = true;
+            return View("ViewApp", application);
+        }
 
         [Route("forms/app")]
         [HttpPost]

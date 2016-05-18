@@ -32,6 +32,7 @@
                     <col width='120' />
                     <col width='260' />
                     <col>
+                    <col width='120' />
                 </colgroup>
                 <thead>
                     <tr>
@@ -42,6 +43,7 @@
                         <th>当前状态</th>
                         <th>申请人</th>
                         <th>E-Mail</th>
+                        <th>打印</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -57,6 +59,11 @@
                         <td>{{emp.Status}}</td>
                         <td>{{emp.Applicant}}</td>
                         <td>{{emp.MerchantEmail}}</td>
+                        <td>
+                            <a href="/forms/app/print/{{emp.Key}}">
+                                <span class="glyphicon glyphicon-print"></span> 打印
+                            </a>
+                        </td>
                     </tr>
                 </tbody>
             </table>

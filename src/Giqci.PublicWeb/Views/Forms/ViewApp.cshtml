@@ -4,8 +4,8 @@
 @using Ktech.Extensions
 @using Newtonsoft.Json
 @model Giqci.Chapi.Models.App.Application
-<div class="row" ng-controller="ViewAppController">
-    <div class="col-md-12">
+<div class="row" ng-controller="ViewAppController" >
+    <div class="col-md-12" id="print" >
         <h1>查看 - {{model.Application.Key}}</h1>
         <div class="form-horizontal">
             <div class="form-horizontal">
@@ -115,41 +115,57 @@
                                     <col width="360" />
                                 </colgroup>
                                 <tr>
-                                    <th><p class="form-control-static">商品 {{$index+1}}</p></th>
+                                    <th>
+                                        <p class="form-control-static">商品 {{$index+1}}</p>
+                                    </th>
                                     <td colspan="3"></td>
                                 </tr>
                                 <tr>
-                                    <th><p class="form-control-static">常用商品</p></th>
+                                    <th>
+                                        <p class="form-control-static">常用商品</p>
+                                    </th>
                                     <td colspan="3">
                                         <p class="form-control-static">{{item.CiqCode}}</p>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th><p class="form-control-static">名称(英文)</p></th>
+                                    <th>
+                                        <p class="form-control-static">名称(英文)</p>
+                                    </th>
                                     <td>
                                         <p class="form-control-static">{{item.DescriptionEn}}</p>
                                     </td>
-                                    <th><p class="form-control-static">名称(中文)</p></th>
+                                    <th>
+                                        <p class="form-control-static">名称(中文)</p>
+                                    </th>
                                     <td>
                                         <p class="form-control-static">{{item.Description}}</p>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th><p class="form-control-static">品牌</p></th>
+                                    <th>
+                                        <p class="form-control-static">品牌</p>
+                                    </th>
                                     <td>
                                         <p class="form-control-static">{{item.Brand}}</p>
                                     </td>
-                                    <th><p class="form-control-static">包装</p></th>
+                                    <th>
+                                        <p class="form-control-static">包装</p>
+                                    </th>
                                     <td>
                                         <p class="form-control-static">{{item.Package}}</p>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th><p class="form-control-static">规格</p></th>
+                                    <th>
+                                        <p class="form-control-static">规格</p>
+                                    </th>
                                     <td>
                                         <p class="form-control-static">{{item.Spec}}</p>
                                     </td>
-                                    <th><p class="form-control-static">原产国</p></th>
+                                    <th>
+                                        <p class="form-control-static">原产国</p>
+                                    </th>
                                     <td>
                                         <p class="form-control-static" ajax-label ajax-url="countries" ng-model="item.ManufacturerCountry">{{item.ManufacturerCountry}}</p>
                                     </td>
@@ -169,7 +185,9 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th><p class="form-control-static">数量</p></th>
+                                    <th>
+                                        <p class="form-control-static">数量</p>
+                                    </th>
                                     <td>
                                         <p class="form-control-static" ng-model="item.Quantity">{{item.Quantity}}</p>
                                     </td>
@@ -177,7 +195,9 @@
                                     <td></td>
                                 </tr>
                                 <tr ng-show="model.Application.C102">
-                                    <th><p class="form-control-static">品质检验</p></th>
+                                    <th>
+                                        <p class="form-control-static">品质检验</p>
+                                    </th>
                                     <td>
                                         <p class="form-control-static">{{item.C102?'是':'否'}}</p>
                                     </td>
@@ -199,11 +219,15 @@
                                         <col width="360" />
                                     </colgroup>
                                     <tr>
-                                        <th><p class="form-control-static">批次号</p></th>
+                                        <th>
+                                            <p class="form-control-static">批次号</p>
+                                        </th>
                                         <td>
                                             <p class="form-control-static">{{batch.BatchNo}}</p>
                                         </td>
-                                        <th><p class="form-control-static">保质期 *</p></th>
+                                        <th>
+                                            <p class="form-control-static">保质期 *</p>
+                                        </th>
                                         <td>
                                             <p class="form-control-static">{{batch.ExpiryDate|date:'yyyy/MM/dd'}}</p>
                                         </td>
@@ -220,11 +244,15 @@
                                     <col width="360" />
                                 </colgroup>
                                 <tr ng-repeat="zcode in item.ApplicationZCodes">
-                                    <th><p class="form-control-static">首码</p></th>
+                                    <th>
+                                        <p class="form-control-static">首码</p>
+                                    </th>
                                     <td>
                                         <p class="form-control-static">{{zcode.ZCodeStart}}</p>
                                     </td>
-                                    <th><p class="form-control-static">尾码</p></th>
+                                    <th>
+                                        <p class="form-control-static">尾码</p>
+                                    </th>
                                     <td>
                                         <p class="form-control-static">{{zcode.ZCodeEnd}}</p>
                                     </td>
@@ -368,11 +396,20 @@
                         </div>
                     }
                 }
+
             </div>
         </div>
     </div>
+
+    <div class="form-group" ng-show="IsPrint">
+        <button class="btn btn-default" onclick="print()">
+            <span class="glyphicon glyphicon-print" aria-hidden="true"></span>打印
+        </button>
+    </div>
 </div>
 @section Footer{
+<script src="http://code.jquery.com/jquery-migrate-1.1.0.js"></script>
+<script src="~/Global/js/jquery.jqprint-0.3.js"></script>
     <script type="text/javascript">
         app.controller('ViewAppController', [
             '$scope', function ($scope) {
@@ -380,7 +417,12 @@
                 $scope.model.Application = ObjDecodeToJson(@HtmlExtensions.RawJson(Model));
                 $scope.StatusDescription = "@Model.Status.ToDescription()";
                 $scope.ShippingMethodDescription = "@Model.ShippingMethod.ToDescription()";
+                $scope.IsPrint = "@ViewBag.IsPrint" == "True";
             }
         ]);
+
+        function print() {
+            $("#print").jqprint();
+        }
     </script>
 }
