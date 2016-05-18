@@ -16,8 +16,8 @@
                     状态: <select ng-model="status" ng-options="s.value as s.name for s in statusValues" class="form-control">
                         <option value="">-- 全部 --</option>
                     </select>
-                    From: <input ng-model="start" type="date" class="form-control">
-                    To: <input ng-model="end" type="date" class="form-control">
+                    From: <input ng-model="start" type="date" class="form-control datetimepicker">
+                    To: <input ng-model="end" type="date" class="form-control datetimepicker">
                     <button type="button" class="btn btn-default" ng-click="searchApplication()">
                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
                     </button>
