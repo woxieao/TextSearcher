@@ -13,14 +13,17 @@
             return str ? new Date(str) : null;
         }
 
-        window.onbeforeunload = function () {
-            return "";
-        }
+
         app.controller("GlobalController", ['$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', '$filter', 'alertService', function ($http, $scope, $log, $location, $anchorScroll, $timeout, $filter, alertService) {
             $scope.model = {};
             $scope.model.Application = ObjDecodeToJson(@HtmlExtensions.RawJson(Model));
 
-                $scope.isNewApp = $scope.model.Application.Key == null;
+            $scope.isNewApp = $scope.model.Application.Key == null;
+            if ($scope.isNewApp){
+            window.onbeforeunload = function () {
+                return "您可以点击[暂存]以保存未提交的申请";
+            }
+            }
             //$log.log($scope.model.Application);
             $scope.dataInit = function () {
                 $scope.model.Application.InspectionDate = $filter('date')($scope.model.Application.InspectionDate, 'yyyy/MM/dd');
@@ -39,9 +42,9 @@
             $scope.isEdit = $scope.model.Application.Key != null;
             $scope.dataInit();
             $scope.errors = [];
-          
+
             if ($scope.model.Application.Key != null) {
-                  
+
                 $scope.acceptshow = false;
                 $scope.appshow = true;
                 $("#appliction-form").show();
@@ -130,7 +133,7 @@
                 if ($scope.isNewApp) {
                     $scope.GetAppCache();
                 }
-                
+
                 $scope.RemoveAppCache = function (isOverride) {
                     $scope.accept();
                     if (isOverride) {
@@ -140,9 +143,14 @@
                         url: '/api/forms/RemoveAppCache',
                         method: 'POST'
                     }).success(function (response) {
-                        alert("读取成功\n(并已删除了暂存的申请,若需暂存,请再次点击暂存)");
+                        alertService.add('success', "读取成功 (并已删除了暂存的申请,若需暂存,请再次点击暂存)", 6000);
+                        $location.hash("h1");
+                        $anchorScroll();
+
                     }).error(function (response) {
-                           alert("删除申请缓存失败");
+                        alertService.add('danger', "删除暂存的申请失败)", 5000);
+                        $location.hash("h1");
+                        $anchorScroll();
                     });
                 }
                 $scope.isSaveingCache = false;
@@ -153,10 +161,14 @@
                         method: 'POST',
                         data: $scope.model.Application
                    }).success(function (result) {
-                       alert("暂存成功,下次可以直接读取本次缓存");
-                       $scope.isSaveingCache = false;
+                       alertService.add('success', "暂存成功,下次可以直接读取本次保存的数据", 3000);
+                       $location.hash("h1");
+                       $anchorScroll();
+                    $scope.isSaveingCache = false;
                    }).error(function (response) {
-                       alert("保存失败");
+                       alertService.add('danger', "保存失败", 5000);
+                       $location.hash("h1");
+                       $anchorScroll();
                        $scope.isSaveingCache = false;
                     });
                 }
@@ -820,12 +832,13 @@
                 </div>
                 <div class="col-sm-offset-5 col-sm-4">
                     <button class="btn btn-success" ng-show="AppCache!=null" ng-click="RemoveAppCache(true)">
-                        <span class="glyphicon glyphicon-level-up" aria-hidden="true"></span> 读取暂存的申请
+                        <span class="glyphicon glyphicon-level-up" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;读取暂存的申请&nbsp;&nbsp;&nbsp;&nbsp;
                     </button>
                 </div>
             </div>
         </form>
     </div>
+
     <div ng-show="appshow" id="appliction-form" style="display: none;">
         <div class="alert alert-success" role="alert" ng-show="resultMessage">
             <strong>信息提示</strong>
@@ -834,12 +847,17 @@
                 <a href="/forms/app" target="_self">再次申请</a>
             </p>
         </div>
+
         <div ng-show="!resultMessage">
             <h1 id="h1">证书申请表格</h1>
             <div class="has-error" ng-show="errors.length > 0">
                 <ul class="help-block">
                     <li ng-repeat="err in errors">{{err}}</li>
                 </ul>
+            </div>
+            <div role="alert" id="alertBox" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
+                <button aria-label="Close" data-dismiss="alert" ng-click="alert.close()" class="close" type="button"><span aria-hidden="true">×</span></button>
+                <span ng-bind="alert.msg"></span>
             </div>
             <div><span style="color: red;">*</span> 带星号的为必填项</div>
             <form name="appform" class="form-horizontal" method="POST" novalidate enctype="multipart/form-data" id="uploadForm" onsubmit="return CheckIsUpload();">
@@ -1347,9 +1365,10 @@
                         <button class="btn btn-default" ng-click="submit()" ng-disabled="submitApp">
                             <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
                         </button>
-                </button>
-                <button ng-show="isNewApp" ng-disable="!isSaveingCache"  class="btn btn-info" ng-click="SaveAppCache()" ng-disabled="submitApp">
-                    <span class="glyphicon glyphicon-save" aria-hidden="true"></span> 暂存
+
+                        <button ng-show="isNewApp" ng-disabled="isSaveingCache" class="btn btn-info" ng-click="SaveAppCache()">
+                            <span class="glyphicon glyphicon-save" aria-hidden="true"></span> 暂存
+                        </button>
                     </div>
                 </div>
             </form>
