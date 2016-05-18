@@ -232,14 +232,13 @@ ul,li,ol{
 /*
 * Page body padding gap
 */
-@media screen and (min-width: 992px) {
-  .body-content {
-    margin-top: 30px;
-  } 
-  .body-content>div{
-      background:none #fff;
-  }
+.body-content {
+margin-top: 30px;
+} 
+.body-content>div{
+    background:none #fff;
 }
+
 
 /*
 * widget box setting
