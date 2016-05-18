@@ -8,12 +8,8 @@ using System.Web.Mvc;
 using Giqci.Chapi.Enums.App;
 using Giqci.Chapi.Models.App;
 using Giqci.Interfaces;
-using Giqci.PublicWeb.Helpers;
-using Giqci.PublicWeb.Models;
 using Giqci.PublicWeb.Services;
-using Ktech.Extensions;
 using Ktech.Mvc.ActionResults;
-using Newtonsoft.Json;
 using Application = Giqci.Chapi.Models.App.Application;
 
 namespace Giqci.PublicWeb.Controllers
