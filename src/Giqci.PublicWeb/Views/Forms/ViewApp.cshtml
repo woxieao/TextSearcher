@@ -388,7 +388,7 @@
                                     @foreach (var item in validCerts)
                                     {
                                         <div class="form-control-static">
-                                            <strong>@item.CertType.ToDescription()</strong>：<a target="_blank" href="@string.Format("{0}/{1}/{2}", Config.Current.AdminWebUrl, Config.Current.CertFileSavePath, item.CertPath)">@item.CertNo</a> by @item.SignedBy @item.SignedDate
+                                            <strong>@item.CertType.ToDescription()</strong>：<a target="_blank" href="@string.Format("{0}/{1}/{2}", Config.Common.AdminWebUrl, Config.Common.CertFileSavePath, item.CertPath)">@item.CertNo</a> by @item.SignedBy @item.SignedDate
                                         </div>
                                     }
                                 </div>

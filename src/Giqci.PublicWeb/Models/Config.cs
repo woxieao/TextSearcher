@@ -25,11 +25,12 @@ namespace Giqci.PublicWeb.Models
 
             public static readonly string CertFileSavePath =
                 WebConfigurationManager.AppSettings[nameof(CertFileSavePath)];
+
+            public static readonly string AdminWebUrl = WebConfigurationManager.AppSettings[nameof(AdminWebUrl)];
         }
 
         public struct ApiUrl
         {
-            public static readonly string AdminWebUrl = WebConfigurationManager.AppSettings[nameof(AdminWebUrl)];
             public static readonly string LogApiUrl = WebConfigurationManager.AppSettings[nameof(LogApiUrl)];
             public static readonly string FileApiUrl = WebConfigurationManager.AppSettings[nameof(FileApiUrl)];
             public static readonly string DictApiUrl = WebConfigurationManager.AppSettings[nameof(DictApiUrl)];

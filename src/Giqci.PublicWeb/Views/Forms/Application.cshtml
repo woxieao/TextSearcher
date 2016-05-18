@@ -503,6 +503,21 @@
                         }
                     });
                 };
+                $scope.UploadExampleNew = function () {
+                    $('#uploadForm').ajaxSubmit({
+                        type: "post",
+                        url: "/file/UploadExampleFile",
+                        success: function (data) {
+                            if (data.Flag) {
+                                console.log(data.FileFullPath);
+                              //  $scope.model.Application.ExampleCertList.push({ CertFilePath: data.FileFullPath, HandlerType: 1 });
+                                //$scope.$apply();
+                            } else {
+                                alert(data.Msg);
+                            }
+                        }
+                    });
+                };
                 $scope.showProductList = function () {
                     $(".form-add-custom-product-title").html("商品列表");
                     $("#form-product").modal("show");
@@ -785,31 +800,32 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group" ng-show="model.Application.C103">
-                    <label class="col-sm-2 control-label">上传标签证书样张</label>
-                    <div class="col-sm-10">
-                        <input type="file" name="file" onchange="if ($(this).val() != '') {angular.element(this).scope().UploadExample()}" />
-                        <div ng-repeat="item in model.Application.ExampleCertList | filter:listFilter">
-                            <table class="table table-striped goodsItems">
-                                <tr>
-                                    <th>样张{{$index+1}}</th>
-                                    <td>
-                                        <button class="btn btn-default" ng-click="removeExample(item)">
-                                            <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th>文件</th>
-                                    <td>
-                                        <input ng-show="!item.CertFilePath" type="file" name="file{{$index}}" ng-model="item.CertFilePath" class="form-control autowidth-form-control" />
-                                        <a ng-show="item.CertFilePath" href="{{item.CertFilePath}}" target="_blank">查看样张{{$index+1}}</a>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
+            <div class="form-group" ng-show="model.Application.C103">
+                <input type="file" name="file" onchange="if ($(this).val() != '') {angular.element(this).scope().UploadExampleNew()}" />
+                <label class="col-sm-2 control-label">上传标签证书样张</label>
+                <div class="col-sm-10">
+                    @*<input type="file" name="file" onchange="if ($(this).val() != '') {angular.element(this).scope().UploadExample()}" />*@
+                    <div ng-repeat="item in model.Application.ExampleCertList | filter:listFilter">
+                        <table class="table table-striped goodsItems">
+                            <tr>
+                                <th>样张{{$index+1}}</th>
+                                <td>
+                                    <button class="btn btn-default" ng-click="removeExample(item)">
+                                        <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>文件</th>
+                                <td>
+                                    <input ng-show="!item.CertFilePath" type="file" name="file{{$index}}" ng-model="item.CertFilePath" class="form-control autowidth-form-control"/>
+                                    <a ng-show="item.CertFilePath" href="{{item.CertFilePath}}" target="_blank">查看样张{{$index+1}}</a>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
+            </div>
                 <div class="form-group">
 
                     <label class="col-sm-2 control-label">商业目的 <span style="color: red;">*</span></label>
