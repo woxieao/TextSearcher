@@ -608,19 +608,18 @@
                 $scope.dialogProductList = null;
             };
             $scope.submitAddCustomProduct = function () {
-                $scope.CustomerSubmitButton = "正在提交";
-                $scope.CustomerenableDisableButton = true;
+                var _btnsubmitAddCustomProduct = document.getElementById("submitAddCustomProduct");
+                angular.element(_btnsubmitAddCustomProduct).attr("disabled", true);
                 $http.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
                     if (response.flag) {
                         $scope.getCustomProductList();
                         alert("提交成功");
                         $scope.showProductList();
                         //$("#form-add-custom-product").modal("hide");
+                        angular.element(_btnsubmitAddCustomProduct).attr("disabled", false);
                     }
                     var _tipType = response.flag ? "success" : "danger";
                     alertService.add(_tipType, response.msg || "未知错误", 3000);
-                    $scope.CustomerSubmitButton = "提交";
-                    $scope.CustomerenableDisableButton = false;
                 });
             };
             $scope.submitAddGoodsProduct = function () {
@@ -705,24 +704,13 @@
                 }
             };
 
-            $scope.editMerchantProduct = function (_id) {
+            $scope.editMerchantProduct = function (_object) {
                 $(".form-add-custom-product-title").html("编辑非备案商品");
-                $http({
-                    url: '/api/goods/GetCustomerProductDetail',
-                    method: 'POST',
-                    data: {
-                        productId: _id
-                    }
-                }).success(function (data) {
-                    $scope.CustomDialogModel = data.product;
-                })
-                    .error(function (response) {
-                    });
+                $scope.CustomDialogModel = _object;
                 $("#CustomDialogModelHsCode").next().find("span.select2-selection__rendered").html("");
                 $("#form-add-custom-product").modal("show");
                 $("#form-product").modal("hide");
             };
-
         }
         ]);
 
@@ -746,7 +734,7 @@
 }
 
 <div ng-controller="GlobalController" class="container">
-    <div ng-show="acceptshow" id="accept-form" style="display: none;">
+    <div ng-show="acceptshow" id="accept-form" style="display: none; margin: 20px 0 0 0;">
         <form class="form-horizontal">
             <div class="form-group">
                 <div class="col-sm-10 col-sm-offset-1">
@@ -1522,7 +1510,7 @@
                                             <td class="td-ellipsis" title="{{Product.Spec}}">{{Product.Spec}}</td>
                                             <td>
                                                 <div class="btn-group" role="group">
-                                                    <button ng-if="!Product.IsApproved" class="btn btn-primary btn-sm" ng-click="editMerchantProduct($index)">编辑</button>
+                                                    <button ng-if="!Product.IsApproved" class="btn btn-primary btn-sm" ng-click="editMerchantProduct(Product)">编辑</button>
                                                     <button type="button" class="btn btn-danger btn-sm" ng-click="removeMerchantProductId(Product.Id,$index)">删除</button>
                                                 </div>
                                             </td>
