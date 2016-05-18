@@ -875,7 +875,7 @@
                         <input type="text" maxlength="100" name="Application.ExporterPhone" ng-model="model.Application.ExporterPhone" class="form-control" placeholder="联系电话" />
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ng-show="model.Application.TradeType==4">
                     <label class="col-sm-2 control-label">进口商 <span style="color: red;">*</span> </label>
 
                     <div class="col-sm-6">
@@ -887,7 +887,7 @@
                         <button class="btn btn-default" type="button" ng-click="merchantList()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 常用商户管理</button>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ng-show="model.Application.TradeType==4">
                     <div class="col-sm-offset-2 col-sm-10">
                         <input type="text" maxlength="100" name="Application.Importer" ng-model="model.Application.Importer" class="form-control" placeholder="全称" />
                         <input type="text" maxlength="400" name="Application.ImporterAddr" ng-model="model.Application.ImporterAddr" class="form-control" placeholder="地址" />
@@ -895,7 +895,7 @@
                         <input type="text" maxlength="100" name="Application.ImporterPhone" ng-model="model.Application.ImporterPhone" class="form-control" placeholder="联系电话" />
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ng-show="model.Application.TradeType==1">
                     <label class="col-sm-2 control-label">进口商代理</label>
                     <div class="col-sm-6">
                         <select class="form-control" ng-change="selectImBroker(ImBroker)" ng-model="ImBroker" ng-options="merchant.UserName for merchant in loadMerchantInfo">
@@ -906,7 +906,7 @@
                         <button class="btn btn-default" type="button" ng-click="merchantList()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 常用商户管理</button>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group" ng-show="model.Application.TradeType==1">
                     <div class="col-sm-offset-2 col-sm-10">
                         <input type="text" maxlength="100" name="Application.ImBroker" ng-model="model.Application.ImBroker" class="form-control" placeholder="全称" />
                         <input type="text" maxlength="400" name="Application.ImBrokerAddr" ng-model="model.Application.ImBrokerAddr" class="form-control" placeholder="地址" />

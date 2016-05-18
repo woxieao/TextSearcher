@@ -134,7 +134,20 @@ namespace Giqci.PublicWeb.Controllers
                 var port = _cache.GetPort(model.DestPort);
                 isRequireCiqCode = port.RequireCiqCode;
             }
-
+            if (model.TradeType == TradeType.C)
+            {
+                model.ImBroker = "";
+                model.ImBrokerAddr = "";
+                model.ImBrokerContact = "";
+                model.ImBrokerPhone = "";
+            }
+            else if (model.TradeType == TradeType.T)
+            {
+                model.Importer = "";
+                model.ImporterAddr = "";
+                model.ImporterContact = "";
+                model.ImporterPhone = "";
+            }
             var errors = _dataChecker.ApplicationHasErrors(model, false, isRequireCiqCode);
             //todo 合并在ApplicationHasErrors中,但仅限前台网站
             if (model.InspectionDate < DateTime.Now.Date)
