@@ -162,7 +162,23 @@ app.controller('FormsListController', [
             end: $scope.end,
             pageIndex: 1,
             pageSize: 10
-        }
+        };
+        $(function () {
+            $('.datetimepicker').datetimepicker({
+                language: 'zh-CN',
+                format: 'yyyy/mm/dd',
+                autoclose: true,
+                minView: "month",
+                todayBtn: true,
+            }).on("hide",
+                function () {
+                    var $this = $(this);
+                    var _this = this;
+                    $scope.$apply(function () {
+                        $scope[$this.attr('ng-model')] = _this.value;
+                    });
+                });
+        });
 
         $http({
             url: '/api/forms/getstatus',
