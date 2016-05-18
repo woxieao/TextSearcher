@@ -40,8 +40,10 @@
         <img src="~/Global/images/loading.gif" />
         请稍后...
     </div>
-    <div class="row body-content" id="body-content" style="display: none;">
-        @RenderBody()
+    <div class="container body-content">
+        <div class="row" id="body-content" style="display: none;">
+            @RenderBody()
+        </div>
     </div>
     @Html.Partial("_Footer")
     @RenderSection("Footer", false)
