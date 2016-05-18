@@ -136,17 +136,17 @@ namespace Giqci.PublicWeb.Controllers
             }
             if (model.TradeType == TradeType.C)
             {
-                model.ImBroker = "";
-                model.ImBrokerAddr = "";
-                model.ImBrokerContact = "";
-                model.ImBrokerPhone = "";
-            }
-            else if (model.TradeType == TradeType.T)
-            {
                 model.Importer = "";
                 model.ImporterAddr = "";
                 model.ImporterContact = "";
                 model.ImporterPhone = "";
+            }
+            else if (model.TradeType == TradeType.T)
+            {
+                model.ImBroker = "";
+                model.ImBrokerAddr = "";
+                model.ImBrokerContact = "";
+                model.ImBrokerPhone = "";
             }
             var errors = _dataChecker.ApplicationHasErrors(model, false, isRequireCiqCode);
             //todo 合并在ApplicationHasErrors中,但仅限前台网站
