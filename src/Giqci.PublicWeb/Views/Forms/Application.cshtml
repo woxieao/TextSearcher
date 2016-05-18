@@ -19,6 +19,8 @@
         app.controller("GlobalController", ['$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', '$filter', 'alertService', function ($http, $scope, $log, $location, $anchorScroll, $timeout, $filter, alertService) {
             $scope.model = {};
             $scope.model.Application = ObjDecodeToJson(@HtmlExtensions.RawJson(Model));
+
+                $scope.isNewApp = $scope.model.Application.Key == null;
             //$log.log($scope.model.Application);
             $scope.dataInit = function () {
                 $scope.model.Application.InspectionDate = $filter('date')($scope.model.Application.InspectionDate, 'yyyy/MM/dd');
@@ -37,7 +39,9 @@
             $scope.isEdit = $scope.model.Application.Key != null;
             $scope.dataInit();
             $scope.errors = [];
+          
             if ($scope.model.Application.Key != null) {
+                  
                 $scope.acceptshow = false;
                 $scope.appshow = true;
                 $("#appliction-form").show();
@@ -109,6 +113,53 @@
                     _object.ApplicationZCodes[j].HandlerType = -1;
                 }
             };
+                $scope.AppCache = null;
+                $scope.GetAppCache=function() {
+                    $http({
+                        url: '/api/forms/GetAppCache',
+                        method: 'POST'
+                    }).success(function (response) {
+                        if (response.flag) {
+                           // $scope.isNewApp = true;
+                            $scope.AppCache = response.app;
+                        }
+                        }).error(function (response) {
+                        $log.warn(response);
+                    });
+                }
+                if ($scope.isNewApp) {
+                    $scope.GetAppCache();
+                }
+                
+                $scope.RemoveAppCache = function (isOverride) {
+                    $scope.accept();
+                    if (isOverride) {
+                         $scope.model.Application = $scope.AppCache;
+                    }
+                    $http({
+                        url: '/api/forms/RemoveAppCache',
+                        method: 'POST'
+                    }).success(function (response) {
+                        alert("读取成功\n(并已删除了暂存的申请,若需暂存,请再次点击暂存)");
+                    }).error(function (response) {
+                           alert("删除申请缓存失败");
+                    });
+                }
+                $scope.isSaveingCache = false;
+                $scope.SaveAppCache = function () {
+                    $scope.isSaveingCache = true;
+                   $http({
+                        url: '/api/forms/SaveAppCache',
+                        method: 'POST',
+                        data: $scope.model.Application
+                   }).success(function (result) {
+                       alert("暂存成功,下次可以直接读取本次缓存");
+                       $scope.isSaveingCache = false;
+                   }).error(function (response) {
+                       alert("保存失败");
+                       $scope.isSaveingCache = false;
+                    });
+                }
             $scope.getGoodsList = function () {
                 $http({
                     url: '/api/goods/getproductlist',
@@ -767,6 +818,11 @@
                         <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 我接受以上合同条款
                     </button>
                 </div>
+                <div class="col-sm-offset-5 col-sm-4">
+                    <button class="btn btn-success" ng-show="AppCache!=null" ng-click="RemoveAppCache(true)">
+                        <span class="glyphicon glyphicon-level-up" aria-hidden="true"></span> 读取暂存的申请
+                    </button>
+                </div>
             </div>
         </form>
     </div>
@@ -1291,6 +1347,9 @@
                         <button class="btn btn-default" ng-click="submit()" ng-disabled="submitApp">
                             <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
                         </button>
+                </button>
+                <button ng-show="isNewApp" ng-disable="!isSaveingCache"  class="btn btn-info" ng-click="SaveAppCache()" ng-disabled="submitApp">
+                    <span class="glyphicon glyphicon-save" aria-hidden="true"></span> 暂存
                     </div>
                 </div>
             </form>

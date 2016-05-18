@@ -53,6 +53,7 @@ namespace Giqci.PublicWeb.Models
             public static readonly bool CustomersLogSwitch = GetLogSwitch(nameof(CustomersLogSwitch));
             public static readonly bool AppLogSwitch = GetLogSwitch(nameof(AppLogSwitch));
             public static readonly bool FileLogSwitch = GetLogSwitch(nameof(FileLogSwitch));
+            public static readonly bool AppCacheLogSwitch = GetLogSwitch(nameof(AppCacheLogSwitch));
         }
 
         public struct Filer
