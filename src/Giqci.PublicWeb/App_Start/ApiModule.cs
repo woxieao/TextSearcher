@@ -40,7 +40,7 @@ namespace Giqci.PublicWeb
             #region init value list
 
             builder.Register(x => Config.ApiUrl.LogApiUrl)
-                .Keyed<string>(ValueList.LogUrl)
+                .Keyed<string>(ValueList.LogApiUrl)
                 .SingleInstance();
             builder.Register(x => new UploadInitInfo
             {
@@ -73,7 +73,7 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.Products),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogUrl),
+                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
                         ResolvedParameter.ForKeyed<bool>(LogSwitch.Products),
                     })
                 .InstancePerDependency();
@@ -83,7 +83,7 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogUrl),
+                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
                         ResolvedParameter.ForKeyed<bool>(LogSwitch.Customers),
                     })
                 .InstancePerDependency();
@@ -93,7 +93,7 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogUrl),
+                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
                         ResolvedParameter.ForKeyed<bool>(LogSwitch.Customers),
                     })
                 .InstancePerDependency();
@@ -102,7 +102,7 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogUrl),
+                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
                         ResolvedParameter.ForKeyed<bool>(LogSwitch.Customers),
                     })
                 .InstancePerDependency();
@@ -111,7 +111,7 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogUrl),
+                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
                         ResolvedParameter.ForKeyed<bool>(LogSwitch.Customers),
                     })
                 .InstancePerDependency();
@@ -120,7 +120,7 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.App),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogUrl),
+                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
                         ResolvedParameter.ForKeyed<bool>(LogSwitch.App),
                     })
                 .InstancePerDependency();
@@ -129,7 +129,7 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.App),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogUrl),
+                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
                         ResolvedParameter.ForKeyed<bool>(LogSwitch.App),
                     })
                 .InstancePerDependency();
@@ -138,7 +138,7 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.App),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogUrl),
+                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
                         ResolvedParameter.ForKeyed<bool>(LogSwitch.App),
                     })
                 .InstancePerDependency();
@@ -148,7 +148,7 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.Dict),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogUrl),
+                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
                         ResolvedParameter.ForKeyed<bool>(LogSwitch.Dict),
                     })
                 .InstancePerDependency();
@@ -158,7 +158,7 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.File),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogUrl),
+                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
                         ResolvedParameter.ForKeyed<bool>(LogSwitch.File),
                         ResolvedParameter.ForKeyed<UploadInitInfo>(ValueList.UploadInitInfo),
                     })
@@ -182,7 +182,7 @@ namespace Giqci.PublicWeb
 
         private enum ValueList
         {
-            LogUrl,
+            LogApiUrl,
             UploadInitInfo,
         }
 
