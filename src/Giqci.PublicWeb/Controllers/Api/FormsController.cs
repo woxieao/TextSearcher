@@ -8,11 +8,14 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using Giqci.ApiProxy.App;
 using Giqci.Chapi.Enums.App;
+using Giqci.Chapi.Models.App;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Models;
 using Giqci.PublicWeb.Services;
 using Ktech.Extensions;
+using Newtonsoft.Json.Converters;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {
@@ -23,13 +26,15 @@ namespace Giqci.PublicWeb.Controllers.Api
         private readonly IMerchantApplicationApiProxy _repo;
         private readonly IAuthService _auth;
         private readonly IApplicationViewModelApiProxy _appView;
+        private readonly IApplicationCacheApiProxy _applicationCacheApiProxy;
 
         public FormsController(IMerchantApplicationApiProxy repo, IAuthService auth,
-            IApplicationViewModelApiProxy appView)
+            IApplicationViewModelApiProxy appView, IApplicationCacheApiProxy applicationCacheApiProxy)
         {
             _repo = repo;
             _auth = auth;
             _appView = appView;
+            _applicationCacheApiProxy = applicationCacheApiProxy;
         }
 
         [Route("forms/list")]
@@ -78,6 +83,43 @@ namespace Giqci.PublicWeb.Controllers.Api
             {
                 return new KtechJsonResult(HttpStatusCode.OK, new {});
             }
+        }
+
+
+        [Route("forms/GetAppCache")]
+        [HttpPost]
+        public ActionResult GetAppCache()
+        {
+            var result = _applicationCacheApiProxy.Get(_auth.GetAuth().MerchantId, false);
+            bool flag;
+            Application app;
+            try
+            {
+                app = JsonConvert.DeserializeObject<Application>(result.ApplicationJson);
+                flag = true;
+            }
+            catch
+            {
+                flag = false;
+                app = null;
+            }
+            return new KtechJsonResult(HttpStatusCode.OK, new {flag = flag, app = app}, new JsonSerializerSettings());
+        }
+
+        [Route("forms/SaveAppCache")]
+        [HttpPost]
+        public ActionResult SaveAppCache(Application app)
+        {
+            _applicationCacheApiProxy.Add(_auth.GetAuth().MerchantId, JsonConvert.SerializeObject(app));
+            return new KtechJsonResult(HttpStatusCode.OK, new {});
+        }
+
+        [Route("forms/RemoveAppCache")]
+        [HttpPost]
+        public ActionResult RemoveAppCache()
+        {
+            _applicationCacheApiProxy.Remove(_auth.GetAuth().MerchantId);
+            return new KtechJsonResult(HttpStatusCode.OK, new {});
         }
     }
 }

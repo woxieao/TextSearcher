@@ -62,6 +62,7 @@ namespace Giqci.PublicWeb
             builder.Register(x => Config.LogSwitch.CustomersLogSwitch).Keyed<bool>(LogSwitch.Customers).SingleInstance();
             builder.Register(x => Config.LogSwitch.AppLogSwitch).Keyed<bool>(LogSwitch.App).SingleInstance();
             builder.Register(x => Config.LogSwitch.FileLogSwitch).Keyed<bool>(LogSwitch.File).SingleInstance();
+            builder.Register(x => Config.LogSwitch.AppCacheLogSwitch).Keyed<bool>(LogSwitch.AppCache).SingleInstance();
 
             #endregion
 
@@ -168,6 +169,17 @@ namespace Giqci.PublicWeb
                 .As<IDataChecker>()
                 .InstancePerDependency();
 
+
+            builder.RegisterType<ApplicationCacheApiProxy>()
+                .As<IApplicationCacheApiProxy>().WithParameters(
+                    new List<ResolvedParameter>()
+                    {
+                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.App),
+                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
+                        ResolvedParameter.ForKeyed<bool>(LogSwitch.AppCache),
+                    })
+                .InstancePerDependency();
+
             #endregion
         }
 
@@ -192,7 +204,8 @@ namespace Giqci.PublicWeb
             Products,
             Customers,
             App,
-            File
+            File,
+            AppCache
         }
     }
 }
