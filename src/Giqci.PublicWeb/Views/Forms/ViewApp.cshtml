@@ -11,17 +11,14 @@
             <div class="form-horizontal">
                 <div class="form-group">
                     <label class="col-sm-2 control-label">申请号</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.Key}}</p>
-                    </div>
+                    <span class="col-sm-2 form-control-static">{{model.Application.Key}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">证书类别</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static" ng-show="model.Application.C101">溯源证书</p>
-                        <p class="form-control-static" ng-show="model.Application.C102">品质证书</p>
-                        <p class="form-control-static" ng-show="model.Application.C103">标签证书</p>
-                    </div>
+                    <span class="col-sm-2 form-control-static" ng-if="model.Application.C101">溯源证书</span>
+                    <span class="col-sm-2 form-control-static" ng-if="model.Application.C102">品质证书</span>
+                    <span class="col-sm-2 form-control-static" ng-if="model.Application.C103">标签证书</span>
+
                 </div>
                 <div class="form-group" ng-show="false">
                     <label class="col-sm-2 control-label">样张列表</label>
@@ -44,27 +41,19 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">商业目的</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.TradeType == 4?"一般贸易":"电商贸易"}}</p>
-                    </div>
+                    <span class="col-sm-2 form-control-static">{{model.Application.TradeType == 4?"一般贸易":"电商贸易"}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">创建日期</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.CreateDate | date:'yyyy/MM/dd'}}</p>
-                    </div>
+                    <span class="col-sm-2 form-control-static">{{model.Application.CreateDate | date:'yyyy/MM/dd'}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">当前状态</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{StatusDescription}}</p>
-                    </div>
+                    <span class="col-sm-2 form-control-static">{{StatusDescription}}</span>
                 </div>
                 <div class="form-group" ng-if="model.Application.DeclineReason">
                     <label class="col-sm-2 control-label">驳回理由</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.DeclineReason}}</p>
-                    </div>
+                    <span class="col-sm-2 form-control-static">{{model.Application.DeclineReason}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">申请人</label>
@@ -108,12 +97,6 @@
                     <div class="col-sm-10">
                         <div ng-repeat="item in model.Application.ApplicationProducts">
                             <table class="table table-striped">
-                                <colgroup>
-                                    <col width="120" />
-                                    <col width="360" />
-                                    <col width="120" />
-                                    <col width="360" />
-                                </colgroup>
                                 <tr>
                                     <th>
                                         <p class="form-control-static">商品 {{$index+1}}</p>
@@ -129,16 +112,16 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>
+                                    <th style="width: 120px;">
                                         <p class="form-control-static">名称(英文)</p>
                                     </th>
-                                    <td>
+                                    <td style="width: 360px;">
                                         <p class="form-control-static">{{item.DescriptionEn}}</p>
                                     </td>
-                                    <th>
+                                    <th style="width: 120px;">
                                         <p class="form-control-static">名称(中文)</p>
                                     </th>
-                                    <td>
+                                    <td style="width: 360px;">
                                         <p class="form-control-static">{{item.Description}}</p>
                                     </td>
                                 </tr>
@@ -264,11 +247,9 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">运输方式</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static" ng-if="model.Application.ShippingMethod==1">空运</p>
-                        <p class="form-control-static" ng-if="model.Application.ShippingMethod==2">海运</p>
-                        <p class="form-control-static" ng-if="model.Application.ShippingMethod==3">陆运</p>
-                    </div>
+                    <span class="col-sm-2 form-control-static" ng-if="model.Application.ShippingMethod==1">空运</span>
+                    <span class="col-sm-2 form-control-static" ng-if="model.Application.ShippingMethod==2">海运</span>
+                    <span class="col-sm-2 form-control-static" ng-if="model.Application.ShippingMethod==3">陆运</span>
                 </div>
                 <div class="form-group" ng-show="model.Application.ShippingMethod === 2">
                     <label class="col-sm-2 control-label">船舶资料</label>
@@ -297,15 +278,11 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">提单号</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.BillNo}}</p>
-                    </div>
+                    <span class="col-sm-2 form-control-static">{{model.Application.BillNo}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">副提单号</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.OtherBillNo}}</p>
-                    </div>
+                    <span class="col-sm-2 form-control-static">{{model.Application.OtherBillNo}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
@@ -313,69 +290,47 @@
                         <p ng-if="model.Application.ShippingMethod == 2">船舶号</p>
                         <p ng-if="model.Application.ShippingMethod == 3">车牌号</p>
                     </label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.Vesselcn}}</p>
-                    </div>
+                    <span class="col-sm-2 form-control-static">{{model.Application.Vesselcn}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">出发日期</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.Voyage}}</p>
-                    </div>
+                    <span class="col-sm-2 form-control-static">{{model.Application.Voyage}}</span>
                 </div>
                 <div class="form-group" ng-show="model.Application.ShippingMethod != 2">
                     <label class="col-sm-2 control-label">运输总数量</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.TotalUnits}}Pallets</p>
-                    </div>
+                    <span class="col-sm-2 form-control-static">{{model.Application.TotalUnits}}Pallets</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">运输总重量</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.TotalWeight | currency:"":2}}KG</p>
-                    </div>
+                    <span class="col-sm-2 form-control-static">{{model.Application.TotalWeight | currency:"":2}}KG</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">计划发货日期</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.ShippingDate | date:'yyyy/MM/dd'}}</p>
-                    </div>
+                    <span class="col-sm-2 form-control-static">{{model.Application.ShippingDate | date:'yyyy/MM/dd'}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">预约检查日期</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.InspectionDate | date:'yyyy/MM/dd'}}</p>
-                    </div>
+                    <span class="col-sm-2 form-control-static">{{model.Application.InspectionDate | date:'yyyy/MM/dd'}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">检验地点</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.InspectionAddr}}</p>
-                    </div>
+                    <span class="col-sm-2 form-control-static">{{model.Application.InspectionAddr}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">联系人</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.Inspector}}</p>
-                    </div>
+                    <span class="col-sm-2 form-control-static">{{model.Application.Inspector}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">联系人电话</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{model.Application.InspectorTel}}</p>
-                    </div>
+                    <span class="col-sm-2 form-control-static">{{model.Application.InspectorTel}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">发货港口</label>
-                    <div class="col-sm-10">
-                        <p ajax-label ajax-url="ports" ng-model="model.Application.LoadingPort" class="form-control-static">{{model.Application.LoadingPort}}</p>
-                    </div>
+                    <span ajax-label ajax-url="ports" ng-model="model.Application.LoadingPort" class="col-sm-2 form-control-static">{{model.Application.LoadingPort}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">目的港口</label>
-                    <div class="col-sm-10">
-                        <p ajax-label ajax-url="ports" ng-model="model.Application.DestPort" class="form-control-static">{{model.Application.DestPort}}</p>
-                    </div>
+                    <span ajax-label ajax-url="ports" ng-model="model.Application.DestPort" class="col-sm-2 form-control-static">{{model.Application.DestPort}}</span>
                 </div>
                 @{
                     var validCerts = (List<Certificate>)ViewBag.ValidCerts;
