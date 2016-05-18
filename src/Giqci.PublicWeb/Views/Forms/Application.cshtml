@@ -6,13 +6,13 @@
     ViewBag.Title = "证书申请表格";
 }
 @section Footer{
-    <script src="http://code.jquery.com/jquery-migrate-1.1.0.js"></script>
-    <script src="~/Global/js/jquery.jqprint-0.3.js"></script>
+  
     <script type="text/javascript">
         //var app = angular.module("giqci", []);
         function getDate(str) {
             return str ? new Date(str) : null;
         }
+
         window.onbeforeunload = function () {
             return "";
         }
@@ -123,7 +123,7 @@
                 $scope.selectProduct = function (_selected, _object) {
                     if (_selected != null) {
                         _object.DescriptionEn = _selected.DescriptionEn;
-                        _object.IsEditDescriptionEn = (_selected.DescriptionEn == "" || _selected.DescriptionEn == undefined) && !_selected.IsApproved;
+                        _object.IsEditDescriptionEn = !_selected.IsApproved;
                         _object.Description = _selected.Description;
                         _object.Brand = _selected.Brand;
                         _object.HSCode = _selected.HsCode;
@@ -764,7 +764,7 @@
                 <a href="/forms/app" target="_self">再次申请</a>
             </p>
         </div>
-        <div ng-show="!resultMessage" id="print">
+        <div ng-show="!resultMessage">
             <h1 id="h1">证书申请表格</h1>
             <div class="has-error" ng-show="errors.length > 0">
                 <ul class="help-block">
@@ -1271,19 +1271,16 @@
                         </select>
                     </div>
                 </div>
-
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button class="btn btn-default" ng-click="submit()" ng-disabled="submitApp">
+                            <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
+                        </button>
+                    </div>
+                </div>
             </form>
         </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button class="btn btn-default" ng-click="submit()" ng-disabled="submitApp">
-                    <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
-                </button>
-                <button class="btn btn-default" onclick="print()">
-                    <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 打印
-                </button>
-            </div>
-        </div>
+
     </div>
     <!--login modal-->
     <div class="modal" role="dialog" aria-labelledby="gridSystemModalLabel" id="form-login">
@@ -1381,7 +1378,7 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <!--custom product add modal-->
-    @Html.Partial("PopUp/EditProduct");
+    @Html.Partial("PopUp/EditProduct")
     <!--goods product add modal-->
     <div class="modal" role="dialog" data-backdrop="static" data-keyboard="false" id="form-add-goods-product">
         <div class="modal-dialog modal-lg">
