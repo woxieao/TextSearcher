@@ -234,12 +234,10 @@ ul,li,ol{
 */
 @media screen and (min-width: 992px) {
   .body-content {
-    padding: 0 30px; 
     margin-top: 30px;
   } 
   .body-content>div{
       background:none #fff;
-      padding: 20px;
   }
 }
 
