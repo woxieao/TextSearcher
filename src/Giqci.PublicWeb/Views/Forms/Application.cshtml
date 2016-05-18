@@ -6,7 +6,7 @@
     ViewBag.Title = "证书申请表格";
 }
 @section Footer{
-  
+
     <script type="text/javascript">
         //var app = angular.module("giqci", []);
         function getDate(str) {
@@ -123,7 +123,7 @@
                 $scope.selectProduct = function (_selected, _object) {
                     if (_selected != null) {
                         _object.DescriptionEn = _selected.DescriptionEn;
-                        _object.IsEditDescriptionEn = !_selected.IsApproved;
+                    _object.IsEditDescriptionEn = !_selected.IsApproved;
                         _object.Description = _selected.Description;
                         _object.Brand = _selected.Brand;
                         _object.HSCode = _selected.HsCode;
