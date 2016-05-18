@@ -137,7 +137,9 @@
                 $scope.RemoveAppCache = function (isOverride) {
                     $scope.accept();
                     if (isOverride) {
-                         $scope.model.Application = $scope.AppCache;
+                        $scope.model.Application = null;
+                        $scope.model.Application = $scope.AppCache;
+                        $scope.dataInit();
                     }
                     $http({
                         url: '/api/forms/RemoveAppCache',
@@ -832,7 +834,7 @@
                 </div>
                 <div class="col-sm-offset-5 col-sm-4">
                     <button class="btn btn-success" ng-show="AppCache!=null" ng-click="RemoveAppCache(true)">
-                        <span class="glyphicon glyphicon-level-up" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;读取暂存的申请&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span class="glyphicon glyphicon-level-up" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;读取暂存的申请&nbsp;&nbsp;&nbsp;
                     </button>
                 </div>
             </div>

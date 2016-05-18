@@ -15,6 +15,7 @@ using Giqci.Interfaces;
 using Giqci.PublicWeb.Models;
 using Giqci.PublicWeb.Services;
 using Ktech.Extensions;
+using Newtonsoft.Json.Converters;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {
@@ -102,7 +103,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                 flag = false;
                 app = null;
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new {flag = flag, app = app});
+            return new KtechJsonResult(HttpStatusCode.OK, new {flag = flag, app = app}, new JsonSerializerSettings());
         }
 
         [Route("forms/SaveAppCache")]
