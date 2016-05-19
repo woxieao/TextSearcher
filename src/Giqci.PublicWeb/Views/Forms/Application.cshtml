@@ -25,6 +25,8 @@
             }
             }
             //$log.log($scope.model.Application);
+            $scope.CustomerSubmitButton = "提交";
+            $scope.CustomerenableDisableButton = false;
             $scope.dataInit = function () {
                 $scope.model.Application.InspectionDate = $filter('date')($scope.model.Application.InspectionDate, 'yyyy/MM/dd');
                 for (var i = 0; i < $scope.model.Application.ApplicationProducts.length; i++) {
@@ -602,6 +604,8 @@
                 $scope.dialogProductList = null;
             };
             $scope.submitAddCustomProduct = function () {
+                $scope.CustomerSubmitButton = "正在提交";
+                $scope.CustomerenableDisableButton = true;
                 $http.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
                     if (response.flag) {
                         $scope.getCustomProductList();
@@ -611,6 +615,8 @@
                     }
                     var _tipType = response.flag ? "success" : "danger";
                     alertService.add(_tipType, response.msg || "未知错误", 3000);
+                    $scope.CustomerSubmitButton = "提交";
+                    $scope.CustomerenableDisableButton = false;
                 });
             };
             $scope.submitAddGoodsProduct = function () {
@@ -627,6 +633,13 @@
             };
             $scope.getDialogProductList = function () {
                 if ($scope.DialogProductCiqCode != "" && $scope.DialogProductCiqCode != null) {
+                    var reg = /^\d{10}$/;
+                    var reg2 = /^ICIP\d{14}$/i;
+                    if (!(reg.test($scope.DialogProductCiqCode) || reg2.test($scope.DialogProductCiqCode))) {
+                        $scope.Product = null;
+                        alertService.add('danger', "正确的备案号格式为[ICIP+14个数字]或[10个数字]", 3000);
+                        return;
+                    }
                     $http({
                         url: '/api/goods/searchproduct',
                         method: 'POST',
