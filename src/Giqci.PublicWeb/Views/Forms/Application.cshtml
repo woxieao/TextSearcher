@@ -19,11 +19,15 @@
             $scope.model.Application = ObjDecodeToJson(@HtmlExtensions.RawJson(Model));
 
             $scope.isNewApp = $scope.model.Application.Key == null;
-            if ($scope.isNewApp){
-            window.onbeforeunload = function () {
-                return "您可以点击[暂存]以保存未提交的申请";
-            }
-            }
+
+		window.onbeforeunload = function () {
+		return "";
+		}
+            //if ($scope.isNewApp){
+            //window.onbeforeunload = function () {
+            //    return "您可以点击[暂存]以保存未提交的申请";
+            //}
+            //}
             //$log.log($scope.model.Application);
             $scope.CustomerSubmitButton = "提交";
             $scope.CustomerenableDisableButton = false;
