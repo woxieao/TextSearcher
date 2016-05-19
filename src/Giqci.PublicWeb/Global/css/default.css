@@ -714,3 +714,5 @@ ul,li,ol{
 .giqci-modal-dialog{ max-height: 450px;overflow: auto;}
 
 .form-control[disabled]{background-color:#fff;}
+
+.break-word{word-wrap: break-word;word-break:break-word;}

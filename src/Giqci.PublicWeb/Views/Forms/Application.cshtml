@@ -13,16 +13,15 @@
             return str ? new Date(str) : null;
         }
 
-
         app.controller("GlobalController", ['$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', '$filter', 'alertService', function ($http, $scope, $log, $location, $anchorScroll, $timeout, $filter, alertService) {
             $scope.model = {};
             $scope.model.Application = ObjDecodeToJson(@HtmlExtensions.RawJson(Model));
 
             $scope.isNewApp = $scope.model.Application.Key == null;
 
-		window.onbeforeunload = function () {
-		return "";
-		}
+            window.onbeforeunload = function () {
+                return "";
+            }
             //if ($scope.isNewApp){
             //window.onbeforeunload = function () {
             //    return "您可以点击[暂存]以保存未提交的申请";
@@ -122,64 +121,64 @@
                     _object.ApplicationZCodes[j].HandlerType = -1;
                 }
             };
-                $scope.AppCache = null;
-                $scope.GetAppCache=function() {
-                    $http({
-                        url: '/api/forms/GetAppCache',
-                        method: 'POST'
-                    }).success(function (response) {
-                        if (response.flag) {
-                           // $scope.isNewApp = true;
-                            $scope.AppCache = response.app;
-                        }
-                        }).error(function (response) {
-                        $log.warn(response);
-                    });
-                }
-                if ($scope.isNewApp) {
-                    $scope.GetAppCache();
-                }
-
-                $scope.RemoveAppCache = function (isOverride) {
-                    $scope.accept();
-                    if (isOverride) {
-                        $scope.model.Application = null;
-                        $scope.model.Application = $scope.AppCache;
-                        $scope.dataInit();
+            $scope.AppCache = null;
+            $scope.GetAppCache = function () {
+                $http({
+                    url: '/api/forms/GetAppCache',
+                    method: 'POST'
+                }).success(function (response) {
+                    if (response.flag) {
+                        // $scope.isNewApp = true;
+                        $scope.AppCache = response.app;
                     }
-                    $http({
-                        url: '/api/forms/RemoveAppCache',
-                        method: 'POST'
-                    }).success(function (response) {
-                        alertService.add('success', "读取成功 (并已删除了暂存的申请,若需暂存,请再次点击暂存)", 6000);
-                        $location.hash("h1");
-                        $anchorScroll();
+                }).error(function (response) {
+                    $log.warn(response);
+                });
+            }
+            if ($scope.isNewApp) {
+                $scope.GetAppCache();
+            }
 
-                    }).error(function (response) {
-                        alertService.add('danger', "删除暂存的申请失败)", 5000);
-                        $location.hash("h1");
-                        $anchorScroll();
-                    });
+            $scope.RemoveAppCache = function (isOverride) {
+                $scope.accept();
+                if (isOverride) {
+                    $scope.model.Application = null;
+                    $scope.model.Application = $scope.AppCache;
+                    $scope.dataInit();
                 }
-                $scope.isSaveingCache = false;
-                $scope.SaveAppCache = function () {
-                    $scope.isSaveingCache = true;
-                   $http({
-                        url: '/api/forms/SaveAppCache',
-                        method: 'POST',
-                        data: $scope.model.Application
-                   }).success(function (result) {
-                       alertService.add('success', "暂存成功,下次可以直接读取本次保存的数据", 3000);
-                       $location.hash("h1");
-                       $anchorScroll();
+                $http({
+                    url: '/api/forms/RemoveAppCache',
+                    method: 'POST'
+                }).success(function (response) {
+                    alertService.add('success', "读取成功 (并已删除了暂存的申请,若需暂存,请再次点击暂存)", 6000);
+                    $location.hash("h1");
+                    $anchorScroll();
+
+                }).error(function (response) {
+                    alertService.add('danger', "删除暂存的申请失败)", 5000);
+                    $location.hash("h1");
+                    $anchorScroll();
+                });
+            }
+            $scope.isSaveingCache = false;
+            $scope.SaveAppCache = function () {
+                $scope.isSaveingCache = true;
+                $http({
+                    url: '/api/forms/SaveAppCache',
+                    method: 'POST',
+                    data: $scope.model.Application
+                }).success(function (result) {
+                    alertService.add('success', "暂存成功,下次可以直接读取本次保存的数据", 3000);
+                    $location.hash("h1");
+                    $anchorScroll();
                     $scope.isSaveingCache = false;
-                   }).error(function (response) {
-                       alertService.add('danger', "保存失败", 5000);
-                       $location.hash("h1");
-                       $anchorScroll();
-                       $scope.isSaveingCache = false;
-                    });
-                }
+                }).error(function (response) {
+                    alertService.add('danger', "保存失败", 5000);
+                    $location.hash("h1");
+                    $anchorScroll();
+                    $scope.isSaveingCache = false;
+                });
+            }
             $scope.getGoodsList = function () {
                 $http({
                     url: '/api/goods/getproductlist',
@@ -1037,7 +1036,7 @@
                                     </th>
                                     <td>
                                         <span ng-show="!item.IsEditDescriptionEn">
-                                            <p class="form-control-static" ng-model="item.DescriptionEn">{{item.DescriptionEn}}</p>
+                                            <p class="form-control-static break-word" ng-model="item.DescriptionEn">{{item.DescriptionEn}}</p>
                                         </span>
                                         <span ng-show="item.IsEditDescriptionEn">
                                             <input type="text" ng-model="item.DescriptionEn" class="form-control" maxlength="100" />
@@ -1047,7 +1046,7 @@
                                         <p class="form-control-static">名称(中文)</p>
                                     </th>
                                     <td>
-                                        <p class="form-control-static" ng-model="item.Description">{{item.Description}}</p>
+                                        <p class="form-control-static break-word" ng-model="item.Description">{{item.Description}}</p>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1055,7 +1054,7 @@
                                         <p class="form-control-static">品牌</p>
                                     </th>
                                     <td>
-                                        <p class="form-control-static" ng-model="item.Brand">{{item.Brand}}</p>
+                                        <p class="form-control-static break-word" ng-model="item.Brand">{{item.Brand}}</p>
 
                                     </td>
                                     <th>
