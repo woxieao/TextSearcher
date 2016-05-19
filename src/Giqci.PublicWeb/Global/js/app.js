@@ -268,8 +268,9 @@ app.controller('GoodsListController', [
             $("#form-add-custom-product").modal("show");
             $("#form-product").modal("hide");
         };
+       
         $scope.submitAddCustomProduct = function () {
-            $http.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
+           $http.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
                 if (response.flag) {
                     alert("提交成功");
                     $("#form-add-custom-product").modal("hide");
@@ -308,7 +309,7 @@ app.controller("GoodsAddController", [
         $scope.Product = null;
         $scope.getproductlist = function () {
             var reg = /^\d{10}$/;
-            var reg2=/^ICIP\d{14}$/i;
+            var reg2 = /^ICIP\d{14}$/i;
             if (!(reg.test($scope.CiqCode) || reg2.test($scope.CiqCode))) {
                 $scope.Product = null;
                 alertService.add('danger', "正确的备案号格式为[ICIP+14个数字]或[10个数字]", 3000);
