@@ -15,10 +15,11 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">证书类别</label>
-                    <span class="col-sm-2 form-control-static" ng-if="model.Application.C101">溯源证书</span>
-                    <span class="col-sm-2 form-control-static" ng-if="model.Application.C102">品质证书</span>
-                    <span class="col-sm-2 form-control-static" ng-if="model.Application.C103">标签证书</span>
-
+                    <p class="form-control-static col-sm-10">
+                        <span ng-if="model.Application.C101">溯源证书</span>
+                        <span ng-if="model.Application.C102">品质证书</span>
+                        <span ng-if="model.Application.C103">标签证书</span>
+                    </p>
                 </div>
                 <div class="form-group" ng-show="false">
                     <label class="col-sm-2 control-label">样张列表</label>
