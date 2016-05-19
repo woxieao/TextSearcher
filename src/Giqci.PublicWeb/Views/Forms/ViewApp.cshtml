@@ -351,15 +351,15 @@
                         </div>
                     }
                 }
-
+                <div class="form-group" ng-show="IsPrint">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button class="btn btn-default" onclick="print()">
+                            <span class="glyphicon glyphicon-print" aria-hidden="true"></span>打印
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-
-    <div class="form-group" ng-show="IsPrint">
-        <button class="btn btn-default" onclick="print()">
-            <span class="glyphicon glyphicon-print" aria-hidden="true"></span>打印
-        </button>
     </div>
 </div>
 @section Footer{
