@@ -74,7 +74,7 @@
                         <p class="form-control-static">联系电话: {{model.Application.ExporterPhone}}</p>
                     </div>
                 </div>
-                <div class="form-group" ng-show="model.Application.TradeType==4">
+                <div class="form-group" ng-if="model.Application.TradeType==4">
                     <label class="col-sm-2 control-label">进口商</label>
                     <div class="col-sm-10">
                         <p class="form-control-static">全称:{{model.Application.Importer}}</p>
@@ -83,7 +83,7 @@
                         <p class="form-control-static">联系电话: {{model.Application.ImporterPhone}}</p>
                     </div>
                 </div>
-                <div class="form-group" ng-show="model.Application.TradeType==1">
+                <div class="form-group" ng-if="model.Application.TradeType==1">
                     <label class="col-sm-2 control-label">进口商代理</label>
                     <div class="col-sm-10">
                         <p class="form-control-static">全称: {{model.Application.ImBroker}}</p>
@@ -115,13 +115,13 @@
                                     <th style="width: 120px;">
                                         <p class="form-control-static">名称(英文)</p>
                                     </th>
-                                    <td style="width: 360px;">
+                                    <td style="width: 480px;">
                                         <p class="form-control-static">{{item.DescriptionEn}}</p>
                                     </td>
                                     <th style="width: 120px;">
                                         <p class="form-control-static">名称(中文)</p>
                                     </th>
-                                    <td style="width: 360px;">
+                                    <td style="width: 480px;">
                                         <p class="form-control-static">{{item.Description}}</p>
                                     </td>
                                 </tr>
@@ -177,7 +177,7 @@
                                     <th></th>
                                     <td></td>
                                 </tr>
-                                <tr ng-show="model.Application.C102">
+                                <tr ng-if="model.Application.C102">
                                     <th>
                                         <p class="form-control-static">品质检验</p>
                                     </th>
@@ -185,10 +185,10 @@
                                         <p class="form-control-static">{{item.C102?'是':'否'}}</p>
                                     </td>
                                     <th>
-                                        <p class="form-control-static" ng-show="item.C102">检测项目</p>
+                                        <p class="form-control-static" ng-if="item.C102">检测项目</p>
                                     </th>
                                     <td>
-                                        <p class="form-control-static" ng-show="item.C102">{{item.C102Comment}}</p>
+                                        <p class="form-control-static" ng-if="item.C102">{{item.C102Comment}}</p>
                                     </td>
                                 </tr>
                             </table>
@@ -296,7 +296,7 @@
                     <label class="col-sm-2 control-label">出发日期</label>
                     <span class="col-sm-2 form-control-static">{{model.Application.Voyage}}</span>
                 </div>
-                <div class="form-group" ng-show="model.Application.ShippingMethod != 2">
+                <div class="form-group" ng-if="model.Application.ShippingMethod != 2">
                     <label class="col-sm-2 control-label">运输总数量</label>
                     <span class="col-sm-2 form-control-static">{{model.Application.TotalUnits}}Pallets</span>
                 </div>
