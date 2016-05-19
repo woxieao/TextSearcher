@@ -659,7 +659,7 @@
                     });
                 } else {
                     $scope.dialogProductList = null;
-                    alertService.add('danger', "请输入备案编号", 3000);
+                    alertService.add('danger', "正确的备案号格式为[ICIP+14个数字]或[10个数字]", 3000);
                 }
             };
             $scope.addDialogGoodsProduct = function () {
