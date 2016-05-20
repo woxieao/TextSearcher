@@ -149,31 +149,6 @@ namespace Giqci.PublicWeb.Controllers
                 model.ImBrokerPhone = "";
             }
             var errors = _dataChecker.ApplicationHasErrors(model, false, isRequireCiqCode);
-            //todo 合并在ApplicationHasErrors中,但仅限前台网站
-            if (model.InspectionDate < DateTime.Now.Date)
-            {
-                errors.Add("预约检查日期需大于等于今天");
-            }
-            if (string.IsNullOrEmpty(model.InspectorTel))
-            {
-                errors.Add("联系人电话不能为空");
-            }
-            if (string.IsNullOrEmpty(model.Inspector))
-            {
-                errors.Add("联系人不能为空");
-            }
-            if (string.IsNullOrEmpty(model.InspectionAddr))
-            {
-                errors.Add("检验地点不能为空");
-            }
-            if (!string.IsNullOrEmpty(model.Voyage) && DateTime.Parse(model.Voyage) < DateTime.Now.Date)
-            {
-                errors.Add("出发日期应大于等于当前时间");
-            }
-            if (!string.IsNullOrEmpty(model.ShippingDate) && DateTime.Parse(model.ShippingDate) < DateTime.Now.Date)
-            {
-                errors.Add("计划发货日期应大于等于当前时间");
-            }
             var userName = User.Identity.Name;
             var isLogin = true;
             if (string.IsNullOrEmpty(userName))
@@ -189,6 +164,30 @@ namespace Giqci.PublicWeb.Controllers
                 GetTotalUnits(ref model);
                 if (isNew)
                 {
+                    if (!string.IsNullOrEmpty(model.Voyage) && DateTime.Parse(model.Voyage) < DateTime.Now.Date)
+                    {
+                        errors.Add("出发日期应大于等于当前时间");
+                    }
+                    if (model.InspectionDate < DateTime.Now.Date)
+                    {
+                        errors.Add("预约检查日期需大于等于今天");
+                    }
+                    if (!string.IsNullOrEmpty(model.ShippingDate) && DateTime.Parse(model.ShippingDate) < DateTime.Now.Date)
+                    {
+                        errors.Add("计划发货日期应大于等于当前时间");
+                    }
+                    if (string.IsNullOrEmpty(model.InspectionAddr))
+                    {
+                        errors.Add("检验地点不能为空");
+                    }
+                    if (string.IsNullOrEmpty(model.Inspector))
+                    {
+                        errors.Add("联系人不能为空");
+                    }
+                    if (string.IsNullOrEmpty(model.InspectorTel))
+                    {
+                        errors.Add("联系人电话不能为空");
+                    }
                     appkey = _appRepo.CreateApplication(_auth.GetAuth().MerchantId, model);
                 }
                 else
