@@ -432,7 +432,7 @@
                 <td>
                     提单号
                 </td>
-                <td>
+                <td colspan="3">
                     {{model.Application.BillNo}}
                 </td>
             </tr>
@@ -440,7 +440,7 @@
                 <td>
                     副提单号
                 </td>
-                <td>
+                <td colspan="3">
                     {{model.Application.OtherBillNo}}
                 </td>
             </tr>
@@ -450,7 +450,7 @@
                     <span ng-if="model.Application.ShippingMethod == 2">船舶号</span>
                     <span ng-if="model.Application.ShippingMethod == 3">车牌号</span>
                 </td>
-                <td>
+                <td colspan="3">
                     {{model.Application.Vesselcn}}
                 </td>
             </tr>
@@ -458,48 +458,48 @@
                 <td>
                     出发日期
                 </td>
-                <td>
+                <td colspan="3">
                     {{model.Application.Voyage}}
                 </td>
             </tr>
             <tr ng-if="model.Application.ShippingMethod != 2">
                 <td>运输总数量</td>
-                <td>{{model.Application.TotalUnits}}Pallets</td>
+                <td colspan="3">{{model.Application.TotalUnits}}Pallets</td>
             </tr>
             <tr>
                 <td>运输总重量</td>
-                <td>{{model.Application.TotalWeight | currency:"":2}}KG</td>
+                <td colspan="3">{{model.Application.TotalWeight | currency:"":2}}KG</td>
             </tr>
             <tr>
                 <td>计划发货日期</td>
-                <td>{{model.Application.ShippingDate | date:'yyyy/MM/dd'}}</td>
+                <td colspan="3">{{model.Application.ShippingDate | date:'yyyy/MM/dd'}}</td>
             </tr>
 
             <tr>
                 <td>预约检查日期</td>
-                <td>{{model.Application.InspectionDate | date:'yyyy/MM/dd'}}</td>
+                <td colspan="3">{{model.Application.InspectionDate | date:'yyyy/MM/dd'}}</td>
             </tr>
             <tr>
                 <td>检验地点</td>
-                <td>{{model.Application.InspectionAddr}}</td>
+                <td colspan="3">{{model.Application.InspectionAddr}}</td>
             </tr>
             <tr>
                 <td>联系人</td>
-                <td>{{model.Application.Inspector}}</td>
+                <td colspan="3">{{model.Application.Inspector}}</td>
             </tr>
             <tr>
                 <td>联系人电话</td>
-                <td>{{model.Application.InspectorTel}}</td>
+                <td colspan="3">{{model.Application.InspectorTel}}</td>
             </tr>
             <tr>
                 <td>发货港口</td>
-                <td>
+                <td colspan="3">
                     <span ajax-label ajax-url="ports" ng-model="model.Application.LoadingPort">{{model.Application.LoadingPort}}</span>
                 </td>
             </tr>
             <tr>
                 <td>目的港口</td>
-                <td>
+                <td colspan="3">
                     <span ajax-label ajax-url="ports" ng-model="model.Application.LoadingPort">{{model.Application.LoadingPort}}</span>
                 </td>
             </tr>
