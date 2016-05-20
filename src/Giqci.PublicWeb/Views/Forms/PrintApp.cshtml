@@ -107,14 +107,16 @@
                 <td colspan="3">
                     <table style="width: 100%;" class="gridnone">
                         <colgroup>
-                            <col width="10%" />
-                            <col width="40%" />
-                            <col width="10%" />
-                            <col width="40%" />
+                            <col width="15%" />
+                            <col width="35%" />
+                            <col width="15%" />
+                            <col width="35%" />
                         </colgroup>
                         <tr>
                             <td>全称:</td>
                             <td>{{model.Application.Applicant}}</td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>地址:</td>
@@ -144,14 +146,16 @@
                 <td colspan="3">
                     <table style="width: 100%;" class="gridnone">
                         <colgroup>
-                            <col width="10%" />
-                            <col width="40%" />
-                            <col width="10%" />
-                            <col width="40%" />
+                            <col width="15%" />
+                            <col width="35%" />
+                            <col width="15%" />
+                            <col width="35%" />
                         </colgroup>
                         <tr>
                             <td>全称:</td>
                             <td>{{model.Application.Exporter}}</td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>地址:</td>
@@ -173,14 +177,16 @@
                 <td colspan="3">
                     <table style="width: 100%;" class="gridnone">
                         <colgroup>
-                            <col width="10%" />
-                            <col width="40%" />
-                            <col width="10%" />
-                            <col width="40%" />
+                            <col width="15%" />
+                            <col width="35%" />
+                            <col width="15%" />
+                            <col width="35%" />
                         </colgroup>
                         <tr>
                             <td>全称:</td>
                             <td>{{model.Application.Importer}}</td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>地址:</td>
@@ -202,14 +208,16 @@
                 <td colspan="3">
                     <table style="width: 100%;" class="gridnone">
                         <colgroup>
-                            <col width="10%" />
-                            <col width="40%" />
-                            <col width="10%" />
-                            <col width="40%" />
+                            <col width="15%" />
+                            <col width="35%" />
+                            <col width="15%" />
+                            <col width="35%" />
                         </colgroup>
                         <tr>
                             <td>全称:</td>
                             <td>{{model.Application.ImBroker}}</td>
+                            <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td>地址:</td>
@@ -400,14 +408,20 @@
                 <td colspan="3">
                     <div ng-repeat="item in model.Application.ContainerInfos">
                         <table style="width: 100%;" class="gridnone">
+                            <colgroup>
+                                <col width="15%" />
+                                <col width="35%" />
+                                <col width="15%" />
+                                <col width="35%" />
+                            </colgroup>
                             <tr>
-                                <th>装箱信息{{$index+1}}</th>
-                                <td></td>
+                                <td>装箱信息{{$index+1}}</td>
+                                <td colspan="3"></td>
                             </tr>
                             <tr>
-                                <th>装箱号</th>
+                                <td>装箱号</td>
                                 <td>{{item.ContainerNumber}}</td>
-                                <th>铅封号</th>
+                                <td>铅封号</td>
                                 <td>{{item.SealNumber}}</td>
                             </tr>
                         </table>
