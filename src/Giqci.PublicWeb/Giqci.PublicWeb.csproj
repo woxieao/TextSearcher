@@ -279,6 +279,7 @@
     <Content Include="Views\Account\MerchantList.cshtml" />
     <Content Include="Views\Shared\PopUp\EditProduct.cshtml" />
     <Content Include="Views\File\ViewFile.cshtml" />
+    <Content Include="Views\Forms\PrintApp.cshtml" />
     <None Include="Web.Prod.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
