@@ -1,0 +1,418 @@
+﻿@using Giqci.Chapi.Models.App
+@using Giqci.PublicWeb.Extensions
+@using Giqci.PublicWeb.Models
+@using Ktech.Extensions
+@using Newtonsoft.Json
+@model Giqci.Chapi.Models.App.Application
+@{
+    Layout = null;
+    var token = string.Format("token={0}", DateTime.Now.Date.Ticks);
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>打印申请</title>
+</head>
+<body ng-app="giqci">
+    <table ng-controller="ViewAppController" style="width: 100%;">
+        <tr>
+            <td colspan="4">申请号:{{model.Application.Key}}</td>
+        </tr>
+        <tr>
+            <td>证书类别:</td>
+            <td>
+                <span ng-if="model.Application.C101">溯源证书</span>
+                <span ng-if="model.Application.C102">品质证书</span>
+                <span ng-if="model.Application.C103">标签证书</span>
+            </td>
+            <td>商业目的:</td>
+            <td>
+                {{model.Application.TradeType == 4?"一般贸易":"电商贸易"}}
+            </td>
+        </tr>
+        <tr>
+            <td>创建日期:</td>
+            <td>
+                {{model.Application.CreateDate | date:'yyyy/MM/dd'}}
+            </td>
+            <td>当前状态:</td>
+            <td>
+                {{StatusDescription}}
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">申请人:</td>
+            <td colspan="3">
+                <table>
+                    <tr>
+                        <td>全称:</td>
+                        <td>{{model.Application.Applicant}}</td>
+                    </tr>
+                    <tr>
+                        <td>地址:</td>
+                        <td>{{model.Application.ApplicantAddr}}</td>
+                    </tr>
+                    <tr>
+                        <td>联系人: </td>
+                        <td>{{model.Application.ApplicantContact}}</td>
+                    </tr>
+                    <tr>
+                        <td>联系电话: </td>
+                        <td>{{model.Application.ApplicantPhone}}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            邮箱:
+                        </td>
+                        <td>
+                            {{model.Application.ApplicantEmail}}
+                        </td>
+                    </tr>
+                </table>
+
+            </td>
+
+        </tr>
+        <tr>
+            <td valign="top">出口商:</td>
+            <td colspan="3">
+                <table>
+                    <tr>
+                        <td>全称:</td>
+                        <td>{{model.Application.Exporter}}</td>
+                    </tr>
+                    <tr>
+                        <td>地址:</td>
+                        <td>{{model.Application.ExporterAddr}}</td>
+                    </tr>
+                    <tr>
+                        <td>联系人: </td>
+                        <td>{{model.Application.ExporterContact}}</td>
+                    </tr>
+                    <tr>
+                        <td>联系电话: </td>
+                        <td>{{model.Application.ExporterPhone}}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr ng-if="model.Application.TradeType==4">
+            <td valign="top">进口商:</td>
+            <td colspan="3">
+                <table>
+                    <tr>
+                        <td>全称:</td>
+                        <td>{{model.Application.Importer}}</td>
+                    </tr>
+                    <tr>
+                        <td>地址:</td>
+                        <td>{{model.Application.ImporterAddr}}</td>
+                    </tr>
+                    <tr>
+                        <td>联系人: </td>
+                        <td>{{model.Application.ImporterContact}}</td>
+                    </tr>
+                    <tr>
+                        <td>联系电话: </td>
+                        <td>{{model.Application.ImporterPhone}}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top" ng-if="model.Application.TradeType==1">代理进口商:</td>
+            <td colspan="3">
+                <table>
+                    <tr>
+                        <td>全称:</td>
+                        <td>{{model.Application.ImBroker}}</td>
+                    </tr>
+                    <tr>
+                        <td>地址:</td>
+                        <td>{{model.Application.ImBrokerAddr}}</td>
+                    </tr>
+                    <tr>
+                        <td>联系人: </td>
+                        <td>{{model.Application.ImBrokerContact}}</td>
+                    </tr>
+                    <tr>
+                        <td>联系电话: </td>
+                        <td>{{model.Application.ImBrokerPhone}}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td valign="top">商品资料</td>
+            <td colspan="3">
+                <div ng-repeat="item in model.Application.ApplicationProducts">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>
+                                <p class="form-control-static">商品 {{$index+1}}</p>
+                            </th>
+                            <td colspan="3"></td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <p class="form-control-static">常用商品</p>
+                            </th>
+                            <td colspan="3">
+                                <p class="form-control-static">{{item.CiqCode}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <p class="form-control-static">名称(英文)</p>
+                            </th>
+                            <td>
+                                <p class="form-control-static">{{item.DescriptionEn}}</p>
+                            </td>
+                            <th>
+                                <p class="form-control-static">名称(中文)</p>
+                            </th>
+                            <td>
+                                <p class="form-control-static">{{item.Description}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <p class="form-control-static">品牌</p>
+                            </th>
+                            <td>
+                                <p class="form-control-static">{{item.Brand}}</p>
+                            </td>
+                            <th>
+                                <p class="form-control-static">包装</p>
+                            </th>
+                            <td>
+                                <p class="form-control-static">{{item.Package}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <p class="form-control-static">规格</p>
+                            </th>
+                            <td>
+                                <p class="form-control-static">{{item.Spec}}</p>
+                            </td>
+                            <th>
+                                <p class="form-control-static">原产国</p>
+                            </th>
+                            <td>
+                                <p class="form-control-static" ajax-label ajax-url="countries" ng-model="item.ManufacturerCountry">{{item.ManufacturerCountry}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <p class="form-control-static">HS编码</p>
+                            </th>
+                            <td>
+                                <p class="form-control-static" ajax-label ajax-url="commonhscodes" ng-model="item.HSCode">{{item.HSCode}}</p>
+                            </td>
+                            <th>
+                                <p class="form-control-static">制造商</p>
+                            </th>
+                            <td>
+                                <p ng-model="item.Manufacturer" class="form-control-static">{{item.Manufacturer}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <p class="form-control-static">数量</p>
+                            </th>
+                            <td>
+                                <p class="form-control-static" ng-model="item.Quantity">{{item.Quantity}}</p>
+                            </td>
+                            <th></th>
+                            <td></td>
+                        </tr>
+                        <tr ng-if="model.Application.C102">
+                            <th>
+                                <p class="form-control-static">品质检验</p>
+                            </th>
+                            <td>
+                                <p class="form-control-static">{{item.C102?'是':'否'}}</p>
+                            </td>
+                            <th>
+                                <p class="form-control-static" ng-if="item.C102">检测项目</p>
+                            </th>
+                            <td>
+                                <p class="form-control-static" ng-if="item.C102">{{item.C102Comment}}</p>
+                            </td>
+                        </tr>
+                    </table>
+                    <!--批次-->
+                    <div ng-repeat="batch in item.ProductItemList">
+                        <table class="table table-striped">
+
+                            <tr>
+                                <th>
+                                    <p class="form-control-static">批次号</p>
+                                </th>
+                                <td>
+                                    <p class="form-control-static">{{batch.BatchNo}}</p>
+                                </td>
+                                <th>
+                                    <p class="form-control-static">保质期 *</p>
+                                </th>
+                                <td>
+                                    <p class="form-control-static">{{batch.ExpiryDate|date:'yyyy/MM/dd'}}</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <!--end批次-->
+                    <!--真知码-->
+                    <table class="table table-striped">
+
+                        <tr ng-repeat="zcode in item.ApplicationZCodes">
+                            <th>
+                                <p class="form-control-static">首码</p>
+                            </th>
+                            <td>
+                                <p class="form-control-static">{{zcode.ZCodeStart}}</p>
+                            </td>
+                            <th>
+                                <p class="form-control-static">尾码</p>
+                            </th>
+                            <td>
+                                <p class="form-control-static">{{zcode.ZCodeEnd}}</p>
+                            </td>
+                        </tr>
+                    </table>
+                    <!--end真知码-->
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>运输方式</td>
+            <td colspan="3">
+                <span class="col-sm-2 form-control-static" ng-if="model.Application.ShippingMethod==1">空运</span>
+                <span class="col-sm-2 form-control-static" ng-if="model.Application.ShippingMethod==2">海运</span>
+                <span class="col-sm-2 form-control-static" ng-if="model.Application.ShippingMethod==3">陆运</span>
+            </td>
+        </tr>
+        <tr ng-if="model.Application.ShippingMethod === 2">
+            <td valign="top">
+                船舶资料
+            </td>
+            <td colspan="3">
+                <div ng-repeat="item in model.Application.ContainerInfos">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>装箱信息{{$index+1}}</th>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th>装箱号</th>
+                            <td>{{item.ContainerNumber}}</td>
+                            <th>铅封号</th>
+                            <td>{{item.SealNumber}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                提单号
+            </td>
+            <td>
+                {{model.Application.BillNo}}
+            </td>
+            <td>
+                副提单号
+            </td>
+            <td>
+                {{model.Application.OtherBillNo}}
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label class="col-sm-2 control-label">
+                    <p ng-if="model.Application.ShippingMethod == 1">航班号</p>
+                    <p ng-if="model.Application.ShippingMethod == 2">船舶号</p>
+                    <p ng-if="model.Application.ShippingMethod == 3">车牌号</p>
+                </label>
+            </td>
+            <td>
+                {{model.Application.Vesselcn}}
+            </td>
+            <td>
+                出发日期
+            </td>
+            <td>
+                {{model.Application.Voyage}}
+            </td>
+        </tr>
+        <tr ng-if="model.Application.ShippingMethod != 2">
+            <td>运输总数量</td>
+            <td>{{model.Application.TotalUnits}}Pallets</td>
+        </tr>
+        <tr>
+            <td>运输总重量</td>
+            <td>{{model.Application.TotalWeight | currency:"":2}}KG</td>
+            <td>计划发货日期</td>
+            <td>{{model.Application.ShippingDate | date:'yyyy/MM/dd'}}</td>
+        </tr>
+
+        <tr>
+            <td>预约检查日期</td>
+            <td>{{model.Application.InspectionDate | date:'yyyy/MM/dd'}}</td>
+            <td>检验地点</td>
+            <td>{{model.Application.InspectionAddr}}</td>
+
+        </tr>
+
+        <tr>
+            <td>联系人</td>
+            <td>{{model.Application.Inspector}}</td>
+            <td class="col-sm-2 control-label">联系人电话</td>
+            <td class="col-sm-2 form-control-static">{{model.Application.InspectorTel}}</td>
+        </tr>
+
+        <tr>
+            <td class="col-sm-2 control-label">发货港口</td>
+            <td>
+                <span ajax-label ajax-url="ports" ng-model="model.Application.LoadingPort" class="col-sm-2 form-control-static">{{model.Application.LoadingPort}}</span>
+            </td>
+            <td class="col-sm-2 control-label">目的港口</td>
+            <td>
+                <span ajax-label ajax-url="ports" ng-model="model.Application.LoadingPort" class="col-sm-2 form-control-static">{{model.Application.LoadingPort}}</span>
+            </td>
+            x
+        </tr>
+
+
+
+    </table>
+    <script src="~/Global/js/jquery-2.1.4.min.js"></script>
+    <script src="~/Global/js/angular-1.4.7.min.js"></script>
+    <script src="~/Global/js/service.js?@token"></script>
+    <script src="~/Global/js/app.js?@token"></script>
+    <script src="~/Global/js/directive.js?@token"></script>
+    <script src="~/Scripts/giqci.js?@token"></script>
+    <script src="~/Scripts/jquery.form.js?@token"></script>
+    <script src="http://code.jquery.com/jquery-migrate-1.1.0.js"></script>
+    <script src="~/Global/js/jquery.jqprint-0.3.js"></script>
+    <script type="text/javascript">
+        var app = angular.module("giqci");
+        app.controller('ViewAppController', [
+            '$scope', function ($scope) {
+                $scope.model = {};
+                $scope.model.Application = ObjDecodeToJson(@HtmlExtensions.RawJson(Model));
+                $scope.StatusDescription = "@Model.Status.ToDescription()";
+                $scope.ShippingMethodDescription = "@Model.ShippingMethod.ToDescription()";
+                $scope.IsPrint = "@ViewBag.IsPrint" == "True";
+            }
+        ]);
+
+        function print() {
+            //$("#print").jqprint();
+        }
+    </script>
+
+</body>
+</html>

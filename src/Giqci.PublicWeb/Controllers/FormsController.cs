@@ -119,7 +119,7 @@ namespace Giqci.PublicWeb.Controllers
                 validCerts.Select(certTypeList => certTypeList.OrderByDescending(i => i.SignedDate).First())
                     .ToList();
             ViewBag.IsPrint = true;
-            return View("ViewApp", application);
+            return View("PrintApp", application);
         }
 
         [Route("forms/app")]
