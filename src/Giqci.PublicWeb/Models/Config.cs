@@ -27,6 +27,7 @@ namespace Giqci.PublicWeb.Models
                 WebConfigurationManager.AppSettings[nameof(CertFileSavePath)];
 
             public static readonly string AdminWebUrl = WebConfigurationManager.AppSettings[nameof(AdminWebUrl)];
+            public static readonly string ViewFileUrl = WebConfigurationManager.AppSettings[nameof(ViewFileUrl)];
         }
 
         public struct ApiUrl
