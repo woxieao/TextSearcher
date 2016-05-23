@@ -565,22 +565,9 @@
                     type: "post",
                     url: "/api/forms/savefile",
                     success: function (data) {
-                        if (data.filepath != "") {
-                            $scope.model.Application.ExampleCertList.push({ CertFilePath: data.filepath, HandlerType: 1 });
-                            $scope.$apply();
-                        }
-                    }
-                });
-            };
-            $scope.UploadExampleNew = function () {
-                $('#uploadForm').ajaxSubmit({
-                    type: "post",
-                    url: "/file/UploadExampleFile",
-                    success: function (data) {
                         if (data.Flag) {
-                            console.log(data.FileFullPath);
-                            //  $scope.model.Application.ExampleCertList.push({ CertFilePath: data.FileFullPath, HandlerType: 1 });
-                            //$scope.$apply();
+                            $scope.model.Application.ExampleCertList.push({ CertFilePath: data.FileFullPath, HandlerType: 1 });
+                            $scope.$apply();
                         } else {
                             alert(data.Msg);
                         }
@@ -896,7 +883,7 @@
                                     <th>文件</th>
                                     <td>
                                         <input ng-show="!item.CertFilePath" type="file" name="file{{$index}}" ng-model="item.CertFilePath" class="form-control autowidth-form-control" />
-                                        <a ng-show="item.CertFilePath" href="{{item.CertFilePath}}" target="_blank">查看样张{{$index+1}}</a>
+                                        <a ng-show="item.CertFilePath" href="/file/viewfile?fileFullPath={{item.CertFilePath}}" target="_blank">查看样张{{$index+1}}</a>
                                     </td>
                                 </tr>
                             </table>

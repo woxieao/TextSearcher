@@ -1,6 +1,7 @@
 ﻿@using Giqci.Chapi.Models.App
 @using Giqci.PublicWeb.Extensions
 @using Giqci.PublicWeb.Models
+@using Giqci.Tools
 @using Ktech.Extensions
 @using Newtonsoft.Json
 @model Giqci.Chapi.Models.App.Application
@@ -33,7 +34,7 @@
                                 <tr>
                                     <th>样张{{$index+1}}</th>
                                     <td>
-                                        <a href="{{item.CertFilePath}}" target="_black">查看文件</a>
+                                        <a href="/file/viewfile?fileFullPath={{item.CertFilePath}}" target="_blank">查看文件</a>
                                     </td>
                                 </tr>
                             </table>
@@ -336,7 +337,7 @@
                                     @foreach (var item in validCerts)
                                     {
                                         <div class="form-control-static">
-                                            <strong>@item.CertType.ToDescription()</strong>：<a target="_blank" href="@string.Format("{0}/{1}/{2}", Config.Common.AdminWebUrl, Config.Common.CertFileSavePath, item.CertPath)">@item.CertNo</a> by @item.SignedBy @item.SignedDate
+                                            <strong>@item.CertType.ToDescription()</strong>：<a target="_blank" href="@string.Format("{0}/{1}/{2}", Config.Common.ViewFileUrl, Filer.EncryptFilePath( Config.Common.CertFileSavePath, item.CertPath))">@item.CertNo</a> by @item.SignedBy @item.SignedDate
                                         </div>
                                     }
                                 </div>
