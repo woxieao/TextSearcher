@@ -133,21 +133,7 @@ namespace Giqci.PublicWeb.Controllers
             {
                 var port = _cache.GetPort(model.DestPort);
                 isRequireCiqCode = port.RequireCiqCode;
-            }
-            if (model.TradeType == TradeType.C)
-            {
-                model.Importer = "";
-                model.ImporterAddr = "";
-                model.ImporterContact = "";
-                model.ImporterPhone = "";
-            }
-            else if (model.TradeType == TradeType.T)
-            {
-                model.ImBroker = "";
-                model.ImBrokerAddr = "";
-                model.ImBrokerContact = "";
-                model.ImBrokerPhone = "";
-            }
+            }      
             var errors = _dataChecker.ApplicationHasErrors(model, false, isRequireCiqCode);
             if (isNew)
             {
