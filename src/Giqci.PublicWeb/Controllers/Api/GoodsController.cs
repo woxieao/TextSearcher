@@ -124,6 +124,11 @@ namespace Giqci.PublicWeb.Controllers.Api
                 {
                     return new KtechJsonResult(HttpStatusCode.OK, new { flag = false, msg = "商品信息不完整" });
                 }
+                var regManu = new Regex("^[a-zA-z\\s]*$");
+                if (!regManu.IsMatch(product.Manufacturer))
+                {
+                    return new KtechJsonResult(HttpStatusCode.OK, new { flag = false, msg = "制造商必须是英文" });
+                }
                 if (product.Id > 0)
                 {
                     if (!product.IsApproved)
