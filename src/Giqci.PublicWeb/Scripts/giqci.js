@@ -30,7 +30,7 @@ function PageHandler(postUrl, callBackFunc, customPageSize) {
             url: url,
             data: postData,
             type: "POST",
-            success: function(result) {
+            success: function (result) {
                 self.lastTimeResultCount = result.data.length;
                 canWeGo(self.pageIndex);
                 if (result.msg != null) {
@@ -38,25 +38,25 @@ function PageHandler(postUrl, callBackFunc, customPageSize) {
                 }
                 func(result);
             },
-            error: function(result) {
+            error: function (result) {
                 console.log(result);
                 alert(":(\nWhoops,looks like something went wrong");
             }
         });
     }
 
-    this.FirstPage = function(postData) {
+    this.FirstPage = function (postData) {
         self.pageIndex = 1;
         go(postData);
     }
-    this.PrevPage = function(postData) {
+    this.PrevPage = function (postData) {
         if (self.CanPrev) {
             self.pageIndex--;
             go(postData);
         }
 
     }
-    this.NextPage = function(postData) {
+    this.NextPage = function (postData) {
         if (self.CanNext) {
             self.pageIndex++;
             go(postData);
@@ -98,4 +98,40 @@ function CallByValue(obj) {
     } else {
         return obj;
     }
+}
+
+function Breath(checkLoginUrl, whenLogOutCallBackFunc, whenLoginedCallBackFunc, millisec) {
+    var self = this;
+    millisec = millisec == null ? 5000 : millisec;
+    self.WhenLogOutCallBackFunc = whenLogOutCallBackFunc;
+    self.WhenLoginedCallBackFunc = whenLoginedCallBackFunc;
+    var breathing = false;
+    function sendReuqest() {
+        if (breathing) {
+            $.ajax({
+                url: checkLoginUrl,
+                type: "POST",
+                success: function (result) {
+                    if (result.flag) {
+                        self.WhenLoginedCallBackFunc();
+                    }
+                    else {
+                        self.WhenLogOutCallBackFunc();
+                    }
+                },
+                error: function (result) {
+                    console.log(result);
+                }
+            });
+        }
+    }
+    var colock = setInterval(sendReuqest, millisec);
+    this.Revive = function () {
+        breathing = true;
+    }
+    this.ChangeTicks = function (newMillisec) {
+        window.clearInterval(colock);
+        colock = setInterval(sendReuqest, newMillisec);
+    }
+
 }

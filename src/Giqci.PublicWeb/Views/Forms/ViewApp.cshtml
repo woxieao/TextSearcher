@@ -364,6 +364,7 @@
     <script type="text/javascript">
         app.controller('ViewAppController', [
             '$scope', function ($scope) {
+                userBreath.Revive();
                 $scope.model = {};
                 $scope.model.Application = ObjDecodeToJson(@HtmlExtensions.RawJson(Model));
                 $scope.StatusDescription = "@Model.Status.ToDescription()";

@@ -57,6 +57,10 @@ namespace Giqci.PublicWeb.Controllers.Api
             bool result;
             try
             {
+                if (_auth.GetAuth() == null)
+                {
+                    throw new Exception("登录状态已失效,请重新登陆");
+                }
                 //todo  服务器返回信息乱码
                 result = _merchantRepository.AddProduct(_auth.GetAuth().MerchantId, ciqCode, out msg);
             }
@@ -78,7 +82,7 @@ namespace Giqci.PublicWeb.Controllers.Api
 
             return new KtechJsonResult(HttpStatusCode.OK, new { result = true });
         }
-
+        [AllowAnonymous]
         [Route("goods/searchproduct")]
         [HttpPost]
         public ActionResult SearchProductList(string ciqCode)
