@@ -9,6 +9,7 @@
 
         app.controller("AddCustomProductController", [
             '$http', '$scope', '$location', '$log', 'alertService', function ($http, $scope, $location, $log, alertService) {
+                userBreath.Revive();
                 $scope.model = ObjDecodeToJson(@HtmlExtensions.RawJson(Model));
                 $scope.flag = null;
                 $(function () {
