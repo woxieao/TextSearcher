@@ -15,7 +15,6 @@
         }
 
         app.controller("GlobalController", ['$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', '$filter', 'alertService', function ($http, $scope, $log, $location, $anchorScroll, $timeout, $filter, alertService) {
-            userBreath.Revive();
             $scope.model = {};
             $scope.model.Application = ObjDecodeToJson(@HtmlExtensions.RawJson(Model));
 
