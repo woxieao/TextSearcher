@@ -129,6 +129,9 @@ function Breath(checkLoginUrl, whenLogOutCallBackFunc, whenLoginedCallBackFunc, 
     this.Revive = function () {
         breathing = true;
     }
+    this.Die = function () {
+        breathing = false;
+    }
     this.ChangeTicks = function (newMillisec) {
         window.clearInterval(colock);
         colock = setInterval(sendReuqest, newMillisec);
