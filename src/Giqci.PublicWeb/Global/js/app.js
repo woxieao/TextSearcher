@@ -465,15 +465,19 @@ app.controller("BreathController", [
     '$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', 'alertService', function ($http, $scope, $log, $location, $anchorScroll, $timeout, alertService) {
         $scope.login = { result: true, error: "" };
         $scope.user = { email: "", password: "" }
+        $scope.Logining = false;
+
         $scope.ModalLogin = function () {
+            $scope.Logining = true;
             $http.post('/api/account/login', $scope.user).then(function (response) {
                 if (response.data.result) {
                     $('#breathBox').modal('hide');
-                       userBreath.Revive();
                 } else {
                     $scope.login.result = response.data.result;
                     $scope.login.error = response.data.message;
+
                 }
+                $scope.Logining = false;
             });
         };
     }
