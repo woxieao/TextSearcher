@@ -154,7 +154,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                     || string.IsNullOrEmpty(product.Manufacturer))
                 {
                     return new KtechJsonResult(HttpStatusCode.OK, new { flag = false, msg = "商品信息不完整" });
-                    }
+                }
                 var regManu = new Regex("^[a-zA-z\\s]*$");
                 if (!regManu.IsMatch(product.Manufacturer))
                 {
@@ -278,16 +278,16 @@ namespace Giqci.PublicWeb.Controllers.Api
             }
 
             var filterResult = allProduct.Where(
-                i => (i.CiqCode != null && i.CiqCode.Contains(keyWords))
-                     || (i.Description != null && i.Description.Contains(keyWords))
-                     || (i.Brand != null && i.Brand.Contains(keyWords))
-                     || (i.HsCode != null && i.HsCode.Contains(keyWords))
-                     || (i.Manufacturer != null && i.Manufacturer.Contains(keyWords))
-                     || (i.ManufacturerCountry != null && i.ManufacturerCountry.Contains(keyWords))
-                     || (i.Package != null && i.Package.Contains(keyWords))
-                     || (i.Spec != null && i.Spec.Contains(keyWords))
-                     || (i.DescriptionEn != null && i.DescriptionEn.Contains(keyWords))
-                     || (i.Code != null && i.Code.Contains(keyWords))).Skip(0).Take(10);
+                i => (i.CiqCode != null && i.CiqCode.IndexOf(keyWords, StringComparison.OrdinalIgnoreCase) > -1)
+                     || (i.Description != null && i.Description.IndexOf(keyWords, StringComparison.OrdinalIgnoreCase) > -1)
+                     || (i.Brand != null && i.Brand.IndexOf(keyWords, StringComparison.OrdinalIgnoreCase) > -1)
+                     || (i.HsCode != null && i.HsCode.IndexOf(keyWords, StringComparison.OrdinalIgnoreCase) > -1)
+                     || (i.Manufacturer != null && i.Manufacturer.IndexOf(keyWords, StringComparison.OrdinalIgnoreCase) > -1)
+                     || (i.ManufacturerCountry != null && i.ManufacturerCountry.IndexOf(keyWords, StringComparison.OrdinalIgnoreCase) > -1)
+                     || (i.Package != null && i.Package.IndexOf(keyWords, StringComparison.OrdinalIgnoreCase) > -1)
+                     || (i.Spec != null && i.Spec.IndexOf(keyWords, StringComparison.OrdinalIgnoreCase) > -1)
+                     || (i.DescriptionEn != null && i.DescriptionEn.IndexOf(keyWords, StringComparison.OrdinalIgnoreCase) > -1)
+                     || (i.Code != null && i.Code.IndexOf(keyWords, StringComparison.OrdinalIgnoreCase) > -1)).Skip(0).Take(10);
             return new KtechJsonResult(HttpStatusCode.OK, new { result = filterResult });
         }
     }
