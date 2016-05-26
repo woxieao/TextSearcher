@@ -439,7 +439,7 @@ app.directive("ajaxProduct", function ($timeout, $http) {
                             console.log(v);
                             var o = {};
                             o.id = v.Id;
-                            o.name = (v.CiqCode ? v.CiqCode : "-") + '(' + (v.Description === undefined ? "" : v.Description) + ")";
+                            o.name = (v.CiqCode ? v.CiqCode : v.Code) + '(' + (v.Description === undefined ? "" : v.Description) + ")";
                             o.CiqCode = v.CiqCode;
                             o.Brand = v.Brand;
                             o.Description = v.Description;
