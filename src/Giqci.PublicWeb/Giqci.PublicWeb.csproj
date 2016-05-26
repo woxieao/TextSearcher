@@ -294,6 +294,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Files\" />
+    <Folder Include="Views\bASE\" />
     <Folder Include="Views\Feedback\" />
   </ItemGroup>
   <PropertyGroup>
