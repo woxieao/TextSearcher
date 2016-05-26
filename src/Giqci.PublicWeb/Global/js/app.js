@@ -103,6 +103,7 @@ app.controller("RegController", [
 /* account changepassword */
 app.controller("ChanagePasswordController", [
     '$http', '$scope', '$location', 'alertService', function ($http, $scope, $location, alertService) {
+        userBreath.Revive();
         $scope.submitButton = ' 更改密码 ';
         $scope.submitForm = function (isValid, checkPassword) {
             if (isValid && checkPassword) {
@@ -129,6 +130,7 @@ app.controller("ChanagePasswordController", [
 /* certificate search */
 app.controller('CertificateSearchController', [
     '$scope', '$http', function ($scope, $http) {
+        userBreath.Revive();
         $scope.showtable = false;
 
         $scope.postData = {
@@ -152,6 +154,7 @@ app.controller('CertificateSearchController', [
 /* forms list */
 app.controller('FormsListController', [
     '$scope', "$log", '$http', function ($scope, $log, $http) {
+        userBreath.Revive();
         $scope.paginationConf = {
             totalItems: 0
         };
@@ -232,6 +235,7 @@ app.controller('FormsListController', [
 /* goods lists */
 app.controller('GoodsListController', [
     '$scope', '$http', 'alertService', function ($scope, $http, alertService) {
+        userBreath.Revive();
         $scope.list = function (postData) {
             $http.post('/api/goods/getproductlist', postData).success(function (response) {
                 $scope.merchantProductList = response.result;
@@ -268,9 +272,9 @@ app.controller('GoodsListController', [
             $("#form-add-custom-product").modal("show");
             $("#form-product").modal("hide");
         };
-       
+
         $scope.submitAddCustomProduct = function () {
-           $http.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
+            $http.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
                 if (response.flag) {
                     alert("提交成功");
                     $("#form-add-custom-product").modal("hide");
@@ -305,6 +309,7 @@ app.controller('GoodsListController', [
  */
 app.controller("GoodsAddController", [
     '$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', 'alertService', function ($http, $scope, $log, $location, $anchorScroll, $timeout, alertService) {
+        userBreath.Revive();
         $scope.CiqCode = "";
         $scope.Product = null;
         $scope.getproductlist = function () {
@@ -361,6 +366,7 @@ app.controller("GoodsAddController", [
  * MerchantList 常用商户列表
  */
 app.controller("MerchantListController", ['$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', 'alertService', function ($http, $scope, $log, $location, $anchorScroll, $timeout, alertService) {
+    userBreath.Revive();
     $scope.loadMerchantList = null;
     $scope.dialogModelMerchant = {
         UserName: "",
@@ -453,4 +459,35 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
         }
     };
 }
+]);
+
+app.controller("BreathController", [
+    '$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', 'alertService', function ($http, $scope, $log, $location, $anchorScroll, $timeout, alertService) {
+        $scope.login = { result: true, error: "" };
+        $scope.user = { email: "", password: "" }
+        $scope.Logining = false;
+
+        function beforeLogin() {
+            $scope.Logining = true;
+            userBreath.Die();
+        }
+
+        function afterLogin() {
+            $scope.Logining = false;
+            userBreath.Revive();
+        }
+
+        $scope.ModalLogin = function () {
+            beforeLogin();
+            $http.post('/api/account/login', $scope.user).then(function (response) {
+                if (response.data.result) {
+                    $('#breathBox').modal('hide');
+                } else {
+                    $scope.login.result = response.data.result;
+                    $scope.login.error = response.data.message;
+                }
+                afterLogin();
+            });
+        };
+    }
 ]);

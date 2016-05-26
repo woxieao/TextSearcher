@@ -62,7 +62,8 @@
 @section Footer{
     <script type="text/javascript">
         //var app = angular.module("giqci", ['commonAlert']);
-        app.controller("ProfileController", ['$http', '$scope', '$location','alertService', function ($http, $scope, $location, alertService) {
+        app.controller("ProfileController", ['$http', '$scope', '$location', 'alertService', function ($http, $scope, $location, alertService) {
+                userBreath.Revive();
             $scope.user = ObjDecodeToJson(@HtmlExtensions.RawJson( Model));
             $scope.submitButton = ' 提交 ';
             $scope.submitForm = function (isValid, PasswordValid) {

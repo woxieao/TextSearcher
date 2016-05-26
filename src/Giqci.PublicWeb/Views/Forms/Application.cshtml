@@ -1,5 +1,6 @@
 ﻿@using Giqci.Chapi.Enums.App
 @using Giqci.PublicWeb.Extensions
+@using Giqci.PublicWeb.Models
 @using Newtonsoft.Json
 @model Giqci.Chapi.Models.App.Application
 @{
@@ -697,6 +698,17 @@
                 $("#form-add-custom-product").modal("show");
                 $("#form-product").modal("hide");
             };
+
+            $scope.allowTypeList = ObjDecodeToJson(@HtmlExtensions.RawJson(Config.Filer.AllowTypeList));
+            $scope.allowType = '';
+            for (var i = 0; i < $scope.allowTypeList.length; i++) {
+                if (i == $scope.allowTypeList.length-1) {
+                    $scope.allowType += "." + $scope.allowTypeList[i];
+                } else {
+                    $scope.allowType += "." + $scope.allowTypeList[i] + ',';
+                }
+            }
+            console.log($scope.allowType);
         }
         ]);
 
@@ -868,7 +880,7 @@
                     @*<input type="file" name="file" onchange="if ($(this).val() != '') {angular.element(this).scope().UploadExampleNew()}" />*@
                     <label class="col-sm-2 control-label">上传标签证书样张</label>
                     <div class="col-sm-10">
-                        <input type="file" name="file" onchange="if ($(this).val() != '') {angular.element(this).scope().UploadExample()}" />
+                        <input type="file" name="file" onchange="if ($(this).val() != '') {angular.element(this).scope().UploadExample()}" accept="{{allowType}}" />
                         <div ng-repeat="item in model.Application.ExampleCertList | filter:listFilter">
                             <table class="table table-striped goodsItems">
                                 <tr>
@@ -882,7 +894,7 @@
                                 <tr>
                                     <th>文件</th>
                                     <td>
-                                        <input ng-show="!item.CertFilePath" type="file" name="file{{$index}}" ng-model="item.CertFilePath" class="form-control autowidth-form-control" />
+                                        <input ng-show="!item.CertFilePath" type="file" name="file{{$index}}" ng-model="item.CertFilePath" class="form-control autowidth-form-control" accept="{{allowType}}" />
                                         <a ng-show="item.CertFilePath" href="/file/viewfile?fileFullPath={{item.CertFilePath}}" target="_blank">查看样张{{$index+1}}</a>
                                     </td>
                                 </tr>
@@ -940,7 +952,7 @@
                         <input type="text" maxlength="100" name="Application.ExporterPhone" ng-model="model.Application.ExporterPhone" class="form-control" placeholder="联系电话" />
                     </div>
                 </div>
-                <div class="form-group" >
+                <div class="form-group">
                     <label ng-if="model.Application.TradeType==4" class="col-sm-2 control-label">进口商 <span style="color: red;">*</span> </label>
                     <label ng-if="model.Application.TradeType==1" class="col-sm-2 control-label">代理进口商 <span style="color: red;">*</span></label>
                     <div class="col-sm-6">
@@ -960,7 +972,7 @@
                         <input type="text" maxlength="100" name="Application.ImporterPhone" ng-model="model.Application.ImporterPhone" class="form-control" placeholder="联系电话" />
                     </div>
                 </div>
-               <div class="form-group">
+                <div class="form-group">
                     <label class="col-sm-2 control-label">商品资料</label>
                     <div class="col-sm-10">
                         <div ng-repeat="item in model.Application.ApplicationProducts | filter:listFilter">
