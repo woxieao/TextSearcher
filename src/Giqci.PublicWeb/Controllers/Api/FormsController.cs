@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using Giqci.ApiProxy.App;
 using Giqci.Chapi.Enums.App;
 using Giqci.Chapi.Models.App;
@@ -46,7 +47,13 @@ namespace Giqci.PublicWeb.Controllers.Api
         public ActionResult GetAllItem(string applyNo, ApplicationStatus? status, DateTime? start, DateTime? end,
             int pageIndex = 1, int pageSize = 10)
         {
-            var model = _appView.Search(applyNo, _auth.GetAuth().MerchantId, status, start, end, pageIndex, pageSize);
+            var auth = _auth.GetAuth();
+            if (auth == null)
+            {
+                FormsAuthentication.SignOut();
+                return Redirect("~/account/login");
+            }
+            var model = _appView.Search(applyNo, auth.MerchantId, status, start, end, pageIndex, pageSize);
             var count = model.Count();
             return new KtechJsonResult(HttpStatusCode.OK, new { items = model, count = count },
                 new JsonSerializerSettings { Converters = new List<JsonConverter> { new DescriptionEnumConverter() } });
@@ -56,7 +63,7 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpGet]
         public ActionResult GetStatus()
         {
-            var statusValues =
+           var statusValues =
                 Enum.GetValues(typeof(ApplicationStatus))
                     .Cast<ApplicationStatus>()
                     .Select(i => new { value = i.ToString(), name = i.ToDescription() })
@@ -77,7 +84,13 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult GetAppCache()
         {
-            var result = _applicationCacheApiProxy.Get(_auth.GetAuth().MerchantId, false);
+            var auth = _auth.GetAuth();
+            if (auth == null)
+            {
+                FormsAuthentication.SignOut();
+                return Redirect("~/account/login");
+            }
+            var result = _applicationCacheApiProxy.Get(auth.MerchantId, false);
             bool flag;
             Application app;
             try
@@ -97,7 +110,13 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult SaveAppCache(Application app)
         {
-            _applicationCacheApiProxy.Add(_auth.GetAuth().MerchantId, JsonConvert.SerializeObject(app));
+            var auth = _auth.GetAuth();
+            if (auth == null)
+            {
+                FormsAuthentication.SignOut();
+                return Redirect("~/account/login");
+            }
+            _applicationCacheApiProxy.Add(auth.MerchantId, JsonConvert.SerializeObject(app));
             return new KtechJsonResult(HttpStatusCode.OK, new { });
         }
 
@@ -105,7 +124,13 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult RemoveAppCache()
         {
-            _applicationCacheApiProxy.Remove(_auth.GetAuth().MerchantId);
+            var auth = _auth.GetAuth();
+            if (auth == null)
+            {
+                FormsAuthentication.SignOut();
+                return Redirect("~/account/login");
+            }
+            _applicationCacheApiProxy.Remove(auth.MerchantId);
             return new KtechJsonResult(HttpStatusCode.OK, new { });
         }
     }

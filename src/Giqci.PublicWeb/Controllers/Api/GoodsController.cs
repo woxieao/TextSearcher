@@ -5,6 +5,7 @@ using Ktech.Mvc.ActionResults;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
+using System.Web.Security;
 using Giqci.Chapi.Enums.App;
 using Giqci.Chapi.Models.Customer;
 using Giqci.Interfaces;
@@ -35,7 +36,13 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult MerchantGetProductList(int pageIndex = 1, int pageSize = 20)
         {
-            var productList = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, pageIndex, pageSize);
+            var auth = _auth.GetAuth();
+            if (auth == null)
+            {
+                FormsAuthentication.SignOut();
+                return Redirect("~/account/login");
+            }
+            var productList = _merchantRepository.GetProducts(auth.MerchantId, pageIndex, pageSize);
             var result = _productApiProxy.SearchProduct(productList);
             return new KtechJsonResult(HttpStatusCode.OK, new { result = result });
         }
@@ -44,7 +51,13 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult GetCustomerProductDetail(int productId)
         {
-            var product = _merchantRepository.GetCustomerProduct(_auth.GetAuth().MerchantId, productId);
+            var auth = _auth.GetAuth();
+            if (auth == null)
+            {
+                FormsAuthentication.SignOut();
+                return Redirect("~/account/login");
+            }
+            var product = _merchantRepository.GetCustomerProduct(auth.MerchantId, productId);
 
             return new KtechJsonResult(HttpStatusCode.OK, new { product = product });
         }
@@ -57,12 +70,14 @@ namespace Giqci.PublicWeb.Controllers.Api
             bool result;
             try
             {
-                if (_auth.GetAuth() == null)
+                var auth = _auth.GetAuth();
+                if (auth == null)
                 {
-                    throw new Exception("登录状态已失效,请重新登陆");
+                    FormsAuthentication.SignOut();
+                    return Redirect("~/account/login");
                 }
                 //todo  服务器返回信息乱码
-                result = _merchantRepository.AddProduct(_auth.GetAuth().MerchantId, ciqCode, out msg);
+                result = _merchantRepository.AddProduct(auth.MerchantId, ciqCode, out msg);
             }
             catch (Exception ex)
             {
@@ -78,7 +93,13 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult MerchantDeleteProduct(string ciqCode)
         {
-            _merchantRepository.RemoveProduct(_auth.GetAuth().MerchantId, ciqCode);
+            var auth = _auth.GetAuth();
+            if (auth == null)
+            {
+                FormsAuthentication.SignOut();
+                return Redirect("~/account/login");
+            }
+            _merchantRepository.RemoveProduct(auth.MerchantId, ciqCode);
 
             return new KtechJsonResult(HttpStatusCode.OK, new { result = true });
         }
@@ -100,12 +121,18 @@ namespace Giqci.PublicWeb.Controllers.Api
             bool flag;
             try
             {
+                var auth = _auth.GetAuth();
+                if (auth == null)
+                {
+                    FormsAuthentication.SignOut();
+                    return Redirect("~/account/login");
+                }
                 product.Code = string.IsNullOrEmpty(product.Code)
                     ? Guid.NewGuid().ToString("N").Substring(0, 6)
                     : product.Code;
-                var isExit = _merchantRepository.IsExistsCustomProductCode(_auth.GetAuth().MerchantId, product.Id,
+                var isExit = _merchantRepository.IsExistsCustomProductCode(auth.MerchantId, product.Id,
                     product.Code);
-                //todo 两个商品表合一之后用 FluentValidation
+                //todo 两个商品表合一之后用FluentValidation
                 var reg = new Regex("^[a-z0-9A-Z]+$");
                 if (!reg.IsMatch(product.Code))
                 {
@@ -115,7 +142,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                 {
                     return new KtechJsonResult(HttpStatusCode.OK, new { flag = false, msg = "该商品标识已重复" });
                 }
-                //todo 两个商品表合一之后用 FluentValidation
+                //todo 两个商品表合一之后用FluentValidation
                 if (string.IsNullOrEmpty(product.Brand)
                     || string.IsNullOrEmpty(product.Code)
                     || string.IsNullOrEmpty(product.Description)
@@ -127,7 +154,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                     || string.IsNullOrEmpty(product.Manufacturer))
                 {
                     return new KtechJsonResult(HttpStatusCode.OK, new { flag = false, msg = "商品信息不完整" });
-                }
+                    }
                 var regManu = new Regex("^[a-zA-z\\s]*$");
                 if (!regManu.IsMatch(product.Manufacturer))
                 {
@@ -137,12 +164,12 @@ namespace Giqci.PublicWeb.Controllers.Api
                 {
                     if (!product.IsApproved)
                     {
-                        _merchantRepository.UpdateCustomerProducts(_auth.GetAuth().MerchantId, product);
+                        _merchantRepository.UpdateCustomerProducts(auth.MerchantId, product);
                     }
                 }
                 else
                 {
-                    _merchantRepository.AddCustomProduct(_auth.GetAuth().MerchantId, product);
+                    _merchantRepository.AddCustomProduct(auth.MerchantId, product);
                 }
                 msg = "提交成功";
                 flag = true;
@@ -160,7 +187,13 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult MerchantGetCustomProductList(string keywords = "")
         {
-            var result = _merchantRepository.SelectCustomerProducts(_auth.GetAuth().MerchantId, keywords);
+            var auth = _auth.GetAuth();
+            if (auth == null)
+            {
+                FormsAuthentication.SignOut();
+                return Redirect("~/account/login");
+            }
+            var result = _merchantRepository.SelectCustomerProducts(auth.MerchantId, keywords);
             return new KtechJsonResult(HttpStatusCode.OK, new { result = result });
         }
 
@@ -168,7 +201,13 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult MerchantDeleteCustomProduct(int id)
         {
-            _merchantRepository.DeleteCustomerProduct(_auth.GetAuth().MerchantId, id);
+            var auth = _auth.GetAuth();
+            if (auth == null)
+            {
+                FormsAuthentication.SignOut();
+                return Redirect("~/account/login");
+            }
+            _merchantRepository.DeleteCustomerProduct(auth.MerchantId, id);
             return new KtechJsonResult(HttpStatusCode.OK, new { flag = true });
         }
 
@@ -185,11 +224,17 @@ namespace Giqci.PublicWeb.Controllers.Api
                     requireciqcode = true;
                 }
             }
+            var auth = _auth.GetAuth();
+            if (auth == null)
+            {
+                FormsAuthentication.SignOut();
+                return Redirect("~/account/login");
+            }
             var allProduct = new List<CommonProduct>();
-            var productStrList = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, 1,
+            var productStrList = _merchantRepository.GetProducts(auth.MerchantId, 1,
                 string.IsNullOrEmpty(keyWords) ? 10 : 10000);
             var ciqProductList = _productApiProxy.SearchProduct(productStrList);
-            var customProductList = _merchantRepository.SelectCustomerProducts(_auth.GetAuth().MerchantId, string.Empty);
+            var customProductList = _merchantRepository.SelectCustomerProducts(auth.MerchantId, string.Empty);
             var ran = new Random();
 
             foreach (var product in ciqProductList)

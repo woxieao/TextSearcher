@@ -2,6 +2,10 @@
 using System.Web.Security;
 using Giqci.PublicWeb.Models.Account;
 using System;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Text;
 using Giqci.Interfaces;
 
 namespace Giqci.PublicWeb.Controllers
@@ -14,6 +18,33 @@ namespace Giqci.PublicWeb.Controllers
         public AccountController(IMerchantApiProxy repo)
         {
             _repo = repo;
+            string tempIP = GetIP();
+            WebRequest wr = WebRequest.Create("http://test.ip138.com/query/?ip=117.25.13.123&datatype=text");
+            Stream s = wr.GetResponse().GetResponseStream();
+            StreamReader sr = new StreamReader(s, Encoding.Default);
+            string all = sr.ReadToEnd(); //读取网站的数据
+        }
+
+        private static string GetIP()
+        {
+            string tempip = "";
+            try
+            {
+                WebRequest wr = WebRequest.Create("http://www.ip138.com/ips138.asp");
+                Stream s = wr.GetResponse().GetResponseStream();
+                StreamReader sr = new StreamReader(s, Encoding.Default);
+                string all = sr.ReadToEnd(); //读取网站的数据
+
+                int start = all.IndexOf("您的IP地址是：[") + 9;
+                int end = all.IndexOf("]", start);
+                tempip = all.Substring(start, end - start);
+                sr.Close();
+                s.Close();
+            }
+            catch
+            {
+            }
+            return tempip;
         }
 
         [Route("login")]

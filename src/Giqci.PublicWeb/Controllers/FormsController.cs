@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using Giqci.Chapi.Enums.App;
 using Giqci.Chapi.Models.App;
 using Giqci.Interfaces;
@@ -43,6 +44,11 @@ namespace Giqci.PublicWeb.Controllers
         public ActionResult InitApplication(string applicantCode)
         {
             var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
+            if (merchant == null)
+            {
+                FormsAuthentication.SignOut();
+                return Redirect("~/account/login");
+            }
             var model = new Application
             {
                 ApplicantCode = applicantCode,
@@ -77,6 +83,11 @@ namespace Giqci.PublicWeb.Controllers
         public ActionResult Application(string appkey)
         {
             var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
+            if (merchant == null)
+            {
+                FormsAuthentication.SignOut();
+                return Redirect("~/account/login");
+            }
             var application = _appRepo.Get(merchant.Id, appkey);
             ApplicationItemModifyAble(ref application);
             //非该登录人的申请||不是新申请
@@ -106,6 +117,11 @@ namespace Giqci.PublicWeb.Controllers
         public ActionResult PrintApplication(string appkey)
         {
             var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
+            if (merchant == null)
+            {
+                FormsAuthentication.SignOut();
+                return Redirect("~/account/login");
+            }
             var application = _appRepo.Get(merchant.Id, appkey);
             ApplicationItemModifyAble(ref application);
             //非该登录人的申请||不是新申请
@@ -133,7 +149,7 @@ namespace Giqci.PublicWeb.Controllers
             {
                 var port = _cache.GetPort(model.DestPort);
                 isRequireCiqCode = port.RequireCiqCode;
-            }      
+            }
             var errors = _dataChecker.ApplicationHasErrors(model, false, isRequireCiqCode);
             if (isNew)
             {
@@ -169,8 +185,13 @@ namespace Giqci.PublicWeb.Controllers
                 isLogin = false;
                 errors = new List<string>() { "登录状态已失效，请您重新登录系统" };
             }
-            var merchantId = _merchantRepo.GetMerchant(User.Identity.Name).Id;
-
+            var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
+            if (merchant == null)
+            {
+                FormsAuthentication.SignOut();
+                return Redirect("~/account/login");
+            }
+            var merchantId = merchant.Id;
             if (!errors.Any())
             {
                 _prodApi.UpdateCiqProductInfo(model.ApplicationProducts);
@@ -178,7 +199,7 @@ namespace Giqci.PublicWeb.Controllers
                 if (isNew)
                 {
 
-                    appkey = _appRepo.CreateApplication(_auth.GetAuth().MerchantId, model);
+                    appkey = _appRepo.CreateApplication(merchantId, model);
                 }
                 else
                 {

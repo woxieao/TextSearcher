@@ -53,7 +53,10 @@ namespace Giqci.PublicWeb.Services
             {
                 var m = _proxy.GetMerchant(HttpContext.Current.User.Identity.Name);
                 if (m == null)
-                    throw new ApplicationException("Invalid Authentication");
+                {
+                    return null;
+                }
+                //throw new ApplicationException("Invalid Authentication");
                 auth = new AuthModel { MerchantId = m.Id, MerchantEmail = m.Email };
                 HttpContext.Current.Session[SESSION_KEY] = auth;
             }
