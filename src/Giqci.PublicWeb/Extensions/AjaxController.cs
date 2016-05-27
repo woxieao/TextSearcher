@@ -11,7 +11,12 @@ namespace Giqci.PublicWeb.Extensions
             var ex = filterContext.Exception;
             var errorMsg = Config.Common.HideServiceError ? (ex is AjaxException ? ex.Message : "服务器异常") : ex.Message;
             filterContext.HttpContext.Response.Clear();
-            filterContext.Result = new AjaxResult(null, errorMsg, RequestStatus.Error);
+            filterContext.Result = new AjaxResult(null);
+            filterContext.Result = new AjaxResult(new AjaxResultPackage
+            {
+                status = RequestStatus.Error,
+                msg = errorMsg,
+            });
             filterContext.ExceptionHandled = true;
         }
     }

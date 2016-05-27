@@ -12,9 +12,9 @@ namespace Giqci.PublicWeb.Extensions
         {
             filterContext.Result = new KtechJsonResult(HttpStatusCode.OK, new AjaxResultPackage
             {
-                Flag = RequestStatus.LogOut,
-                Msg = "登录状态已失效,请重新登陆",
-            }, new JsonSerializerSettings());
+                status = RequestStatus.LogOut,
+                msg = "登录状态已失效,请重新登陆",
+            });
         }
     }
 }

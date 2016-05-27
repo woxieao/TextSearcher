@@ -2,16 +2,16 @@
 {
     public class AjaxResultPackage
     {
-        public RequestStatus Flag { get; set; }
-        public string Msg { get; set; }
-        public CallBackClass CallBackPackage { get; set; }
-        public object Data { get; set; }
+        public RequestStatus status { get; set; }
+        public string msg { get; set; }
+        public CallBackClass callBackPackage { get; set; }
+        public object data { get; set; }
 
     }
     public class CallBackClass
     {
-        public object CallBackFunc { get; set; }
-        public string CallBackUrl { get; set; }
+        public object callBackFunc { get; set; }
+        public string callBackUrl { get; set; }
     }
 
     public enum RequestStatus

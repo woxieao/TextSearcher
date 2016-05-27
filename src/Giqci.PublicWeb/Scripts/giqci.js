@@ -1,7 +1,7 @@
 if (typeof jQuery === 'undefined') {
     throw new Error("Giqci's JavaScript requires jQuery");
 }
-var Send = {}
+
 
 function PageHandler(postUrl, callBackFunc, customPageSize) {
     var self = this;
@@ -139,57 +139,83 @@ function Breath(checkLoginUrl, whenLogOutCallBackFunc, whenLoginedCallBackFunc, 
     }
 
 }
-Send.Ajax = function (args) {
+
+var test;
+var $giqci = {};
+$giqci.RunLastPost = function () {
+    $giqci.LastPostInfo.SendRequest($giqci.LastPostInfo.Scope, $giqci.LastPostInfo.CallBackFunc, $giqci.LastPostInfo.WithData);
+}
+$giqci.LastPostInfo = {};
+$giqci.CacheLastPost = function (sendRequest, scope, callBackFunc, withData) {
+    $giqci.LastPostInfo.SendRequest = sendRequest;
+    $giqci.LastPostInfo.CallBackFunc = callBackFunc;
+    $giqci.LastPostInfo.WithData = withData;
+    $giqci.LastPostInfo.Scope = scope;
+
+};
+$giqci.post = function (url, data) {
     var self = this;
     self.LoginFunc = function () {
-
+        $("#breathBox").modal("show");
     }
     self.ShowMsgFunc = function (msg) {
         alert(msg);
     }
     self.DefaultSuccessFunc = function (result) {
-        var callbackData = result.CallBackPackage;
-        if (callbackData.CallBackUrl !== null) {
-            window.location.href = callbackData.CallBackUrl;
+        var callbackData = result.callBackPackage;
+        if (callbackData.callBackUrl !== null) {
+            window.location.href = callbackData.callBackUrl;
         }
         alert("提交成功");
-
     }
 
-    function handlerResult(result, callBackFunc) {
-        switch (result.Flag) {
-            case -1:
+    function handlerResult(scope, result, callBackFunc, withData) {
+        switch (result.status) {
+            case "LogOut":
                 {
+                    $giqci.CacheLastPost(sendRequest, scope, callBackFunc, withData);
                     self.LoginFunc();
                     break;
                 }
-            case 0:
+            case "Error":
                 {
-                    self.ShowMsgFunc(result.Msg);
+                    self.ShowMsgFunc(result.msg);
                     break;
                 }
-            case 1:
+            case "Success":
                 {
                     callBackFunc = callBackFunc === undefined ? self.DefaultSuccessFunc : callBackFunc;
-                    callBackFunc(result);
+                    var tempResult = withData ? result : result.data;
+                    callBackFunc(tempResult);
                     break;
                 }
             default:
                 {
+                    alert("UnknowStatus");
                 }
         }
+        scope.$apply();
     }
 
-    $.ajax({
-        type: args.type === undefined ? "POST" : args.type,
-        data: args.data === undefined ? "" : args.data,
-        url: args.url,
-        success: function (result) {
-            handlerResult(result, args.success);
-        },
-        error: function (result) {
-            console.log(result);
-            args.error(result);
-        }
-    });
+    function sendRequest(scope, callBackFunc, withData) {
+        $.ajax({
+            type: "POST",
+            data: data,
+            url: url,
+            success: function (result) {
+                handlerResult(scope, result, callBackFunc, withData);
+            },
+            error: function (result) {
+                args.error(result);
+            }
+        });
+    }
+
+    self.then = function (scope, callBackFunc) {
+        sendRequest(scope, callBackFunc, true);
+    }
+    self.success = function (scope, callBackFunc) {
+        sendRequest(scope, callBackFunc, false);
+    }
+    return self;
 }

@@ -61,8 +61,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
 
             var model = _appView.Search(applyNo, _auth.GetAuth().MerchantId, status, start, end, pageIndex, pageSize);
             var count = model.Count();
-            return new KtechJsonResult(HttpStatusCode.OK, new { items = model, count = count },
-                new JsonSerializerSettings { Converters = new List<JsonConverter> { new DescriptionEnumConverter() } });
+            return new AjaxResult(new { items = model, count = count }, new JsonSerializerSettings { Converters = new List<JsonConverter> { new DescriptionEnumConverter() } });
         }
 
         [Route("forms/getstatus")]

@@ -7,6 +7,7 @@ using Giqci.PublicWeb.Extensions;
 using Giqci.PublicWeb.Helpers;
 using Giqci.PublicWeb.Models;
 using Giqci.PublicWeb.Models.Account;
+using Giqci.PublicWeb.Models.Ajax;
 using Giqci.PublicWeb.Services;
 using Ktech.Core.Mail;
 using Ktech.Mvc.ActionResults;
@@ -80,7 +81,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                 result = false;
                 message = "用户名或密码错误!";
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = result, message = message });
+            return new AjaxResult(new { result = result, message = message });
         }
 
 
