@@ -221,6 +221,7 @@
                         }
                     ];
                     _object.ApplicationZCodes = [];
+                    _object.CustomProductId = _selected.CustomProductId;
                 } else {
                     _object.DescriptionEn = "";
                     _object.Description = "";
@@ -241,6 +242,7 @@
                         }
                     ];
                     _object.ApplicationZCodes = [];
+                    _object.CustomProductId = 0;
                     _object.isEditInputDefault = true;
                 }
                 _object.Selected = _selected;
@@ -708,7 +710,7 @@
                     $scope.allowType += "." + $scope.allowTypeList[i] + ',';
                 }
             }
-            console.log($scope.allowType);
+            //console.log($scope.allowType);
         }
         ]);
 
