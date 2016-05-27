@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using System.Web.Security;
 using Giqci.Chapi.Enums.App;
+using Giqci.Chapi.Models.App;
 using Giqci.Chapi.Models.Customer;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Models.Goods;
@@ -289,6 +290,56 @@ namespace Giqci.PublicWeb.Controllers.Api
                      || (i.DescriptionEn != null && i.DescriptionEn.IndexOf(keyWords, StringComparison.OrdinalIgnoreCase) > -1)
                      || (i.Code != null && i.Code.IndexOf(keyWords, StringComparison.OrdinalIgnoreCase) > -1)).Skip(0).Take(10);
             return new KtechJsonResult(HttpStatusCode.OK, new { result = filterResult });
+        }
+
+
+
+        [Route("goods/convertproduct/{customProductId}/{ciqCode}")]
+        [HttpPost]
+        public ActionResult ConvertProduct(int customProductId, string ciqCode, string enName = "")
+        {
+            var flag = true;
+            var msg = "success";
+            var convertCount = 0;
+            try
+            {
+                var ciqProduct = _productApiProxy.GetProduct(ciqCode);
+                if (ciqProduct == null)
+                {
+                    throw new Exception("该备案号不存在");
+                }
+                if (!ciqProduct.IsApproved)
+                {
+                    if (string.IsNullOrEmpty(enName))
+                    {
+                        throw new Exception("请完善商品英文名");
+                    }
+                    var productList = new List<ApplicationProduct>
+                        {
+                            new ApplicationProduct
+                            {
+                                CiqCode = ciqProduct.CiqCode,
+                                DescriptionEn = enName,
+                            }
+                        };
+                    _productApiProxy.UpdateCiqProductInfo(productList);
+                }
+                string tempMsg;
+                convertCount = _merchantRepository.ConvertCustomProduct(_auth.GetAuth().MerchantId, customProductId, ciqCode);
+                _merchantRepository.AddProduct(_auth.GetAuth().MerchantId, ciqCode, out tempMsg);
+                _merchantRepository.DeleteCustomerProduct(_auth.GetAuth().MerchantId, customProductId);
+            }
+            catch (Exception ex)
+            {
+                msg = ex.Message;
+                flag = false;
+            }
+            return new KtechJsonResult(HttpStatusCode.OK, new
+            {
+                flag = flag,
+                convertCount = convertCount,
+                msg = msg
+            });
         }
     }
 }

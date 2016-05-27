@@ -46,14 +46,17 @@ namespace Giqci.PublicWeb.Services
         {
             var user = HttpContext.Current.User;
             if (!user.Identity.IsAuthenticated)
+            {
+                FormsAuthentication.SignOut();
                 return null;
-
+            }
             var auth = HttpContext.Current.Session[SESSION_KEY] as AuthModel;
             if (auth == null)
             {
                 var m = _proxy.GetMerchant(HttpContext.Current.User.Identity.Name);
                 if (m == null)
                 {
+                    FormsAuthentication.SignOut();
                     return null;
                 }
                 //throw new ApplicationException("Invalid Authentication");
