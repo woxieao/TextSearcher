@@ -327,6 +327,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                 string tempMsg;
                 convertCount = _merchantRepository.ConvertCustomProduct(_auth.GetAuth().MerchantId, customProductId, ciqCode);
                 _merchantRepository.AddProduct(_auth.GetAuth().MerchantId, ciqCode, out tempMsg);
+                _merchantRepository.DeleteCustomerProduct(_auth.GetAuth().MerchantId, customProductId);
             }
             catch (Exception ex)
             {
