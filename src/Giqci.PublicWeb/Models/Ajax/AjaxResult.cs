@@ -16,9 +16,21 @@ namespace Giqci.PublicWeb.Models.Ajax
             _ajaxResultPackage.Data = data;
         }
 
-        public AjaxResult(object data, CallBackClass callBackClass) : this(data)
+        public AjaxResult(object data, string msg) : this(data)
+        {
+            _ajaxResultPackage.Msg = msg;
+        }
+
+        public AjaxResult(object data, string msg, RequestStatus flag) : this(data, msg)
+        {
+            _ajaxResultPackage.Flag = flag;
+            _ajaxResultPackage.Msg = msg;
+        }
+        public AjaxResult(object data, string msg, RequestStatus flag, CallBackClass callBackClass) : this(data, msg, flag)
         {
             _ajaxResultPackage.CallBackPackage = callBackClass;
+            _ajaxResultPackage.Msg = msg;
+            _ajaxResultPackage.Flag = flag;
         }
 
         public override void ExecuteResult(ControllerContext context)

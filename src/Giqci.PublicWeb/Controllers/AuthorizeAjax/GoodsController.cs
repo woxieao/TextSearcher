@@ -49,14 +49,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         [HttpPost]
         public ActionResult GetCustomerProductDetail(int productId)
         {
-            var auth = _auth.GetAuth();
-            if (auth == null)
-            {
-                FormsAuthentication.SignOut();
-                return Redirect("~/account/login");
-            }
-            var product = _merchantRepository.GetCustomerProduct(auth.MerchantId, productId);
-
+            var product = _merchantRepository.GetCustomerProduct(_auth.GetAuth().MerchantId, productId);
             return new KtechJsonResult(HttpStatusCode.OK, new { product = product });
         }
 
@@ -68,14 +61,8 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             bool result;
             try
             {
-                var auth = _auth.GetAuth();
-                if (auth == null)
-                {
-                    FormsAuthentication.SignOut();
-                    return Redirect("~/account/login");
-                }
                 //todo  服务器返回信息乱码
-                result = _merchantRepository.AddProduct(auth.MerchantId, ciqCode, out msg);
+                result = _merchantRepository.AddProduct(_auth.GetAuth().MerchantId, ciqCode, out msg);
             }
             catch (Exception ex)
             {
@@ -91,14 +78,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         [HttpPost]
         public ActionResult MerchantDeleteProduct(string ciqCode)
         {
-            var auth = _auth.GetAuth();
-            if (auth == null)
-            {
-                FormsAuthentication.SignOut();
-                return Redirect("~/account/login");
-            }
-            _merchantRepository.RemoveProduct(auth.MerchantId, ciqCode);
-
+            _merchantRepository.RemoveProduct(_auth.GetAuth().MerchantId, ciqCode);
             return new KtechJsonResult(HttpStatusCode.OK, new { result = true });
         }
 
@@ -120,16 +100,10 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             bool flag;
             try
             {
-                var auth = _auth.GetAuth();
-                if (auth == null)
-                {
-                    FormsAuthentication.SignOut();
-                    return Redirect("~/account/login");
-                }
                 product.Code = string.IsNullOrEmpty(product.Code)
-                    ? Guid.NewGuid().ToString("N").Substring(0, 6)
-                    : product.Code;
-                var isExit = _merchantRepository.IsExistsCustomProductCode(auth.MerchantId, product.Id,
+                       ? Guid.NewGuid().ToString("N").Substring(0, 6)
+                       : product.Code;
+                var isExit = _merchantRepository.IsExistsCustomProductCode(_auth.GetAuth().MerchantId, product.Id,
                     product.Code);
                 //todo 两个商品表合一之后用FluentValidation
                 var reg = new Regex("^[a-z0-9A-Z]+$");
@@ -163,12 +137,12 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                 {
                     if (!product.IsApproved)
                     {
-                        _merchantRepository.UpdateCustomerProducts(auth.MerchantId, product);
+                        _merchantRepository.UpdateCustomerProducts(_auth.GetAuth().MerchantId, product);
                     }
                 }
                 else
                 {
-                    _merchantRepository.AddCustomProduct(auth.MerchantId, product);
+                    _merchantRepository.AddCustomProduct(_auth.GetAuth().MerchantId, product);
                 }
                 msg = "提交成功";
                 flag = true;
@@ -186,13 +160,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         [HttpPost]
         public ActionResult MerchantGetCustomProductList(string keywords = "")
         {
-            var auth = _auth.GetAuth();
-            if (auth == null)
-            {
-                FormsAuthentication.SignOut();
-                return Redirect("~/account/login");
-            }
-            var result = _merchantRepository.SelectCustomerProducts(auth.MerchantId, keywords);
+            var result = _merchantRepository.SelectCustomerProducts(_auth.GetAuth().MerchantId, keywords);
             return new KtechJsonResult(HttpStatusCode.OK, new { result = result });
         }
 
@@ -200,13 +168,8 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         [HttpPost]
         public ActionResult MerchantDeleteCustomProduct(int id)
         {
-            var auth = _auth.GetAuth();
-            if (auth == null)
-            {
-                FormsAuthentication.SignOut();
-                return Redirect("~/account/login");
-            }
-            _merchantRepository.DeleteCustomerProduct(auth.MerchantId, id);
+
+            _merchantRepository.DeleteCustomerProduct(_auth.GetAuth().MerchantId, id);
             return new KtechJsonResult(HttpStatusCode.OK, new { flag = true });
         }
 
@@ -223,17 +186,11 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                     requireciqcode = true;
                 }
             }
-            var auth = _auth.GetAuth();
-            if (auth == null)
-            {
-                FormsAuthentication.SignOut();
-                return Redirect("~/account/login");
-            }
             var allProduct = new List<CommonProduct>();
-            var productStrList = _merchantRepository.GetProducts(auth.MerchantId, 1,
+            var productStrList = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, 1,
                 string.IsNullOrEmpty(keyWords) ? 10 : 10000);
             var ciqProductList = _productApiProxy.SearchProduct(productStrList);
-            var customProductList = _merchantRepository.SelectCustomerProducts(auth.MerchantId, string.Empty);
+            var customProductList = _merchantRepository.SelectCustomerProducts(_auth.GetAuth().MerchantId, string.Empty);
             var ran = new Random();
 
             foreach (var product in ciqProductList)

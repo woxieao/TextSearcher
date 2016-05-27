@@ -181,6 +181,7 @@
     <Compile Include="Models\Account\ForgotPasswordViewModel.cs" />
     <Compile Include="Models\Account\LoginViewModel.cs" />
     <Compile Include="Models\Account\RegistrationViewModel.cs" />
+    <Compile Include="Models\Ajax\AjaxException.cs" />
     <Compile Include="Models\Ajax\AjaxResult.cs" />
     <Compile Include="Models\Ajax\AjaxResultPackage.cs" />
     <Compile Include="Models\Api\Feedback.cs" />

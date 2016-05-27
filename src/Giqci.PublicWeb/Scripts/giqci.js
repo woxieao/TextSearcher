@@ -1,6 +1,7 @@
 if (typeof jQuery === 'undefined') {
     throw new Error("Giqci's JavaScript requires jQuery");
 }
+var Send = {}
 
 function PageHandler(postUrl, callBackFunc, customPageSize) {
     var self = this;
@@ -19,7 +20,7 @@ function PageHandler(postUrl, callBackFunc, customPageSize) {
     }
 
     function go(postData) {
-        //防止数据加载完前点击
+        //闃叉鏁版嵁鍔犺浇瀹屽墠鐐瑰嚮
         self.CanNext = false;
         self.CanPrev = false;
         self.queryCondition = postData == null ? self.queryCondition : postData;
@@ -137,4 +138,58 @@ function Breath(checkLoginUrl, whenLogOutCallBackFunc, whenLoginedCallBackFunc, 
         colock = setInterval(sendReuqest, newMillisec);
     }
 
+}
+Send.Ajax = function (args) {
+    var self = this;
+    self.LoginFunc = function () {
+
+    }
+    self.ShowMsgFunc = function (msg) {
+        alert(msg);
+    }
+    self.DefaultSuccessFunc = function (result) {
+        var callbackData = result.CallBackPackage;
+        if (callbackData.CallBackUrl !== null) {
+            window.location.href = callbackData.CallBackUrl;
+        }
+        alert("鎻愪氦鎴愬姛");
+
+    }
+
+    function handlerResult(result, callBackFunc) {
+        switch (result.Flag) {
+            case -1:
+                {
+                    self.LoginFunc();
+                    break;
+                }
+            case 0:
+                {
+                    self.ShowMsgFunc(result.Msg);
+                    break;
+                }
+            case 1:
+                {
+                    callBackFunc = callBackFunc === undefined ? self.DefaultSuccessFunc : callBackFunc;
+                    callBackFunc(result);
+                    break;
+                }
+            default:
+                {
+                }
+        }
+    }
+
+    $.ajax({
+        type: args.type === undefined ? "POST" : args.type,
+        data: args.data === undefined ? "" : args.data,
+        url: args.url,
+        success: function (result) {
+            handlerResult(result, args.success);
+        },
+        error: function (result) {
+            console.log(result);
+            args.error(result);
+        }
+    });
 }

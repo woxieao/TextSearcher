@@ -388,7 +388,7 @@
                     }
                 }
                 $scope.submitApp = true;
-                $http.post('/forms/app', $scope.model.Application).then(function (response) {
+                $http.post('/api/forms/app', $scope.model.Application).then(function (response) {
                     if (response.data.isLogin) {
                         if (response.data.errors) {
                             $scope.errors = response.data.errors;

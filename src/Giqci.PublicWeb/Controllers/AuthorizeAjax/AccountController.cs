@@ -37,13 +37,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             string message = "";
             try
             {
-                var auth = _auth.GetAuth();
-                if (auth == null)
-                {
-                    FormsAuthentication.SignOut();
-                    return Redirect("~/account/login");
-                }
-                _repo.Update(auth.MerchantId, model);
+                _repo.Update(_auth.GetAuth().MerchantId, model);
             }
             catch (Exception ex)
             {
@@ -61,13 +55,8 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             string message = "";
             try
             {
-                var auth = _auth.GetAuth();
-                if (auth == null)
-                {
-                    FormsAuthentication.SignOut();
-                    return Redirect("~/account/login");
-                }
-                result = _repo.ChangePassword(auth.MerchantId, model.OldPassword, model.NewPassword);
+
+                result = _repo.ChangePassword(_auth.GetAuth().MerchantId, model.OldPassword, model.NewPassword);
             }
             catch (Exception ex)
             {

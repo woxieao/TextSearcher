@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using Giqci.PublicWeb.Models.Ajax;
 using Ktech.Mvc.ActionResults;
+using Newtonsoft.Json;
 
 namespace Giqci.PublicWeb.Extensions
 {
@@ -13,7 +14,7 @@ namespace Giqci.PublicWeb.Extensions
             {
                 Flag = RequestStatus.LogOut,
                 Msg = "登录状态已失效,请重新登陆",
-            });
+            }, new JsonSerializerSettings());
         }
     }
 }
