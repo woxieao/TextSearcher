@@ -1,0 +1,93 @@
+﻿<div class="modal" role="dialog" data-backdrop="static" data-keyboard="false" id="form-change-product">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title form-add-custom-product-title">转为备案商品</h5>
+            </div>
+            <div class="modal-body">
+                <form name="appform" class="form-horizontal" novalidate>
+                    <div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
+                        <button aria-label="Close" data-dismiss="alert" ng-click="alert.close()" class="close" type="button"><span aria-hidden="true">×</span></button>
+                        <span ng-bind="alert.msg"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商品备案号</label>
+                        <div class="col-sm-8">
+                            <div class="input-group">
+                                <input type="text" placeholder="请输入完整的商品备案号" ng-model="CiqCode" class="form-control"/>
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" ng-click="getproductlist()">
+                                        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 搜索
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-show="changeProductList">
+                        <table class="table table-striped">
+                            <colgroup>
+                                <col width='140'/>
+                                <col width='200'/>
+                                <col width='200'/>
+                            </colgroup>
+                            <tr>
+                                <th></th>
+                                <th>我的商品信息</th>
+                                <th>国检商品信息</th>
+                            </tr>
+                            <tr>
+                                <th>商品备案号</th>
+                                <td>{{ChangeProductDialogModel.Code}}</td>
+                                <td>{{Product.CiqCode}}</td>
+                            </tr>
+                            <tr>
+                                <th>HS编码</th>
+                                <td>{{ChangeProductDialogModel.HsCode}}</td>
+                                <td>{{Product.HsCode}}</td>
+                            </tr>
+                            <tr>
+                                <th>名称(中文)</th>
+                                <td>{{ChangeProductDialogModel.Description}}</td>
+                                <td>{{Product.Description}}</td>
+                            </tr>
+                            <tr>
+                                <th>名称(英文)</th>
+                                <td>{{ChangeProductDialogModel.DescriptionEn}}</td>
+                                <td>{{Product.DescriptionEn}}</td>
+                            </tr>
+                            <tr>
+                                <th>规格</th>
+                                <td>{{ChangeProductDialogModel.Spec}}</td>
+                                <td>{{Product.Spec}}</td>
+                            </tr>
+                            <tr>
+                                <th>品牌</th>
+                                <td>{{ChangeProductDialogModel.Brand}}</td>
+                                <td>{{Product.Brand}}</td>
+                            </tr>
+                            <tr>
+                                <th>原产国</th>
+                                <td>
+                                    <p ajax-label ajax-url="countries" ng-model="ChangeProductDialogModel.ManufacturerCountry">{{ChangeProductDialogModel.ManufacturerCountry}}</p></td>
+                                <td>
+                                    <p ajax-label ajax-url="countries" ng-model="Product.ManufacturerCountry">{{Product.ManufacturerCountry}}</p></td>
+                            </tr>
+                            <tr>
+                                <th>制造商</th>
+                                <td>{{ChangeProductDialogModel.Manufacturer}}</td>
+                                <td>{{Product.Manufacturer}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="submitAddCustomProduct" class="btn btn-primary" ng-click="submitChangeProduct(ChangeProductDialogModel.Id,Product.CiqCode);"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 转换</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div>
