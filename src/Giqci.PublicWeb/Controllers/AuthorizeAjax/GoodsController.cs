@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Ktech.Mvc.ActionResults;
 using System.Net;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
@@ -10,40 +9,38 @@ using Giqci.Chapi.Enums.App;
 using Giqci.Chapi.Models.App;
 using Giqci.Chapi.Models.Customer;
 using Giqci.Interfaces;
+using Giqci.PublicWeb.Extensions;
 using Giqci.PublicWeb.Models.Goods;
 using Giqci.PublicWeb.Services;
+using Ktech.Mvc.ActionResults;
 
-namespace Giqci.PublicWeb.Controllers.Api
+namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
 {
     [RoutePrefix("api")]
-    [Authorize]
-    public class GoodsController : Controller
+    [AjaxAuthorize]
+    public class GoodsController : AjaxController
     {
         private readonly IMerchantProductApiProxy _merchantRepository;
         private readonly IProductApiProxy _productApiProxy;
         private readonly IAuthService _auth;
         private readonly IDictService _dict;
+        private readonly IMerchantApplicationApiProxy _repo;
 
         public GoodsController(IMerchantProductApiProxy merchantRepository, IProductApiProxy productApiProxy,
-            IAuthService auth, IDictService dict)
+            IAuthService auth, IDictService dict, IMerchantApplicationApiProxy repo)
         {
             _merchantRepository = merchantRepository;
             _productApiProxy = productApiProxy;
             _auth = auth;
             _dict = dict;
+            _repo = repo;
         }
 
         [Route("goods/getproductlist")]
         [HttpPost]
         public ActionResult MerchantGetProductList(int pageIndex = 1, int pageSize = 20)
         {
-            var auth = _auth.GetAuth();
-            if (auth == null)
-            {
-                FormsAuthentication.SignOut();
-                return Redirect("~/account/login");
-            }
-            var productList = _merchantRepository.GetProducts(auth.MerchantId, pageIndex, pageSize);
+            var productList = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, pageIndex, pageSize);
             var result = _productApiProxy.SearchProduct(productList);
             return new KtechJsonResult(HttpStatusCode.OK, new { result = result });
         }
@@ -104,6 +101,7 @@ namespace Giqci.PublicWeb.Controllers.Api
 
             return new KtechJsonResult(HttpStatusCode.OK, new { result = true });
         }
+
         [AllowAnonymous]
         [Route("goods/searchproduct")]
         [HttpPost]
@@ -325,7 +323,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                     _productApiProxy.UpdateCiqProductInfo(productList);
                 }
                 string tempMsg;
-                convertCount = _merchantRepository.ConvertCustomProduct(_auth.GetAuth().MerchantId, customProductId, ciqCode);
+                convertCount = _repo.ConvertCustomProduct(_auth.GetAuth().MerchantId, customProductId, ciqCode);
                 _merchantRepository.AddProduct(_auth.GetAuth().MerchantId, ciqCode, out tempMsg);
                 _merchantRepository.DeleteCustomerProduct(_auth.GetAuth().MerchantId, customProductId);
             }

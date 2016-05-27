@@ -1,24 +1,25 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Web.Mvc;
-using Ktech.Mvc.ActionResults;
 using System.Web.Security;
-using System;
 using Giqci.Chapi.Models.Customer;
 using Giqci.Interfaces;
-using Giqci.PublicWeb.Models.Account;
-using Giqci.PublicWeb.Models;
-using Ktech.Core.Mail;
+using Giqci.PublicWeb.Extensions;
 using Giqci.PublicWeb.Helpers;
+using Giqci.PublicWeb.Models;
+using Giqci.PublicWeb.Models.Account;
 using Giqci.PublicWeb.Services;
+using Ktech.Core.Mail;
+using Ktech.Mvc.ActionResults;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {
     [RoutePrefix("api")]
-    public class AccountController : Controller
+    public class AccountController : AjaxController
     {
-        private IMerchantApiProxy _repo;
+        private readonly IMerchantApiProxy _repo;
 
-        private IAuthService _auth;
+        private readonly IAuthService _auth;
 
         public AccountController(IMerchantApiProxy repo, IAuthService auth)
         {
@@ -28,6 +29,7 @@ namespace Giqci.PublicWeb.Controllers.Api
 
         [Route("account/reg")]
         [HttpPost]
+
         public ActionResult Register(Merchant input, string Password)
         {
             bool result;
@@ -62,30 +64,6 @@ namespace Giqci.PublicWeb.Controllers.Api
         }
 
 
-        [Route("account/updateprofile")]
-        [HttpPost]
-        [Authorize]
-        public ActionResult UpdateProfile(Merchant model)
-        {
-            bool result = true;
-            string message = "";
-            try
-            {
-                var auth = _auth.GetAuth();
-                if (auth == null)
-                {
-                    FormsAuthentication.SignOut();
-                    return Redirect("~/account/login");
-                }
-                _repo.Update(auth.MerchantId, model);
-            }
-            catch (Exception ex)
-            {
-                result = false;
-                message = ex.Message;
-            }
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = result, message = message });
-        }
 
         [Route("account/login")]
         [HttpPost]
@@ -106,30 +84,7 @@ namespace Giqci.PublicWeb.Controllers.Api
             return new KtechJsonResult(HttpStatusCode.OK, new { result = result, message = message });
         }
 
-        [Route("account/chanagepassword")]
-        [HttpPost]
-        [Authorize]
-        public ActionResult ChangePassword(ChangePasswordPageModel model)
-        {
-            bool result = true;
-            string message = "";
-            try
-            {
-                var auth = _auth.GetAuth();
-                if (auth == null)
-                {
-                    FormsAuthentication.SignOut();
-                    return Redirect("~/account/login");
-                }
-                result = _repo.ChangePassword(auth.MerchantId, model.OldPassword, model.NewPassword);
-            }
-            catch (Exception ex)
-            {
-                result = false;
-                message = ex.Message;
-            }
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = result, message = message });
-        }
+
 
         [Route("account/forgotpassword")]
         [HttpPost]
@@ -185,7 +140,7 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpPost]
         public ActionResult Breath()
         {
-            _auth.Renew();
+            // _auth.Renew();
             return new KtechJsonResult(HttpStatusCode.OK, new { flag = User.Identity.IsAuthenticated });
         }
     }

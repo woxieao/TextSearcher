@@ -1,22 +1,21 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Ktech.Mvc.ActionResults;
 using System.Net;
 using System.Web.Mvc;
 using System.Web.Security;
-using Giqci.Chapi.Enums.App;
 using Giqci.Chapi.Models.App;
 using Giqci.Interfaces;
+using Giqci.PublicWeb.Extensions;
 using Giqci.PublicWeb.Services;
 using Giqci.Validations;
+using Ktech.Mvc.ActionResults;
 using Newtonsoft.Json;
 
-namespace Giqci.PublicWeb.Controllers.Api
+namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
 {
     [RoutePrefix("api/UserProfile")]
-    [Authorize]
-    public class UserProfileController : Controller
+    [AjaxAuthorize]
+    public class UserProfileController : AjaxController
     {
         private readonly IAuthService _auth;
         private readonly IUserProfileApiProxy _userProfileApiProxy;
@@ -38,7 +37,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                 return Redirect("~/account/login");
             }
             var profileList = _userProfileApiProxy.Select(auth.MerchantId);
-            return new KtechJsonResult(HttpStatusCode.OK, new {result = profileList}, new JsonSerializerSettings());
+            return new KtechJsonResult(HttpStatusCode.OK, new { result = profileList }, new JsonSerializerSettings());
         }
 
         [Route("AddProfile")]
@@ -62,7 +61,7 @@ namespace Giqci.PublicWeb.Controllers.Api
             {
                 errorMsg.Add("提交异常");
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new {flag = !errorMsg.Any(), errorMsg = errorMsg});
+            return new KtechJsonResult(HttpStatusCode.OK, new { flag = !errorMsg.Any(), errorMsg = errorMsg });
         }
 
         [Route("UpdateProfile")]
@@ -86,7 +85,7 @@ namespace Giqci.PublicWeb.Controllers.Api
             {
                 errorMsg.Add("提交异常");
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new {flag = !errorMsg.Any(), errorMsg = errorMsg});
+            return new KtechJsonResult(HttpStatusCode.OK, new { flag = !errorMsg.Any(), errorMsg = errorMsg });
         }
 
         [Route("RemoveProfile")]
@@ -108,7 +107,7 @@ namespace Giqci.PublicWeb.Controllers.Api
             {
                 flag = false;
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new {flag = flag});
+            return new KtechJsonResult(HttpStatusCode.OK, new { flag = flag });
         }
 
         [Route("GetProfileDeatil")]
@@ -130,7 +129,7 @@ namespace Giqci.PublicWeb.Controllers.Api
             {
                 result = null;
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new {result = result}, new JsonSerializerSettings());
+            return new KtechJsonResult(HttpStatusCode.OK, new { result = result }, new JsonSerializerSettings());
         }
     }
 }

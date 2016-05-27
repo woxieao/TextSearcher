@@ -1,9 +1,5 @@
-﻿using Giqci.PublicWeb.Converters;
-using Ktech.Mvc.ActionResults;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -13,17 +9,19 @@ using Giqci.ApiProxy.App;
 using Giqci.Chapi.Enums.App;
 using Giqci.Chapi.Models.App;
 using Giqci.Interfaces;
+using Giqci.PublicWeb.Converters;
+using Giqci.PublicWeb.Extensions;
 using Giqci.PublicWeb.Models;
 using Giqci.PublicWeb.Services;
-using Giqci.Tools;
 using Ktech.Extensions;
-using Newtonsoft.Json.Converters;
+using Ktech.Mvc.ActionResults;
+using Newtonsoft.Json;
 
-namespace Giqci.PublicWeb.Controllers.Api
+namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
 {
     [RoutePrefix("api")]
-    [Authorize]
-    public class FormsController : Controller
+    [AjaxAuthorize]
+    public class FormsController : AjaxController
     {
         private readonly IMerchantApplicationApiProxy _repo;
         private readonly IAuthService _auth;
@@ -48,11 +46,6 @@ namespace Giqci.PublicWeb.Controllers.Api
             int pageIndex = 1, int pageSize = 10)
         {
             var auth = _auth.GetAuth();
-            if (auth == null)
-            {
-                FormsAuthentication.SignOut();
-                return Redirect("~/account/login");
-            }
             var model = _appView.Search(applyNo, auth.MerchantId, status, start, end, pageIndex, pageSize);
             var count = model.Count();
             return new KtechJsonResult(HttpStatusCode.OK, new { items = model, count = count },
@@ -63,11 +56,11 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpGet]
         public ActionResult GetStatus()
         {
-           var statusValues =
-                Enum.GetValues(typeof(ApplicationStatus))
-                    .Cast<ApplicationStatus>()
-                    .Select(i => new { value = i.ToString(), name = i.ToDescription() })
-                    .ToArray();
+            var statusValues =
+                 Enum.GetValues(typeof(ApplicationStatus))
+                     .Cast<ApplicationStatus>()
+                     .Select(i => new { value = i.ToString(), name = i.ToDescription() })
+                     .ToArray();
             return new KtechJsonResult(HttpStatusCode.OK, new { items = statusValues });
         }
 

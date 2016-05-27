@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Web.Configuration;
 using System.Web.Mvc;
+using Giqci.PublicWeb.Extensions;
 using Giqci.PublicWeb.Models;
 using Giqci.PublicWeb.Models.Api;
 using Ktech.Core.Mail;
@@ -8,7 +9,7 @@ using Ktech.Core.Mail;
 namespace Giqci.PublicWeb.Controllers.Api
 {
     [RoutePrefix("api")]
-    public class FeedbackController : Controller
+    public class FeedbackController : AjaxController
     {
         [Route("feedback")]
         [HttpPost]
