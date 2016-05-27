@@ -352,9 +352,12 @@ app.controller('GoodsListController', [
             .success(function (response) {
                 console.log(response);
                 if (response.flag) {
-                    alertService.add('success', "数据已经转换成功");
+                    alertService.add('success', "数据已经转换成功", 3000);
+                    $scope.list($scope.postData);
+                    $scope.list2($scope.postData);
+                    angular.element(_modal).modal("hide");
                 } else {
-                    alertService.add('danger', response.msg);
+                    alertService.add('danger', response.msg, 3000);
                 }
             })
             .error(function (data, header, config, status) {

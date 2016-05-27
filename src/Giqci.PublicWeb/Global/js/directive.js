@@ -448,6 +448,7 @@ app.directive("ajaxProduct", function ($timeout, $http) {
                             o.IsApproved = v.IsApproved;
                             o.Manufacturer = v.Manufacturer;
                             o.ManufacturerCountry = v.ManufacturerCountry;
+                            o.CustomProductId = v.CustomProductId;
                             o.Spec = v.Spec;
                             o.Package = v.Package;
                             results.push(o);
