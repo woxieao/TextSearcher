@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Web.Mvc;
-using System.Web.Security;
 using Giqci.Chapi.Models.Customer;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Extensions;
@@ -11,12 +10,10 @@ using Giqci.PublicWeb.Models.Account;
 using Giqci.PublicWeb.Services;
 using Ktech.Core.Mail;
 using Ktech.Mvc.ActionResults;
-using Ktech.Mvc.Filters;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {
     [RoutePrefix("api")]
-    [ExceptionFilter]
     public class AccountController : AjaxController
     {
         private readonly IMerchantApiProxy _repo;
