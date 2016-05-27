@@ -252,6 +252,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                     Spec = product.Spec,
                     Manufacturer = product.Manufacturer,
                     Code = String.Empty,
+                    CustomProductId = null
                 });
             }
             if (!requireciqcode)
@@ -271,7 +272,8 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                         Spec = customProduct.Spec,
                         Id = customProduct.Id,
                         Manufacturer = customProduct.Manufacturer,
-                        Code = customProduct.Code
+                        Code = customProduct.Code,
+                        CustomProductId = customProduct.Id
                     });
                 }
             }
