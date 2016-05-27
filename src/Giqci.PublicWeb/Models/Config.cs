@@ -28,6 +28,8 @@ namespace Giqci.PublicWeb.Models
 
             public static readonly string AdminWebUrl = WebConfigurationManager.AppSettings[nameof(AdminWebUrl)];
             public static readonly string ViewFileUrl = WebConfigurationManager.AppSettings[nameof(ViewFileUrl)];
+
+            public static readonly bool HideServiceError = bool.Parse(WebConfigurationManager.AppSettings[nameof(HideServiceError)]);
         }
 
         public struct ApiUrl

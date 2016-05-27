@@ -7,6 +7,8 @@ using Giqci.PublicWeb.Services;
 
 namespace Giqci.PublicWeb.Controllers
 {
+
+    [Authorize]
     public class GoodsController : Controller
     {
         private readonly IMerchantProductApiProxy _merchantRepository;
@@ -20,7 +22,7 @@ namespace Giqci.PublicWeb.Controllers
 
         [Route("goods/list")]
         [HttpGet]
-        [Authorize]
+
         public ActionResult MerchantProductList()
         {
             return View();
@@ -28,7 +30,6 @@ namespace Giqci.PublicWeb.Controllers
 
         [Route("goods/customproductlist")]
         [HttpGet]
-        [Authorize]
         public ActionResult MerchantCustomProductList()
         {
             return View();
@@ -36,7 +37,6 @@ namespace Giqci.PublicWeb.Controllers
 
         [Route("goods/add")]
         [HttpGet]
-        [Authorize]
         public ActionResult GoodsAdd()
         {
             return View();
@@ -44,23 +44,16 @@ namespace Giqci.PublicWeb.Controllers
 
         [Route("goods/showcustomproduct")]
         [HttpGet]
-        [Authorize]
         public ActionResult ShowCustomProduct(int id = 0)
         {
             var merchant = _auth.GetAuth();
-            if (merchant == null)
-            {
-                FormsAuthentication.SignOut();
-                return Redirect("~/account/login");
-            }
             var product = id == 0
-                ? new CustomerProduct()
-                : _merchantRepository.GetCustomerProduct(merchant.MerchantId, id);
+                  ? new CustomerProduct()
+                  : _merchantRepository.GetCustomerProduct(merchant.MerchantId, id);
             //防止编辑已批准的商品
             product = product.IsApproved ? new CustomerProduct() : product;
             return View(product);
         }
-
 
         //[Route("goods/add")]
         //[HttpPost]

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.ServiceModel;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
@@ -12,7 +13,9 @@ using Giqci.Interfaces;
 using Giqci.PublicWeb.Converters;
 using Giqci.PublicWeb.Extensions;
 using Giqci.PublicWeb.Models;
+using Giqci.PublicWeb.Models.Ajax;
 using Giqci.PublicWeb.Services;
+using Ktech.Api;
 using Ktech.Extensions;
 using Ktech.Mvc.ActionResults;
 using Newtonsoft.Json;
@@ -23,21 +26,31 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
     [AjaxAuthorize]
     public class FormsController : AjaxController
     {
-        private readonly IMerchantApplicationApiProxy _repo;
         private readonly IAuthService _auth;
         private readonly IApplicationViewModelApiProxy _appView;
         private readonly IApplicationCacheApiProxy _applicationCacheApiProxy;
         private readonly IFileApiProxy _fileApiProxy;
+        private readonly IDictService _cache;
+        private readonly IMerchantApplicationApiProxy _appRepo;
+        private readonly IProductApiProxy _prodApi;
+        private readonly IDataChecker _dataChecker;
+        private readonly IMerchantApiProxy _merchantRepo;
 
-        public FormsController(IMerchantApplicationApiProxy repo, IAuthService auth,
-            IApplicationViewModelApiProxy appView, IApplicationCacheApiProxy applicationCacheApiProxy,
-            IFileApiProxy fileApiProxy)
+        public FormsController(IAuthService auth, IApplicationViewModelApiProxy appView,
+            IApplicationCacheApiProxy applicationCacheApiProxy,
+            IFileApiProxy fileApiProxy, IDictService cache,
+            IMerchantApplicationApiProxy appRepo, IProductApiProxy prodApi,
+            IDataChecker dataChecker, IMerchantApiProxy merchantRepo)
         {
-            _repo = repo;
             _auth = auth;
             _appView = appView;
             _applicationCacheApiProxy = applicationCacheApiProxy;
             _fileApiProxy = fileApiProxy;
+            _cache = cache;
+            _appRepo = appRepo;
+            _prodApi = prodApi;
+            _dataChecker = dataChecker;
+            _merchantRepo = merchantRepo;
         }
 
         [Route("forms/list")]
@@ -45,8 +58,8 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         public ActionResult GetAllItem(string applyNo, ApplicationStatus? status, DateTime? start, DateTime? end,
             int pageIndex = 1, int pageSize = 10)
         {
-            var auth = _auth.GetAuth();
-            var model = _appView.Search(applyNo, auth.MerchantId, status, start, end, pageIndex, pageSize);
+
+            var model = _appView.Search(applyNo, _auth.GetAuth().MerchantId, status, start, end, pageIndex, pageSize);
             var count = model.Count();
             return new KtechJsonResult(HttpStatusCode.OK, new { items = model, count = count },
                 new JsonSerializerSettings { Converters = new List<JsonConverter> { new DescriptionEnumConverter() } });
@@ -77,13 +90,8 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         [HttpPost]
         public ActionResult GetAppCache()
         {
-            var auth = _auth.GetAuth();
-            if (auth == null)
-            {
-                FormsAuthentication.SignOut();
-                return Redirect("~/account/login");
-            }
-            var result = _applicationCacheApiProxy.Get(auth.MerchantId, false);
+
+            var result = _applicationCacheApiProxy.Get(_auth.GetAuth().MerchantId, false);
             bool flag;
             Application app;
             try
@@ -103,13 +111,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         [HttpPost]
         public ActionResult SaveAppCache(Application app)
         {
-            var auth = _auth.GetAuth();
-            if (auth == null)
-            {
-                FormsAuthentication.SignOut();
-                return Redirect("~/account/login");
-            }
-            _applicationCacheApiProxy.Add(auth.MerchantId, JsonConvert.SerializeObject(app));
+            _applicationCacheApiProxy.Add(_auth.GetAuth().MerchantId, JsonConvert.SerializeObject(app));
             return new KtechJsonResult(HttpStatusCode.OK, new { });
         }
 
@@ -117,14 +119,82 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         [HttpPost]
         public ActionResult RemoveAppCache()
         {
-            var auth = _auth.GetAuth();
-            if (auth == null)
-            {
-                FormsAuthentication.SignOut();
-                return Redirect("~/account/login");
-            }
-            _applicationCacheApiProxy.Remove(auth.MerchantId);
+            _applicationCacheApiProxy.Remove(_auth.GetAuth().MerchantId);
             return new KtechJsonResult(HttpStatusCode.OK, new { });
+        }
+
+        [Route("forms/app")]
+        [HttpPost]
+        public ActionResult SubmitApplication(Application model)
+        {
+            var appkey = model.Key;
+            var isNew = string.IsNullOrEmpty(appkey);
+            bool isRequireCiqCode = false;
+            if (!string.IsNullOrEmpty(model.DestPort))
+            {
+                var port = _cache.GetPort(model.DestPort);
+                isRequireCiqCode = port.RequireCiqCode;
+            }
+            var errors = _dataChecker.ApplicationHasErrors(model, false, isRequireCiqCode);
+            if (isNew)
+            {
+                if (!string.IsNullOrEmpty(model.Voyage) && DateTime.Parse(model.Voyage) < DateTime.Now.Date)
+                {
+                    errors.Add("出发日期应大于等于当前时间");
+                }
+                if (model.InspectionDate < DateTime.Now.Date)
+                {
+                    errors.Add("预约检查日期需大于等于今天");
+                }
+                if (!string.IsNullOrEmpty(model.ShippingDate) && DateTime.Parse(model.ShippingDate) < DateTime.Now.Date)
+                {
+                    errors.Add("计划发货日期应大于等于当前时间");
+                }
+                if (string.IsNullOrEmpty(model.InspectionAddr))
+                {
+                    errors.Add("检验地点不能为空");
+                }
+                if (string.IsNullOrEmpty(model.Inspector))
+                {
+                    errors.Add("联系人不能为空");
+                }
+                if (string.IsNullOrEmpty(model.InspectorTel))
+                {
+                    errors.Add("联系人电话不能为空");
+                }
+            }
+            var userName = User.Identity.Name;
+            var isLogin = true;
+            if (string.IsNullOrEmpty(userName))
+            {
+                isLogin = false;
+                errors = new List<string>() { "登录状态已失效，请您重新登录系统" };
+            }
+            var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
+            var merchantId = merchant.Id;
+            if (!errors.Any())
+            {
+                _prodApi.UpdateCiqProductInfo(model.ApplicationProducts);
+                GetTotalUnits(ref model);
+                if (isNew)
+                {
+
+                    appkey = _appRepo.CreateApplication(merchantId, model);
+                }
+                else
+                {
+                    _appRepo.Update(merchantId, appkey, model);
+                }
+                errors = null;
+            }
+            return new KtechJsonResult(HttpStatusCode.OK,
+                new { isNew = isNew, appkey = appkey, isLogin = isLogin, errors = errors });
+        }
+        private void GetTotalUnits(ref Application input)
+        {
+            input.TotalUnits = input.ShippingMethod == ShippingMethod.O
+                ? (input.ContainerInfos == null ? 0 : input.ContainerInfos.Count())
+                : input.TotalUnits;
         }
     }
 }

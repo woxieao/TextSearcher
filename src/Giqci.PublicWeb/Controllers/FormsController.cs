@@ -23,7 +23,6 @@ namespace Giqci.PublicWeb.Controllers
         private readonly IMerchantApplicationApiProxy _appRepo;
         private readonly IProductApiProxy _prodApi;
         private readonly IAuthService _auth;
-        private readonly IDataChecker _dataChecker;
         private readonly ICertificateApiProxy _certRepo;
 
         public FormsController(IDictService cache,
@@ -35,7 +34,6 @@ namespace Giqci.PublicWeb.Controllers
             _appRepo = appRepo;
             _prodApi = prodApi;
             _auth = auth;
-            _dataChecker = dataChecker;
             _certRepo = certRepo;
         }
 
@@ -44,11 +42,6 @@ namespace Giqci.PublicWeb.Controllers
         public ActionResult InitApplication(string applicantCode)
         {
             var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
-            if (merchant == null)
-            {
-                FormsAuthentication.SignOut();
-                return Redirect("~/account/login");
-            }
             var model = new Application
             {
                 ApplicantCode = applicantCode,
@@ -83,11 +76,6 @@ namespace Giqci.PublicWeb.Controllers
         public ActionResult Application(string appkey)
         {
             var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
-            if (merchant == null)
-            {
-                FormsAuthentication.SignOut();
-                return Redirect("~/account/login");
-            }
             var application = _appRepo.Get(merchant.Id, appkey);
             ApplicationItemModifyAble(ref application);
             //非该登录人的申请||不是新申请
@@ -117,11 +105,6 @@ namespace Giqci.PublicWeb.Controllers
         public ActionResult PrintApplication(string appkey)
         {
             var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
-            if (merchant == null)
-            {
-                FormsAuthentication.SignOut();
-                return Redirect("~/account/login");
-            }
             var application = _appRepo.Get(merchant.Id, appkey);
             ApplicationItemModifyAble(ref application);
             //非该登录人的申请||不是新申请
@@ -138,79 +121,6 @@ namespace Giqci.PublicWeb.Controllers
             return View("PrintApp", application);
         }
 
-        [Route("forms/app")]
-        [HttpPost]
-        public ActionResult SubmitApplication(Application model)
-        {
-            var appkey = model.Key;
-            var isNew = string.IsNullOrEmpty(appkey);
-            bool isRequireCiqCode = false;
-            if (!string.IsNullOrEmpty(model.DestPort))
-            {
-                var port = _cache.GetPort(model.DestPort);
-                isRequireCiqCode = port.RequireCiqCode;
-            }
-            var errors = _dataChecker.ApplicationHasErrors(model, false, isRequireCiqCode);
-            if (isNew)
-            {
-                if (!string.IsNullOrEmpty(model.Voyage) && DateTime.Parse(model.Voyage) < DateTime.Now.Date)
-                {
-                    errors.Add("出发日期应大于等于当前时间");
-                }
-                if (model.InspectionDate < DateTime.Now.Date)
-                {
-                    errors.Add("预约检查日期需大于等于今天");
-                }
-                if (!string.IsNullOrEmpty(model.ShippingDate) && DateTime.Parse(model.ShippingDate) < DateTime.Now.Date)
-                {
-                    errors.Add("计划发货日期应大于等于当前时间");
-                }
-                if (string.IsNullOrEmpty(model.InspectionAddr))
-                {
-                    errors.Add("检验地点不能为空");
-                }
-                if (string.IsNullOrEmpty(model.Inspector))
-                {
-                    errors.Add("联系人不能为空");
-                }
-                if (string.IsNullOrEmpty(model.InspectorTel))
-                {
-                    errors.Add("联系人电话不能为空");
-                }
-            }
-            var userName = User.Identity.Name;
-            var isLogin = true;
-            if (string.IsNullOrEmpty(userName))
-            {
-                isLogin = false;
-                errors = new List<string>() { "登录状态已失效，请您重新登录系统" };
-            }
-            var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
-            if (merchant == null)
-            {
-                FormsAuthentication.SignOut();
-                return Redirect("~/account/login");
-            }
-            var merchantId = merchant.Id;
-            if (!errors.Any())
-            {
-                _prodApi.UpdateCiqProductInfo(model.ApplicationProducts);
-                GetTotalUnits(ref model);
-                if (isNew)
-                {
-
-                    appkey = _appRepo.CreateApplication(merchantId, model);
-                }
-                else
-                {
-                    _appRepo.Update(merchantId, appkey, model);
-                }
-                errors = null;
-            }
-            return new KtechJsonResult(HttpStatusCode.OK,
-                new { isNew = isNew, appkey = appkey, isLogin = isLogin, errors = errors });
-        }
-
 
         [Route("forms/list")]
         [HttpGet]
@@ -219,12 +129,7 @@ namespace Giqci.PublicWeb.Controllers
             return View();
         }
 
-        protected static void GetTotalUnits(ref Application input)
-        {
-            input.TotalUnits = input.ShippingMethod == ShippingMethod.O
-                ? (input.ContainerInfos == null ? 0 : input.ContainerInfos.Count())
-                : input.TotalUnits;
-        }
+
 
         #region 让批次号可编辑
 

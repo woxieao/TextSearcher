@@ -30,13 +30,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         [HttpPost]
         public ActionResult GetProfileList()
         {
-            var auth = _auth.GetAuth();
-            if (auth == null)
-            {
-                FormsAuthentication.SignOut();
-                return Redirect("~/account/login");
-            }
-            var profileList = _userProfileApiProxy.Select(auth.MerchantId);
+            var profileList = _userProfileApiProxy.Select(_auth.GetAuth().MerchantId);
             return new KtechJsonResult(HttpStatusCode.OK, new { result = profileList }, new JsonSerializerSettings());
         }
 
@@ -47,15 +41,9 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             var errorMsg = new List<string>();
             try
             {
-                var auth = _auth.GetAuth();
-                if (auth == null)
-                {
-                    FormsAuthentication.SignOut();
-                    return Redirect("~/account/login");
-                }
                 errorMsg = new UserProfileValidation().Validate(userProfile).Errors.Select(i => i.ErrorMessage).ToList();
                 if (!errorMsg.Any())
-                    _userProfileApiProxy.Add(auth.MerchantId, userProfile);
+                    _userProfileApiProxy.Add(_auth.GetAuth().MerchantId, userProfile);
             }
             catch
             {
@@ -71,15 +59,9 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             var errorMsg = new List<string>();
             try
             {
-                var auth = _auth.GetAuth();
-                if (auth == null)
-                {
-                    FormsAuthentication.SignOut();
-                    return Redirect("~/account/login");
-                }
                 errorMsg = new UserProfileValidation().Validate(userProfile).Errors.Select(i => i.ErrorMessage).ToList();
                 if (!errorMsg.Any())
-                    _userProfileApiProxy.Update(auth.MerchantId, userProfile);
+                    _userProfileApiProxy.Update(_auth.GetAuth().MerchantId, userProfile);
             }
             catch
             {
@@ -95,13 +77,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             var flag = true;
             try
             {
-                var auth = _auth.GetAuth();
-                if (auth == null)
-                {
-                    FormsAuthentication.SignOut();
-                    return Redirect("~/account/login");
-                }
-                _userProfileApiProxy.Remove(auth.MerchantId, profileId);
+                _userProfileApiProxy.Remove(_auth.GetAuth().MerchantId, profileId);
             }
             catch
             {
@@ -117,13 +93,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             UserProfile result;
             try
             {
-                var auth = _auth.GetAuth();
-                if (auth == null)
-                {
-                    FormsAuthentication.SignOut();
-                    return Redirect("~/account/login");
-                }
-                result = _userProfileApiProxy.Get(auth.MerchantId, profileId);
+                result = _userProfileApiProxy.Get(_auth.GetAuth().MerchantId, profileId);
             }
             catch
             {

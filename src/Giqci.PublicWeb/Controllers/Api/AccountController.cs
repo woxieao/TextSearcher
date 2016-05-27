@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Net;
 using System.Web.Mvc;
-using System.Web.Security;
 using Giqci.Chapi.Models.Customer;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Extensions;

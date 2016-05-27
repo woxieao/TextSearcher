@@ -11,7 +11,7 @@
     public class CallBackClass
     {
         public object CallBackFunc { get; set; }
-        public object CallBackUrl { get; set; }
+        public string CallBackUrl { get; set; }
     }
 
     public enum RequestStatus
