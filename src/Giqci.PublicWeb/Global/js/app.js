@@ -299,6 +299,67 @@ app.controller('GoodsListController', [
             $("#form-add-custom-product").modal("hide");
             $("#form-add-goods-product").modal("hide");
         };
+        //change product
+        $scope.CiqCode = '';
+        $scope.changeProductList = false;
+        $scope.getproductlist = function () {
+            var reg = /^\d{10}$/;
+            var reg2 = /^ICIP\d{14}$/i;
+            if (!(reg.test($scope.CiqCode) || reg2.test($scope.CiqCode))) {
+                $scope.Product = null;
+                alertService.add('danger', "正确的备案号格式为[ICIP+14个数字]或[10个数字]", 3000);
+                return;
+            } else {
+                $http({
+                    url: '/api/goods/searchproduct',
+                    method: 'POST',
+                    data: {
+                        ciqCode: $scope.CiqCode
+                    }
+                })
+                .success(function (data) {
+                    if (data.result == null) {
+                        $scope.Product = null;
+                        alertService.add('danger', "该备案号不存在", 3000);
+                    } else {
+                        $scope.Product = data.result;
+                        $scope.changeProductList = true;
+                    }
+                })
+                .error(function (data, header, config, status) {
+                });
+            }
+        };
+
+        var _modal = document.getElementById("form-change-product");
+        $scope.changeProduct = function (index) {
+            $scope.changeProductList = false;
+            $scope.CiqCode = '';
+            angular.element(_modal).modal("show");
+            $scope.ChangeProductDialogModel = CallByValue($scope.customProductList[index]);
+        };
+        $scope.submitChangeProduct = function (_customProductId, _ciqCode) {
+            if (_customProductId == null || _ciqCode == null) {
+                alertService.add('danger', "参数错误", 3000);
+            }
+            $http({
+                url: '/api/goods/convertproduct/' + _customProductId + '/' + _ciqCode,
+                method: 'POST',
+                data: {
+                    enName: $scope.ChangeProductDialogModel.DescriptionEn
+                }
+            })
+            .success(function (response) {
+                console.log(response);
+                if (response.flag) {
+                    alertService.add('success', "数据已经转换成功");
+                } else {
+                    alertService.add('danger', response.msg);
+                }
+            })
+            .error(function (data, header, config, status) {
+            });
+        };
     }
 ]);
 
