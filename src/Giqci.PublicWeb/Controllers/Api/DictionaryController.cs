@@ -3,11 +3,12 @@ using System.Web.Mvc;
 using Ktech.Mvc.ActionResults;
 using System.Net;
 using Giqci.Interfaces;
+using Giqci.PublicWeb.Extensions;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {
     [RoutePrefix("api")]
-    public class DictionaryController : Controller
+    public class DictionaryController : AjaxController
     {
         private readonly IDictService _dict;
 

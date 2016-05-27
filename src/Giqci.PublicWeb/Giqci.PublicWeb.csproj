@@ -61,16 +61,16 @@
       <HintPath>..\..\packages\FluentValidation.6.2.1.0\lib\Net45\FluentValidation.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.ApiProxy, Version=1.0.136.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.ApiProxy.1.0.136\lib\net461\Giqci.ApiProxy.dll</HintPath>
+    <Reference Include="Giqci.ApiProxy, Version=1.0.137.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.ApiProxy.1.0.137\lib\net461\Giqci.ApiProxy.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Giqci.Chapi.Contract, Version=2.0.68.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Giqci.Chapi.Contract.2.0.68\lib\net461\Giqci.Chapi.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Contract, Version=1.1.190.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.Contract.1.1.190\lib\net461\Giqci.Contract.dll</HintPath>
+    <Reference Include="Giqci.Contract, Version=1.1.191.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.Contract.1.1.191\lib\net461\Giqci.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ktech.Contract, Version=1.0.17.0, Culture=neutral, processorArchitecture=MSIL">
@@ -158,15 +158,18 @@
     <Compile Include="Controllers\Api\CertificateController.cs" />
     <Compile Include="Controllers\Api\DictionaryController.cs" />
     <Compile Include="Controllers\Api\FeedbackController.cs" />
-    <Compile Include="Controllers\Api\FileController.cs" />
-    <Compile Include="Controllers\Api\FormsController.cs" />
-    <Compile Include="Controllers\Api\UserProfileController.cs" />
-    <Compile Include="Controllers\Api\GoodsController.cs" />
+    <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\AuthorizeAjax\AccountController.cs" />
+    <Compile Include="Controllers\AuthorizeAjax\FormsController.cs" />
+    <Compile Include="Controllers\AuthorizeAjax\UserProfileController.cs" />
+    <Compile Include="Controllers\AuthorizeAjax\GoodsController.cs" />
     <Compile Include="Controllers\CertificateController.cs" />
     <Compile Include="Controllers\FormsController.cs" />
     <Compile Include="Controllers\GoodsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Converters\DescriptionEnumConverter.cs" />
+    <Compile Include="Extensions\AjaxController.cs" />
+    <Compile Include="Extensions\AjaxAuthorizeAttribute.cs" />
     <Compile Include="Extensions\HtmlExtensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -178,6 +181,8 @@
     <Compile Include="Models\Account\ForgotPasswordViewModel.cs" />
     <Compile Include="Models\Account\LoginViewModel.cs" />
     <Compile Include="Models\Account\RegistrationViewModel.cs" />
+    <Compile Include="Models\Ajax\AjaxResult.cs" />
+    <Compile Include="Models\Ajax\AjaxResultPackage.cs" />
     <Compile Include="Models\Api\Feedback.cs" />
     <Compile Include="Models\Application\Application.cs" />
     <Compile Include="Models\Application\ApplicationPageModel.cs" />

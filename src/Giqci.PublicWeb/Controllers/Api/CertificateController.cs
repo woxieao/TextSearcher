@@ -6,11 +6,12 @@ using System.Collections.Generic;
 using Giqci.Interfaces;
 using Newtonsoft.Json;
 using Giqci.PublicWeb.Converters;
+using Giqci.PublicWeb.Extensions;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {
     [RoutePrefix("api")]
-    public class CertificateController : Controller
+    public class CertificateController : AjaxController
     {
         private readonly ICertificateApiProxy _certRepo;
 

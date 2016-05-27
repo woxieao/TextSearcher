@@ -154,7 +154,7 @@ app.controller('CertificateSearchController', [
 /* forms list */
 app.controller('FormsListController', [
     '$scope', "$log", '$http', function ($scope, $log, $http) {
-        userBreath.Revive();
+        //userBreath.Revive();
         $scope.paginationConf = {
             totalItems: 0
         };
