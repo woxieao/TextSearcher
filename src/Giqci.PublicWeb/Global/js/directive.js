@@ -36,7 +36,8 @@ app.directive("ajaxSelect", function ($timeout, $http) {
                             code: params.term
                         };
                     },
-                    processResults: function (data, params) {
+                    processResults: function (giqciData, params) {
+                        var data = giqciData.data;
                         var results = [];
                         $.each(data.items, function (i, v) {
                             var o = {};
@@ -427,7 +428,8 @@ app.directive("ajaxProduct", function ($timeout, $http) {
                             tradetype: scope.model.Application.TradeType
                         };
                     },
-                    processResults: function (data, params) {
+                    processResults: function (giqciData, params) {
+                        var data = giqciData.data;
                         var results = [];
                         scope.dataList = [];
                         $.each(data.result, function (i, v) {
