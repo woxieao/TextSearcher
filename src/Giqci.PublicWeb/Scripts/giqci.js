@@ -205,7 +205,6 @@ $giqci.get = function (url, data) {
         $.ajax({
             type: "GET",
             data: data,
-            dataType: "json",
             url: url,
             success: function (result) {
                 handlerResult(scope, result, callBackFunc, withData);
@@ -269,7 +268,7 @@ $giqci.post = function (url, data) {
         try {
             scope.$apply();
         } catch (ex) {
-            //not AngularJS 
+            console.log('not AngularJS');
         }
     }
     function sendRequest(scope, callBackFunc, withData) {

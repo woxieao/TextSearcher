@@ -19,7 +19,7 @@ app.directive("ajaxSelect", function ($timeout, $http) {
                             $(element).next().find("span.select2-selection__rendered").html(newVal);
                             scope.isLoading = true;
                         }
-                    }, $scope);
+                    }, scope);
                 }
             }, true);
 
@@ -85,7 +85,7 @@ app.directive("ajaxLabel", function ($timeout, $http) {
                                $(element).html(newVal);
                                scope.isLoading = true;
                            }
-                       }, $scope);
+                       }, scope);
                 }
             }, true);
         }
