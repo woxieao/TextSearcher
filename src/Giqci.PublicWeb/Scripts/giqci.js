@@ -268,7 +268,7 @@ $giqci.post = function (url, data) {
         try {
             scope.$apply();
         } catch (ex) {
-            console.log('not AngularJS');
+            console.log('scope undefine');
         }
     }
     function sendRequest(scope, callBackFunc, withData) {
