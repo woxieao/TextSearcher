@@ -10,6 +10,7 @@ using Giqci.Chapi.Models.App;
 using Giqci.Chapi.Models.Customer;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Extensions;
+using Giqci.PublicWeb.Models.Ajax;
 using Giqci.PublicWeb.Models.Goods;
 using Giqci.PublicWeb.Services;
 using Ktech.Mvc.ActionResults;
@@ -42,7 +43,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         {
             var productList = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, pageIndex, pageSize);
             var result = _productApiProxy.SearchProduct(productList);
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = result });
+            return new AjaxResult(new { result = result });
         }
 
         [Route("goods/GetCustomerProductDetail")]
@@ -50,7 +51,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         public ActionResult GetCustomerProductDetail(int productId)
         {
             var product = _merchantRepository.GetCustomerProduct(_auth.GetAuth().MerchantId, productId);
-            return new KtechJsonResult(HttpStatusCode.OK, new { product = product });
+            return new AjaxResult(new { product = product });
         }
 
         [Route("goods/addproduct")]
@@ -70,7 +71,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                 result = false;
             }
 
-            return new KtechJsonResult(HttpStatusCode.OK,
+            return new AjaxResult(
                 new { result = result, msg = msg == null ? "添加成功" : "添加失败,可能的原因:该商品已添加" });
         }
 
@@ -79,7 +80,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         public ActionResult MerchantDeleteProduct(string ciqCode)
         {
             _merchantRepository.RemoveProduct(_auth.GetAuth().MerchantId, ciqCode);
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = true });
+            return new AjaxResult(new { result = true });
         }
 
         [AllowAnonymous]
@@ -88,7 +89,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         public ActionResult SearchProductList(string ciqCode)
         {
             var result = _productApiProxy.GetProduct(ciqCode);
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = result });
+            return new AjaxResult(new { result = result });
         }
 
 
@@ -109,11 +110,11 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                 var reg = new Regex("^[a-z0-9A-Z]+$");
                 if (!reg.IsMatch(product.Code))
                 {
-                    return new KtechJsonResult(HttpStatusCode.OK, new { flag = false, msg = "商品标识只能为数字或者字母" });
+                    return new AjaxResult(new { flag = false, msg = "商品标识只能为数字或者字母" });
                 }
                 if (isExit)
                 {
-                    return new KtechJsonResult(HttpStatusCode.OK, new { flag = false, msg = "该商品标识已重复" });
+                    return new AjaxResult(new { flag = false, msg = "该商品标识已重复" });
                 }
                 //todo 两个商品表合一之后用FluentValidation
                 if (string.IsNullOrEmpty(product.Brand)
@@ -126,12 +127,12 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                     || string.IsNullOrEmpty(product.Spec)
                     || string.IsNullOrEmpty(product.Manufacturer))
                 {
-                    return new KtechJsonResult(HttpStatusCode.OK, new { flag = false, msg = "商品信息不完整" });
+                    return new AjaxResult(new { flag = false, msg = "商品信息不完整" });
                 }
                 var regManu = new Regex("^[a-zA-z\\s]*$");
                 if (!regManu.IsMatch(product.Manufacturer))
                 {
-                    return new KtechJsonResult(HttpStatusCode.OK, new { flag = false, msg = "制造商必须是英文" });
+                    return new AjaxResult(new { flag = false, msg = "制造商必须是英文" });
                 }
                 if (product.Id > 0)
                 {
@@ -152,7 +153,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                 flag = false;
                 msg = "提交信息不完整";
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { flag = flag, msg = msg });
+            return new AjaxResult(new { flag = flag, msg = msg });
         }
 
 
@@ -161,16 +162,15 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         public ActionResult MerchantGetCustomProductList(string keywords = "")
         {
             var result = _merchantRepository.SelectCustomerProducts(_auth.GetAuth().MerchantId, keywords);
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = result });
+            return new AjaxResult(new { result = result });
         }
 
         [Route("goods/deletecustomproduct")]
         [HttpPost]
         public ActionResult MerchantDeleteCustomProduct(int id)
         {
-
             _merchantRepository.DeleteCustomerProduct(_auth.GetAuth().MerchantId, id);
-            return new KtechJsonResult(HttpStatusCode.OK, new { flag = true });
+            return new AjaxResult(new { flag = true });
         }
 
         [Route("goods/GetAllProduct")]
@@ -246,7 +246,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                      || (i.Spec != null && i.Spec.IndexOf(keyWords, StringComparison.OrdinalIgnoreCase) > -1)
                      || (i.DescriptionEn != null && i.DescriptionEn.IndexOf(keyWords, StringComparison.OrdinalIgnoreCase) > -1)
                      || (i.Code != null && i.Code.IndexOf(keyWords, StringComparison.OrdinalIgnoreCase) > -1)).Skip(0).Take(10);
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = filterResult });
+            return new AjaxResult(new { result = filterResult });
         }
 
 
@@ -291,7 +291,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                 msg = ex.Message;
                 flag = false;
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new
+            return new AjaxResult(new
             {
                 flag = flag,
                 convertCount = convertCount,

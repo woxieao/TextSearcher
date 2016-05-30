@@ -124,17 +124,12 @@
             };
             $scope.AppCache = null;
             $scope.GetAppCache = function () {
-                $http({
-                    url: '/api/forms/GetAppCache',
-                    method: 'POST'
-                }).success(function (response) {
+                $giqci.post('/api/forms/GetAppCache').success(function (response) {
                     if (response.flag) {
                         // $scope.isNewApp = true;
                         $scope.AppCache = response.app;
                     }
-                }).error(function (response) {
-                    $log.warn(response);
-                });
+                }, $scope);
             }
             if ($scope.isNewApp) {
                 $scope.GetAppCache();
@@ -147,54 +142,34 @@
                     $scope.model.Application = $scope.AppCache;
                     $scope.dataInit();
                 }
-                $http({
-                    url: '/api/forms/RemoveAppCache',
-                    method: 'POST'
-                }).success(function (response) {
-                    alertService.add('success', "读取成功 (并已删除了暂存的申请,若需暂存,请再次点击暂存)", 6000);
-                    $location.hash("h1");
-                    $anchorScroll();
-
-                }).error(function (response) {
-                    alertService.add('danger', "删除暂存的申请失败)", 5000);
-                    $location.hash("h1");
-                    $anchorScroll();
-                });
+                $giqci.post('/api/forms/RemoveAppCache'
+                    ).success(function (response) {
+                        alertService.add('success', "读取成功 (并已删除了暂存的申请,若需暂存,请再次点击暂存)", 6000);
+                        $location.hash("h1");
+                        $anchorScroll();
+                    }, $scope);
             }
             $scope.isSaveingCache = false;
             $scope.SaveAppCache = function () {
                 $scope.isSaveingCache = true;
-                $http({
-                    url: '/api/forms/SaveAppCache',
-                    method: 'POST',
-                    data: $scope.model.Application
-                }).success(function (result) {
-                    alertService.add('success', "暂存成功,下次可以直接读取本次保存的数据", 3000);
-                    $location.hash("h1");
-                    $anchorScroll();
-                    $scope.isSaveingCache = false;
-                }).error(function (response) {
-                    alertService.add('danger', "保存失败", 5000);
-                    $location.hash("h1");
-                    $anchorScroll();
-                    $scope.isSaveingCache = false;
-                });
+                $giqci.post('/api/forms/SaveAppCache',
+                    $scope.model.Application).success(function (result) {
+                        alertService.add('success', "暂存成功,下次可以直接读取本次保存的数据", 3000);
+                        $location.hash("h1");
+                        $anchorScroll();
+                        $scope.isSaveingCache = false;
+                    }, $scope);
             }
             $scope.getGoodsList = function () {
-                $http({
-                    url: '/api/goods/getproductlist',
-                    method: 'POST'
-                }).success(function (response) {
+                $giqci.post('/api/goods/getproductlist').success(function (response) {
                     $scope.merchantProductList = response.result;
-                }).error(function (response) {
-                    $log.warn(response);
-                });
+                }, $scope);
             }
             $scope.getGoodsList();
             $scope.getCustomProductList = function () {
-                $http.post('/api/goods/getcustomproductlist').success(function (response) {
+                $giqci.post('/api/goods/getcustomproductlist').success(function (response) {
                     $scope.customProductList = response.result;
-                });
+                }, $scope);
             };
             $scope.getCustomProductList();
 
@@ -274,41 +249,28 @@
             $scope.Product = null;
             $scope.getproductlist = function () {
                 if ($scope.CiqCode != "") {
-                    $http({
-                        url: '/api/goods/searchproduct',
-                        method: 'POST',
-                        data: {
-                            ciqCode: $scope.CiqCode
-                        }
-                    }).success(function (data) {
-                        $scope.Product = data.result;
-                    }).error(function (data, header, config, status) {
-                    });
+                    $giqci.post(
+                        '/api/goods/searchproduct',
+                        { ciqCode: $scope.CiqCode }).success(function (data) { $scope.Product = data.result; }, $scope);
                 }
             }
 
             $scope.selectGoods = function (index) {
-                $http({
-                    url: '/api/goods/searchproduct',
-                    method: 'POST',
-                    data: {
-                        ciqCode: $scope.merchantProductList[index].CiqCode
-                    }
-                }).success(function (data) {
-                    var product = data.result;
-                    $scope.model.Application.ApplicationProducts.push({
-                        CiqCode: product.CiqCode,
-                        HSCode: product.HSCode,
-                        Description: product.Description,
-                        DescriptionEn: product.DescriptionEn,
-                        Spec: product.Spec,
-                        Brand: product.Brand,
-                        Manufacturer: product.Manufacturer,
-                        ManufacturerCountry: product.ManufacturerCountry,
-                        Package: product.Package
-                    });
-                }).error(function (data, header, config, status) {
-                });
+                $giqci.post('/api/goods/searchproduct',
+                    { ciqCode: $scope.merchantProductList[index].CiqCode }).success(function (data) {
+                        var product = data.result;
+                        $scope.model.Application.ApplicationProducts.push({
+                            CiqCode: product.CiqCode,
+                            HSCode: product.HSCode,
+                            Description: product.Description,
+                            DescriptionEn: product.DescriptionEn,
+                            Spec: product.Spec,
+                            Brand: product.Brand,
+                            Manufacturer: product.Manufacturer,
+                            ManufacturerCountry: product.ManufacturerCountry,
+                            Package: product.Package
+                        });
+                    }, $scope);
             }
             $scope.itemClickHandler = function (event) {
                 var currentElement = event.target;
@@ -363,7 +325,7 @@
             }
             $scope.submitLoginForm = function () {
                 console.log($scope.user);
-                $http.post('/api/account/login', $scope.user).then(function (response) {
+                $giqci.post('/api/account/login', $scope.user).then(function (response) {
                     if (response.data.result) {
                         $('#form-login').modal('hide');
                     } else {
@@ -371,7 +333,7 @@
                         $scope.login.result = response.data.result;
                         $scope.login.error = response.data.message;
                     }
-                });
+                }, $scope);
             };
 
             $scope.submit = function () {
@@ -390,7 +352,7 @@
                     }
                 }
                 $scope.submitApp = true;
-                $http.post('/api/forms/app', $scope.model.Application).then(function (response) {
+                $giqci.post('/api/forms/app', $scope.model.Application).then(function (response) {
                     if (response.data.isLogin) {
                         if (response.data.errors) {
                             $scope.errors = response.data.errors;
@@ -406,18 +368,19 @@
                         $('#form-login').modal();
                     }
                     $scope.submitApp = false;
-                },
-                function (response) {
-                    $scope.errors = ["服务器异常,请重试"];
-                    $location.hash("h1");
-                    $anchorScroll();
-                    $scope.submitApp = false;
-                    $log.warn(response);
-                });
+                }, $scope
+                //,function (response) {
+                //    $scope.errors = ["服务器异常,请重试"];
+                //    $location.hash("h1");
+                //    $anchorScroll();
+                //    $scope.submitApp = false;
+                //    $log.warn(response);
+                //}
+                );
             };
 
             $scope.updateClock = function () {
-                $http.post('/api/account/heartbeat').then(function () { });
+                $giqci.post('/api/account/heartbeat').then(function () { }, $scope);
             };
             setInterval(function () {
                 $scope.$apply($scope.updateClock);
@@ -427,10 +390,9 @@
 
             $scope.loadCountriesDict = null;
             $scope.loadCountries = function () {
-                $http.get("/api/dict/countries", { params: { 'code': "" } }).success(function (data) {
+                $giqci.get("/api/dict/countries", { params: { 'code': "" } }).success(function (data) {
                     $scope.loadCountriesDict = data.items;
-                }).error(function (data) {
-                });
+                }, $scope);
             };
             $scope.loadCountries();
             $("#accept-form").show();
@@ -442,10 +404,9 @@
 
             $scope.loadMerchantInfo = null;
             $scope.loadMerchant = function () {
-                $http.post("/api/UserProfile/GetProfileList", { params: {} }).success(function (data) {
+                $giqci.post("/api/UserProfile/GetProfileList").success(function (data) {
                     $scope.loadMerchantInfo = data.result;
-                }).error(function (data) {
-                });
+                }, $scope);
             };
             $scope.loadMerchant();
             $scope.selectExporter = function (_object) {
@@ -506,59 +467,41 @@
                 } else {
                     _url = '/api/UserProfile/UpdateProfile';
                 }
-                $http({
-                    url: _url,
-                    method: 'POST',
-                    data: {
-                        userProfile: $scope.dialogModelMerchant
-                    }
-                }).success(function (data) {
-                    if (data.flag) {
-                        $scope.loadMerchant();
-                        $("#merchant-add").modal("hide");
-                        $("#form-merchant-list").modal("show");
-                    } else {
-                        var _errormsg = '';
-                        for (var i = data.errorMsg.length; i > 0; i--) {
-                            _errormsg += data.errorMsg[i - 1] + "\r\n";
+                $giqci.post(_url,
+                    { userProfile: $scope.dialogModelMerchant }).success(function (data) {
+                        if (data.flag) {
+                            $scope.loadMerchant();
+                            $("#merchant-add").modal("hide");
+                            $("#form-merchant-list").modal("show");
+                        } else {
+                            var _errormsg = '';
+                            for (var i = data.errorMsg.length; i > 0; i--) {
+                                _errormsg += data.errorMsg[i - 1] + "\r\n";
+                            }
+                            alertService.add("danger", _errormsg || "未知错误", 3000);
                         }
-                        alertService.add("danger", _errormsg || "未知错误", 3000);
-                    }
-                }).error(function (response) {
-                    alertService.add("danger", response || "未知错误", 3000);
-                });
+                    }, $scope);
             };
             $scope.editMerchant = function (_id) {
-                $http({
-                    url: '/api/UserProfile/GetProfileDeatil',
-                    method: 'POST',
-                    data: {
+                $giqci.post('/api/UserProfile/GetProfileDeatil',
+                    {
                         ProfileId: _id
-                    }
-                }).success(function (data) {
-                    $scope.dialogModelMerchant = data.result;
-                }).error(function (response) {
-                });
+                    }).success(function (data) {
+                        $scope.dialogModelMerchant = data.result;
+                    }, $scope);
                 $(".merchant-add-title").html("编辑常用商户信息");
                 $("#merchant-add").modal("show");
                 $("#form-merchant-list").modal("hide");
             };
             $scope.removeMerchant = function (_object) {
                 if (confirm("是否删除该常用商户")) {
-                    $http({
-                        url: '/api/UserProfile/RemoveProfile',
-                        method: 'POST',
-                        data: {
-                            ProfileId: _object.Id
-                        }
-                    }).success(function (data) {
-                        if (data.flag) {
-                            $scope.loadMerchant();
-                            //$("#merchant-add").modal("hide");
-                        }
-                    }).error(function (response) {
-                        alertService.add("danger", response.msg || "未知错误", 3000);
-                    });
+                    $giqci.post('/api/UserProfile/RemoveProfile',
+                        { ProfileId: _object.Id }).success(function (data) {
+                            if (data.flag) {
+                                $scope.loadMerchant();
+                                //$("#merchant-add").modal("hide");
+                            }
+                        }, $scope);
                 }
             };
 
@@ -599,7 +542,7 @@
             $scope.submitAddCustomProduct = function () {
                 var _btnsubmitAddCustomProduct = document.getElementById("submitAddCustomProduct");
                 angular.element(_btnsubmitAddCustomProduct).attr("disabled", true);
-                $http.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
+                $giqci.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
                     if (response.flag) {
                         $scope.getCustomProductList();
                         alert("提交成功");
@@ -609,10 +552,10 @@
                     }
                     var _tipType = response.flag ? "success" : "danger";
                     alertService.add(_tipType, response.msg || "未知错误", 3000);
-                });
+                }, $scope);
             };
             $scope.submitAddGoodsProduct = function () {
-                $http.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
+                $giqci.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
                     if (response.flag) {
                         $scope.getGoodsList();
                         alert("提交成功");
@@ -621,7 +564,7 @@
                     }
                     var _tipType = response.flag ? "success" : "danger";
                     alertService.add(_tipType, response.msg || "未知错误", 3000);
-                });
+                }, $scope);
             };
             $scope.getDialogProductList = function () {
                 if ($scope.DialogProductCiqCode != "" && $scope.DialogProductCiqCode != null) {
@@ -632,21 +575,15 @@
                         alertService.add('danger', "正确的备案号格式为[ICIP+14个数字]或[10个数字]", 3000);
                         return;
                     }
-                    $http({
-                        url: '/api/goods/searchproduct',
-                        method: 'POST',
-                        data: {
-                            ciqCode: $scope.DialogProductCiqCode
-                        }
-                    }).success(function (data) {
-                        if (data.result == null) {
-                            $scope.dialogProductList = null;
-                            alertService.add('danger', "该备案号不存在", 3000);
-                        } else {
-                            $scope.dialogProductList = data.result;
-                        }
-                    }).error(function () {
-                    });
+                    $giqci.post('/api/goods/searchproduct',
+                        { ciqCode: $scope.DialogProductCiqCode }).success(function (data) {
+                            if (data.result == null) {
+                                $scope.dialogProductList = null;
+                                alertService.add('danger', "该备案号不存在", 3000);
+                            } else {
+                                $scope.dialogProductList = data.result;
+                            }
+                        }, $scope);
                 } else {
                     $scope.dialogProductList = null;
                     alertService.add('danger', "正确的备案号格式为[ICIP+14个数字]或[10个数字]", 3000);
@@ -655,41 +592,35 @@
             $scope.addDialogGoodsProduct = function () {
                 if (confirm('是否添加该商品为常用商品')) {
                     if ($scope.dialogProductList != null) {
-                        $http({
-                            url: '/api/goods/addproduct',
-                            method: 'POST',
-                            data: {
-                                ciqCode: $scope.dialogProductList.CiqCode
-                            }
-                        }).success(function (data) {
-                            if (data.result) {
-                                $scope.getGoodsList();
-                                alert("提交成功");
-                                $scope.showProductList();
-                            }
-                            var _tipType = data.result ? "success" : "danger";
-                            alertService.add(_tipType, data.msg || "未知错误", 3000);
-                        }).error(function () {
-                        });
+                        $giqci.post('/api/goods/addproduct',
+                            { ciqCode: $scope.dialogProductList.CiqCode }).success(function (data) {
+                                if (data.result) {
+                                    $scope.getGoodsList();
+                                    alert("提交成功");
+                                    $scope.showProductList();
+                                }
+                                var _tipType = data.result ? "success" : "danger";
+                                alertService.add(_tipType, data.msg || "未知错误", 3000);
+                            }, $scope);
                     }
                 }
             };
             $scope.removeMerchantProductId = function (Id, index) {
                 if (confirm("您确定要删除该商品吗?")) {
-                    $http.post('/api/goods/deletecustomproduct', { id: Id }).then(function (response) {
+                    $giqci.post('/api/goods/deletecustomproduct', { id: Id }).then(function (response) {
                         if (response.data.flag) {
                             $scope.getCustomProductList();
                         }
-                    });
+                    }, $scope);
                 }
             };
             $scope.removeMerchantProductCiq = function (ciqCode, index) {
                 if (confirm("您确定要删除该商品吗?")) {
-                    $http.post('/api/goods/delete', { ciqCode: ciqCode }).then(function (response) {
+                    $giqci.post('/api/goods/delete', { ciqCode: ciqCode }).then(function (response) {
                         if (response.data.result) {
                             $scope.getGoodsList();
                         }
-                    });
+                    }, $scope);
                 }
             };
 
@@ -704,7 +635,7 @@
             $scope.allowTypeList = ObjDecodeToJson(@HtmlExtensions.RawJson(Config.Filer.AllowTypeList));
             $scope.allowType = '';
             for (var i = 0; i < $scope.allowTypeList.length; i++) {
-                if (i == $scope.allowTypeList.length-1) {
+                if (i == $scope.allowTypeList.length - 1) {
                     $scope.allowType += "." + $scope.allowTypeList[i];
                 } else {
                     $scope.allowType += "." + $scope.allowTypeList[i] + ',';

@@ -12,17 +12,14 @@ app.directive("ajaxSelect", function ($timeout, $http) {
                 $(element).next().find("span.select2-selection__rendered").html('<span class="select2-selection__placeholder">请输入关键词进行搜索</span>');
                 scope.isLoading = false;
                 if (!scope.isLoading && model.$viewValue) {
-                    $http.get("/api/dict/" + url, {
-                        params: { 'code': model.$viewValue }
-                    }).success(function (data) {
+                    $giqci.get("/api/dict/" + url, { 'code': model.$viewValue }).success(function (data) {
                         if (data.items.length === 1) {
                             var newVal = (url === "commonhscodes") ? data.items[0].Code + '-' + data.items[0].Name : data.items[0].Code + '-' + data.items[0].CnName;
                             //console.log(newVal);
                             $(element).next().find("span.select2-selection__rendered").html(newVal);
                             scope.isLoading = true;
                         }
-                    }).error(function (data) {
-                    });
+                    }, scope);
                 }
             }, true);
 
@@ -39,7 +36,8 @@ app.directive("ajaxSelect", function ($timeout, $http) {
                             code: params.term
                         };
                     },
-                    processResults: function (data, params) {
+                    processResults: function (giqciData, params) {
+                        var data = giqciData.data;
                         var results = [];
                         $.each(data.items, function (i, v) {
                             var o = {};
@@ -80,16 +78,14 @@ app.directive("ajaxLabel", function ($timeout, $http) {
             scope.$watch(attrs.ngModel, function (n, o) {
                 scope.isLoading = false;
                 if (!scope.isLoading && typeof (model.$viewValue) !== "undefined" && model.$viewValue) {
-                    $http.get("/api/dict/" + url, {
-                        params: { 'code': model.$viewValue }
-                    }).success(function (data) {
-                        if (data.items.length > 0) {
-                            var newVal = (url === "commonhscodes") ? data.items[0].Name : data.items[0].CnName;
-                            $(element).html(newVal);
-                            scope.isLoading = true;
-                        }
-                    }).error(function (data) {
-                    });
+                    $giqci.get("/api/dict/" + url,
+                       { 'code': model.$viewValue }).success(function (data) {
+                           if (data.items.length > 0) {
+                               var newVal = (url === "commonhscodes") ? data.items[0].Name : data.items[0].CnName;
+                               $(element).html(newVal);
+                               scope.isLoading = true;
+                           }
+                       }, scope);
                 }
             }, true);
         }
@@ -432,7 +428,8 @@ app.directive("ajaxProduct", function ($timeout, $http) {
                             tradetype: scope.model.Application.TradeType
                         };
                     },
-                    processResults: function (data, params) {
+                    processResults: function (giqciData, params) {
+                        var data = giqciData.data;
                         var results = [];
                         scope.dataList = [];
                         $.each(data.result, function (i, v) {

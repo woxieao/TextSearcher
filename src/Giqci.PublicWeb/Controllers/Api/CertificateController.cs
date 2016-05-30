@@ -7,6 +7,7 @@ using Giqci.Interfaces;
 using Newtonsoft.Json;
 using Giqci.PublicWeb.Converters;
 using Giqci.PublicWeb.Extensions;
+using Giqci.PublicWeb.Models.Ajax;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {
@@ -28,8 +29,8 @@ namespace Giqci.PublicWeb.Controllers.Api
             //     var model = _certRepo.SearchCertificate(certNo);
             //todo appId=???
             var model = _certRepo.Get(string.Empty, certNo);
-            return new KtechJsonResult(HttpStatusCode.OK, new {items = model},
-                new JsonSerializerSettings {Converters = new List<JsonConverter> {new DescriptionEnumConverter()}});
+            return new AjaxResult(new { items = model },
+                new JsonSerializerSettings { Converters = new List<JsonConverter> { new DescriptionEnumConverter() } });
         }
     }
 }

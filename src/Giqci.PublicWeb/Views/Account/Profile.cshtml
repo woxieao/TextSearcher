@@ -63,8 +63,7 @@
     <script type="text/javascript">
         //var app = angular.module("giqci", ['commonAlert']);
         app.controller("ProfileController", ['$http', '$scope', '$location', 'alertService', function ($http, $scope, $location, alertService) {
-                userBreath.Revive();
-            $scope.user = ObjDecodeToJson(@HtmlExtensions.RawJson( Model));
+                $scope.user = ObjDecodeToJson(@HtmlExtensions.RawJson( Model));
             $scope.submitButton = ' 提交 ';
             $scope.submitForm = function (isValid, PasswordValid) {
                 if (isValid) {
@@ -77,7 +76,7 @@
                         contact: $scope.user.Contact,
                         phone: $scope.user.Phone
                     };
-                    $http.post('/api/account/updateprofile', $scope.formData).then(function (response) {
+                    $giqci.post('/api/account/updateprofile', $scope.formData).then(function (response) {
                         if (!response.data.result) {
                             alertService.add('danger', response.data.message);
                         }else{
@@ -85,7 +84,7 @@
                         }
                         $scope.enableDisableButton = false;
                         $scope.submitButton = ' 提交 ';
-                    });
+                    }, $scope);
                 }
             };
         }

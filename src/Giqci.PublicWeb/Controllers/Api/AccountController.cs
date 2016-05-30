@@ -7,6 +7,7 @@ using Giqci.PublicWeb.Extensions;
 using Giqci.PublicWeb.Helpers;
 using Giqci.PublicWeb.Models;
 using Giqci.PublicWeb.Models.Account;
+using Giqci.PublicWeb.Models.Ajax;
 using Giqci.PublicWeb.Services;
 using Ktech.Core.Mail;
 using Ktech.Mvc.ActionResults;
@@ -59,7 +60,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                 result = false;
                 message = ex.Message;
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = result, message = message });
+            return new AjaxResult(new { result = result, message = message });
         }
 
 
@@ -80,7 +81,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                 result = false;
                 message = "用户名或密码错误!";
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = result, message = message });
+            return new AjaxResult(new { result = result, message = message });
         }
 
 
@@ -120,7 +121,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                 result = false;
                 message = ex.Message;
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = result, message = message });
+            return new AjaxResult(new { result = result, message = message });
         }
 
         [Route("account/heartbeat")]
@@ -131,7 +132,7 @@ namespace Giqci.PublicWeb.Controllers.Api
             {
                 _auth.Renew();
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = true, message = "" });
+            return new AjaxResult(new { result = true, message = "" });
         }
 
 
@@ -140,7 +141,7 @@ namespace Giqci.PublicWeb.Controllers.Api
         public ActionResult Breath()
         {
             // _auth.Renew();
-            return new KtechJsonResult(HttpStatusCode.OK, new { flag = User.Identity.IsAuthenticated });
+            return new AjaxResult(new { flag = User.Identity.IsAuthenticated });
         }
     }
 }

@@ -10,27 +10,32 @@ namespace Giqci.PublicWeb.Models.Ajax
     public class AjaxResult : ActionResult
     {
         private readonly AjaxResultPackage _ajaxResultPackage = new AjaxResultPackage();
+        private readonly JsonSerializerSettings _settings;
 
         public AjaxResult(object data)
         {
-            _ajaxResultPackage.Data = data;
+            _ajaxResultPackage.status = 1;
+            _ajaxResultPackage.data = data;
+            _ajaxResultPackage.msg = "success";
+            _settings = new JsonSerializerSettings
+            {
+                Converters = new List<JsonConverter> { new StringEnumConverter() },
+                NullValueHandling = NullValueHandling.Ignore
+            };
         }
 
-        public AjaxResult(object data, string msg) : this(data)
+        public AjaxResult(object data, JsonSerializerSettings settings) : this(data)
         {
-            _ajaxResultPackage.Msg = msg;
+            _settings = settings;
         }
 
-        public AjaxResult(object data, string msg, RequestStatus flag) : this(data, msg)
+        public AjaxResult(AjaxResultPackage package)
         {
-            _ajaxResultPackage.Flag = flag;
-            _ajaxResultPackage.Msg = msg;
+            _ajaxResultPackage = package;
         }
-        public AjaxResult(object data, string msg, RequestStatus flag, CallBackClass callBackClass) : this(data, msg, flag)
+        public AjaxResult(AjaxResultPackage package, JsonSerializerSettings settings) : this(package)
         {
-            _ajaxResultPackage.CallBackPackage = callBackClass;
-            _ajaxResultPackage.Msg = msg;
-            _ajaxResultPackage.Flag = flag;
+            _settings = settings;
         }
 
         public override void ExecuteResult(ControllerContext context)
@@ -41,11 +46,7 @@ namespace Giqci.PublicWeb.Models.Ajax
             response.ContentType = "application/json";
             if (_ajaxResultPackage == null)
                 return;
-            response.Write(JsonConvert.SerializeObject(_ajaxResultPackage, new JsonSerializerSettings()
-            {
-                Converters = new List<JsonConverter> { new StringEnumConverter() },
-                NullValueHandling = NullValueHandling.Ignore
-            }));
+            response.Write(JsonConvert.SerializeObject(_ajaxResultPackage, _settings));
         }
     }
 }
