@@ -291,7 +291,9 @@ app.controller('GoodsListController', [
         //change product
         $scope.CiqCode = '';
         $scope.changeProductList = false;
+        $scope.isSearch = false;
         $scope.getproductlist = function () {
+            $scope.isSearch = true;
             var reg = /^\d{10}$/;
             var reg2 = /^ICIP\d{14}$/i;
             if (!(reg.test($scope.CiqCode) || reg2.test($scope.CiqCode))) {
@@ -320,13 +322,14 @@ app.controller('GoodsListController', [
             $scope.ChangeProductDialogModel = CallByValue($scope.customProductList[index]);
         };
         $scope.submitChangeProduct = function (_customProductId, _ciqCode) {
-            if (_customProductId == null || _ciqCode == null) {
-                alertService.add('danger', "参数错误", 3000);
-            }
+            if (false === $scope.isSearch || _customProductId == null || _ciqCode == null) {
+                alertService.add('danger', "请搜索并获取备案商品信息", 3000);
+                return;
+            };
             $giqci.post('/api/goods/convertproduct/' + _customProductId + '/' + _ciqCode,
-                { enName: $scope.ChangeProductDialogModel.DescriptionEn })
-            .success(function (response) {
-                console.log(response);
+                { enName: $scope.ChangeProductDialogModel.DescriptionEn }
+            ).success(function (response) {
+                $scope.isSearch = false;
                 if (response.flag) {
                     alertService.add('success', "数据已经转换成功", 3000);
                     $scope.list($scope.postData);
@@ -337,6 +340,9 @@ app.controller('GoodsListController', [
                 }
             }, $scope);
         };
+        angular.element(_modal).on('hide.bs.modal', function () {
+            $scope.isSearch = false;
+        })
     }
 ]);
 
