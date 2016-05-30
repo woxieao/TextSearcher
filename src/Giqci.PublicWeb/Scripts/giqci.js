@@ -156,7 +156,6 @@ $giqci.CacheLastPost = function (sendRequest, scope, callBackFunc, withData) {
 
 $giqci.get = function (url, data) {
     var self = this;
-    console.log(self);
     self.LoginFunc = function () {
         $("#breathBox").modal("show");
     }
@@ -228,7 +227,6 @@ $giqci.get = function (url, data) {
 
 $giqci.post = function (url, data) {
     var self = this;
-    console.log(self);
     self.LoginFunc = function () {
         $("#breathBox").modal("show");
     }
