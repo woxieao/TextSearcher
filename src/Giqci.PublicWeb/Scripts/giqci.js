@@ -140,7 +140,7 @@ function Breath(checkLoginUrl, whenLogOutCallBackFunc, whenLoginedCallBackFunc, 
 
 }
 
-var test;
+
 var $giqci = {};
 $giqci.RunLastPost = function () {
     $giqci.LastPostInfo.SendRequest($giqci.LastPostInfo.Scope, $giqci.LastPostInfo.CallBackFunc, $giqci.LastPostInfo.WithData);
@@ -153,8 +153,10 @@ $giqci.CacheLastPost = function (sendRequest, scope, callBackFunc, withData) {
     $giqci.LastPostInfo.Scope = scope;
 
 };
-$giqci.post = function (url, data) {
+
+$giqci.get = function (url, data) {
     var self = this;
+    console.log(self);
     self.LoginFunc = function () {
         $("#breathBox").modal("show");
     }
@@ -171,18 +173,18 @@ $giqci.post = function (url, data) {
 
     function handlerResult(scope, result, callBackFunc, withData) {
         switch (result.status) {
-            case "LogOut":
+            case -1:
                 {
                     $giqci.CacheLastPost(sendRequest, scope, callBackFunc, withData);
                     self.LoginFunc();
                     break;
                 }
-            case "Error":
+            case 0:
                 {
                     self.ShowMsgFunc(result.msg);
                     break;
                 }
-            case "Success":
+            case 1:
                 {
                     callBackFunc = callBackFunc === undefined ? self.DefaultSuccessFunc : callBackFunc;
                     var tempResult = withData ? result : result.data;
@@ -194,9 +196,83 @@ $giqci.post = function (url, data) {
                     alert("UnknowStatus");
                 }
         }
-        scope.$apply();
+        try {
+            scope.$apply();
+        } catch (ex) {
+            //not AngularJS 
+        }
+    }
+    function sendRequest(scope, callBackFunc, withData) {
+        $.ajax({
+            type: "GET",
+            data: data,
+            url: url,
+            success: function (result) {
+                handlerResult(scope, result, callBackFunc, withData);
+            },
+            error: function (result) {
+                args.error(result);
+            }
+        });
     }
 
+    self.then = function (callBackFunc, scope) {
+        sendRequest(scope, callBackFunc, true);
+    }
+    self.success = function (callBackFunc, scope) {
+        sendRequest(scope, callBackFunc, false);
+    }
+    return self;
+}
+
+$giqci.post = function (url, data) {
+    var self = this;
+    console.log(self);
+    self.LoginFunc = function () {
+        $("#breathBox").modal("show");
+    }
+    self.ShowMsgFunc = function (msg) {
+        alert(msg);
+    }
+    self.DefaultSuccessFunc = function (result) {
+        var callbackData = result.callBackPackage;
+        if (callbackData.callBackUrl !== null) {
+            window.location.href = callbackData.callBackUrl;
+        }
+        alert("提交成功");
+    }
+
+    function handlerResult(scope, result, callBackFunc, withData) {
+        switch (result.status) {
+            case -1:
+                {
+                    $giqci.CacheLastPost(sendRequest, scope, callBackFunc, withData);
+                    self.LoginFunc();
+                    break;
+                }
+            case 0:
+                {
+                    self.ShowMsgFunc(result.msg);
+                    break;
+                }
+            case 1:
+                {
+                    callBackFunc = callBackFunc === undefined ? self.DefaultSuccessFunc : callBackFunc;
+                    var tempResult = withData ? result : result.data;
+                    callBackFunc(tempResult);
+                    break;
+                }
+            default:
+                {
+                    alert("UnknowStatus");
+                }
+        }
+        try {
+            scope.$apply();
+        } catch (ex) {
+            //not AngularJS 
+        }
+    }
     function sendRequest(scope, callBackFunc, withData) {
         $.ajax({
             type: "POST",
@@ -211,10 +287,10 @@ $giqci.post = function (url, data) {
         });
     }
 
-    self.then = function (scope, callBackFunc) {
+    self.then = function (callBackFunc, scope) {
         sendRequest(scope, callBackFunc, true);
     }
-    self.success = function (scope, callBackFunc) {
+    self.success = function (callBackFunc, scope) {
         sendRequest(scope, callBackFunc, false);
     }
     return self;

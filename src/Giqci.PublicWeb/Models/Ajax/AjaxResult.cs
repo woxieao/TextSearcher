@@ -14,7 +14,7 @@ namespace Giqci.PublicWeb.Models.Ajax
 
         public AjaxResult(object data)
         {
-            _ajaxResultPackage.status = RequestStatus.Success;
+            _ajaxResultPackage.status = 1;
             _ajaxResultPackage.data = data;
             _ajaxResultPackage.msg = "success";
             _settings = new JsonSerializerSettings

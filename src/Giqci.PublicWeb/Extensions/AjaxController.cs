@@ -14,7 +14,7 @@ namespace Giqci.PublicWeb.Extensions
             filterContext.Result = new AjaxResult(null);
             filterContext.Result = new AjaxResult(new AjaxResultPackage
             {
-                status = RequestStatus.Error,
+                status = 0,
                 msg = errorMsg,
             });
             filterContext.ExceptionHandled = true;

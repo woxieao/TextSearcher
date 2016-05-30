@@ -87,7 +87,7 @@ namespace Giqci.PublicWeb.Controllers
             //        errors.Add(message);
             //    }
             //}
-            //return new KtechJsonResult(HttpStatusCode.OK, new { result = result, errors = errors });
+            //return new AjaxResult( new { result = result, errors = errors });
         }
     }
 }

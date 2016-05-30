@@ -6,6 +6,7 @@ using System.Web.Security;
 using Giqci.Chapi.Models.App;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Extensions;
+using Giqci.PublicWeb.Models.Ajax;
 using Giqci.PublicWeb.Services;
 using Giqci.Validations;
 using Ktech.Mvc.ActionResults;
@@ -31,7 +32,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         public ActionResult GetProfileList()
         {
             var profileList = _userProfileApiProxy.Select(_auth.GetAuth().MerchantId);
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = profileList }, new JsonSerializerSettings());
+            return new AjaxResult(new { result = profileList }, new JsonSerializerSettings());
         }
 
         [Route("AddProfile")]
@@ -49,7 +50,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             {
                 errorMsg.Add("提交异常");
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { flag = !errorMsg.Any(), errorMsg = errorMsg });
+            return new AjaxResult(new { flag = !errorMsg.Any(), errorMsg = errorMsg });
         }
 
         [Route("UpdateProfile")]
@@ -67,7 +68,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             {
                 errorMsg.Add("提交异常");
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { flag = !errorMsg.Any(), errorMsg = errorMsg });
+            return new AjaxResult(new { flag = !errorMsg.Any(), errorMsg = errorMsg });
         }
 
         [Route("RemoveProfile")]
@@ -83,7 +84,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             {
                 flag = false;
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { flag = flag });
+            return new AjaxResult(new { flag = flag });
         }
 
         [Route("GetProfileDeatil")]
@@ -99,7 +100,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             {
                 result = null;
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { result = result }, new JsonSerializerSettings());
+            return new AjaxResult(new { result = result }, new JsonSerializerSettings());
         }
     }
 }

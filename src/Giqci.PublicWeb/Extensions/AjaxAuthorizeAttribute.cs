@@ -10,9 +10,9 @@ namespace Giqci.PublicWeb.Extensions
     {
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            filterContext.Result = new KtechJsonResult(HttpStatusCode.OK, new AjaxResultPackage
+            filterContext.Result = new AjaxResult( new AjaxResultPackage
             {
-                status = RequestStatus.LogOut,
+                status = -1,
                 msg = "登录状态已失效,请重新登陆",
             });
         }

@@ -35,17 +35,15 @@
                 };
                 $scope.loadCountriesDict = null;
                 $scope.loadCountries = function () {
-                    $http.get("/api/dict/countries", {
-                        params: { 'code': "" }
-                    }).success(function (data) {
+                    $giqci.get("/api/dict/countries", { 'code': "" }).success(function (data) {
                         $scope.loadCountriesDict = data.items;
-                    });
+                    }, $scope);
                 };
                 $scope.model.ManufacturerCountry = '036';
                 $scope.loadCountries();
 
                 $scope.submitForm = function () {
-                    $http.post('/api/goods/addcustomproduct', $scope.model).success(function (response) {
+                    $giqci.post('/api/goods/addcustomproduct', $scope.model).success(function (response) {
                         $scope.msg = response.msg;
                         $scope.flag = response.flag;
                         if ($scope.flag) {
@@ -53,7 +51,7 @@
                             $("#commonhscodes").next().find("span.select2-selection__rendered").html("");
                             $("#ManufacturerCountry").next().find("span.select2-selection__rendered").html("");
                         }
-                    });
+                    }, $scope);
                 };
             }
         ]);

@@ -73,7 +73,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                      .Cast<ApplicationStatus>()
                      .Select(i => new { value = i.ToString(), name = i.ToDescription() })
                      .ToArray();
-            return new KtechJsonResult(HttpStatusCode.OK, new { items = statusValues });
+            return new AjaxResult( new { items = statusValues });
         }
 
         [Route("forms/savefile")]
@@ -82,7 +82,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         {
             var filePath = string.Format("/{0}/{1}", Config.Common.UserExampleFilePath, Guid.NewGuid().ToString("N"));
             var fileInfo = _fileApiProxy.UploadFile(file, filePath);
-            return new KtechJsonResult(HttpStatusCode.OK, fileInfo);
+            return new AjaxResult( fileInfo);
         }
 
         [Route("forms/GetAppCache")]
@@ -103,7 +103,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                 flag = false;
                 app = null;
             }
-            return new KtechJsonResult(HttpStatusCode.OK, new { flag = flag, app = app }, new JsonSerializerSettings());
+            return new AjaxResult( new { flag = flag, app = app }, new JsonSerializerSettings());
         }
 
         [Route("forms/SaveAppCache")]
@@ -111,7 +111,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         public ActionResult SaveAppCache(Application app)
         {
             _applicationCacheApiProxy.Add(_auth.GetAuth().MerchantId, JsonConvert.SerializeObject(app));
-            return new KtechJsonResult(HttpStatusCode.OK, new { });
+            return new AjaxResult( new { });
         }
 
         [Route("forms/RemoveAppCache")]
@@ -119,7 +119,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         public ActionResult RemoveAppCache()
         {
             _applicationCacheApiProxy.Remove(_auth.GetAuth().MerchantId);
-            return new KtechJsonResult(HttpStatusCode.OK, new { });
+            return new AjaxResult( new { });
         }
 
         [Route("forms/app")]
@@ -186,7 +186,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                 }
                 errors = null;
             }
-            return new KtechJsonResult(HttpStatusCode.OK,
+            return new AjaxResult(
                 new { isNew = isNew, appkey = appkey, isLogin = isLogin, errors = errors });
         }
         private void GetTotalUnits(ref Application input)

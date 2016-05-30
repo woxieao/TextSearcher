@@ -76,7 +76,7 @@
                         contact: $scope.user.Contact,
                         phone: $scope.user.Phone
                     };
-                    $http.post('/api/account/updateprofile', $scope.formData).then(function (response) {
+                    $giqci.post('/api/account/updateprofile', $scope.formData).then(function (response) {
                         if (!response.data.result) {
                             alertService.add('danger', response.data.message);
                         }else{
@@ -84,7 +84,7 @@
                         }
                         $scope.enableDisableButton = false;
                         $scope.submitButton = ' 提交 ';
-                    });
+                    }, $scope);
                 }
             };
         }
