@@ -548,8 +548,8 @@
                         alert("提交成功");
                         $scope.showProductList();
                         //$("#form-add-custom-product").modal("hide");
-                        angular.element(_btnsubmitAddCustomProduct).attr("disabled", false);
-                    }
+                     }
+                    angular.element(_btnsubmitAddCustomProduct).attr("disabled", false);
                     var _tipType = response.flag ? "success" : "danger";
                     alertService.add(_tipType, response.msg || "未知错误", 3000);
                 }, $scope);
