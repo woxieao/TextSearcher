@@ -1,10 +1,19 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Configuration;
 
 namespace Giqci.PublicWeb.Models
 {
     public class Config
     {
+        public struct Hosts
+        {
+            public static readonly Dictionary<string, string> HostList = new Dictionary<string, string>
+            {
+                {"China",WebConfigurationManager.AppSettings["ChinaHost"] },
+                {"Default", WebConfigurationManager.AppSettings["DefaultHost"]}
+            };
+        }
         public struct Common
         {
             public static readonly string AdminEmail = WebConfigurationManager.AppSettings[nameof(AdminEmail)];
@@ -52,6 +61,7 @@ namespace Giqci.PublicWeb.Models
             }
 
             public static readonly bool DictLogSwitch = GetLogSwitch(nameof(DictLogSwitch));
+            public static readonly bool IpLogSwitch = GetLogSwitch(nameof(IpLogSwitch));
             public static readonly bool ProductsLogSwitch = GetLogSwitch(nameof(ProductsLogSwitch));
             public static readonly bool CustomersLogSwitch = GetLogSwitch(nameof(CustomersLogSwitch));
             public static readonly bool AppLogSwitch = GetLogSwitch(nameof(AppLogSwitch));
