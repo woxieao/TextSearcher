@@ -263,6 +263,10 @@ app.controller('GoodsListController', [
             $("#form-add-custom-product").modal("show");
             $("#form-product").modal("hide");
         };
+        var _modalEditMerchantProduct = document.getElementById("form-add-custom-product");
+        angular.element(_modalEditMerchantProduct).on('hide.bs.modal', function () {
+            $scope.CustomDialogModel = null;
+        })
 
         $scope.submitAddCustomProduct = function () {
             $giqci.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {

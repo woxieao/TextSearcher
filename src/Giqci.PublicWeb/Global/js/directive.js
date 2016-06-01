@@ -13,9 +13,17 @@ app.directive("ajaxSelect", function ($timeout, $http) {
                 scope.isLoading = false;
                 if (!scope.isLoading && model.$viewValue) {
                     $giqci.get("/api/dict/" + url, { 'code': model.$viewValue }).success(function (data) {
-                        if (data.items.length === 1) {
-                            var newVal = (url === "commonhscodes") ? data.items[0].Code + '-' + data.items[0].Name : data.items[0].Code + '-' + data.items[0].CnName;
-                            //console.log(newVal);
+                        if (data.items.length >= 1) {
+                            var newVal = '';
+                            if (1 === data.items.length) {
+                                newVal = (url === "commonhscodes") ? data.items[0].Code + '-' + data.items[0].Name : data.items[0].Code + '-' + data.items[0].CnName;
+                            } else {
+                                $.each(data.items, function (i, v) {
+                                    if (v.Code == model.$viewValue) {
+                                        newVal = (url === "commonhscodes") ? v.Code + '-' + v.Name : v.Code + '-' + v.CnName;
+                                    }
+                                });
+                            }
                             $(element).next().find("span.select2-selection__rendered").html(newVal);
                             scope.isLoading = true;
                         }
