@@ -22,6 +22,9 @@ namespace Giqci.PublicWeb
             builder.Register(x => RestClientFactory.Create(Config.ApiUrl.DictApiUrl, false))
                 .Keyed<HttpClient>(ApiType.Dict)
                 .SingleInstance();
+            builder.Register(x => RestClientFactory.Create(Config.ApiUrl.DictApiUrl, false))
+             .Keyed<HttpClient>(ApiType.Ip)
+             .SingleInstance();
             builder.Register(x => RestClientFactory.Create(Config.ApiUrl.ProdApiUrl, false))
                 .Keyed<HttpClient>(ApiType.Products)
                 .SingleInstance();
@@ -58,6 +61,7 @@ namespace Giqci.PublicWeb
             #region init log switch 
 
             builder.Register(x => Config.LogSwitch.DictLogSwitch).Keyed<bool>(LogSwitch.Dict).SingleInstance();
+            builder.Register(x => Config.LogSwitch.IpLogSwitch).Keyed<bool>(LogSwitch.Ip).SingleInstance();
             builder.Register(x => Config.LogSwitch.ProductsLogSwitch).Keyed<bool>(LogSwitch.Products).SingleInstance();
             builder.Register(x => Config.LogSwitch.CustomersLogSwitch).Keyed<bool>(LogSwitch.Customers).SingleInstance();
             builder.Register(x => Config.LogSwitch.AppLogSwitch).Keyed<bool>(LogSwitch.App).SingleInstance();
@@ -180,6 +184,15 @@ namespace Giqci.PublicWeb
                     })
                 .InstancePerDependency();
 
+            builder.RegisterType<IpDictionaryService>()
+             .As<IIpDictionaryService>().WithParameters(
+                 new List<ResolvedParameter>()
+                 {
+                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.Ip),
+                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
+                        ResolvedParameter.ForKeyed<bool>(LogSwitch.Ip),
+                 })
+             .InstancePerDependency();
             #endregion
         }
 
@@ -189,7 +202,8 @@ namespace Giqci.PublicWeb
             Products,
             Customers,
             App,
-            File
+            File,
+            Ip
         }
 
         private enum ValueList
@@ -205,7 +219,8 @@ namespace Giqci.PublicWeb
             Customers,
             App,
             File,
-            AppCache
+            AppCache,
+            Ip
         }
     }
 }
