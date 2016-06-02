@@ -129,10 +129,10 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                 {
                     return new AjaxResult(new { flag = false, msg = "商品信息不完整" });
                 }
-                var regManu = new Regex("^[a-zA-z\\s]*$");
+                var regManu = new Regex("^[\x20-\x7e]*$");
                 if (!regManu.IsMatch(product.Manufacturer))
                 {
-                    return new AjaxResult(new { flag = false, msg = "制造商必须是英文" });
+                    return new AjaxResult(new { flag = false, msg = "制造商中含有不合法字符" });
                 }
                 if (product.Id > 0)
                 {
