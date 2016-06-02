@@ -510,7 +510,8 @@
                 $('#uploadForm').ajaxSubmit({
                     type: "post",
                     url: "/api/forms/savefile",
-                    success: function (data) {
+                    success: function (giqciData) {
+                        var data = giqciData.data;
                         if (data.Flag) {
                             $scope.model.Application.ExampleCertList.push({ CertFilePath: data.FileFullPath, HandlerType: 1 });
                             $scope.$apply();
