@@ -274,8 +274,9 @@ $giqci.post = function (url, data) {
     function sendRequest(scope, callBackFunc, withData) {
         $.ajax({
             type: "POST",
-            data: data,
+            data: JSON.stringify(data),
             dataType: "json",
+            contentType: "application/json; charset=utf-8",
             url: url,
             success: function (result) {
                 handlerResult(scope, result, callBackFunc, withData);
