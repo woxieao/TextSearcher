@@ -59,7 +59,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             int pageIndex = 1, int pageSize = 10)
         {
 
-            var model = _appView.Search(applyNo, _auth.GetAuth().MerchantId, status, start, end, pageIndex, pageSize);
+            var model = _appView.Search(applyNo, _auth.GetAuth().MerchantId, status, start, end, pageIndex, pageSize,false);
             var count = model.Count();
             return new AjaxResult(new { items = model, count = count }, new JsonSerializerSettings { Converters = new List<JsonConverter> { new DescriptionEnumConverter() } });
         }
