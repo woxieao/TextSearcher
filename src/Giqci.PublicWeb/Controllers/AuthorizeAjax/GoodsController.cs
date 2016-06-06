@@ -112,7 +112,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                 var reg = new Regex("^[a-z0-9A-Z]+$");
                 if (!reg.IsMatch(product.Code))
                 {
-                    return new AjaxResult(new { flag = false, msg = "商品标识只能为数字或者字母"});
+                    return new AjaxResult(new { flag = false, msg = "商品标识只能为数字或者字母" });
                 }
                 if (isExit)
                 {
@@ -164,7 +164,13 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         public ActionResult MerchantGetCustomProductList(string keywords = "")
         {
             var result = _merchantRepository.SelectCustomerProducts(_auth.GetAuth().MerchantId, keywords);
-            return new AjaxResult(new { result = result });
+            var resultFilter = result.Where(i => string.IsNullOrEmpty(keywords)
+                                                 || i.Code.Contains(keywords)
+                                                 || i.Description.Contains(keywords)
+                                                 || i.DescriptionEn.Contains(keywords)
+                                                 || i.HsCode.Contains(keywords)
+                                                 || i.Manufacturer.Contains(keywords));
+            return new AjaxResult(new { result = resultFilter });
         }
 
         [Route("goods/deletecustomproduct")]
