@@ -39,11 +39,13 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
 
         [Route("goods/getproductlist")]
         [HttpPost]
-        public ActionResult MerchantGetProductList(int pageIndex = 1, int pageSize = 20)
+        public ActionResult MerchantGetProductList(string keywords, int pageIndex = 1, int pageSize = 20)
         {
+            //预留分页条件
+            pageSize = 10000;
             var productList = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, pageIndex, pageSize);
             var result = _productApiProxy.SearchProduct(productList);
-            return new AjaxResult(new { result = result });
+            return new AjaxResult(new { result = result.Where(i => string.IsNullOrEmpty(keywords) || i.CiqCode.Contains(keywords) || i.HsCode.Contains(keywords) || i.Description.Contains(keywords) || i.DescriptionEn.Contains(keywords)) });
         }
 
         [Route("goods/GetCustomerProductDetail")]

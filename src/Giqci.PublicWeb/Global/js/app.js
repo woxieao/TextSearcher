@@ -248,6 +248,18 @@ app.controller('GoodsListController', [
                 $scope.customProductList = response.result;
             }, $scope);
         };
+        $scope.postData = {
+            Index: 1,
+            pageSize: 10,
+            keywords: $scope.keyword
+        };
+        $scope.search = function () {
+            $scope.postData = {
+                keywords: $scope.keyword
+            };
+            $scope.list($scope.postData);
+            $scope.list2($scope.postData);
+        }
         $scope.list2($scope.postData);
         $scope.remove2 = function (id, index) {
             if (confirm("您确定要删除该商品吗?")) {
@@ -266,7 +278,7 @@ app.controller('GoodsListController', [
         var _modalEditMerchantProduct = document.getElementById("form-add-custom-product");
         angular.element(_modalEditMerchantProduct).on('hide.bs.modal', function () {
             $scope.CustomDialogModel = null;
-        })
+        });
 
         $scope.submitAddCustomProduct = function () {
             $giqci.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
@@ -292,6 +304,12 @@ app.controller('GoodsListController', [
             $("#form-add-custom-product").modal("hide");
             $("#form-add-goods-product").modal("hide");
         };
+        $scope.showproduct = function (ciqCode) {
+            $giqci.post('/api/goods/searchproduct', { ciqCode: ciqCode }).success(function (response) {
+                $scope.ProductDialogModel = response.result;
+            }, $scope);
+            $("#form-product-view").modal("show");
+        }
         //change product
         $scope.CiqCode = '';
         $scope.changeProductList = false;
@@ -346,7 +364,7 @@ app.controller('GoodsListController', [
         };
         angular.element(_modal).on('hide.bs.modal', function () {
             $scope.isSearch = false;
-        })
+        });
     }
 ]);
 
