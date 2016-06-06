@@ -305,6 +305,7 @@ app.controller('GoodsListController', [
             $("#form-add-goods-product").modal("hide");
         };
         $scope.showproduct = function (ciqCode) {
+            $scope.ProductDialogModel = null;
             $giqci.post('/api/goods/searchproduct', { ciqCode: ciqCode }).success(function (response) {
                 $scope.ProductDialogModel = response.result;
             }, $scope);
