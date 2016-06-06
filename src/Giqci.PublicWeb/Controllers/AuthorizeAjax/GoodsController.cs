@@ -164,13 +164,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         public ActionResult MerchantGetCustomProductList(string keywords = "")
         {
             var result = _merchantRepository.SelectCustomerProducts(_auth.GetAuth().MerchantId, keywords);
-            var resultFilter = result.Where(i => string.IsNullOrEmpty(keywords)
-                                                 || i.Code.Contains(keywords)
-                                                 || i.Description.Contains(keywords)
-                                                 || i.DescriptionEn.Contains(keywords)
-                                                 || i.HsCode.Contains(keywords)
-                                                 || i.Manufacturer.Contains(keywords));
-            return new AjaxResult(new { result = resultFilter });
+            return new AjaxResult(new { result = result });
         }
 
         [Route("goods/deletecustomproduct")]
