@@ -45,7 +45,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             pageSize = 10000;
             var productList = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, pageIndex, pageSize);
             var result = _productApiProxy.SearchProduct(productList);
-            return new AjaxResult(new { result = result.Where(i => string.IsNullOrEmpty(keywords) || i.CiqCode.Contains(keywords) || i.HsCode.Contains(keywords) || i.Description.Contains(keywords) || i.DescriptionEn.Contains(keywords)) });
+            return new AjaxResult(new { result = result.Where(i => string.IsNullOrEmpty(keywords) || i.CiqCode.Contains(keywords) || i.HsCode.Contains(keywords) || (!string.IsNullOrEmpty(i.Description) && i.Description.Contains(keywords)) || (!string.IsNullOrEmpty(i.DescriptionEn) && i.DescriptionEn.Contains(keywords))) });
         }
 
         [Route("goods/GetCustomerProductDetail")]
@@ -74,7 +74,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             }
 
             return new AjaxResult(
-                new { result = result, msg = msg == null ? "添加成功" : "添加失败,可能的原因:该商品已添加" });
+                new { result = result, msg = msg == null ? "添加成功" : "添加失败,可能的原因该商品已添加" });
         }
 
         [Route("goods/delete")]
@@ -112,7 +112,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                 var reg = new Regex("^[a-z0-9A-Z]+$");
                 if (!reg.IsMatch(product.Code))
                 {
-                    return new AjaxResult(new { flag = false, msg = "商品标识只能为数字或者字母" });
+                    return new AjaxResult(new { flag = false, msg = "商品标识只能为数字或者字母"});
                 }
                 if (isExit)
                 {
