@@ -11,7 +11,13 @@
         <div class="panel-body">
             <ul class="note">
                 <li>
-                    <a class="btn btn-primary btn-sm" href="/goods/add">添加备案商品</a> &nbsp;&nbsp;<a class="btn btn-primary btn-sm" href="/goods/showcustomproduct">添加非备案商品</a>
+                    <form class="form-inline">
+                        <a class="btn btn-primary btn-sm" href="/goods/add">添加备案商品</a> &nbsp;&nbsp;<a class="btn btn-primary btn-sm" href="/goods/showcustomproduct">添加非备案商品</a>
+                        <input type="text" class="form-control" placeholder="请输入关键字" ng-model="keyword" />
+                        <button class="btn btn-default" ng-click="search()">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
+                        </button>
+                    </form>
                 </li>
             </ul>
             <ul class="nav nav-tabs">
@@ -40,7 +46,7 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        <span style="color: green">商品备案号</span>
+                                        <span style="color: green">商品备案号<span style="font-size: 10px; color: red;">(详情请点击备案号)</span></span>
                                     </th>
                                     <th>HS编码</th>
                                     <th>名称(中文)</th>
@@ -54,7 +60,7 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="Product in merchantProductList">
-                                    <td class="td-ellipsis" style="color: green" title="{{Product.CiqCode}}">{{Product.CiqCode}}</td>
+                                    <td class="td-ellipsis" style="color: green" title="{{Product.CiqCode}}"><a href="javascript:;" ng-click="showproduct(Product.CiqCode)">{{Product.CiqCode}}</a></td>
                                     <td class="td-ellipsis" title="{{Product.HsCode}}">{{Product.HsCode}}</td>
                                     <td class="td-ellipsis" title="{{Product.Description}}">{{Product.Description}}</td>
                                     <td class="td-ellipsis" title="{{Product.DescriptionEn}}">{{Product.DescriptionEn}}</td>
@@ -135,4 +141,5 @@
     </div>
     @Html.Partial("PopUp/EditProduct")
     @Html.Partial("PopUp/ChangeProduct")
+    @Html.Partial("PopUp/ProductView")
 </div>
