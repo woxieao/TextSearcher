@@ -1,0 +1,11 @@
+D:\Study\TextSearcher\TextSearcher\bin\Debug\TextSearcher.exe.config
+D:\Study\TextSearcher\TextSearcher\bin\Debug\TextSearcher.exe
+D:\Study\TextSearcher\TextSearcher\bin\Debug\TextSearcher.pdb
+D:\Study\TextSearcher\TextSearcher\obj\Debug\TextSearcher.csprojResolveAssemblyReference.cache
+D:\Study\TextSearcher\TextSearcher\obj\Debug\TextSearcher.Form1.resources
+D:\Study\TextSearcher\TextSearcher\obj\Debug\TextSearcher.Properties.Resources.resources
+D:\Study\TextSearcher\TextSearcher\obj\Debug\TextSearcher.csproj.GenerateResource.Cache
+D:\Study\TextSearcher\TextSearcher\obj\Debug\TextSearcher.exe
+D:\Study\TextSearcher\TextSearcher\obj\Debug\TextSearcher.pdb
+D:\Study\TextSearcher\TextSearcher\bin\Debug\Newtonsoft.Json.dll
+D:\Study\TextSearcher\TextSearcher\bin\Debug\Newtonsoft.Json.xml
