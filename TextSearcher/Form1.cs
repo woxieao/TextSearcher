@@ -42,9 +42,9 @@ namespace TextSearcher
                     }
                 }
             }
-            dirPathBox.Text.OverrideValue(dataList, 0);
-            fileTypeBox.Text.OverrideValue(dataList, 1);
-            ignoreDirBox.Text.OverrideValue(dataList, 2);
+            dirPathBox.OverrideValue(dataList, 0);
+            fileTypeBox.OverrideValue(dataList, 1);
+            ignoreDirBox.OverrideValue(dataList, 2);
         }
 
         private void SaveData()
@@ -87,7 +87,7 @@ namespace TextSearcher
                         {
                             var text = stream.ReadToEnd();
                             var keywords = keywordsBox.Text ?? string.Empty;
-                            if ( text.IndexOf(keywords, _caseSensitive
+                            if (text.IndexOf(keywords, _caseSensitive
                                     ? StringComparison.CurrentCulture
                                     : StringComparison.CurrentCultureIgnoreCase) != -1)
                             {
