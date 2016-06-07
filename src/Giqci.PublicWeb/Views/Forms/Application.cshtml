@@ -1055,10 +1055,10 @@
                                     </tr>
                                     <tr>
                                         <th>
-                                            <p class="form-control-static">批次号或保质期<span style="color: red;">*</span></p>
+                                            <p class="form-control-static">批次号/保质期<span style="color: red;">*</span></p>
                                         </th>
                                         <td>
-                                            <input ng-if="batch.HandlerType==1" type="text" ng-model="batch.BatchNo" class="form-control" placeholder="优先填写批次号" maxlength="100"/>
+                                            <input ng-if="batch.HandlerType==1" type="text" ng-model="batch.BatchNo" class="form-control" placeholder="批次号优先填写;保质期为日/月/年" maxlength="100"/>
                                             <p ng-if="batch.HandlerType==0" ng-model="batch.BatchNo" class="form-control-static">{{batch.BatchNo}}</p>
                                         </td>
                                         <th></th>
