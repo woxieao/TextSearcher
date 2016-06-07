@@ -19,7 +19,7 @@ namespace TextSearcher
         private static bool _needReload = false;
         private const string SaveFileName = "SearchInfo.config";
         private Thread _thread;
-        private static string[] _searchResult;
+        private static List<string> _searchResult = new List<string>();
 
         public Form1()
         {
@@ -65,24 +65,18 @@ namespace TextSearcher
 
         private void Search()
         {
+            _searchResult = new List<string>();
             try
             {
                 var dirList = Core.GetDirList(dirPathBox.Text, ignoreDirBox.Text.Split(',').Select(i => i.Trim()).ToList());
                 var filePathList = new List<FileInfo>();
-                var result = new List<string>();
+
                 var fileTypeList = fileTypeBox.Text.Split(',').Select(i => i.Trim()).ToList();
                 foreach (var dir in dirList)
                 {
-                    if (fileTypeList.Count != 0)
+                    foreach (var fileType in fileTypeList)
                     {
-                        foreach (var fileType in fileTypeList)
-                        {
-                            filePathList.AddRange(dir.GetFiles(fileType));
-                        }
-                    }
-                    else
-                    {
-                        filePathList.AddRange(dir.GetFiles());
+                        filePathList.AddRange(dir.GetFiles(string.IsNullOrWhiteSpace(fileType) ? "*" : fileType));
                     }
                 }
                 if (_textOrFileName)
@@ -93,12 +87,11 @@ namespace TextSearcher
                         {
                             var text = stream.ReadToEnd();
                             var keywords = keywordsBox.Text ?? string.Empty;
-                            if (!string.IsNullOrWhiteSpace(keywords)
-                                && text.IndexOf(keywords, _caseSensitive
+                            if ( text.IndexOf(keywords, _caseSensitive
                                     ? StringComparison.CurrentCulture
                                     : StringComparison.CurrentCultureIgnoreCase) != -1)
                             {
-                                result.Add(filePath.FullName);
+                                _searchResult.Add(filePath.FullName);
                             }
                         }
                     }
@@ -113,10 +106,10 @@ namespace TextSearcher
                             && fileName.IndexOf(keywords, _caseSensitive
                                 ? StringComparison.CurrentCulture
                                 : StringComparison.CurrentCultureIgnoreCase) != -1)
-                            result.Add(filePath.FullName);
+                            _searchResult.Add(filePath.FullName);
                     }
                 }
-                _searchResult = result.OrderByDescending(i => i).ToArray();
+
             }
             catch (Exception ex)
             {
@@ -193,6 +186,8 @@ namespace TextSearcher
             if (_inSearch && _thread.IsAlive)
             {
                 _thread.Abort("Search cancelled");
+                fileListBox.Items.AddRange(_searchResult.OrderBy(i => i).ToArray());
+                _needReload = false;
                 _inSearch = false;
             }
         }
@@ -201,7 +196,7 @@ namespace TextSearcher
         {
             if (_thread != null && !_thread.IsAlive && _needReload)
             {
-                fileListBox.Items.AddRange(_searchResult ?? new string[] { });
+                fileListBox.Items.AddRange(_searchResult.OrderBy(i => i).ToArray());
                 msgLabel.Text = $"Count:{  fileListBox.Items.Count}";
                 _needReload = false;
             }
