@@ -1,4 +1,5 @@
-﻿@using Giqci.Chapi.Models.App
+﻿@using Giqci.Chapi.Enums.App
+@using Giqci.Chapi.Models.App
 @using Giqci.PublicWeb.Extensions
 @using Giqci.PublicWeb.Models
 @using Giqci.Tools
@@ -330,9 +331,12 @@
                                 <div class="col-sm-10">
                                     @foreach (var item in validCerts)
                                     {
-                                        <div class="form-control-static">
-                                            <strong>@item.CertType.ToDescription()</strong>：<a target="_blank" href="@string.Format("{0}/{1}.draft.pdf", Config.Common.ViewFileUrl, Filer.EncryptFilePath(Config.Common.CertFileSavePath, item.CertPath.Substring(0, item.CertPath.Length - 4)))">@item.CertNo</a> by @item.SignedBy @item.SignedDate
-                                        </div>
+                                        if (item.CertType == CertType.C101)
+                                        {
+                                            <div class="form-control-static">
+                                                <strong>@item.CertType.ToDescription()</strong>：<a target="_blank" href="@string.Format("{0}/{1}.draft.pdf", Config.Common.ViewFileUrl, Filer.EncryptFilePath(Config.Common.CertFileSavePath, item.CertPath.Substring(0, item.CertPath.Length - 4)))">@item.CertNo</a> by @item.SignedBy @item.SignedDate
+                                            </div>
+                                        }
                                     }
                                 </div>
                             </div>
