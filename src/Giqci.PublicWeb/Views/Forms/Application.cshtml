@@ -1042,9 +1042,7 @@
                             <div ng-repeat="batch in item.ProductItemList | filter:listFilter">
                                 <table class="table table-striped">
                                     <colgroup>
-                                        <col width="120" />
-                                        <col width="360" />
-                                        <col width="120" />
+                                        <col width="140" />
                                         <col width="360" />
                                     </colgroup>
                                     <tr>
@@ -1057,21 +1055,15 @@
                                     </tr>
                                     <tr>
                                         <th>
-                                            <p class="form-control-static">批次号</p>
+                                            <p class="form-control-static">批次号或保质期<span style="color: red;">*</span></p>
                                         </th>
                                         <td>
-                                            <input ng-if="batch.HandlerType==1" type="text" ng-model="batch.BatchNo" class="form-control" maxlength="100" />
+                                            <input ng-if="batch.HandlerType==1" type="text" ng-model="batch.BatchNo" class="form-control" placeholder="优先填写批次号" maxlength="100"/>
                                             <p ng-if="batch.HandlerType==0" ng-model="batch.BatchNo" class="form-control-static">{{batch.BatchNo}}</p>
                                         </td>
-                                        <th>
-                                            <p class="form-control-static">保质期 <span style="color: red;">*</span></p>
-                                        </th>
-                                        <td>
-                                            <input ng-if="batch.HandlerType==1" type="text" ng-model="batch.ExpiryDate" class="form-control datetimepicker" ng-mousedown="itemClickHandler($event)" />
-                                            <p ng-if="batch.HandlerType==0" ng-model="batch.ExpiryDate" class="form-control-static">{{batch.ExpiryDate}}</p>
-                                        </td>
-                                    </tr>
-
+                                        <th></th>
+                                        <td></td>
+                                     </tr>
                                 </table>
                             </div>
                             <!--end 批次号-->

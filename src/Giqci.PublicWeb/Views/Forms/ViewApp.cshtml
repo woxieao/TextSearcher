@@ -190,24 +190,18 @@
                             <div ng-repeat="batch in item.ProductItemList">
                                 <table class="table table-striped">
                                     <colgroup>
-                                        <col width="120" />
-                                        <col width="360" />
-                                        <col width="120" />
+                                        <col width="140" />
                                         <col width="360" />
                                     </colgroup>
                                     <tr>
                                         <th>
-                                            <p class="form-control-static">批次号</p>
+                                            <p class="form-control-static">批次号或保质期</p>
                                         </th>
                                         <td>
                                             <p class="form-control-static">{{batch.BatchNo}}</p>
                                         </td>
-                                        <th>
-                                            <p class="form-control-static">保质期</p>
-                                        </th>
-                                        <td>
-                                            <p class="form-control-static">{{batch.ExpiryDate|date:'yyyy/MM/dd'}}</p>
-                                        </td>
+                                        <th></th>
+                                        <td></td>
                                     </tr>
                                 </table>
                             </div>

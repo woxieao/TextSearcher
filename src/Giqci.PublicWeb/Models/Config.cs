@@ -10,7 +10,7 @@ namespace Giqci.PublicWeb.Models
         {
             public static readonly Dictionary<string, string> HostList = new Dictionary<string, string>
             {
-                {"China",WebConfigurationManager.AppSettings["ChinaHost"] },
+                {"CN",WebConfigurationManager.AppSettings["ChinaHost"] },
                 {"Default", WebConfigurationManager.AppSettings["DefaultHost"]}
             };
         }
