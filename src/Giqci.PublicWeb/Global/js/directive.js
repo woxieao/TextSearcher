@@ -16,11 +16,11 @@ app.directive("ajaxSelect", function ($timeout, $http) {
                         if (data.items.length >= 1) {
                             var newVal = '';
                             if (1 === data.items.length) {
-                                newVal = (url === "commonhscodes") ? data.items[0].Code + '-' + data.items[0].Name : data.items[0].Code + '-' + data.items[0].CnName;
+                                newVal = data.items[0].Code;
                             } else {
                                 $.each(data.items, function (i, v) {
                                     if (v.Code == model.$viewValue) {
-                                        newVal = (url === "commonhscodes") ? v.Code + '-' + v.Name : v.Code + '-' + v.CnName;
+                                        newVal = v.Code;
                                     }
                                 });
                             }
@@ -416,7 +416,7 @@ app.directive("ajaxProduct", function ($timeout, $http) {
             var $element = $(element);
             var url = attrs["ajaxUrl"];
             scope.dataList = [];
-            scope.$watch("ngModel", function (n, o) {
+            scope.$watch(attrs.ngModel, function (n, o) {
                 $(element).next().find("span.select2-selection__rendered").html('<span class="select2-selection__placeholder">请输入关键词搜索 / 点击“添加/管理”查看所有商品信息并选择</span>');
             }, true);
 
