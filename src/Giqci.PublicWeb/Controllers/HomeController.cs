@@ -17,15 +17,15 @@ namespace Giqci.PublicWeb.Controllers
         [Route("")]
         public ActionResult Index()
         {
-            //const string defaultPage = "forms/app";
-            //var ipInfo = _ipDictionaryService.GetCountry();
-            //var hostUrl = string.Empty;
-            //if (ipInfo != null)
-            //{
-            //    hostUrl = Config.Hosts.HostList.ContainsKey(ipInfo.CountryName) ? Config.Hosts.HostList[ipInfo.CountryName] : Config.Hosts.HostList["DefaultHost"];
-            //}
-            //return Redirect(string.Format("{0}/{1}", hostUrl, defaultPage));
-            return Redirect("/forms/app");
+            const string defaultPage = "forms/app";
+            var ipInfo = _ipDictionaryService.GetCountry();
+            var hostUrl = string.Empty;
+            if (ipInfo != null)
+            {
+                hostUrl = Config.Hosts.HostList.ContainsKey(ipInfo.CountryName) ? Config.Hosts.HostList[ipInfo.CountryName] : Config.Hosts.HostList["DefaultHost"];
+            }
+            return Redirect(string.Format("{0}/{1}", hostUrl, defaultPage));
+            // return Redirect("/forms/app");
         }
 
         [Route("terms")]

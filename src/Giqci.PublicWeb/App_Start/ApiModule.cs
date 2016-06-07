@@ -22,7 +22,7 @@ namespace Giqci.PublicWeb
             builder.Register(x => RestClientFactory.Create(Config.ApiUrl.DictApiUrl, false))
                 .Keyed<HttpClient>(ApiType.Dict)
                 .SingleInstance();
-            builder.Register(x => RestClientFactory.Create(Config.ApiUrl.DictApiUrl, false))
+            builder.Register(x => RestClientFactory.Create(Config.ApiUrl.IpApiUrl, false))
              .Keyed<HttpClient>(ApiType.Ip)
              .SingleInstance();
             builder.Register(x => RestClientFactory.Create(Config.ApiUrl.ProdApiUrl, false))

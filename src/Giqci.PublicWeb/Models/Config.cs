@@ -49,6 +49,7 @@ namespace Giqci.PublicWeb.Models
             public static readonly string ProdApiUrl = WebConfigurationManager.AppSettings[nameof(ProdApiUrl)];
             public static readonly string CustApiUrl = WebConfigurationManager.AppSettings[nameof(CustApiUrl)];
             public static readonly string AppApiUrl = WebConfigurationManager.AppSettings[nameof(AppApiUrl)];
+            public static readonly string IpApiUrl = WebConfigurationManager.AppSettings[nameof(IpApiUrl)];
         }
 
         public struct LogSwitch
