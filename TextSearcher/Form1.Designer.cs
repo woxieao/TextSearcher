@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.keywordsBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -42,6 +43,8 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.textOrFileNameBtn = new System.Windows.Forms.Button();
+            this.abortBtn = new System.Windows.Forms.Button();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // keywordsBox
@@ -63,7 +66,7 @@
             // 
             // searchBtn
             // 
-            this.searchBtn.Location = new System.Drawing.Point(300, 430);
+            this.searchBtn.Location = new System.Drawing.Point(210, 430);
             this.searchBtn.Name = "searchBtn";
             this.searchBtn.Size = new System.Drawing.Size(75, 23);
             this.searchBtn.TabIndex = 2;
@@ -162,11 +165,27 @@
             this.textOrFileNameBtn.UseVisualStyleBackColor = true;
             this.textOrFileNameBtn.Click += new System.EventHandler(this.textOrFileNameBtn_Click);
             // 
+            // abortBtn
+            // 
+            this.abortBtn.Location = new System.Drawing.Point(367, 430);
+            this.abortBtn.Name = "abortBtn";
+            this.abortBtn.Size = new System.Drawing.Size(75, 23);
+            this.abortBtn.TabIndex = 14;
+            this.abortBtn.Text = "&Abort";
+            this.abortBtn.UseVisualStyleBackColor = true;
+            this.abortBtn.Click += new System.EventHandler(this.abortBtn_Click);
+            // 
+            // timer1
+            // 
+            this.timer1.Enabled = true;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(684, 461);
+            this.Controls.Add(this.abortBtn);
             this.Controls.Add(this.textOrFileNameBtn);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -184,6 +203,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "TextSearcher";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -204,6 +224,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button textOrFileNameBtn;
+        private System.Windows.Forms.Button abortBtn;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 
