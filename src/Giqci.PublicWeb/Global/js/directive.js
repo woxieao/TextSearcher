@@ -16,11 +16,11 @@ app.directive("ajaxSelect", function ($timeout, $http) {
                         if (data.items.length >= 1) {
                             var newVal = '';
                             if (1 === data.items.length) {
-                                newVal = data.items[0].Code;
+                                newVal = (url === "commonhscodes") ? data.items[0].Code + '-' + data.items[0].Name : data.items[0].Code + '-' + data.items[0].CnName;
                             } else {
                                 $.each(data.items, function (i, v) {
                                     if (v.Code == model.$viewValue) {
-                                        newVal = v.Code;
+                                        newVal = (url === "commonhscodes") ? v.Code + '-' + v.Name : v.Code + '-' + v.CnName;
                                     }
                                 });
                             }
