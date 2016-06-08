@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.keywordsBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -43,8 +42,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.textOrFileNameBtn = new System.Windows.Forms.Button();
-            this.abortBtn = new System.Windows.Forms.Button();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.chooseDirBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // keywordsBox
@@ -66,7 +64,7 @@
             // 
             // searchBtn
             // 
-            this.searchBtn.Location = new System.Drawing.Point(210, 430);
+            this.searchBtn.Location = new System.Drawing.Point(305, 426);
             this.searchBtn.Name = "searchBtn";
             this.searchBtn.Size = new System.Drawing.Size(75, 23);
             this.searchBtn.TabIndex = 2;
@@ -108,9 +106,9 @@
             // 
             this.dirPathBox.Location = new System.Drawing.Point(86, 51);
             this.dirPathBox.Name = "dirPathBox";
-            this.dirPathBox.Size = new System.Drawing.Size(579, 21);
+            this.dirPathBox.Size = new System.Drawing.Size(470, 21);
             this.dirPathBox.TabIndex = 7;
-            this.dirPathBox.Text = "D:\\HuiberFile";
+            this.dirPathBox.Text = "C:\\";
             // 
             // fileTypeBox
             // 
@@ -118,7 +116,7 @@
             this.fileTypeBox.Name = "fileTypeBox";
             this.fileTypeBox.Size = new System.Drawing.Size(579, 21);
             this.fileTypeBox.TabIndex = 8;
-            this.fileTypeBox.Text = "*.js, *.cs,*.txt,*.config";
+            this.fileTypeBox.Text = "[\"js\",\"cs\",\"txt\",\"config\"]";
             // 
             // ignoreDirBox
             // 
@@ -126,7 +124,7 @@
             this.ignoreDirBox.Name = "ignoreDirBox";
             this.ignoreDirBox.Size = new System.Drawing.Size(579, 21);
             this.ignoreDirBox.TabIndex = 9;
-            this.ignoreDirBox.Text = ".vs,.git,packages,bin,obj";
+            this.ignoreDirBox.Text = "[\".vs\",\".git\",\"packages\",\"bin\",\"obj\"]";
             // 
             // label2
             // 
@@ -165,27 +163,22 @@
             this.textOrFileNameBtn.UseVisualStyleBackColor = true;
             this.textOrFileNameBtn.Click += new System.EventHandler(this.textOrFileNameBtn_Click);
             // 
-            // abortBtn
+            // chooseDirBtn
             // 
-            this.abortBtn.Location = new System.Drawing.Point(367, 430);
-            this.abortBtn.Name = "abortBtn";
-            this.abortBtn.Size = new System.Drawing.Size(75, 23);
-            this.abortBtn.TabIndex = 14;
-            this.abortBtn.Text = "&Abort";
-            this.abortBtn.UseVisualStyleBackColor = true;
-            this.abortBtn.Click += new System.EventHandler(this.abortBtn_Click);
-            // 
-            // timer1
-            // 
-            this.timer1.Enabled = true;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            this.chooseDirBtn.Location = new System.Drawing.Point(562, 51);
+            this.chooseDirBtn.Name = "chooseDirBtn";
+            this.chooseDirBtn.Size = new System.Drawing.Size(75, 23);
+            this.chooseDirBtn.TabIndex = 14;
+            this.chooseDirBtn.Text = "ChooseDir";
+            this.chooseDirBtn.UseVisualStyleBackColor = true;
+            this.chooseDirBtn.Click += new System.EventHandler(this.chooseDirBtn_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(684, 461);
-            this.Controls.Add(this.abortBtn);
+            this.Controls.Add(this.chooseDirBtn);
             this.Controls.Add(this.textOrFileNameBtn);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -224,8 +217,7 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button textOrFileNameBtn;
-        private System.Windows.Forms.Button abortBtn;
-        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Button chooseDirBtn;
     }
 }
 

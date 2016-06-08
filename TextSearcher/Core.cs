@@ -33,8 +33,5 @@ namespace TextSearcher
             }
             return newDirList;
         }
-
-
-
     }
 }

@@ -4,8 +4,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
 
 namespace TextSearcher
 {
@@ -15,16 +15,25 @@ namespace TextSearcher
 
         private static bool _caseSensitive = false;
         private static bool _textOrFileName = true;
-        private static bool _inSearch = false;
-        private static bool _needReload = false;
         private const string SaveFileName = "SearchInfo.config";
-        private Thread _thread;
-        private static List<string> _searchResult = new List<string>();
+        private static Thread _thread;
 
         public Form1()
         {
             InitializeComponent();
             LoadData();
+        }
+
+        public void CallInMainThread(Action act)
+        {
+            if (InvokeRequired)
+            {
+                Invoke(new Action<Action>(CallInMainThread), act);
+            }
+            else
+            {
+                act();
+            }
         }
 
         #region Data handler
@@ -41,10 +50,17 @@ namespace TextSearcher
                         dataList.Add(stream.ReadLine());
                     }
                 }
+                try
+                {
+                    dirPathBox.OverrideValue(dataList, 0);
+                    fileTypeBox.OverrideValue(dataList, 1);
+                    ignoreDirBox.OverrideValue(dataList, 2);
+                }
+                catch
+                {
+                    return;
+                }
             }
-            dirPathBox.OverrideValue(dataList, 0);
-            fileTypeBox.OverrideValue(dataList, 1);
-            ignoreDirBox.OverrideValue(dataList, 2);
         }
 
         private void SaveData()
@@ -63,20 +79,69 @@ namespace TextSearcher
         }
         #endregion
 
-        private void Search()
+
+        private string[] GetFileTypeList()
         {
-            _searchResult = new List<string>();
+            var defaultValue = "[\"txt\",\"cs\",\"defaultFileType\"]";
             try
             {
-                var dirList = Core.GetDirList(dirPathBox.Text, ignoreDirBox.Text.Split(',').Select(i => i.Trim()).ToList());
-                var filePathList = new List<FileInfo>();
+                var fileTypeList = JsonConvert.DeserializeObject<string[]>(fileTypeBox.Text);
+                fileTypeList = fileTypeList.Length == 0 ? new[] { "*" } : fileTypeList;
+                for (var i = 0; i < fileTypeList.Length; i++)
+                {
+                    var type = fileTypeList[i].Trim();
+                    type = string.IsNullOrWhiteSpace(type) ? "*" : type;
+                    if (type == "*")
+                        return new[] { "*" };
+                    fileTypeList[i] = $"*.{type}";
+                }
+                return fileTypeList;
+            }
+            catch
+            {
+                fileTypeBox.Text = defaultValue;
+                new Thread(() => MessageBox.Show(@"Deserialize fileTypeList Failed!")).Start();
+                return JsonConvert.DeserializeObject<string[]>(defaultValue);
+            }
+        }
 
-                var fileTypeList = fileTypeBox.Text.Split(',').Select(i => i.Trim()).ToList();
+        private string[] GetDirList()
+        {
+            var defaultValue = "[\".vs\",\".git\",\"packages\",\"bin\",\"obj\"]";
+            try
+            {
+                var ignoreDirList = JsonConvert.DeserializeObject<string[]>(ignoreDirBox.Text);
+                return ignoreDirList;
+            }
+            catch
+            {
+                ignoreDirBox.Text = defaultValue;
+                new Thread(() => MessageBox.Show(@"Deserialize ignoreDirList Failed!")).Start();
+                return JsonConvert.DeserializeObject<string[]>(defaultValue);
+            }
+        }
+
+
+
+        private void Search()
+        {
+            CallInMainThread(() => fileListBox.Items.Clear());
+            var searchResult = new List<string>();
+            try
+            {
+                var dirStrList = new List<string>();
+                CallInMainThread(() => fileListBox.Items.Clear());
+                CallInMainThread(() => dirStrList = GetDirList().ToList());
+                var dirList = Core.GetDirList(dirPathBox.Text, dirStrList);
+                var filePathList = new List<FileInfo>();
+                var fileTypeList = new List<string>();
+                CallInMainThread(() => { fileTypeList = GetFileTypeList().ToList(); });
+
                 foreach (var dir in dirList)
                 {
                     foreach (var fileType in fileTypeList)
                     {
-                        filePathList.AddRange(dir.GetFiles(string.IsNullOrWhiteSpace(fileType) ? "*" : fileType));
+                        filePathList.AddRange(dir.GetFiles(fileType));
                     }
                 }
                 if (_textOrFileName)
@@ -88,10 +153,15 @@ namespace TextSearcher
                             var text = stream.ReadToEnd();
                             var keywords = keywordsBox.Text ?? string.Empty;
                             if (text.IndexOf(keywords, _caseSensitive
-                                    ? StringComparison.CurrentCulture
-                                    : StringComparison.CurrentCultureIgnoreCase) != -1)
+                                ? StringComparison.CurrentCulture
+                                : StringComparison.CurrentCultureIgnoreCase) != -1)
                             {
-                                _searchResult.Add(filePath.FullName);
+                                searchResult.Add(filePath.FullName);
+                                CallInMainThread(() =>
+                                {
+                                    fileListBox.Items.Add(filePath.FullName);
+                                    msgLabel.Text = $"Searching({searchResult.Count})...";
+                                });
                             }
                         }
                     }
@@ -102,30 +172,52 @@ namespace TextSearcher
                     {
                         var fileName = filePath.FullName;
                         var keywords = keywordsBox.Text ?? string.Empty;
-                        if (!string.IsNullOrWhiteSpace(keywords)
-                            && fileName.IndexOf(keywords, _caseSensitive
-                                ? StringComparison.CurrentCulture
-                                : StringComparison.CurrentCultureIgnoreCase) != -1)
-                            _searchResult.Add(filePath.FullName);
+                        if (fileName.IndexOf(keywords, _caseSensitive
+                            ? StringComparison.CurrentCulture
+                            : StringComparison.CurrentCultureIgnoreCase) != -1)
+                            searchResult.Add(filePath.FullName);
+                        CallInMainThread(() =>
+                        {
+                            fileListBox.Items.Add(filePath.FullName);
+                            msgLabel.Text = $"Searching({searchResult.Count})...";
+                        });
                     }
                 }
 
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.Message);
             }
-            _needReload = true;
+            finally
+            {
+                CallInMainThread(() =>
+                {
+                    CallInMainThread(() => fileListBox.Items.Clear());
+                    fileListBox.Items.AddRange(searchResult.OrderBy(i => i).ToArray());
+                    searchBtn.Text = @"&Search";
+                    msgLabel.Text = $"Done!({searchResult.Count})";
+                });
+            }
         }
 
 
 
         private void searchHandler()
         {
-            _thread = new Thread(Search);
-            msgLabel.Text = @"Searching...";
-            fileListBox.Items.Clear();
-            _thread.Start();
+            _thread = _thread ?? new Thread(Search);
+            if (_thread.IsAlive)
+            {
+                searchBtn.Text = @"&Search";
+                _thread.Abort("Search Cancelled!");
+            }
+            else
+            {
+                _thread = new Thread(Search);
+                msgLabel.Text = @"Searching...";
+                searchBtn.Text = @"&Abort";
+                _thread.Start();
+            }
         }
 
         private void searchBtn_Click(object sender, EventArgs e)
@@ -140,8 +232,7 @@ namespace TextSearcher
 
         private void fileListBox_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            var filePath = new FileInfo(fileListBox.Text).DirectoryName; ;
-            ProcessStartInfo info = new ProcessStartInfo(filePath);
+            ProcessStartInfo info = new ProcessStartInfo(fileListBox.Text);
             Process.Start(info);
         }
 
@@ -159,7 +250,8 @@ namespace TextSearcher
             {
                 case Keys.Enter:
                     {
-                        ProcessStartInfo info = new ProcessStartInfo(fileListBox.Text);
+                        var filePath = new FileInfo(fileListBox.Text).DirectoryName; ;
+                        ProcessStartInfo info = new ProcessStartInfo(filePath);
                         Process.Start(info);
                         break;
                     }
@@ -181,24 +273,23 @@ namespace TextSearcher
             SaveData();
         }
 
-        private void abortBtn_Click(object sender, EventArgs e)
+        private void openFileDialog1_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (_inSearch && _thread.IsAlive)
-            {
-                _thread.Abort("Search cancelled");
-                fileListBox.Items.AddRange(_searchResult.OrderBy(i => i).ToArray());
-                _needReload = false;
-                _inSearch = false;
-            }
+
+
+            ProcessStartInfo info = new ProcessStartInfo(fileListBox.Text);
+            Process.Start(info);
         }
 
-        private void timer1_Tick(object sender, EventArgs e)
+
+
+        private void chooseDirBtn_Click(object sender, EventArgs e)
         {
-            if (_thread != null && !_thread.IsAlive && _needReload)
+            var fbd = new FolderBrowserDialog();
+            fbd.ShowDialog();
+            if (!string.IsNullOrWhiteSpace(fbd.SelectedPath))
             {
-                fileListBox.Items.AddRange(_searchResult.OrderBy(i => i).ToArray());
-                msgLabel.Text = $"Count:{  fileListBox.Items.Count}";
-                _needReload = false;
+                dirPathBox.Text = fbd.SelectedPath;
             }
         }
     }
