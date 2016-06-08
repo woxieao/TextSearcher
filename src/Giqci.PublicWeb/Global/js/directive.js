@@ -416,7 +416,7 @@ app.directive("ajaxProduct", function ($timeout, $http) {
             var $element = $(element);
             var url = attrs["ajaxUrl"];
             scope.dataList = [];
-            scope.$watch(attrs.ngModel, function (n, o) {
+            scope.$watch("ngModel", function (n, o) {
                 $(element).next().find("span.select2-selection__rendered").html('<span class="select2-selection__placeholder">请输入关键词搜索 / 点击“添加/管理”查看所有商品信息并选择</span>');
             }, true);
 
@@ -441,7 +441,7 @@ app.directive("ajaxProduct", function ($timeout, $http) {
                         var results = [];
                         scope.dataList = [];
                         $.each(data.result, function (i, v) {
-                            console.log(v);
+                            //console.log(v);
                             var o = {};
                             o.id = v.Id;
                             o.name = (v.CiqCode ? v.CiqCode : v.Code) + '(' + (v.Description === undefined ? "" : v.Description) + ")";
