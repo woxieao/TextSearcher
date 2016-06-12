@@ -22,7 +22,7 @@ namespace Giqci.PublicWeb.Controllers
             var hostUrl = string.Empty;
             if (ipInfo != null)
             {
-                hostUrl = Config.Hosts.HostList.ContainsKey(ipInfo.CountryCode) ? Config.Hosts.HostList[ipInfo.CountryCode] : Config.Hosts.HostList["DefaultHost"];
+                hostUrl = Config.Hosts.HostList.ContainsKey(ipInfo.CountryCode) ? Config.Hosts.HostList[ipInfo.CountryCode] : Config.Hosts.HostList["Default"];
             }
             return Redirect(string.Format("{0}/{1}", hostUrl, defaultPage));
             // return Redirect("/forms/app");
