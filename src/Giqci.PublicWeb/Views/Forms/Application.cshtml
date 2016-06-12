@@ -643,6 +643,70 @@
                 }
             }
             //console.log($scope.allowType);
+
+            //change product
+            $scope.CiqCode = '';
+            $scope.changeProductList = false;
+            $scope.isSearch = false;
+            $scope.getproductlist = function () {
+                $scope.isSearch = true;
+                var reg = /^\d{10}$/;
+                var reg2 = /^ICIP\d{14}$/i;
+                if (!(reg.test($scope.CiqCode) || reg2.test($scope.CiqCode))) {
+                    $scope.Product = null;
+                    alertService.add('danger', "正确的备案号格式为[ICIP+14个数字]或[10个数字]", 3000);
+                    return;
+                } else {
+                    $giqci.post('/api/goods/searchproduct', { ciqCode: $scope.CiqCode })
+                    .success(function (data) {
+                        if (data.result == null) {
+                            $scope.Product = null;
+                            alertService.add('danger', "该备案号不存在", 3000);
+                        } else {
+                            $scope.Product = data.result;
+                            $scope.changeProductList = true;
+                        }
+                    }, $scope);
+                }
+            };
+
+            var _modal = document.getElementById("form-change-product");
+            var _form_product = document.getElementById("form-product");
+            var _form_submitAddCustomProduct = document.getElementById("submitAddCustomProduct");
+            $scope.changeMerchantProduct = function (index) {
+                $scope.changeProductList = false;
+                $scope.CiqCode = '';
+                angular.element(_modal).modal("show");
+                angular.element(_form_product).modal("hide");
+                $scope.ChangeProductDialogModel = CallByValue($scope.customProductList[index]);
+            };
+            $scope.submitChangeProduct = function (_customProductId, _ciqCode) {
+                angular.element(_form_submitAddCustomProduct).attr("disabled", true);
+                if (false === $scope.isSearch || _customProductId == null || _ciqCode == null) {
+                    alertService.add('danger', "请搜索并获取备案商品信息", 3000);
+                    return;
+                };
+                $giqci.post('/api/goods/convertproduct/' + _customProductId + '/' + _ciqCode,
+                    { enName: $scope.ChangeProductDialogModel.DescriptionEn }
+                ).success(function (response) {
+                    $scope.isSearch = false;
+                    if (response.flag) {
+                        alertService.add('success', "数据已经转换成功", 3000);
+                        //$scope.list($scope.postData);
+                        $scope.getGoodsList();
+                        //$scope.list2($scope.postData);
+                        $scope.getCustomProductList();
+                        angular.element(_form_submitAddCustomProduct).attr("disabled",false);
+                        angular.element(_modal).modal("hide");
+                    } else {
+                        angular.element(_form_submitAddCustomProduct).attr("disabled", false);
+                        alertService.add('danger', response.msg, 3000);
+                    }
+                }, $scope);
+            };
+            angular.element(_modal).on('hide.bs.modal', function () {
+                $scope.isSearch = false;
+            });
         }
         ]);
 
@@ -1392,7 +1456,7 @@
                                         <col />
                                         <col />
                                         <col width='100' />
-                                        <col width='120' />
+                                        <col width='200' />
                                     </colgroup>
                                     <thead>
                                         <tr>
@@ -1412,8 +1476,9 @@
                                             <td class="td-ellipsis" title="{{Product.DescriptionEn}}">{{Product.DescriptionEn}}</td>
                                             <td class="td-ellipsis" title="{{Product.Spec}}">{{Product.Spec}}</td>
                                             <td>
-                                                <div class="btn-group" role="group">
-                                                    <button ng-if="!Product.IsApproved" class="btn btn-primary btn-sm" ng-click="editMerchantProduct(Product)">编辑</button>
+                                                <div class="btn-group pull-right" role="group">
+                                                    <button ng-if="!Product.IsApproved" class="btn btn-default btn-sm" ng-click="editMerchantProduct(Product)">编辑</button>
+                                                    <button type="button" class="btn btn-primary btn-sm" ng-click="changeMerchantProduct($index)">转为备案商品</button>
                                                     <button type="button" class="btn btn-danger btn-sm" ng-click="removeMerchantProductId(Product.Id,$index)">删除</button>
                                                 </div>
                                             </td>
@@ -1433,6 +1498,7 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <!--custom product add modal-->
+    @Html.Partial("PopUp/ChangeProduct")
     @Html.Partial("PopUp/EditProduct")
     <!--goods product add modal-->
     <div class="modal" role="dialog" data-backdrop="static" data-keyboard="false" id="form-add-goods-product">
