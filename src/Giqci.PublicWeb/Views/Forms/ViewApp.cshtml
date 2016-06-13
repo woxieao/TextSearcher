@@ -334,7 +334,7 @@
                                         if (item.CertType == CertType.C101)
                                         {
                                             <div class="form-control-static">
-                                                <strong>@item.CertType.ToDescription()</strong>：<a target="_blank" href="@string.Format("{0}/{1}", Config.Common.ViewFileUrl, Filer.EncryptFilePath(Config.Common.CertFileSavePath, item.CertPath.Substring(0, item.CertPath.Length - 4)+".draft.pdf"))">@item.CertNo</a> by @item.SignedBy @item.SignedDate
+                                                <strong>@item.CertType.ToDescription()</strong>：<a target="_blank" href="@string.Format("{0}/{1}", Config.Common.ViewFileUrl, Filer.EncryptFilePath(Config.Common.CertFileSavePath, item.CertPath.Substring(0, item.CertPath.Length - 4)+".draft.pdf"))">@item.CertNo</a> by @item.SignedBy @item.SignedDate.DateToString()
                                             </div>
                                         }
                                     }
