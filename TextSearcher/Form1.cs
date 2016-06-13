@@ -131,21 +131,21 @@ namespace TextSearcher
             {
                 var dirStrList = new List<string>();
                 CallInMainThread(() => fileListBox.Items.Clear());
-                CallInMainThread(() => dirStrList = GetDirList().ToList());
+                CallInMainThread(() => dirStrList = (GetDirList() ?? new string[] { }).ToList());
                 var dirList = Core.GetDirList(dirPathBox.Text, dirStrList);
                 var filePathList = new List<FileInfo>();
                 var fileTypeList = new List<string>();
                 CallInMainThread(() => { fileTypeList = GetFileTypeList().ToList(); });
 
-                foreach (var dir in dirList)
-                {
-                    foreach (var fileType in fileTypeList)
-                    {
-                        filePathList.AddRange(dir.GetFiles(fileType));
-                    }
-                }
                 if (_textOrFileName)
                 {
+                    foreach (var dir in dirList)
+                    {
+                        foreach (var fileType in fileTypeList)
+                        {
+                            filePathList.AddRange(dir.GetFiles(fileType));
+                        }
+                    }
                     foreach (var filePath in filePathList)
                     {
                         using (var stream = new StreamReader(filePath.FullName))
@@ -168,6 +168,10 @@ namespace TextSearcher
                 }
                 else
                 {
+                    foreach (var dir in dirList)
+                    {
+                        filePathList.AddRange(dir.GetFiles());
+                    }
                     foreach (var filePath in filePathList)
                     {
                         var fileName = filePath.FullName;
@@ -175,12 +179,14 @@ namespace TextSearcher
                         if (fileName.IndexOf(keywords, _caseSensitive
                             ? StringComparison.CurrentCulture
                             : StringComparison.CurrentCultureIgnoreCase) != -1)
-                            searchResult.Add(filePath.FullName);
-                        CallInMainThread(() =>
                         {
-                            fileListBox.Items.Add(filePath.FullName);
-                            msgLabel.Text = $"Searching({searchResult.Count})...";
-                        });
+                            searchResult.Add(filePath.FullName);
+                            CallInMainThread(() =>
+                            {
+                                fileListBox.Items.Add(filePath.FullName);
+                                msgLabel.Text = $"Searching({searchResult.Count})...";
+                            });
+                        }
                     }
                 }
 
