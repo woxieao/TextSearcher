@@ -39,6 +39,8 @@ namespace Giqci.PublicWeb.Models
             public static readonly string ViewFileUrl = WebConfigurationManager.AppSettings[nameof(ViewFileUrl)];
 
             public static readonly bool HideServiceError = bool.Parse(WebConfigurationManager.AppSettings[nameof(HideServiceError)]);
+
+            public static readonly DateTime ShowCertTimeLine = Convert.ToDateTime(WebConfigurationManager.AppSettings[nameof(ShowCertTimeLine)]);
         }
 
         public struct ApiUrl
