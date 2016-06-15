@@ -1121,7 +1121,7 @@
                                             </div>
                                         </th>
                                         <td>
-                                            <input ng-show="batch.HandlerType==1&&batch.batchNoOrDate==1" type="text" ng-model="batch.BatchNo" class="form-control" placeholder="批次号" maxlength="100" />
+                                            <input ng-show="batch.HandlerType==1&&(batch.batchNoOrDate==1||batch.batchNoOrDate==null)" type="text" ng-model="batch.BatchNo" class="form-control" placeholder="批次号" maxlength="100" />
                                             <input ng-show="batch.HandlerType==1&&batch.batchNoOrDate==0" ng-mouseover="itemClickHandler($event)" type="text" ng-model="batch.BatchNo" class="form-control datetimepicker" placeholder="日/月/年" maxlength="100" />
                                             <p ng-if="batch.HandlerType==0" ng-model="batch.BatchNo" class="form-control-static">{{batch.BatchNo}}</p>
                                         </td>
