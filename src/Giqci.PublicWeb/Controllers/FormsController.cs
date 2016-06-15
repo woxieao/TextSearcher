@@ -136,28 +136,29 @@ namespace Giqci.PublicWeb.Controllers
         //todo 暂时的处理方法,以免后面需求又改动回不可编辑时直接删掉这个代码即可
         private void ApplicationItemModifyAble(ref Application app)
         {
-            if (app.Status == ApplicationStatus.New)
-            {
-                foreach (var product in app.ApplicationProducts)
-                {
-                    var itemList = new List<ProductItem>();
-                    var productItemList = product.ProductItemList as IList<ProductItem> ??
-                                          product.ProductItemList.ToList();
-                    foreach (var item in productItemList)
-                    {
-                        item.HandlerType = HandlerType.Delete;
-                        itemList.Add(new ProductItem
-                        {
-                            Id = item.Id,
-                            ApplicationProductId = item.ApplicationProductId,
-                            ExpiryDate = item.ExpiryDate,
-                            BatchNo = item.BatchNo,
-                            HandlerType = HandlerType.Add,
-                        });
-                    }
-                    product.ProductItemList = productItemList.Concat(itemList);
-                }
-            }
+            //todo  see...?暂时的处理方法,以免后面需求又改动回可编辑时直接解除注释这个代码即可
+            //if (app.Status == ApplicationStatus.New)
+            //{
+            //    foreach (var product in app.ApplicationProducts)
+            //    {
+            //        var itemList = new List<ProductItem>();
+            //        var productItemList = product.ProductItemList as IList<ProductItem> ??
+            //                              product.ProductItemList.ToList();
+            //        foreach (var item in productItemList)
+            //        {
+            //            item.HandlerType = HandlerType.Delete;
+            //            itemList.Add(new ProductItem
+            //            {
+            //                Id = item.Id,
+            //                ApplicationProductId = item.ApplicationProductId,
+            //                ExpiryDate = item.ExpiryDate,
+            //                BatchNo = item.BatchNo,
+            //                HandlerType = HandlerType.Add,
+            //            });
+            //        }
+            //        product.ProductItemList = productItemList.Concat(itemList);
+            //    }
+            //}
         }
 
         #endregion
