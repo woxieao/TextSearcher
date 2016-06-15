@@ -1105,19 +1105,19 @@
                                 </tr>
                             </table>
                             <!--批次号-->
-                            <div ng-repeat="batch in item.ProductItemList | filter:listFilter">
+                            <div >
                                 <table class="table table-striped">
                                     <colgroup>
                                         <col width="170" />
                                         <col width="360" />
                                     </colgroup>
-                                    <tr>
+                                    <tr ng-repeat="batch in item.ProductItemList | filter:listFilter">
                                         <th>
-                                            <div ng-show="batch.HandlerType==1">
-                                                <input type="radio" ng-model="batch.batchNoOrDate" value="1" checked />批次号
-                                                <input type="radio" ng-model="batch.batchNoOrDate" value="0" />保质期 {{$index+1}}<span style="color: red;">*</span>
+                                            <div ng-show="batch.HandlerType==1" class="form-control-static">
+                                                <input type="radio" ng-model="batch.batchNoOrDate" value="1" checked id="batch_1_{{$index+1}}"/><label for="batch_1_{{$index+1}}">批次号</label>
+                                                <input type="radio" ng-model="batch.batchNoOrDate" value="0" id="batch_0_{{$index+1}}"/><label for="batch_0_{{$index+1}}">保质期</label> {{$index+1}}<span style="color: red;">*</span>
                                             </div>
-                                            <div ng-show="batch.HandlerType==0">
+                                            <div ng-show="batch.HandlerType==0" class="form-control-static">
                                                 批次号/保质期 {{$index+1}}<span style="color: red;">*</span>
                                             </div>
                                         </th>
@@ -1126,43 +1126,38 @@
                                             <input ng-show="batch.HandlerType==1&&batch.batchNoOrDate==0" ng-mouseover="itemClickHandler($event)" type="text" ng-model="batch.BatchNo" class="form-control datetimepicker" placeholder="日/月/年" maxlength="100" />
                                             <p ng-if="batch.HandlerType==0" ng-model="batch.BatchNo" class="form-control-static">{{batch.BatchNo}}</p>
                                         </td>
-                                        <th>操作</th>
-                                        <td><button class="btn btn-default" type="button" ng-click="removeItemByBatchNo(batch)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除批次</button></td>
+                                        <td colspan="2"><button class="btn btn-default" type="button" ng-click="removeItemByBatchNo(batch)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除批次</button></td>
                                      </tr>
                                 </table>
                             </div>
                             <!--end 批次号-->
                             <!--真知码-->
-                            <div ng-repeat="zcode in item.ApplicationZCodes | filter:listFilter">
+                            <div ng-if="(item.ApplicationZCodes|filter:listFilter).length">
                                 <table class="table table-striped">
                                     <colgroup>
-                                        <col width="120" />
-                                        <col width="360" />
-                                        <col width="120" />
-                                        <col width="360" />
+                                        <col width="120"/>
+                                        <col width="360"/>
+                                        <col width="360"/>
+                                        <col width="120"/>
                                     </colgroup>
                                     <tr>
-                                        <th>
-                                            <p class="form-control-static">真知码 {{$index+1}}</p>
-                                        </th>
-                                        <td colspan="3">
-                                            <button class="btn btn-default" type="button" ng-click="removeZcodeItem(zcode)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除真知码</button>
-                                        </td>
+                                        <th>真知码</th>
+                                        <th>首码</th>
+                                        <th>尾码</th>
+                                        <th>操作</th>
                                     </tr>
-                                    <tr>
-                                        <th>
-                                            <p class="form-control-static">首码</p>
-                                        </th>
+                                    <tr ng-repeat="zcode in item.ApplicationZCodes | filter:listFilter">
+                                        <td><p class="form-control-static">真知码 {{$index+1}}</p></td>
                                         <td>
                                             <input ng-if="zcode.HandlerType==1" type="text" ng-model="zcode.ZCodeStart" class="form-control" />
                                             <p ng-if="zcode.HandlerType==0" ng-model="zcode.ZCodeStart" class="form-control-static">{{zcode.ZCodeStart}}</p>
                                         </td>
-                                        <th>
-                                            <p class="form-control-static">尾码</p>
-                                        </th>
                                         <td>
                                             <input ng-if="zcode.HandlerType==1" type="text" ng-model="zcode.ZCodeEnd" class="form-control" />
                                             <p ng-if="zcode.HandlerType==0" ng-model="zcode.ZCodeEnd" class="form-control-static">{{zcode.ZCodeEnd}}</p>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-default" type="button" ng-click="removeZcodeItem(zcode)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除真知码</button>
                                         </td>
                                     </tr>
                                 </table>
