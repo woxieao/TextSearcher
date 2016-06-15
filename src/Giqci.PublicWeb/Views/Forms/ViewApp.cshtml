@@ -188,13 +188,13 @@
                                 </tr>
                             </table>
                             <!--批次-->
-                            <div ng-repeat="batch in item.ProductItemList">
+                            <div>
                                 <table class="table table-striped">
                                     <colgroup>
                                         <col width="140" />
                                         <col width="360" />
                                     </colgroup>
-                                    <tr>
+                                    <tr ng-repeat="batch in item.ProductItemList">
                                         <th>
                                             <p class="form-control-static">批次号/保质期</p>
                                         </th>
@@ -212,19 +212,20 @@
                                 <colgroup>
                                     <col width="120" />
                                     <col width="360" />
-                                    <col width="120" />
                                     <col width="360" />
                                 </colgroup>
+                                <tr>
+                                    <th>真知码</th>
+                                    <th>首码</th>
+                                    <th>尾码</th>
+                                </tr>
                                 <tr ng-repeat="zcode in item.ApplicationZCodes">
-                                    <th>
-                                        <p class="form-control-static">首码</p>
-                                    </th>
+                                    <td>
+                                        <p class="form-control-static">真知码{{$index+1}}</p>
+                                    </td>
                                     <td>
                                         <p class="form-control-static">{{zcode.ZCodeStart}}</p>
                                     </td>
-                                    <th>
-                                        <p class="form-control-static">尾码</p>
-                                    </th>
                                     <td>
                                         <p class="form-control-static">{{zcode.ZCodeEnd}}</p>
                                     </td>
