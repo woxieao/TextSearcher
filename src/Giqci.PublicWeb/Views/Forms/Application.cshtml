@@ -1123,7 +1123,7 @@
                                         </th>
                                         <td>
                                             <input ng-show="batch.HandlerType==1&&(batch.batchNoOrDate==1||batch.batchNoOrDate==null)" type="text" ng-model="batch.BatchNo" class="form-control" placeholder="批次号" maxlength="100" />
-                                            <input ng-show="batch.HandlerType==1&&batch.batchNoOrDate==0" ng-mouseover="itemClickHandler($event)" type="text" ng-model="batch.BatchNo" class="form-control datetimepicker" placeholder="年/月/日" maxlength="100" />
+                                            <input ng-show="batch.HandlerType==1&&batch.batchNoOrDate==0" ng-mouseover="itemClickHandler($event)" type="text" ng-model="batch.BatchNo" class="form-control datetimepicker" placeholder="保质期" maxlength="100" />
                                             <p ng-if="batch.HandlerType==0" ng-model="batch.BatchNo" class="form-control-static">{{batch.BatchNo}}</p>
                                         </td>
                                         <th>操作</th>
@@ -1288,7 +1288,7 @@
                     <label class="col-sm-2 control-label">预约检查日期 <span style="color: red;">*</span></label>
 
                     <div class="col-sm-10">
-                        <input type="text" ng-model="model.Application.InspectionDate" class="form-control datetimepicker" placeholder="yyyy-MM-dd" />
+                        <input type="text" ng-model="model.Application.InspectionDate" class="form-control datetimepicker" placeholder="预约检查日期 " />
                     </div>
                 </div>
                 <div class="form-group">
