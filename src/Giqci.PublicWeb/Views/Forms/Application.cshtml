@@ -79,7 +79,6 @@
                             ManufacturerDate: null,
                             ExpiryDate: null,
                             HandlerType: 1,
-                            batchNoOrDate:1
                         }
                     ],
                     HandlerType: 1
@@ -230,7 +229,6 @@
                     BatchNo: "",
                     Quantity: 0,
                     HandlerType: 1,
-                    batchNoOrDate:1
                 });
             };
 
@@ -1118,16 +1116,16 @@
                                     <tr ng-repeat="batch in item.ProductItemList | filter:listFilter">
                                         <th>
                                             <div ng-show="batch.HandlerType==1" class="form-control-static">
-                                                <input type="radio" ng-model="batch.batchNoOrDate" value="1" checked id="batch_1_{{$index+1}}"/><label for="batch_1_{{$index+1}}">批次号</label>
-                                                <input type="radio" ng-model="batch.batchNoOrDate" value="0" id="batch_0_{{$index+1}}"/><label for="batch_0_{{$index+1}}">保质期</label> {{$index+1}}<span style="color: red;">*</span>
+                                                <input type="radio" ng-model="batch.batchNoOrDate" checked id="batch_1_{{$index+1}}"/><label for="batch_1_{{$index+1}}">批次号</label>
+                                                <input type="radio" ng-model="batch.batchNoOrDate" value="1" id="batch_0_{{$index+1}}"/><label for="batch_0_{{$index+1}}">保质期</label> {{$index+1}}<span style="color: red;">*</span>
                                             </div>
                                             <div ng-show="batch.HandlerType==0" class="form-control-static">
                                                 批次号/保质期 {{$index+1}}<span style="color: red;">*</span>
                                             </div>
                                         </th>
                                         <td>
-                                            <input ng-show="batch.HandlerType==1&&(batch.batchNoOrDate==1||batch.batchNoOrDate==null)" type="text" ng-model="batch.BatchNo" class="form-control" placeholder="批次号" maxlength="100" />
-                                            <input ng-show="batch.HandlerType==1&&batch.batchNoOrDate==0" ng-mouseover="itemClickHandler($event)" type="text" ng-model="batch.BatchNo" class="form-control datetimepicker" placeholder="保质期" maxlength="100" />
+                                            <input ng-show="batch.HandlerType==1&&(batch.batchNoOrDate==null)" type="text" ng-model="batch.BatchNo" class="form-control" placeholder="批次号" maxlength="100" />
+                                            <input ng-show="batch.HandlerType==1&&(batch.batchNoOrDate==1)" ng-mouseover="itemClickHandler($event)" type="text" ng-model="batch.BatchNo" class="form-control datetimepicker" placeholder="保质期" maxlength="100" />
                                             <p ng-if="batch.HandlerType==0" ng-model="batch.BatchNo" class="form-control-static">{{batch.BatchNo}}</p>
                                         </td>
                                         <td colspan="2"><button class="btn btn-default btn-sm" type="button" ng-click="removeItemByBatchNo(batch)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除批次</button></td>
