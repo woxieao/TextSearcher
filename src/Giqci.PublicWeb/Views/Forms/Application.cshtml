@@ -1123,7 +1123,7 @@
                                         </th>
                                         <td>
                                             <input ng-show="batch.HandlerType==1&&(batch.batchNoOrDate==1||batch.batchNoOrDate==null)" type="text" ng-model="batch.BatchNo" class="form-control" placeholder="批次号" maxlength="100" />
-                                            <input ng-show="batch.HandlerType==1&&batch.batchNoOrDate==0" ng-mouseover="itemClickHandler($event)" type="text" ng-model="batch.BatchNo" class="form-control datetimepicker" placeholder="日/月/年" maxlength="100" />
+                                            <input ng-show="batch.HandlerType==1&&batch.batchNoOrDate==0" ng-mouseover="itemClickHandler($event)" type="text" ng-model="batch.BatchNo" class="form-control datetimepicker" placeholder="年/月/日" maxlength="100" />
                                             <p ng-if="batch.HandlerType==0" ng-model="batch.BatchNo" class="form-control-static">{{batch.BatchNo}}</p>
                                         </td>
                                         <td colspan="2"><button class="btn btn-default" type="button" ng-click="removeItemByBatchNo(batch)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除批次</button></td>
