@@ -2,9 +2,6 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
                 <h5 class="modal-title form-add-custom-product-title">添加非备案商品</h5>
             </div>
             <div class="modal-body">
@@ -76,8 +73,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" ng-click="showProductList()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> 返回</button>
-                <button id="submitAddCustomProduct" class="btn btn-default" ng-click="submitAddCustomProduct();"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交</button>
+                <button id="submitAddCustomProduct" class="btn btn-default" ng-click="submitAddCustomProduct();"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交保存</button>
+                <button type="button" class="btn btn-primary" ng-click="showProductList()">关闭</button>
             </div>
         </div>
         <!-- /.modal-content -->
