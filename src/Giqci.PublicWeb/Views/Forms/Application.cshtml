@@ -529,6 +529,10 @@
                 $("#form-add-custom-product").modal("hide");
                 $("#form-add-goods-product").modal("hide");
             };
+            var _modalEditMerchantProduct = document.getElementById("form-add-custom-product");
+            angular.element(_modalEditMerchantProduct).on('hide.bs.modal', function () {
+                $scope.CustomDialogModel = null;
+            });
             $scope.addCustomProduct = function () {
                 $(".form-add-custom-product-title").html("添加非备案商品");
                 $("#form-product").modal("hide");
@@ -1392,9 +1396,6 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                     <h5 class="modal-title">商品列表</h5>
                 </div>
                 <div class="modal-body giqci-modal-dialog">
@@ -1501,9 +1502,6 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                     <h5 class="modal-title">添加备案商品</h5>
                 </div>
                 <div class="modal-body">
@@ -1571,9 +1569,6 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                     <h5 class="modal-title">常用商户管理</h5>
                 </div>
                 <div class="modal-body giqci-modal-dialog">
@@ -1622,9 +1617,6 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                     <h5 class="modal-title merchant-add-title">添加常用商户信息</h5>
                 </div>
                 <div class="modal-body">
@@ -1634,49 +1626,41 @@
                             <span ng-bind="alert.msg"></span>
                         </div>
                         <div class="form-group">
-
                             <label class="col-sm-2 control-label">全称 <span style="color: red;">*</span></label>
-
                             <div class="col-sm-10">
                                 <input type="text" maxlength="100" ng-model="dialogModelMerchant.UserName" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
-
                             <label class="col-sm-2 control-label">地址 <span style="color: red;">*</span></label>
-
                             <div class="col-sm-10">
                                 <input type="text" maxlength="400" ng-model="dialogModelMerchant.UserAddress" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
-
                             <label class="col-sm-2 control-label">联系人 <span style="color: red;">*</span></label>
-
                             <div class="col-sm-10">
                                 <input type="text" maxlength="100" ng-model="dialogModelMerchant.UserContact" class="form-control" />
                             </div>
                         </div>
                         <div class="form-group">
-
                             <label class="col-sm-2 control-label">联系电话 <span style="color: red;">*</span></label>
-
                             <div class="col-sm-10">
                                 <input type="text" maxlength="100" ng-model="dialogModelMerchant.UserPhone" class="form-control" />
                             </div>
                         </div>
-
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
                                 <input type="hidden" ng-model="dialogModelMerchant.Id" />
-                                <button class="btn btn-default" ng-click="submitAddMerchant()">
-                                    <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
-                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
+                    <button class="btn btn-default" ng-click="submitAddMerchant()">
+                        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交保存
+                    </button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
