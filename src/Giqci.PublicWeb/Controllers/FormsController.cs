@@ -56,13 +56,7 @@ namespace Giqci.PublicWeb.Controllers
                     new ApplicationProduct
                     {
                         HandlerType = HandlerType.Add,
-                        ProductItemList = new List<ProductItem>
-                        {
-                            new ProductItem
-                            {
-                                HandlerType = HandlerType.Add,
-                            }
-                        }
+                        ProductItemList = new List<ProductItem>()
                     },
                 },
                 ContainerInfos = new List<ContainerInfo>()
