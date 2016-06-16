@@ -1126,7 +1126,7 @@
                                             <input ng-show="batch.HandlerType==1&&batch.batchNoOrDate==0" ng-mouseover="itemClickHandler($event)" type="text" ng-model="batch.BatchNo" class="form-control datetimepicker" placeholder="保质期" maxlength="100" />
                                             <p ng-if="batch.HandlerType==0" ng-model="batch.BatchNo" class="form-control-static">{{batch.BatchNo}}</p>
                                         </td>
-                                        <td colspan="2"><button class="btn btn-default" type="button" ng-click="removeItemByBatchNo(batch)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除批次</button></td>
+                                        <td colspan="2"><button class="btn btn-default btn-sm" type="button" ng-click="removeItemByBatchNo(batch)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除批次</button></td>
                                      </tr>
                                 </table>
                             </div>
@@ -1157,15 +1157,15 @@
                                             <p ng-if="zcode.HandlerType==0" ng-model="zcode.ZCodeEnd" class="form-control-static">{{zcode.ZCodeEnd}}</p>
                                         </td>
                                         <td>
-                                            <button class="btn btn-default" type="button" ng-click="removeZcodeItem(zcode)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除真知码</button>
+                                            <button class="btn btn-default btn-sm" type="button" ng-click="removeZcodeItem(zcode)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除真知码</button>
                                         </td>
                                     </tr>
                                 </table>
                             </div>
                             <!--end真知码-->
                             <div class="">
-                                <a class="btn btn-default" ng-click="addItemByBatchNo(item)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;添加批次号</a>
-                                <button class="btn btn-default" type="button" ng-click="addZcodeItem(item)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加真知码</button>
+                                <a class="btn btn-default btn-sm" ng-click="addItemByBatchNo(item)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;添加批次号</a>
+                                <button class="btn btn-default btn-sm" type="button" ng-click="addZcodeItem(item)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加真知码</button>
                             </div>
                             <div>
                                 &nbsp;
