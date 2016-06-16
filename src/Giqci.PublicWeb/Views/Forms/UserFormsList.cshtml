@@ -26,13 +26,13 @@
             <table class="table table-striped">
                 <colgroup>
                     <col width='100' />
-                    <col width='260' />
+                    <col width='280' />
                     <col width='100' />
                     <col width='120' />
                     <col width='120' />
                     <col width='260' />
                     <col>
-                    <col width='120' />
+                    <col width='160' />
                 </colgroup>
                 <thead>
                     <tr>
@@ -60,9 +60,11 @@
                         <td>{{emp.Applicant}}</td>
                         <td>{{emp.MerchantEmail}}</td>
                         <td>
-                            <a target="_blank" href="/forms/app/print/{{emp.Key}}">
-                                <span class="glyphicon glyphicon-print"></span> 打印
-                            </a>
+                            <div class="btn-group">
+                                <a target="_blank" class="btn btn-sm btn-default" href="/forms/app/print/{{emp.Key}}"><span class="glyphicon glyphicon-print"></span> 打印</a>
+                                <a ng-if="emp.Status=='新申请'" class="btn btn-sm btn-primary" href="/forms/app/{{emp.Key}}">编辑</a>
+                                <a ng-if="emp.Status!='新申请'" class="btn btn-sm btn-info" href="/forms/app/{{emp.Key}}">查看</a>
+                            </div>
                         </td>
                     </tr>
                 </tbody>
