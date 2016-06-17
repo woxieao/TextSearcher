@@ -209,14 +209,14 @@
                     }
                     _object.Selected = _selected;
                 };
-                $scope.addItemByBatchNo = function (_object) {
+                $scope.addItemByBatchNo = function (_object,_index) {
                     if (_object.addItemByBatchNo.BatchNo == null || _object.addItemByBatchNo.BatchNo == "") {
-                        $("#addItemByBatchNoString").attr("placeholder", "请输入批次号");
-                        $("#addItemByBatchNoDate").attr("placeholder", "请输入保质期");
+                        $("#addItemByBatchNoString_" + _index).attr("placeholder", "请输入批次号");
+                        $("#addItemByBatchNoDate_" + _index).attr("placeholder", "请输入保质期");
                         return;
                     }
-                    $("#addItemByBatchNoString").attr("placeholder", "批次号");
-                    $("#addItemByBatchNoDate").attr("placeholder", "保质期");
+                    $("#addItemByBatchNoString_" + _index).attr("placeholder", "批次号");
+                    $("#addItemByBatchNoDate_" + _index).attr("placeholder", "保质期");
                     _object.ProductItemList.push({
                         BatchNo: _object.addItemByBatchNo.BatchNo == null ? " " : _object.addItemByBatchNo.BatchNo,
                         HandlerType: 1
@@ -227,17 +227,17 @@
                 $scope.removeItemByBatchNo = function (_object) {
                     _object.HandlerType = -1;
                 };
-                $scope.addZcodeItem = function (_object) {
+                $scope.addZcodeItem = function (_object, _index) {
                     if (_object.addZcodeItem.ZCodeStart == null || _object.addZcodeItem.ZCodeStart.length !== 16) {
-                        $("#addZcodeItemZCodeStart").attr("placeholder", "请输入16位首码");
+                        $("#addZcodeItemZCodeStart_" + _index).attr("placeholder", "请输入16位首码");
                         return;
                     }
                     if (_object.addZcodeItem.ZCodeEnd == null || _object.addZcodeItem.ZCodeEnd.length !== 16) {
-                        $("#addZcodeItemZCodeEnd").attr("placeholder", "请输入16位尾码");
+                        $("#addZcodeItemZCodeEnd_" + _index).attr("placeholder", "请输入16位尾码");
                         return;
                     }
-                    $("#addZcodeItemZCodeStart").attr("placeholder", "首码");
-                    $("#addZcodeItemZCodeEnd").attr("placeholder", "尾码");
+                    $("#addZcodeItemZCodeStart_" + _index).attr("placeholder", "首码");
+                    $("#addZcodeItemZCodeEnd_" + _index).attr("placeholder", "尾码");
                     _object.ApplicationZCodes.push({
                         ZCodeStart: _object.addZcodeItem.ZCodeStart,
                         ZCodeEnd: _object.addZcodeItem.ZCodeEnd,
@@ -1147,10 +1147,10 @@
                                             </div>
                                         </td>
                                         <td colspan="2">
-                                            <input ng-if="(batch.batchNoOrDate==null)" type="text" ng-model="item.addItemByBatchNo.BatchNo" id="addItemByBatchNoString" class="form-control" placeholder="批次号" maxlength="100" />
-                                            <input ng-if="(batch.batchNoOrDate==1)" ng-mouseover="itemClickHandler($event)" type="text" id="addItemByBatchNoDate" ng-model="item.addItemByBatchNo.BatchNo" class="form-control datetimepicker" placeholder="保质期" maxlength="100" />
+                                            <input ng-if="(batch.batchNoOrDate==null)" type="text" ng-model="item.addItemByBatchNo.BatchNo" id="addItemByBatchNoString_{{$index}}" class="form-control" placeholder="批次号" maxlength="100" />
+                                            <input ng-if="(batch.batchNoOrDate==1)" ng-mouseover="itemClickHandler($event)" type="text" id="addItemByBatchNoDate_{{$index}}" ng-model="item.addItemByBatchNo.BatchNo" class="form-control datetimepicker" placeholder="保质期" maxlength="100" />
                                         </td>
-                                        <td><button class="btn btn-default btn-sm" type="button" ng-click="addItemByBatchNo(item)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;添加</button></td>
+                                        <td><button class="btn btn-default btn-sm" type="button" ng-click="addItemByBatchNo(item,$index)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;添加</button></td>
                                     </tr>
                                 </table>
                             </div>
@@ -1197,13 +1197,13 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <input type="text" ng-model="item.addZcodeItem.ZCodeStart" id="addZcodeItemZCodeStart" class="form-control" maxlength="16" placeholder="首码" />
+                                            <input type="text" ng-model="item.addZcodeItem.ZCodeStart" id="addZcodeItemZCodeStart_{{$index}}" class="form-control" maxlength="16" placeholder="首码" />
                                         </td>
                                         <td>
-                                            <input type="text" ng-model="item.addZcodeItem.ZCodeEnd" id="addZcodeItemZCodeEnd" class="form-control" maxlength="16" placeholder="尾码" />
+                                            <input type="text" ng-model="item.addZcodeItem.ZCodeEnd" id="addZcodeItemZCodeEnd_{{$index}}" class="form-control" maxlength="16" placeholder="尾码" />
                                         </td>
                                         <td>
-                                            <button class="btn btn-default btn-sm" type="button" ng-click="addZcodeItem(item)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加</button>
+                                            <button class="btn btn-default btn-sm" type="button" ng-click="addZcodeItem(item,$index)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加</button>
                                         </td>
                                     </tr>
                                 </table>
