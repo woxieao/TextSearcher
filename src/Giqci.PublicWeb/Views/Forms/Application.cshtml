@@ -63,7 +63,11 @@
                         $scope.model.Application.ApplicationProducts[i].addZcodeItem = "";
                         $scope.model.Application.ApplicationProducts[i].addZcodeItem.ZCodeStart = "";
                         $scope.model.Application.ApplicationProducts[i].addZcodeItem.ZCodeEnd = "";
+                        for(var j = 0;j < $scope.model.Application.ApplicationProducts[i].ApplicationZCodes.length; j++){
+                            $scope.model.Application.ApplicationProducts[i].ApplicationZCodes[j].HtmlEdit = 0;
+                        }
                     }
+                    console.log($scope.model.Application.ApplicationProducts);
                 };
                 if ($scope.model.Application.Key == null) {
                     $scope.model.Application.TradeType = "4";
@@ -217,6 +221,7 @@
                     _object.HandlerType = -1;
                 };
                 $scope.addZcodeItem = function (_object) {
+                    /*
                     if (_object.addZcodeItem.ZCodeStart == null || _object.addZcodeItem.ZCodeStart.length !== 16) {
                         alertService.add('danger', "填写错误，真知码首码长度为16个字符", 3000);
                         $anchorScroll();
@@ -226,18 +231,25 @@
                         alertService.add('danger', "填写错误，真知码尾码长度为16个字符", 3000);
                         $anchorScroll();
                         return;
-                    }
+                    }*/
 
                     _object.ApplicationZCodes.push({
                         ZCodeStart: _object.addZcodeItem.ZCodeStart,
                         ZCodeEnd: _object.addZcodeItem.ZCodeEnd,
-                        HandlerType: 1
+                        HandlerType: 1,
+                        HtmlEdit:0
                     });
                     _object.addZcodeItem.ZCodeStart = "";
                     _object.addZcodeItem.ZCodeEnd = "";
                 };
                 $scope.removeZcodeItem = function (_object) {
                     _object.HandlerType = -1;
+                };
+                $scope.editZcodeItem = function (_object) {
+                    _object.HtmlEdit = 1;
+                };
+                $scope.submitZcodeItem = function (_object) {
+                    _object.HtmlEdit = 0;
                 };
 
                 $scope.Product = null;
@@ -1109,7 +1121,7 @@
                                         <col width="180" />
                                         <col />
                                         <col />
-                                        <col width="120" />
+                                        <col width="180" />
                                     </colgroup>
                                     <tr ng-repeat="batch in item.ProductItemList | filter:listFilter">
                                         <td>
@@ -1120,20 +1132,20 @@
                                         <td colspan="2">
                                             <p ng-model="batch.BatchNo" class="form-control-static">{{batch.BatchNo}}</p>
                                         </td>
-                                        <td><button class="btn btn-default btn-sm" type="button" ng-click="removeItemByBatchNo(batch)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除批次</button></td>
+                                        <td><button class="btn btn-default btn-sm" type="button" ng-click="removeItemByBatchNo(batch)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button></td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <div class="form-control-static">
                                                 <input type="radio" ng-model="batch.batchNoOrDate" id="batch_1_{{$index+1}}" checked /><label for="batch_1_{{$index+1}}">批次号</label>
-                                                <input type="radio" ng-model="batch.batchNoOrDate" value="1" id="batch_0_{{$index+1}}" /><label for="batch_0_{{$index+1}}">保质期</label><span style="color: red;">*</span>
+                                                <input type="radio" ng-model="batch.batchNoOrDate" value="1" id="batch_0_{{$index+1}}" /><label for="batch_0_{{$index+1}}">保质期</label>
                                             </div>
                                         </td>
                                         <td colspan="2">
                                             <input ng-if="(batch.batchNoOrDate==null)" type="text" ng-model="item.addItemByBatchNo.BatchNo" class="form-control" placeholder="批次号" maxlength="100" />
                                             <input ng-if="(batch.batchNoOrDate==1)" ng-mouseover="itemClickHandler($event)" type="text" ng-model="item.addItemByBatchNo.BatchNo" class="form-control datetimepicker" placeholder="保质期" maxlength="100" />
                                         </td>
-                                        <td><button class="btn btn-default btn-sm" type="button" ng-click="addItemByBatchNo(item)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;添加批次号</button></td>
+                                        <td><button class="btn btn-default btn-sm" type="button" ng-click="addItemByBatchNo(item)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;添加</button></td>
                                     </tr>
                                 </table>
                             </div>
@@ -1145,7 +1157,7 @@
                                         <col width="180" />
                                         <col />
                                         <col />
-                                        <col width="120" />
+                                        <col width="180" />
                                     </colgroup>
                                     <tr ng-if="(item.ApplicationZCodes|filter:listFilter).length">
                                         <th>真知码</th>
@@ -1158,13 +1170,19 @@
                                             <p class="form-control-static">真知码 {{$index+1}}</p>
                                         </td>
                                         <td>
-                                            <p ng-model="zcode.ZCodeStart" class="form-control-static">{{zcode.ZCodeStart}}</p>
+                                            <input ng-if="zcode.HtmlEdit==1" type="text" ng-model="zcode.ZCodeStart" maxlength="16" class="form-control" />
+                                            <p ng-if="zcode.HtmlEdit==0" ng-model="zcode.ZCodeStart" class="form-control-static">{{zcode.ZCodeStart}}</p>
                                         </td>
                                         <td>
-                                            <p ng-model="zcode.ZCodeEnd" class="form-control-static">{{zcode.ZCodeEnd}}</p>
+                                            <input ng-if="zcode.HtmlEdit==1" type="text" ng-model="zcode.ZCodeEnd" maxlength="16" class="form-control" />
+                                            <p ng-if="zcode.HtmlEdit==0" ng-model="zcode.ZCodeEnd" class="form-control-static">{{zcode.ZCodeEnd}}</p>
                                         </td>
                                         <td>
-                                            <button class="btn btn-default btn-sm" type="button" ng-click="removeZcodeItem(zcode)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除真知码</button>
+                                            <div class="btn-group">
+                                                <button ng-if="zcode.HtmlEdit==0" class="btn btn-default btn-sm" type="button" ng-click="editZcodeItem(zcode)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 编辑</button>
+                                                <button ng-if="zcode.HtmlEdit==1" class="btn btn-default btn-sm" type="button" ng-click="submitZcodeItem(zcode)"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 确认</button>
+                                                <button class="btn btn-default btn-sm" type="button" ng-click="removeZcodeItem(zcode)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button>
+                                            </div>
                                         </td>
                                     </tr>
                                     <tr>
@@ -1172,13 +1190,13 @@
                                             <p class="form-control-static">真知码</p>
                                         </td>
                                         <td>
-                                            <input type="text" ng-model="item.addZcodeItem.ZCodeStart" class="form-control" placeholder="首码" />
+                                            <input type="text" ng-model="item.addZcodeItem.ZCodeStart" class="form-control" maxlength="16" placeholder="首码" />
                                         </td>
                                         <td>
-                                            <input type="text" ng-model="item.addZcodeItem.ZCodeEnd" class="form-control" placeholder="尾码" />
+                                            <input type="text" ng-model="item.addZcodeItem.ZCodeEnd" class="form-control" maxlength="16" placeholder="尾码" />
                                         </td>
                                         <td>
-                                            <button class="btn btn-default btn-sm" type="button" ng-click="addZcodeItem(item)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加真知码</button>
+                                            <button class="btn btn-default btn-sm" type="button" ng-click="addZcodeItem(item)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加</button>
                                         </td>
                                     </tr>
                                 </table>
