@@ -63,7 +63,7 @@
                         $scope.model.Application.ApplicationProducts[i].addZcodeItem = "";
                         $scope.model.Application.ApplicationProducts[i].addZcodeItem.ZCodeStart = "";
                         $scope.model.Application.ApplicationProducts[i].addZcodeItem.ZCodeEnd = "";
-                        for(var j = 0;j < $scope.model.Application.ApplicationProducts[i].ApplicationZCodes.length; j++){
+                        for (var j = 0; j < $scope.model.Application.ApplicationProducts[i].ApplicationZCodes.length; j++) {
                             $scope.model.Application.ApplicationProducts[i].ApplicationZCodes[j].HtmlEdit = 0;
                         }
                     }
@@ -209,10 +209,12 @@
                     }
                     _object.Selected = _selected;
                 };
-                $scope.addItemByBatchNo = function (_object,_index) {
+                $scope.addItemByBatchNo = function (_object, _index) {
                     if (_object.addItemByBatchNo.BatchNo == null || _object.addItemByBatchNo.BatchNo == "") {
                         $("#addItemByBatchNoString_" + _index).attr("placeholder", "请输入批次号");
                         $("#addItemByBatchNoDate_" + _index).attr("placeholder", "请输入保质期");
+                        $("#addItemByBatchNoDate_" + _index).focus();
+                        $("#addItemByBatchNoString_" + _index).focus();
                         return;
                     }
                     $("#addItemByBatchNoString_" + _index).attr("placeholder", "批次号");
@@ -230,10 +232,12 @@
                 $scope.addZcodeItem = function (_object, _index) {
                     if (_object.addZcodeItem.ZCodeStart == null || _object.addZcodeItem.ZCodeStart.length !== 16) {
                         $("#addZcodeItemZCodeStart_" + _index).attr("placeholder", "请输入16位首码");
+                        $("#addZcodeItemZCodeStart_" + _index).focus();
                         return;
                     }
                     if (_object.addZcodeItem.ZCodeEnd == null || _object.addZcodeItem.ZCodeEnd.length !== 16) {
                         $("#addZcodeItemZCodeEnd_" + _index).attr("placeholder", "请输入16位尾码");
+                        $("#addZcodeItemZCodeEnd_" + _index).focus();
                         return;
                     }
                     $("#addZcodeItemZCodeStart_" + _index).attr("placeholder", "首码");
@@ -242,7 +246,7 @@
                         ZCodeStart: _object.addZcodeItem.ZCodeStart,
                         ZCodeEnd: _object.addZcodeItem.ZCodeEnd,
                         HandlerType: 1,
-                        HtmlEdit:0
+                        HtmlEdit: 0
                     });
                     _object.addZcodeItem.ZCodeStart = "";
                     _object.addZcodeItem.ZCodeEnd = "";
