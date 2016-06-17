@@ -140,7 +140,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             {
                 foreach (var product in productList)
                 {
-                    if (product.HandlerType == HandlerType.Add && (string.IsNullOrEmpty(product.CiqCode) || product.CustomProductId == 0))
+                    if (product.HandlerType == HandlerType.Add && (string.IsNullOrEmpty(product.CiqCode) && product.CustomProductId == 0))
                     {
                         errors.Add("请选择商品");
                     }
