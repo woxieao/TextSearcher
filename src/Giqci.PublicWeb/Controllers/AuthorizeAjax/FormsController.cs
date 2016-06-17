@@ -59,7 +59,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             int pageIndex = 1, int pageSize = 10)
         {
 
-            var model = _appView.Search(applyNo, _auth.GetAuth().MerchantId, status, start, end, pageIndex, pageSize,false);
+            var model = _appView.Search(applyNo, _auth.GetAuth().MerchantId, status, start, end, pageIndex, pageSize, false);
             var count = model.Count();
             return new AjaxResult(new { items = model, count = count }, new JsonSerializerSettings { Converters = new List<JsonConverter> { new DescriptionEnumConverter() } });
         }
@@ -73,7 +73,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                      .Cast<ApplicationStatus>()
                      .Select(i => new { value = i.ToString(), name = i.ToDescription() })
                      .ToArray();
-            return new AjaxResult( new { items = statusValues });
+            return new AjaxResult(new { items = statusValues });
         }
 
         [Route("forms/savefile")]
@@ -82,7 +82,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         {
             var filePath = string.Format("/{0}/{1}", Config.Common.UserExampleFilePath, Guid.NewGuid().ToString("N"));
             var fileInfo = _fileApiProxy.UploadFile(file, filePath);
-            return new AjaxResult( fileInfo);
+            return new AjaxResult(fileInfo);
         }
 
         [Route("forms/GetAppCache")]
@@ -103,7 +103,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                 flag = false;
                 app = null;
             }
-            return new AjaxResult( new { flag = flag, app = app }, new JsonSerializerSettings());
+            return new AjaxResult(new { flag = flag, app = app }, new JsonSerializerSettings());
         }
 
         [Route("forms/SaveAppCache")]
@@ -111,7 +111,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         public ActionResult SaveAppCache(Application app)
         {
             _applicationCacheApiProxy.Add(_auth.GetAuth().MerchantId, JsonConvert.SerializeObject(app));
-            return new AjaxResult( new { });
+            return new AjaxResult(new { });
         }
 
         [Route("forms/RemoveAppCache")]
@@ -119,7 +119,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         public ActionResult RemoveAppCache()
         {
             _applicationCacheApiProxy.Remove(_auth.GetAuth().MerchantId);
-            return new AjaxResult( new { });
+            return new AjaxResult(new { });
         }
 
         [Route("forms/app")]
@@ -135,6 +135,17 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                 isRequireCiqCode = port.RequireCiqCode;
             }
             var errors = _dataChecker.ApplicationHasErrors(model, false, isRequireCiqCode);
+            var productList = model.ApplicationProducts;
+            if (productList != null)
+            {
+                foreach (var product in productList)
+                {
+                    if (product.HandlerType == HandlerType.Add && (string.IsNullOrEmpty(product.CiqCode) || product.CustomProductId == 0))
+                    {
+                        errors.Add("请选择商品");
+                    }
+                }
+            }
             if (isNew)
             {
                 if (!string.IsNullOrEmpty(model.Voyage) && DateTime.Parse(model.Voyage) < DateTime.Now.Date)
@@ -162,13 +173,9 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                     errors.Add("联系人电话不能为空");
                 }
             }
-            var userName = User.Identity.Name;
+
+            errors = errors.Distinct().OrderBy(i => i.Length).ToList();
             var isLogin = true;
-            if (string.IsNullOrEmpty(userName))
-            {
-                isLogin = false;
-                errors = new List<string>() { "登录状态已失效，请您重新登录系统" };
-            }
             var merchant = _merchantRepo.GetMerchant(User.Identity.Name);
             var merchantId = merchant.Id;
             if (!errors.Any())
