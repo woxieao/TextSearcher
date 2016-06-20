@@ -53,23 +53,23 @@ namespace Giqci.PublicWeb.Models
             public static readonly string AppApiUrl = WebConfigurationManager.AppSettings[nameof(AppApiUrl)];
             public static readonly string IpApiUrl = WebConfigurationManager.AppSettings[nameof(IpApiUrl)];
         }
-
+        private static bool GetSwitch(string logSwitchName)
+        {
+            var logCinfig = WebConfigurationManager.AppSettings[logSwitchName] ??
+                            string.Empty;
+            return logCinfig == "1" || logCinfig.ToLower() == "true";
+        }
         public struct LogSwitch
         {
-            private static bool GetLogSwitch(string logSwitchName)
-            {
-                var logCinfig = WebConfigurationManager.AppSettings[logSwitchName] ??
-                                string.Empty;
-                return logCinfig == "1" || logCinfig.ToLower() == "true";
-            }
+       
 
-            public static readonly bool DictLogSwitch = GetLogSwitch(nameof(DictLogSwitch));
-            public static readonly bool IpLogSwitch = GetLogSwitch(nameof(IpLogSwitch));
-            public static readonly bool ProductsLogSwitch = GetLogSwitch(nameof(ProductsLogSwitch));
-            public static readonly bool CustomersLogSwitch = GetLogSwitch(nameof(CustomersLogSwitch));
-            public static readonly bool AppLogSwitch = GetLogSwitch(nameof(AppLogSwitch));
-            public static readonly bool FileLogSwitch = GetLogSwitch(nameof(FileLogSwitch));
-            public static readonly bool AppCacheLogSwitch = GetLogSwitch(nameof(AppCacheLogSwitch));
+            public static readonly bool DictLogSwitch = GetSwitch(nameof(DictLogSwitch));
+            public static readonly bool IpLogSwitch = GetSwitch(nameof(IpLogSwitch));
+            public static readonly bool ProductsLogSwitch = GetSwitch(nameof(ProductsLogSwitch));
+            public static readonly bool CustomersLogSwitch = GetSwitch(nameof(CustomersLogSwitch));
+            public static readonly bool AppLogSwitch = GetSwitch(nameof(AppLogSwitch));
+            public static readonly bool FileLogSwitch = GetSwitch(nameof(FileLogSwitch));
+            public static readonly bool AppCacheLogSwitch = GetSwitch(nameof(AppCacheLogSwitch));
         }
 
         public struct Filer
@@ -79,6 +79,11 @@ namespace Giqci.PublicWeb.Models
 
             public static readonly long FileMaxLength =
                 Convert.ToInt64(WebConfigurationManager.AppSettings[nameof(FileMaxLength)]);
+        }
+
+        public struct MethodSwitch
+        {
+            public static readonly bool IpRedirectSwitch = GetSwitch(nameof(IpRedirectSwitch));
         }
     }
 }
