@@ -12,7 +12,7 @@
         <div class="panel-body">
             <form class="form-inline">
                 <div class="form-group">
-                    <input ng-model="applyNo" placeholder="申请号" class="form-control" />
+                    <input ng-model="applyNo" placeholder="申请号" class="form-control"/>
                     状态: <select ng-model="status" ng-options="s.value as s.name for s in statusValues" class="form-control">
                         <option value="">-- 全部 --</option>
                     </select>
@@ -23,6 +23,7 @@
                     </button>
                 </div>
             </form>
+            <span style="color: #4169e1">当前状态为“新申请”的申请号，商户可自行更改编辑；其他状态的申请，编辑请联系GIQCI客服人员。</span>
             <table class="table table-striped">
                 <colgroup>
                     <col width='100' />
