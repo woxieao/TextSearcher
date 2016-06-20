@@ -257,7 +257,15 @@
                 $scope.editZcodeItem = function (_object) {
                     _object.HtmlEdit = 1;
                 };
-                $scope.submitZcodeItem = function (_object) {
+                $scope.submitZcodeItem = function (_object,_index) {
+                    if (_object.ZCodeStart == null || _object.ZCodeStart == "" || _object.ZCodeStart.length !== 16) {
+                        $("#ZCodeStart_" + _index).tooltip('show');
+                        return;
+                    }
+                    if (_object.ZCodeEnd == null || _object.ZCodeEnd == "" || _object.ZCodeEnd.length !== 16) {
+                        $("#ZCodeEnd_" + _index).tooltip('show');
+                        return;
+                    }
                     _object.HtmlEdit = 0;
                 };
 
@@ -1195,17 +1203,17 @@
                                             <p class="form-control-static">真知码 {{$index+1}}</p>
                                         </td>
                                         <td>
-                                            <input ng-if="zcode.HtmlEdit==1" type="text" ng-model="zcode.ZCodeStart" maxlength="16" class="form-control" />
+                                            <input ng-if="zcode.HtmlEdit==1" type="text" ng-model="zcode.ZCodeStart" maxlength="16" class="form-control" id="ZCodeStart_{{$index}}" data-placement="top" title="请输入16位首码"/>
                                             <p ng-if="zcode.HtmlEdit==0" ng-model="zcode.ZCodeStart" class="form-control-static">{{zcode.ZCodeStart}}</p>
                                         </td>
                                         <td>
-                                            <input ng-if="zcode.HtmlEdit==1" type="text" ng-model="zcode.ZCodeEnd" maxlength="16" class="form-control" />
+                                            <input ng-if="zcode.HtmlEdit==1" type="text" ng-model="zcode.ZCodeEnd" maxlength="16" class="form-control" id="ZCodeEnd_{{$index}}" data-placement="top" title="请输入16位尾码"/>
                                             <p ng-if="zcode.HtmlEdit==0" ng-model="zcode.ZCodeEnd" class="form-control-static">{{zcode.ZCodeEnd}}</p>
                                         </td>
                                         <td>
                                             <div class="btn-group">
                                                 <button ng-if="zcode.HtmlEdit==0" class="btn btn-default btn-sm" type="button" ng-click="editZcodeItem(zcode)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 编辑</button>
-                                                <button ng-if="zcode.HtmlEdit==1" class="btn btn-default btn-sm" type="button" ng-click="submitZcodeItem(zcode)"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 确认</button>
+                                                <button ng-if="zcode.HtmlEdit==1" class="btn btn-default btn-sm" type="button" ng-click="submitZcodeItem(zcode,$index)"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 确认</button>
                                                 <button class="btn btn-default btn-sm" type="button" ng-click="removeZcodeItem(zcode)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button>
                                             </div>
                                         </td>
