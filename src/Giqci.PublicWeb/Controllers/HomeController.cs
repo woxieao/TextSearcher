@@ -18,14 +18,17 @@ namespace Giqci.PublicWeb.Controllers
         public ActionResult Index()
         {
             const string defaultPage = "forms/app";
-            var ipInfo = _ipDictionaryService.GetCountry();
             var hostUrl = string.Empty;
-            if (ipInfo != null)
+            //< !--功能正常后请删掉,以及Config中的IpRedirectSwitch-- >
+            if (Config.MethodSwitch.IpRedirectSwitch)
             {
-                hostUrl = Config.Hosts.HostList.ContainsKey(ipInfo.CountryCode) ? Config.Hosts.HostList[ipInfo.CountryCode] : Config.Hosts.HostList["Default"];
+                var ipInfo = _ipDictionaryService.GetCountry();
+                if (ipInfo != null)
+                {
+                    hostUrl = Config.Hosts.HostList.ContainsKey(ipInfo.CountryCode) ? Config.Hosts.HostList[ipInfo.CountryCode] : Config.Hosts.HostList["Default"];
+                }
             }
             return Redirect(string.Format("{0}/{1}", hostUrl, defaultPage));
-            // return Redirect("/forms/app");
         }
 
         [Route("terms")]
