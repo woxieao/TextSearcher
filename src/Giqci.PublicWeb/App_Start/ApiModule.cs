@@ -4,6 +4,7 @@ using Autofac;
 using Autofac.Core;
 using Giqci.ApiProxy;
 using Giqci.ApiProxy.App;
+using Giqci.ApiProxy.Dict;
 using Giqci.ApiProxy.File;
 using Giqci.ApiProxy.Services;
 using Giqci.Chapi.Models.File;
@@ -193,6 +194,16 @@ namespace Giqci.PublicWeb
                         ResolvedParameter.ForKeyed<bool>(LogSwitch.Ip),
                  })
              .InstancePerDependency();
+
+            builder.RegisterType<ZcodeApplyLogApiProxy>()
+           .As<IZcodeApplyLogApiProxy>().WithParameters(
+               new List<ResolvedParameter>()
+               {
+                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.App),
+                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
+                        ResolvedParameter.ForKeyed<bool>(LogSwitch.App),
+               })
+           .InstancePerDependency();
             #endregion
         }
 
@@ -220,7 +231,7 @@ namespace Giqci.PublicWeb
             App,
             File,
             AppCache,
-            Ip
+            Ip,
         }
     }
 }

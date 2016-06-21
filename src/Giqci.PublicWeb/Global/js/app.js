@@ -511,3 +511,17 @@ app.controller("BreathController", [
         };
     }
 ]);
+
+app.controller("ZcodeApplyController", [
+    '$http', '$scope', function ($http, $scope) {
+        $scope.ZcodeType = 0;
+        $scope.Add = function () {
+            $giqci.post('/api/forms/addzcodeapply', { ZcodeType: $scope.ZcodeType, Count: $scope.Count }).success(function (data) {
+                if (data.flag) {
+                    alert("申请成功");
+                    window.location.reload();
+                }
+            }, $scope);
+        }
+    }
+]);

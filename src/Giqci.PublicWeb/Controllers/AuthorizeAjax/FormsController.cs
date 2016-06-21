@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using Giqci.ApiProxy.App;
+using Giqci.ApiProxy.Dict;
 using Giqci.Chapi.Enums.App;
 using Giqci.Chapi.Models.App;
 using Giqci.Interfaces;
@@ -35,12 +36,13 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         private readonly IProductApiProxy _prodApi;
         private readonly IDataChecker _dataChecker;
         private readonly IMerchantApiProxy _merchantRepo;
+        private readonly IZcodeApplyLogApiProxy _zCodeApiProxy;
 
         public FormsController(IAuthService auth, IApplicationViewModelApiProxy appView,
             IApplicationCacheApiProxy applicationCacheApiProxy,
             IFileApiProxy fileApiProxy, IDictService cache,
             IMerchantApplicationApiProxy appRepo, IProductApiProxy prodApi,
-            IDataChecker dataChecker, IMerchantApiProxy merchantRepo)
+            IDataChecker dataChecker, IMerchantApiProxy merchantRepo, IZcodeApplyLogApiProxy zCodeApiProxy)
         {
             _auth = auth;
             _appView = appView;
@@ -51,6 +53,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             _prodApi = prodApi;
             _dataChecker = dataChecker;
             _merchantRepo = merchantRepo;
+            _zCodeApiProxy = zCodeApiProxy;
         }
 
         [Route("forms/list")]
@@ -201,6 +204,23 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             input.TotalUnits = input.ShippingMethod == ShippingMethod.O
                 ? (input.ContainerInfos == null ? 0 : input.ContainerInfos.Count())
                 : input.TotalUnits;
+        }
+
+        [Route("forms/addzcodeapply")]
+        [HttpPost]
+        public ActionResult AddZcodeApply(ZcodeApplyLog log)
+        {
+            if (log.Count <= 0)
+            {
+                throw new AjaxException("真知码数量必须为正整数");
+            }
+            _zCodeApiProxy.SubmitNewApply(new ZcodeApplyLog
+            {
+                Count = log.Count,
+                ZcodeType = log.ZcodeType,
+                MerchantId = _auth.GetAuth().MerchantId
+            });
+            return new AjaxResult(new { flag = true });
         }
     }
 }

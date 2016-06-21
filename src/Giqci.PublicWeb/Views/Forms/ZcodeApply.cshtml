@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "真知码申请";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div ng-controller="ZcodeApplyController">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">申请真知码</h3>
+        </div>
+        <div class="panel-body">
+            <div class="tab-content">
+                <div role="tabpanel" class="form-horizontal tab-pane fade in active panel-body">
+                    <div class="form-group">
+                        <table class="table table-striped table-layout-fixed">
+                            <colgroup>
+                                <col width='200' />
+                                <col />
+                            </colgroup>
+                            <tbody>
+                                <tr>
+                                    <td>券码类型</td>
+                                    <td>
+                                        实体真知码<input type="radio" name="ZcodeType" ng-model="ZcodeType" value="0" />
+                                        电子真知码<input type="radio" name="ZcodeType" ng-model="ZcodeType" value="1" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>券码数量</td>
+                                    <td><input type="text" maxlength="7" class="form-control" placeholder="真知码数量" ng-model="Count" /></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="text-align: center">
+                                        <button class="btn btn-success btn-sm" ng-click="Add()">提交真知码申请</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
