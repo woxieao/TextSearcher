@@ -218,7 +218,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             {
                 Count = log.Count,
                 ZcodeType = log.ZcodeType,
-                MerchantId = _auth.GetAuth().MerchantId
+                MerchantEmail = _auth.GetAuth().MerchantEmail
             });
             return new AjaxResult(new { flag = true });
         }
