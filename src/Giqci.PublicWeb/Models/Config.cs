@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web.Configuration;
 
 namespace Giqci.PublicWeb.Models
@@ -41,6 +42,10 @@ namespace Giqci.PublicWeb.Models
             public static readonly bool HideServiceError = bool.Parse(WebConfigurationManager.AppSettings[nameof(HideServiceError)]);
 
             public static readonly DateTime ShowCertTimeLine = Convert.ToDateTime(WebConfigurationManager.AppSettings[nameof(ShowCertTimeLine)]);
+            public static long CurrentToken =
+              new FileInfo(System.Reflection.Assembly.GetExecutingAssembly()
+                  .GetName()
+                  .CodeBase.Replace("file:///", "")).LastWriteTime.Ticks;
         }
 
         public struct ApiUrl
@@ -61,7 +66,7 @@ namespace Giqci.PublicWeb.Models
         }
         public struct LogSwitch
         {
-       
+
 
             public static readonly bool DictLogSwitch = GetSwitch(nameof(DictLogSwitch));
             public static readonly bool IpLogSwitch = GetSwitch(nameof(IpLogSwitch));
