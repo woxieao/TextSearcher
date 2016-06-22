@@ -516,12 +516,26 @@ app.controller("ZcodeApplyController", [
     '$http', '$scope', function ($http, $scope) {
         $scope.ZcodeType = 0;
         $scope.Add = function () {
-            $giqci.post('/api/forms/addzcodeapply', { ZcodeType: $scope.ZcodeType, Count: $scope.Count }).success(function (data) {
-                if (data.flag) {
-                    alert("申请成功");
-                    window.location.reload();
+            if (!isNaN($scope.Count)) {
+                if (confirm("确定申请" + $scope.Count + "个真知码?")) {
+                    $giqci.post('/api/forms/addzcodeapply', { ZcodeType: $scope.ZcodeType, Count: $scope.Count }).success(function (data) {
+                        if (data.flag) {
+                            alert("申请成功");
+                            window.location.href = "/forms/zcodeapplylist";
+                        }
+                    }, $scope);
                 }
-            }, $scope);
+            }
         }
+    }
+]);
+app.controller("ZcodeApplyListController", [
+    '$http', '$scope', function ($http, $scope) {
+        $scope.ZcodeApplyList = {};
+        $scope.Paging = new PageHandler("/api/forms/getzcodeapplylogs", function (result) {
+            $scope.ZcodeApplyList = result.data;
+            $scope.$apply();
+        });
+        $scope.Paging.FirstPage();
     }
 ]);

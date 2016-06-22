@@ -7,9 +7,11 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using Giqci.ApiProxy.App;
+using Giqci.ApiProxy.Cust;
 using Giqci.ApiProxy.Dict;
 using Giqci.Chapi.Enums.App;
 using Giqci.Chapi.Models.App;
+using Giqci.Chapi.Models.Customer;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Converters;
 using Giqci.PublicWeb.Extensions;
@@ -218,9 +220,16 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             {
                 Count = log.Count,
                 ZcodeType = log.ZcodeType,
-                MerchantEmail = _auth.GetAuth().MerchantEmail
+                MerchantId = _auth.GetAuth().MerchantId,
             });
             return new AjaxResult(new { flag = true });
+        }
+
+        [Route("forms/getzcodeapplylogs")]
+        [HttpPost]
+        public ActionResult GetZcodeApplyLogs(int pageIndex, int pageSize, bool? isHandle)
+        {
+            return new AjaxResult(_zCodeApiProxy.GetApplyLogs(pageIndex, pageSize, isHandle, _auth.GetAuth().MerchantId));
         }
     }
 }

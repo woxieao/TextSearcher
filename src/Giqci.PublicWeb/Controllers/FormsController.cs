@@ -130,6 +130,13 @@ namespace Giqci.PublicWeb.Controllers
             return View();
         }
 
+        [Route("forms/zcodeapplylist")]
+        [HttpGet]
+        public ActionResult ZcodeApplyList()
+        {
+            return View();
+        }
+
 
         #region 让批次号可编辑
 
