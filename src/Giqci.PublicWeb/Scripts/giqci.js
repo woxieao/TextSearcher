@@ -34,9 +34,6 @@ function PageHandler(postUrl, callBackFunc, customPageSize) {
             success: function (result) {
                 self.lastTimeResultCount = result.data.length;
                 canWeGo(self.pageIndex);
-                if (result.msg != null) {
-                    alert(result.msg);
-                }
                 func(result);
             },
             error: function (result) {

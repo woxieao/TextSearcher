@@ -4,6 +4,7 @@ using Autofac;
 using Autofac.Core;
 using Giqci.ApiProxy;
 using Giqci.ApiProxy.App;
+using Giqci.ApiProxy.Cust;
 using Giqci.ApiProxy.Dict;
 using Giqci.ApiProxy.File;
 using Giqci.ApiProxy.Services;
@@ -199,9 +200,9 @@ namespace Giqci.PublicWeb
            .As<IZcodeApplyLogApiProxy>().WithParameters(
                new List<ResolvedParameter>()
                {
-                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.App),
+                        ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers),
                         ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
-                        ResolvedParameter.ForKeyed<bool>(LogSwitch.App),
+                        ResolvedParameter.ForKeyed<bool>(LogSwitch.Customers),
                })
            .InstancePerDependency();
             #endregion
