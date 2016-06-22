@@ -1,6 +1,4 @@
-﻿@{
-    var token = string.Format("token={0}", DateTime.Now.Date.Ticks);
-}
+﻿@using Giqci.PublicWeb.Models
 <!DOCTYPE html>
 <html ng-app="giqci">
 <head>
@@ -12,21 +10,21 @@
     <link href="/Global/css/default.css" rel="stylesheet" />
     @*<link rel="stylesheet" id="ls-google-fonts-css" href='http://fonts.useso.com/css?family=Lato:100,300,regular,700,900%7COpen+Sans:300%7CIndie+Flower:regular%7COswald:300,regular,700&#038;subset=latin%2Clatin-ext' type='text/css' media='all' />
         <link rel="stylesheet" id="redux-google-fonts-css" href='http://fonts.useso.com/css?family=Raleway%3A400&#038;subset=latin&#038;ver=1432745489' type='text/css' media='all' />*@
-    <script src="~/Global/js/jquery-2.1.4.min.js?@token"></script>
-    <script src="~/Global/js/angular-1.4.7.min.js?@token"></script>
-    <link href="~/Global/css/bootstrap-datetimepicker.min.css?@token" rel="stylesheet" />
-    <link href="~/Global/css/select2/select2.min.css?@token" rel="stylesheet" />
-    <link href="~/Global/css/select2/select2-bootstrap.css?@token" rel="stylesheet" />
-    <script src="~/Global/js/bootstrap-datetimepicker.min.js?@token"></script>
-    <script src="~/Global/js/locales/bootstrap-datetimepicker.zh-CN.js?@token"></script>
-    <script src="~/Global/js/select2/select2.min.js?@token"></script>
-    <script src="~/Global/js/locales/select2.zh-CN.js?@token"></script>
-    <script src="~/Scripts/bootstrap.min.js?@token"></script>
-    <script src="~/Global/js/service.js?@token"></script>
-    <script src="~/Global/js/app.js?@token"></script>
-    <script src="~/Global/js/directive.js?@token"></script>
-    <script src="~/Scripts/giqci.js?@token"></script>
-    <script src="~/Scripts/jquery.form.js?@token"></script>
+    <script src="~/Global/js/jquery-2.1.4.min.js"></script>
+    <script src="~/Global/js/angular-1.4.7.min.js"></script>
+    <link href="~/Global/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <link href="~/Global/css/select2/select2.min.css" rel="stylesheet" />
+    <link href="~/Global/css/select2/select2-bootstrap.css" rel="stylesheet" />
+    <script src="~/Global/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Global/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="~/Global/js/select2/select2.min.js"></script>
+    <script src="~/Global/js/locales/select2.zh-CN.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Global/js/service.js?@Config.Common.CurrentToken"></script>
+    <script src="~/Global/js/app.js?@Config.Common.CurrentToken"></script>
+    <script src="~/Global/js/directive.js?@Config.Common.CurrentToken"></script>
+    <script src="~/Scripts/giqci.js?@Config.Common.CurrentToken"></script>
+    <script src="~/Scripts/jquery.form.js"></script>
     @RenderSection("Header", false)
 </head>
 <body>
@@ -80,7 +78,7 @@
                             </div>
                             <div class="modal-footer">
                                 @*<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>*@
-                                <button type="button"  ng-disabled="Logining" class="btn btn-primary" ng-click="ModalLogin()"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 登录</button>
+                                <button type="button" ng-disabled="Logining" class="btn btn-primary" ng-click="ModalLogin()"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 登录</button>
                             </div>
                         </div><!-- /.modal-content -->
                     </form>
@@ -106,7 +104,7 @@
         }
         window.onload = checkBrowser();
         $("#loading-content").hide();
-        $("#body-content").show();     
+        $("#body-content").show();
     </script>
 </body>
 </html>
