@@ -1250,9 +1250,10 @@
                                         <td>
                                             <input type="text" ng-model="item.addZcodeItem.ZCodeEnd" id="addZcodeItemZCodeEnd_{{$index}}" class="form-control" maxlength="16"  placeholder="尾码" data-placement="top" title="请输入16位尾码" ng-blur="validAddzcodeItem(item,$index)" />
                                         </td>
-                                        <td>
+                                        <!--暂时去掉真知码的添加按钮-->
+                                        @*<td>
                                             <button class="btn btn-default btn-sm" type="button" ng-click="validAddzcodeItem(item,$index)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加</button>
-                                        </td>
+                                        </td>*@
                                     </tr>
                                 </table>
                             </div>
