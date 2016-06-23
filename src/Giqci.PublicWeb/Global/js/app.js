@@ -234,14 +234,14 @@ app.controller('GoodsListController', [
         };
         $scope.list($scope.postData);
         $scope.remove = function (ciqCode, index) {
-            if (confirm("您确定要删除该商品吗?")) {
+            layer.confirm("您确定要删除该商品吗?", function (l) {
                 $scope.merchantProductList.splice(index, 1);
                 $giqci.post('/api/goods/delete', { ciqCode: ciqCode }).then(function (response) {
                     if (response.data.result) {
-
                     }
                 }, $scope);
-            }
+                layer.close(l);
+            });
         }
         $scope.list2 = function (postData) {
             $giqci.post('/api/goods/getcustomproductlist', postData).success(function (response) {
@@ -262,11 +262,12 @@ app.controller('GoodsListController', [
         }
         $scope.list2($scope.postData);
         $scope.remove2 = function (id, index) {
-            if (confirm("您确定要删除该商品吗?")) {
+            layer.confirm("您确定要删除该商品吗?", function (l) {
                 $giqci.post('/api/goods/deletecustomproduct', { id: id }).then(function (response) {
                     $scope.customProductList.splice(index, 1);
                 }, $scope);
-            }
+                layer.close(l);
+            });
         }
         $scope.editMerchantProduct = function (index) {
             $scope.CustomDialogModel = CallByValue($scope.customProductList[index]);
@@ -283,9 +284,11 @@ app.controller('GoodsListController', [
         $scope.submitAddCustomProduct = function () {
             $giqci.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
                 if (response.flag) {
-                    alert("提交成功");
                     $("#form-add-custom-product").modal("hide");
-                    window.location.reload();
+                    layer.alert("提交成功", function (index) {
+                        window.location.reload();
+                        layer.close(index);
+                    });
                 }
                 var _tipType = response.flag ? "success" : "danger";
                 alertService.add(_tipType, response.msg || "未知错误", 3000);
@@ -416,7 +419,7 @@ app.controller("GoodsAddController", [
         }
         $scope.addProductMsg = null;
         $scope.addproduct = function () {
-            if (confirm('是否添加该商品为常用商品')) {
+            layer.confirm('是否添加该商品为常用商品', function (l) {
                 if ($scope.Product != null) {
                     $giqci.post('/api/goods/addproduct',
                          {
@@ -427,7 +430,8 @@ app.controller("GoodsAddController", [
                              alertService.add(_tipType, data.msg || "未知错误", 3000);
                          }, $scope);
                 }
-            }
+                layer.close(l);
+            });
         }
     }
 ]);
@@ -489,21 +493,22 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
         $("#merchant-add").modal("show");
     };
     $scope.remove = function (_object) {
-        if (confirm("是否删除该常用商户")) {
+        layer.confirm("是否删除该常用商户", function (l) {
             $giqci.post(
-                 '/api/UserProfile/RemoveProfile', { ProfileId: _object.Id }).success(function (data) {
-                     if (data.flag) {
-                         $scope.loadMerchant();
-                         $("#merchant-add").modal("hide");
-                     } else {
-                         var _errormsg = '';
-                         for (var i = data.errorMsg.length; i > 0 ; i--) {
-                             _errormsg += data.errorMsg[i - 1] + "\r\n";
-                         }
-                         alertService.add("danger", _errormsg || "未知错误", 3000);
-                     }
-                 }, $scope);
-        }
+              '/api/UserProfile/RemoveProfile', { ProfileId: _object.Id }).success(function (data) {
+                  if (data.flag) {
+                      $scope.loadMerchant();
+                      $("#merchant-add").modal("hide");
+                  } else {
+                      var _errormsg = '';
+                      for (var i = data.errorMsg.length; i > 0 ; i--) {
+                          _errormsg += data.errorMsg[i - 1] + "\r\n";
+                      }
+                      alertService.add("danger", _errormsg || "未知错误", 3000);
+                  }
+              }, $scope);
+            layer.close(l);
+        });
     };
 }
 ]);
@@ -533,15 +538,20 @@ app.controller("ZcodeApplyController", [
     '$http', '$scope', function ($http, $scope) {
         $scope.ZcodeType = 0;
         $scope.Add = function () {
-            if (!isNaN($scope.Count)) {
-                if (confirm("确定申请" + $scope.Count + "个真知码?")) {
+            if ($scope.Count * 1 > 0) {
+                layer.confirm("确定申请" + $scope.Count + "个真知码?", function (l) {
                     $giqci.post('/api/forms/addzcodeapply', { ZcodeType: $scope.ZcodeType, Count: $scope.Count }).success(function (data) {
                         if (data.flag) {
-                            alert("申请成功");
-                            window.location.href = "/forms/zcodeapplylist";
+                            layer.alert("申请成功", function (index) {
+                                window.location.href = "/forms/zcodeapplylist";
+                                layer.close(index);
+                            });
                         }
                     }, $scope);
-                }
+                    layer.close(l);
+                });
+            } else {
+                layer.alert("真知码数量必须大于0");
             }
         }
     }

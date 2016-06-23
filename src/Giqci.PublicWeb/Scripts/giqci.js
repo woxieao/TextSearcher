@@ -38,7 +38,7 @@ function PageHandler(postUrl, callBackFunc, customPageSize) {
             },
             error: function (result) {
                 console.log(result);
-                alert(":(\nWhoops,looks like something went wrong");
+                layer.alert(":(\nWhoops,looks like something went wrong");
             }
         });
     }
@@ -157,14 +157,14 @@ $giqci.get = function (url, data) {
         $("#breathBox").modal("show");
     }
     self.ShowMsgFunc = function (msg) {
-        alert(msg);
+        layer.alert(msg);
     }
     self.DefaultSuccessFunc = function (result) {
         var callbackData = result.callBackPackage;
         if (callbackData.callBackUrl !== null) {
             window.location.href = callbackData.callBackUrl;
         }
-        alert("提交成功");
+        layer.alert("提交成功");
     }
 
     function handlerResult(scope, result, callBackFunc, withData) {
@@ -189,7 +189,7 @@ $giqci.get = function (url, data) {
                 }
             default:
                 {
-                    alert("UnknowStatus");
+                    layer.alert("UnknowStatus");
                 }
         }
         try {
@@ -227,14 +227,14 @@ $giqci.post = function (url, data) {
         $("#breathBox").modal("show");
     }
     self.ShowMsgFunc = function (msg) {
-        alert(msg);
+        layer.alert(msg);
     }
     self.DefaultSuccessFunc = function (result) {
         var callbackData = result.callBackPackage;
         if (callbackData.callBackUrl !== null) {
             window.location.href = callbackData.callBackUrl;
         }
-        alert("提交成功");
+        layer.alert("提交成功");
     }
 
     function handlerResult(scope, result, callBackFunc, withData) {
@@ -259,7 +259,7 @@ $giqci.post = function (url, data) {
                 }
             default:
                 {
-                    alert("UnknowStatus");
+                    layer.alert("UnknowStatus");
                 }
         }
         try {
