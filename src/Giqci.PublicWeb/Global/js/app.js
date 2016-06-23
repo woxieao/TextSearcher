@@ -395,22 +395,25 @@ app.controller("GoodsAddController", [
         };
 
         $scope.getproductlist = function () {
+            
             if (!(reg.test($scope.CiqCode) || reg2.test($scope.CiqCode))) {
                 $scope.Product = null;
-                alertService.add('danger', "正确的备案号格式为[ICIP+14个数字]或[10个数字]", 3000);
+                //暂时注释掉顶部错误提示
+                //alertService.add('danger', "正确的备案号格式为[ICIP+14个数字]或[10个数字]", 3000);
                 $scope.showError = true;
                 $scope.errorMsg = "正确的备案号格式为[ICIP+14个数字]或[10个数字]";
                 return;
-            }
-            else {
+            }else {
                 $giqci.post('/api/goods/searchproduct', {
                     ciqCode: $scope.CiqCode
                 }).success(function (data) {
                     if (data.result == null) {
                         $scope.Product = null;
                         $scope.showError = true;
-                        alertService.add('danger', "该备案号不存在", 3000);
+                        //暂时注释掉顶部错误提示
+                        //alertService.add('danger', "该备案号不存在", 3000);
                         $scope.errorMsg = "该备案号不存在";
+                        $("#inputCiqCode").focus();
                     } else {
                         $scope.Product = data.result;
                     }
@@ -441,6 +444,8 @@ app.controller("GoodsAddController", [
  */
 app.controller("MerchantListController", ['$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', 'alertService', function ($http, $scope, $log, $location, $anchorScroll, $timeout, alertService) {
     $scope.loadMerchantList = null;
+    $scope.showError = false;
+    $scope.errorMsg = "";
     $scope.dialogModelMerchant = {
         UserName: "",
         UserAddress: "",
@@ -456,6 +461,15 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
     $scope.loadMerchant();
 
     $scope.add = function () {
+        $scope.UserNameErr = false;
+        $scope.UserAddressErr = false;
+        $scope.UserContactErr = false;
+        $scope.UserPhoneErr = false;
+        $scope.UserNameValid = false;
+        $scope.UserAddressValid = false;
+        $scope.UserContactValid = false;
+        $scope.UserPhoneValid = false;
+        $scope.alreadySubmit = false;
         $scope.dialogModelMerchant = {
             UserName: "",
             UserAddress: "",
@@ -465,26 +479,63 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
         $("#merchant-add").modal("show");
     };
 
-    $scope.submitAddMerchant = function () {
+    $scope.validUserName = function (str) {
+        $scope.UserNameErr = (str == "" || str == undefined);
+        $scope.UserNameValid = !(str == "" || str == undefined);
+    };
+
+    $scope.validUserAddress = function (str) {
+        $scope.UserAddressErr = (str == "" || str == undefined);
+        $scope.UserAddressValid = !(str == "" || str == undefined);
+    }
+
+    $scope.validUserContact = function (str) {
+        $scope.UserContactErr = (str == "" || str == undefined);
+        $scope.UserContactValid = !(str == "" || str == undefined);
+    };
+
+    $scope.validUserPhone = function (str) {
+        $scope.UserPhoneErr = (str == "" || str == undefined);
+        $scope.UserPhoneValid = !(str == "" || str == undefined);
+    }
+
+    $scope.validAddMerchant = function () {
+        $scope.alreadySubmit = true;
         var _url = "";
         if ($scope.dialogModelMerchant.Id == null) {
             _url = '/api/UserProfile/AddProfile';
         } else {
             _url = '/api/UserProfile/UpdateProfile';
         }
-        $giqci.post(_url, { userProfile: $scope.dialogModelMerchant }).success(function (data) {
+        var reg=$scope.UserNameValid && $scope.UserAddressValid && $scope.UserContactValid && $scope.UserPhoneValid;
+        if (reg) {
+            $scope.addMerchant(_url);
+        } else {
+            $scope.validUserName($scope.dialogModelMerchant.UserName);
+            $scope.validUserAddress($scope.dialogModelMerchant.UserAddress);
+            $scope.validUserContact($scope.dialogModelMerchant.UserContact);
+            $scope.validUserPhone($scope.dialogModelMerchant.UserPhone);
+        }
+    };
+
+    $scope.addMerchant = function (url) {
+        $giqci.post(url, { userProfile: $scope.dialogModelMerchant }).success(function (data) {
             if (data.flag) {
                 $scope.loadMerchant();
                 $("#merchant-add").modal("hide");
             } else {
+                $scope.showError = true;
                 var _errormsg = '';
                 for (var i = data.errorMsg.length; i > 0 ; i--) {
                     _errormsg += data.errorMsg[i - 1] + "\r\n";
                 }
+                console.log(_errormsg);
                 alertService.add("danger", _errormsg || "未知错误", 3000);
+                $scope.errorMsg = _errormsg || '未知错误';
             }
         }, $scope);
     };
+
     $scope.edit = function (_id) {
         $giqci.post(
           '/api/UserProfile/GetProfileDeatil', { ProfileId: _id }).success(function (data) {

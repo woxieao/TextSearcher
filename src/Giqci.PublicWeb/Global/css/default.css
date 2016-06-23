@@ -716,3 +716,13 @@ ul,li,ol{
 .form-control[disabled]{background-color:#fff;}
 
 .break-word{word-wrap: break-word;word-break:break-word;}
+
+.text-red {color:red;}
+.input-error {border-color:red;}
+.input-error .form-control{border-color:red;box-shadow: 0 1px 1px rgba(0,0,0,.075),0 0 6px red;}
+.input-info {padding-top:7px;padding-left:0;}
+.goodList-search-bar {padding:20px 0 35px 0;}
+.goodList-search-bar input{width:50% !important;}
+.goodAdd-search-bar{width:80% !important;}
+/*保质期输入框*/
+.batchNo-input{background-color:transparent !important;}
