@@ -469,6 +469,7 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
         $scope.UserAddressValid = false;
         $scope.UserContactValid = false;
         $scope.UserPhoneValid = false;
+        $scope.alreadySubmit = false;
         $scope.dialogModelMerchant = {
             UserName: "",
             UserAddress: "",
@@ -499,6 +500,7 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
     }
 
     $scope.validAddMerchant = function () {
+        $scope.alreadySubmit = true;
         var _url = "";
         if ($scope.dialogModelMerchant.Id == null) {
             _url = '/api/UserProfile/AddProfile';

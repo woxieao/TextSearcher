@@ -67,7 +67,7 @@
                             <div class="col-sm-7">
                                 <input type="text" ng-model="dialogModelMerchant.UserName"  ng-class="{'input-error': UserNameErr}"
                                        class="form-control" maxlength="100" required ng-blur="validUserName(dialogModelMerchant.UserName)"
-                                       ng-focus="UserNameErr=false"/>
+                                       ng-focus="UserNameErr=false;alreadySubmit=false;"/>
                             </div>
                             <div class="col-sm-3 input-info">
                                 <span class="text-left text-red" ng-show="UserNameErr">商户名称不能为空</span>
@@ -79,7 +79,7 @@
                             <div class="col-sm-7">
                                 <input type="text" ng-model="dialogModelMerchant.UserAddress" ng-class="{'input-error': UserAddressErr}"
                                         class="form-control"maxlength="400" required ng-blur="validUserAddress(dialogModelMerchant.UserAddress)"
-                                       ng-focus="UserAddressErr=false"/>
+                                       ng-focus="UserAddressErr=false;alreadySubmit=false;"/>
                             </div>
                             <div class="col-sm-3 input-info">
                                 <span class="text-left text-red" ng-show="UserAddressErr">商户地址不能为空</span>
@@ -91,7 +91,7 @@
                             <div class="col-sm-7">
                                 <input type="text" ng-model="dialogModelMerchant.UserContact" ng-class="{'input-error': UserContactErr}"
                                        class="form-control"maxlength="100" required ng-blur="validUserContact(dialogModelMerchant.UserContact)"
-                                       ng-focus="UserContactErr=false"/>
+                                       ng-focus="UserContactErr=false;alreadySubmit=false;"/>
                             </div>
                             <div class="col-sm-3 input-info">
                                 <span class="text-left text-red" ng-show="UserContactErr">联系人不能为空</span>
@@ -103,7 +103,7 @@
                             <div class="col-sm-7">
                                 <input type="text" ng-model="dialogModelMerchant.UserPhone" ng-class="{'input-error': UserPhoneErr}"
                                        class="form-control"maxlength="100" required ng-blur="validUserPhone(dialogModelMerchant.UserPhone)"
-                                       ng-focus="UserPhoneErr=false"/>
+                                       ng-focus="UserPhoneErr=false;alreadySubmit=false;"/>
                             </div>
                             <div class="col-sm-3 input-info">
                                 <span class="text-left text-red" ng-show="UserPhoneErr || dialogModelMerchant.UserPhone.$valid ">联系电话不能为空</span>
@@ -115,7 +115,7 @@
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
                                 <input type="hidden" ng-model="dialogModelMerchant.Id" />
-                                <button type="submit" class="btn btn-default" ng-click="validAddMerchant($valid)">
+                                <button type="submit" class="btn btn-default" ng-click="validAddMerchant()" ng-disabled="alreadySubmit">
                                     <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
                                 </button>
                             </div>
