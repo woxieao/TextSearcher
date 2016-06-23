@@ -243,11 +243,6 @@
     <Content Include="Global\js\service.js" />
     <Content Include="Global\js\ui-bootstrap-tpls-1.1.2.min.js" />
     <Content Include="Global\layer-v2.3\layer\layer.js" />
-    <Content Include="Global\layer-v2.3\layer\skin\default\icon-ext.png" />
-    <Content Include="Global\layer-v2.3\layer\skin\default\icon.png" />
-    <Content Include="Global\layer-v2.3\layer\skin\default\loading-0.gif" />
-    <Content Include="Global\layer-v2.3\layer\skin\default\loading-1.gif" />
-    <Content Include="Global\layer-v2.3\layer\skin\default\loading-2.gif" />
     <Content Include="Global\layer-v2.3\layer\skin\layer.css" />
     <Content Include="Scripts\jquery.form.js" />
     <Content Include="Scripts\giqci.js" />
