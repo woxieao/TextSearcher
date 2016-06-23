@@ -229,17 +229,9 @@
                 $scope.removeItemByBatchNo = function (_object) {
                     _object.HandlerType = -1;
                 };
+
+                //添加真知码操作（需在验证通过后）
                 $scope.addZcodeItem = function (_object, _index) {
-                    //if (_object.addZcodeItem.ZCodeStart == null || _object.addZcodeItem.ZCodeStart.length !== 16) {
-                    //    $("#addZcodeItemZCodeStart_" + _index).attr("placeholder", "请输入16位首码");
-                    //    $("#addZcodeItemZCodeStart_" + _index).focus();
-                    //    return;
-                    //}
-                    //if (_object.addZcodeItem.ZCodeEnd == null || _object.addZcodeItem.ZCodeEnd.length !== 16) {
-                    //    $("#addZcodeItemZCodeEnd_" + _index).attr("placeholder", "请输入16位尾码");
-                    //    $("#addZcodeItemZCodeEnd_" + _index).focus();
-                    //    return;
-                    //}
                     $("#addZcodeItemZCodeStart_" + _index).attr("placeholder", "首码");
                     $("#addZcodeItemZCodeEnd_" + _index).attr("placeholder", "尾码");
                     _object.ApplicationZCodes.push({
@@ -248,8 +240,8 @@
                         HandlerType: 1,
                         HtmlEdit: 0
                     });
-                    _object.addZcodeItem.ZCodeStart = null;
-                    _object.addZcodeItem.ZCodeEnd = null;
+                    _object.addZcodeItem.ZCodeStart = "";
+                    _object.addZcodeItem.ZCodeEnd = "";
                 };
                 $scope.removeZcodeItem = function (_object) {
                     _object.HandlerType = -1;
@@ -258,7 +250,7 @@
                     _object.HtmlEdit = 1;
                 };
 
-                //失去焦点时，要同时检测两个输入框中的首码、尾码是否填写
+                //已成功添加真知码，再次编辑时的验证
                 $scope.validZcodeItem = function (_object,_index) {
                     var noZcode = _object.ZCodeStart == "" && _object.ZCodeEnd == "";
                     var pass = _object.ZCodeStart.length == 16 && _object.ZCodeEnd.length == 16;
@@ -277,12 +269,14 @@
                 };
 
                 $scope.validAddzcodeItem = function (_object, _index) {
+                    //真知码为空，不验证
                     var noZcode = ((_object.addZcodeItem.ZCodeEnd == null) || (_object.addZcodeItem.ZCodeEnd == ""))
-                        && ((_object.addZcodeItem.ZCodeStart == null) || (_object.addZcodeItem.ZCodeStart == ""));//真知码为空，不验证
+                        && ((_object.addZcodeItem.ZCodeStart == null) || (_object.addZcodeItem.ZCodeStart == ""));
+                    //首码尾码都不为空，且都够16位，验证通过
                     var pass = ((_object.addZcodeItem.ZCodeEnd != null) || (_object.addZcodeItem.ZCodeEnd != "")) &&
                         ((_object.addZcodeItem.ZCodeStart != null) || (_object.addZcodeItem.ZCodeStart !="")) &&
                         (_object.addZcodeItem.ZCodeStart != null && _object.addZcodeItem.ZCodeStart.length === 16) &&
-                        (_object.addZcodeItem.ZCodeEnd != null && _object.addZcodeItem.ZCodeEnd.length === 16);//首码尾码都不为空，且都够16位，验证通过
+                        (_object.addZcodeItem.ZCodeEnd != null && _object.addZcodeItem.ZCodeEnd.length === 16);
                     if (pass) {
                         $scope.addZcodeItem(_object, _index);
                         $("#addZcodeItemZCodeStart_" + _index).tooltip('destroy');
@@ -1255,7 +1249,7 @@
                                             <input type="text" ng-model="item.addZcodeItem.ZCodeEnd" id="addZcodeItemZCodeEnd_{{$index}}" class="form-control" maxlength="16"  placeholder="尾码" data-placement="top" title="请输入16位尾码" ng-blur="validAddzcodeItem(item,$index)" />
                                         </td>
                                         <td>
-                                            <button class="btn btn-default btn-sm" type="button" ng-click="addZcodeItem(item,$index)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加</button>
+                                            <button class="btn btn-default btn-sm" type="button" ng-click="validAddzcodeItem(item,$index)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加</button>
                                         </td>
                                     </tr>
                                 </table>
