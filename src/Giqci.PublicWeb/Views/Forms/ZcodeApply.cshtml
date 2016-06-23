@@ -7,7 +7,7 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">
-                申请真知码记录
+                真知码申请
                 <span class="pull-right">
                     <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<a href="/forms/zcodeapplylist">返回列表</a>
                 </span>
@@ -16,14 +16,14 @@
         <div class="panel-body">
             <form name="appform" class="form-horizontal" novalidate>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label form-control-static">券码类型</label>
+                    <label class="col-sm-2 control-label form-control-static">发码类型</label>
                     <div class="col-sm-10 form-control-static">
-                        <input type="radio" name="ZcodeType" ng-model="ZcodeType" value="0" id="ZcodeType_0" /><label style="font-weight: normal;" for="ZcodeType_0">实体真知码</label>
-                        <input type="radio" name="ZcodeType" ng-model="ZcodeType" value="1" id="ZcodeType_1" /><label style="font-weight: normal;" for="ZcodeType_1">电子真知码</label>
+                        <input type="radio" name="ZcodeType" ng-model="ZcodeType" value="0" id="ZcodeType_0" /><label style="font-weight: normal;" for="ZcodeType_0">实体码</label>
+                        <input type="radio" name="ZcodeType" ng-model="ZcodeType" value="1" id="ZcodeType_1" /><label style="font-weight: normal;" for="ZcodeType_1">电子码</label>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label form-control-static">券码类型</label>
+                    <label class="col-sm-2 control-label form-control-static">数量</label>
                     <div class="col-sm-10 form-control-static">
                         <input type="number" maxlength="7" min="1" class="form-control" placeholder="真知码数量" ng-model="Count" />
                     </div>
