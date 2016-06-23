@@ -25,7 +25,7 @@
                     </tr>
                 </thead>
                 <tr ng-repeat="zcodeApply in ZcodeApplyList">
-                    <td>{{zcodeApply.ZcodeType=='EntityCode'?"实体真知码":"电子真知码"}}</td>
+                    <td>{{zcodeApply.ZcodeType=='EntityCode'?"实体码":"电子码"}}</td>
                     <td class="td-ellipsis">{{zcodeApply.Count}}</td>
                     <td>{{zcodeApply.ApplyTime| date:'yyyy/MM/dd hh:mm'}}</td>
                 </tr>
