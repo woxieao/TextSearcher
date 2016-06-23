@@ -18,19 +18,21 @@
                 <span ng-bind="alert.msg"></span>
             </div>
             <h1>{{addProductMsg}}</h1>
-            <form name="appform" class="form-horizontal" novalidate>
+            <form name="appform"   ng-class="{ 'has-error' : showError }" class="form-horizontal" novalidate>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">商品备案号</label>
                     <div class="col-sm-8">
                         <div class="input-group">
-                            <input type="text" placeholder="请输入完整的商品备案号" ng-model="CiqCode" class="form-control" />
+                            <input type="text" placeholder="请输入完整的商品备案号" ng-model="CiqCode" class="form-control" ng-keyup="validCiqCode()"/>
                             <span class="input-group-btn">
                                 <button class="btn btn-default" ng-click="getproductlist()">
                                     <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 搜索
                                 </button>
                             </span>
                         </div>
+                        <small class="help-block" ng-bind="errorMsg" ng-show="showError"></small>
                     </div>
+                    
                 </div>
                 <div ng-show="Product!=null">
                     <table class="table table-striped table-layout-fixed">

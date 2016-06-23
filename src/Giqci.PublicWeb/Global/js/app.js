@@ -376,12 +376,27 @@ app.controller("GoodsAddController", [
     '$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', 'alertService', function ($http, $scope, $log, $location, $anchorScroll, $timeout, alertService) {
         $scope.CiqCode = "";
         $scope.Product = null;
+        $scope.errorMsg = "";
+        var reg = /^\d{10}$/;
+        var reg2 = /^ICIP\d{14}$/i;
+        $scope.showError = false;
+
+        //每次按键抬起都会校验输入的商品编号合法性，只是不会自动发请求，除非点击回车或者搜索按钮
+        $scope.validCiqCode = function () {
+            if (!(reg.test($scope.CiqCode) || reg2.test($scope.CiqCode))) {
+                $scope.showError = true;
+                $scope.errorMsg = "正确的备案号格式为[ICIP+14个数字]或[10个数字]";
+            } else {
+                $scope.showError = false;
+            }
+        };
+
         $scope.getproductlist = function () {
-            var reg = /^\d{10}$/;
-            var reg2 = /^ICIP\d{14}$/i;
             if (!(reg.test($scope.CiqCode) || reg2.test($scope.CiqCode))) {
                 $scope.Product = null;
                 alertService.add('danger', "正确的备案号格式为[ICIP+14个数字]或[10个数字]", 3000);
+                $scope.showError = true;
+                $scope.errorMsg = "正确的备案号格式为[ICIP+14个数字]或[10个数字]";
                 return;
             }
             else {
@@ -390,7 +405,9 @@ app.controller("GoodsAddController", [
                 }).success(function (data) {
                     if (data.result == null) {
                         $scope.Product = null;
+                        $scope.showError = true;
                         alertService.add('danger', "该备案号不存在", 3000);
+                        $scope.errorMsg = "该备案号不存在";
                     } else {
                         $scope.Product = data.result;
                     }
