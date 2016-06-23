@@ -569,17 +569,16 @@
                     $("#form-merchant-list").modal("hide");
                 };
                 $scope.removeMerchant = function (_object) {
-                    if (confirm("是否删除该常用商户")) {
+                    layer.confirm("是否删除该常用商户", function (l) {
                         $giqci.post('/api/UserProfile/RemoveProfile',
-                        { ProfileId: _object.Id }).success(function (data) {
-                            if (data.flag) {
-                                $scope.loadMerchant();
-                                //$("#merchant-add").modal("hide");
-                            }
-                        }, $scope);
-                    }
+                            { ProfileId: _object.Id }).success(function (data) {
+                                if (data.flag) {
+                                    $scope.loadMerchant();
+                                    //$("#merchant-add").modal("hide");
+                                }
+                            }, $scope); layer.close(l);
+                    }); 
                 };
-
                 //upload example
                 $scope.UploadExample = function () {
                     $('#uploadForm').ajaxSubmit({
@@ -591,7 +590,7 @@
                                 $scope.model.Application.ExampleCertList.push({ CertFilePath: data.FileFullPath, HandlerType: 1 });
                                 $scope.$apply();
                             } else {
-                                alert(data.Msg);
+                               layer. alert(data.Msg);
                             }
                         }
                     });
@@ -625,9 +624,8 @@
                     $giqci.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
                         if (response.flag) {
                             $scope.getCustomProductList();
-                            alert("提交成功");
-                            $scope.showProductList();
-                            //$("#form-add-custom-product").modal("hide");
+                            layer.alert("提交成功", function (l) { $scope.showProductList(); layer.close(l);});
+                        //$("#form-add-custom-product").modal("hide");
                         }
                         angular.element(_btnsubmitAddCustomProduct).attr("disabled", false);
                         var _tipType = response.flag ? "success" : "danger";
@@ -638,8 +636,10 @@
                     $giqci.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
                         if (response.flag) {
                             $scope.getGoodsList();
-                            alert("提交成功");
-                            $scope.showProductList();
+                            layer.alert("提交成功",function(l) {
+                                $scope.showProductList();
+                                layer.close(l);
+                            });
                             //$("#form-add-custom-product").modal("hide");
                         }
                         var _tipType = response.flag ? "success" : "danger";
@@ -670,38 +670,40 @@
                     }
                 };
                 $scope.addDialogGoodsProduct = function () {
-                    if (confirm('是否添加该商品为常用商品')) {
+                    layer.confirm('是否添加该商品为常用商品', function (l) {
                         if ($scope.dialogProductList != null) {
                             $giqci.post('/api/goods/addproduct',
                             { ciqCode: $scope.dialogProductList.CiqCode }).success(function (data) {
                                 if (data.result) {
                                     $scope.getGoodsList();
-                                    alert("提交成功");
-                                    $scope.showProductList();
+                                    layer.alert("提交成功", function (l) { $scope.showProductList(); layer.close(l) });
                                 }
                                 var _tipType = data.result ? "success" : "danger";
                                 alertService.add(_tipType, data.msg || "未知错误", 3000);
                             }, $scope);
                         }
-                    }
+                        layer.close(l);
+                    }); 
                 };
                 $scope.removeMerchantProductId = function (Id, index) {
-                    if (confirm("您确定要删除该商品吗?")) {
+                    layer.confirm("您确定要删除该商品吗?", function (l) {
                         $giqci.post('/api/goods/deletecustomproduct', { id: Id }).then(function (response) {
                             if (response.data.flag) {
                                 $scope.getCustomProductList();
                             }
                         }, $scope);
-                    }
+                        layer.close(l);
+                    }); 
                 };
                 $scope.removeMerchantProductCiq = function (ciqCode, index) {
-                    if (confirm("您确定要删除该商品吗?")) {
+                    layer.confirm("您确定要删除该商品吗?", function (l) {
                         $giqci.post('/api/goods/delete', { ciqCode: ciqCode }).then(function (response) {
                             if (response.data.result) {
                                 $scope.getGoodsList();
                             }
                         }, $scope);
-                    }
+                        layer.close(l);
+                    });
                 };
 
                 $scope.editMerchantProduct = function (_object) {

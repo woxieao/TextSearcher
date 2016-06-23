@@ -242,6 +242,8 @@
     <Content Include="Global\js\select2\select2.min.js" />
     <Content Include="Global\js\service.js" />
     <Content Include="Global\js\ui-bootstrap-tpls-1.1.2.min.js" />
+    <Content Include="Global\layer-v2.3\layer\layer.js" />
+    <Content Include="Global\layer-v2.3\layer\skin\layer.css" />
     <Content Include="Scripts\jquery.form.js" />
     <Content Include="Scripts\giqci.js" />
     <Content Include="Scripts\bootstrap.js" />
