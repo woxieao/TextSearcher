@@ -724,3 +724,5 @@ ul,li,ol{
 .goodList-search-bar {padding:20px 0 35px 0;}
 .goodList-search-bar input{width:50% !important;}
 .goodAdd-search-bar{width:80% !important;}
+/*保质期输入框*/
+.batchNo-input{background-color:transparent !important;}
