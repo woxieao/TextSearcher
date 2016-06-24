@@ -75,7 +75,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="addCustomSubmit" type="submit" class="btn btn-default" ><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交保存</button>
+                <button id="addCustomSubmit" type="submit" class="btn btn-default" ng-disabled="alreadySubmit">
+                    <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交保存
+                </button>
                 <button type="button" class="btn btn-primary" ng-click="showProductList()">关闭</button>
             </div>
         </form>
