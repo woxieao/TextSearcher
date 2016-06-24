@@ -56,66 +56,45 @@
                     </button>
                     <h5 class="modal-title">添加常用商户信息</h5>
                 </div>
-                <div class="modal-body col-sm-10">
-                    <form class="form-horizontal " novalidate>
-                        <div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
-                            <button aria-label="Close" data-dismiss="alert" ng-click="alert.close()" class="close" type="button"><span aria-hidden="true">×</span></button>
-                            <span ng-bind="alert.msg"></span>
-                        </div>
+                <div class="modal-body">
+                    <form name="merchantForm" class="form-horizontal"  novalidate>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">商户名称<span style="color: red;">*</span></label>
-                            <div class="col-sm-7">
-                                <input type="text" ng-model="dialogModelMerchant.UserName"  ng-class="{'input-error': UserNameErr}"
-                                       class="form-control" maxlength="100" required ng-blur="validUserName(dialogModelMerchant.UserName)"
-                                       ng-focus="UserNameErr=false;alreadySubmit=false;"/>
-                            </div>
-                            <div class="col-sm-3 input-info">
-                                <span class="text-left text-red" ng-show="UserNameErr">商户名称不能为空</span>
-                                <i class="glyphicon glyphicon-ok text-success" ng-show="UserNameValid"></i>
+                            <div class="col-sm-8">
+                                <input type="text" ng-model="dialogModelMerchant.UserName" 
+                                       class="form-control" maxlength="100" required
+                                       ucc-require="商户名称不能为空"  submit-btn-id="merchantSubmit"/>
                             </div>
                         </div>
                         <div class="form-group" >
                             <label class="col-sm-2 control-label">地址 <span style="color: red;">*</span></label>
-                            <div class="col-sm-7">
-                                <input type="text" ng-model="dialogModelMerchant.UserAddress" ng-class="{'input-error': UserAddressErr}"
-                                        class="form-control"maxlength="400" required ng-blur="validUserAddress(dialogModelMerchant.UserAddress)"
-                                       ng-focus="UserAddressErr=false;alreadySubmit=false;"/>
-                            </div>
-                            <div class="col-sm-3 input-info">
-                                <span class="text-left text-red" ng-show="UserAddressErr">商户地址不能为空</span>
-                                <i class="glyphicon glyphicon-ok text-success" ng-show="UserAddressValid"></i>
+                            <div class="col-sm-8">
+                                <input type="text" ng-model="dialogModelMerchant.UserAddress"
+                                       ucc-require="商户地址不能为空"  submit-btn-id="merchantSubmit"
+                                       class="form-control"maxlength="400" required/>
                             </div>
                         </div>
                         <div class="form-group" >
                             <label class="col-sm-2 control-label">联系人 <span style="color: red;">*</span></label>
-                            <div class="col-sm-7">
-                                <input type="text" ng-model="dialogModelMerchant.UserContact" ng-class="{'input-error': UserContactErr}"
-                                       class="form-control"maxlength="100" required ng-blur="validUserContact(dialogModelMerchant.UserContact)"
-                                       ng-focus="UserContactErr=false;alreadySubmit=false;"/>
-                            </div>
-                            <div class="col-sm-3 input-info">
-                                <span class="text-left text-red" ng-show="UserContactErr">联系人不能为空</span>
-                                <i class="glyphicon glyphicon-ok text-success" ng-show="UserContactValid"></i>
+                            <div class="col-sm-8">
+                                <input type="text" ng-model="dialogModelMerchant.UserContact" 
+                                       ucc-require="联系人不能为空"  submit-btn-id="merchantSubmit"
+                                       class="form-control"maxlength="100" required/>
                             </div>
                         </div>
                         <div class="form-group" >
                             <label class="col-sm-2 control-label">联系电话 <span style="color: red;">*</span></label>
-                            <div class="col-sm-7">
-                                <input type="text" ng-model="dialogModelMerchant.UserPhone" ng-class="{'input-error': UserPhoneErr}"
-                                       class="form-control"maxlength="100" required ng-blur="validUserPhone(dialogModelMerchant.UserPhone)"
-                                       ng-focus="UserPhoneErr=false;alreadySubmit=false;"/>
+                            <div class="col-sm-8">
+                                <input type="text" ng-model="dialogModelMerchant.UserPhone" 
+                                       ucc-require="联系电话不能为空"  submit-btn-id="merchantSubmit"
+                                       class="form-control"maxlength="100" required/>
                             </div>
-                            <div class="col-sm-3 input-info">
-                                <span class="text-left text-red" ng-show="UserPhoneErr || dialogModelMerchant.UserPhone.$valid ">联系电话不能为空</span>
-                                <i class="glyphicon glyphicon-ok text-success" ng-show="UserPhoneValid"></i>
-                            </div>
-
                         </div>
                         
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
                                 <input type="hidden" ng-model="dialogModelMerchant.Id" />
-                                <button type="submit" class="btn btn-default" ng-click="validAddMerchant()" ng-disabled="alreadySubmit">
+                                <button type="submit" id="merchantSubmit" class="btn btn-default" ng-click="validAddMerchant(dialogModelMerchant)" ng-disabled="alreadySubmit">
                                     <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
                                 </button>
                             </div>
