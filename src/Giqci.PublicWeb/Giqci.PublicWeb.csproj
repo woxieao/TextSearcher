@@ -218,7 +218,12 @@
     <Content Include="Global\images\giqci-banner.jpg" />
     <Content Include="Global\images\cnas-small.jpg" />
     <Content Include="Global\images\giqci-logo-finalised-withC.png" />
+    <Content Include="Global\images\icon-ext.png" />
+    <Content Include="Global\images\icon.png" />
     <Content Include="Global\images\iqtc-footer.jpg" />
+    <Content Include="Global\images\loading-0.gif" />
+    <Content Include="Global\images\loading-1.gif" />
+    <Content Include="Global\images\loading-2.gif" />
     <Content Include="Global\images\loading.gif" />
     <Content Include="Global\js\angular-1.4.7.min.js" />
     <Content Include="Global\js\app.js" />
