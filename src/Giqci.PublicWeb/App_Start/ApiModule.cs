@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Xml;
 using Autofac;
 using Autofac.Core;
 using Giqci.ApiProxy;
@@ -7,8 +8,10 @@ using Giqci.ApiProxy.App;
 using Giqci.ApiProxy.Cust;
 using Giqci.ApiProxy.Dict;
 using Giqci.ApiProxy.File;
+using Giqci.ApiProxy.Logging;
 using Giqci.ApiProxy.Services;
 using Giqci.Chapi.Models.File;
+using Giqci.Chapi.Models.Logging;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Models;
 using Giqci.PublicWeb.Services;
@@ -62,13 +65,43 @@ namespace Giqci.PublicWeb
 
             #region init log switch 
 
-            builder.Register(x => Config.LogSwitch.DictLogSwitch).Keyed<bool>(LogSwitch.Dict).SingleInstance();
-            builder.Register(x => Config.LogSwitch.IpLogSwitch).Keyed<bool>(LogSwitch.Ip).SingleInstance();
-            builder.Register(x => Config.LogSwitch.ProductsLogSwitch).Keyed<bool>(LogSwitch.Products).SingleInstance();
-            builder.Register(x => Config.LogSwitch.CustomersLogSwitch).Keyed<bool>(LogSwitch.Customers).SingleInstance();
-            builder.Register(x => Config.LogSwitch.AppLogSwitch).Keyed<bool>(LogSwitch.App).SingleInstance();
-            builder.Register(x => Config.LogSwitch.FileLogSwitch).Keyed<bool>(LogSwitch.File).SingleInstance();
-            builder.Register(x => Config.LogSwitch.AppCacheLogSwitch).Keyed<bool>(LogSwitch.AppCache).SingleInstance();
+            builder.Register(x => new LoggingApiProxy(new LogConfig()
+            {
+                Log = Config.LogSwitch.AppCacheLogSwitch,
+                LogUrl = Config.ApiUrl.LogApiUrl
+            })).Keyed<ILoggingApiProxy>(LogSwitch.AppCache).SingleInstance();
+            builder.Register(x => new LoggingApiProxy(new LogConfig()
+            {
+                Log = Config.LogSwitch.DictLogSwitch,
+                LogUrl = Config.ApiUrl.LogApiUrl
+            })).Keyed<ILoggingApiProxy>(LogSwitch.Dict).SingleInstance();
+            builder.Register(x => new LoggingApiProxy(new LogConfig()
+            {
+                Log = Config.LogSwitch.IpLogSwitch,
+                LogUrl = Config.ApiUrl.LogApiUrl
+            })).Keyed<ILoggingApiProxy>(LogSwitch.Ip).SingleInstance();
+            builder.Register(x => new LoggingApiProxy(new LogConfig()
+            {
+                Log = Config.LogSwitch.ProductsLogSwitch,
+                LogUrl = Config.ApiUrl.LogApiUrl
+            })).Keyed<ILoggingApiProxy>(LogSwitch.Products).SingleInstance();
+
+            builder.Register(x => new LoggingApiProxy(new LogConfig()
+            {
+                Log = Config.LogSwitch.CustomersLogSwitch,
+                LogUrl = Config.ApiUrl.LogApiUrl
+            })).Keyed<ILoggingApiProxy>(LogSwitch.Customers).SingleInstance();
+
+            builder.Register(x => new LoggingApiProxy(new LogConfig()
+            {
+                Log = Config.LogSwitch.AppLogSwitch,
+                LogUrl = Config.ApiUrl.LogApiUrl
+            })).Keyed<ILoggingApiProxy>(LogSwitch.App).SingleInstance();
+            builder.Register(x => new LoggingApiProxy(new LogConfig()
+            {
+                Log = Config.LogSwitch.FileLogSwitch,
+                LogUrl = Config.ApiUrl.LogApiUrl
+            })).Keyed<ILoggingApiProxy>(LogSwitch.File).SingleInstance();
 
             #endregion
 
@@ -80,8 +113,7 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.Products),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
-                        ResolvedParameter.ForKeyed<bool>(LogSwitch.Products),
+                        ResolvedParameter.ForKeyed<ILoggingApiProxy>(LogSwitch.Products)
                     })
                 .InstancePerDependency();
 
@@ -90,8 +122,7 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
-                        ResolvedParameter.ForKeyed<bool>(LogSwitch.Customers),
+                        ResolvedParameter.ForKeyed<ILoggingApiProxy>(LogSwitch.Customers)
                     })
                 .InstancePerDependency();
 
@@ -100,8 +131,7 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
-                        ResolvedParameter.ForKeyed<bool>(LogSwitch.Customers),
+                        ResolvedParameter.ForKeyed<ILoggingApiProxy>(LogSwitch.Customers)
                     })
                 .InstancePerDependency();
             builder.RegisterType<MerchantProductApiProxy>()
@@ -109,8 +139,7 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
-                        ResolvedParameter.ForKeyed<bool>(LogSwitch.Customers),
+                        ResolvedParameter.ForKeyed<ILoggingApiProxy>(LogSwitch.Customers)
                     })
                 .InstancePerDependency();
             builder.RegisterType<ApiUserApiProxy>()
@@ -118,8 +147,7 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
-                        ResolvedParameter.ForKeyed<bool>(LogSwitch.Customers),
+                        ResolvedParameter.ForKeyed<ILoggingApiProxy>(LogSwitch.Customers)
                     })
                 .InstancePerDependency();
             builder.RegisterType<MerchantApplicationApiProxy>()
@@ -127,8 +155,7 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.App),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
-                        ResolvedParameter.ForKeyed<bool>(LogSwitch.App),
+                        ResolvedParameter.ForKeyed<ILoggingApiProxy>(LogSwitch.App)
                     })
                 .InstancePerDependency();
             builder.RegisterType<ApplicationViewModelApiProxy>()
@@ -136,8 +163,7 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.App),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
-                        ResolvedParameter.ForKeyed<bool>(LogSwitch.App),
+                        ResolvedParameter.ForKeyed<ILoggingApiProxy>(LogSwitch.App)
                     })
                 .InstancePerDependency();
             builder.RegisterType<CertificateApiProxy>()
@@ -145,8 +171,7 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.App),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
-                        ResolvedParameter.ForKeyed<bool>(LogSwitch.App),
+                        ResolvedParameter.ForKeyed<ILoggingApiProxy>(LogSwitch.App)
                     })
                 .InstancePerDependency();
 
@@ -155,8 +180,7 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.Dict),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
-                        ResolvedParameter.ForKeyed<bool>(LogSwitch.Dict),
+                        ResolvedParameter.ForKeyed<ILoggingApiProxy>(LogSwitch.Dict)
                     })
                 .InstancePerDependency();
 
@@ -165,9 +189,8 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.File),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
-                        ResolvedParameter.ForKeyed<bool>(LogSwitch.File),
-                        ResolvedParameter.ForKeyed<UploadInitInfo>(ValueList.UploadInitInfo),
+                        ResolvedParameter.ForKeyed<ILoggingApiProxy>(LogSwitch.File),
+                        ResolvedParameter.ForKeyed<UploadInitInfo>(ValueList.UploadInitInfo)
                     })
                 .InstancePerDependency();
             builder.RegisterType<AuthService>().As<IAuthService>().InstancePerDependency();
@@ -181,8 +204,7 @@ namespace Giqci.PublicWeb
                     new List<ResolvedParameter>()
                     {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.App),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
-                        ResolvedParameter.ForKeyed<bool>(LogSwitch.AppCache),
+                        ResolvedParameter.ForKeyed<ILoggingApiProxy>(LogSwitch.AppCache)
                     })
                 .InstancePerDependency();
 
@@ -191,8 +213,7 @@ namespace Giqci.PublicWeb
                  new List<ResolvedParameter>()
                  {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.Ip),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
-                        ResolvedParameter.ForKeyed<bool>(LogSwitch.Ip),
+                        ResolvedParameter.ForKeyed<ILoggingApiProxy>(LogSwitch.Ip)
                  })
              .InstancePerDependency();
 
@@ -201,8 +222,7 @@ namespace Giqci.PublicWeb
                new List<ResolvedParameter>()
                {
                         ResolvedParameter.ForKeyed<HttpClient>(ApiType.Customers),
-                        ResolvedParameter.ForKeyed<string>(ValueList.LogApiUrl),
-                        ResolvedParameter.ForKeyed<bool>(LogSwitch.Customers),
+                        ResolvedParameter.ForKeyed<ILoggingApiProxy>(LogSwitch.Customers)
                })
            .InstancePerDependency();
             #endregion
