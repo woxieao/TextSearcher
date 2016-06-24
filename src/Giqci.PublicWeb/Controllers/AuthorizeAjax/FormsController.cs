@@ -227,7 +227,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
 
         [Route("forms/getzcodeapplylogs")]
         [HttpPost]
-        public ActionResult GetZcodeApplyLogs(int pageIndex, int pageSize, HandleStatus handleStatus, DateTime? startTime, DateTime? endTime)
+        public ActionResult GetZcodeApplyLogs(int pageIndex, int pageSize, HandleStatus? handleStatus, DateTime? startTime, DateTime? endTime)
         {
             return new AjaxResult(_zCodeApiProxy.GetApplyLogs(pageIndex, pageSize, handleStatus, startTime, endTime, _auth.GetAuth().MerchantId));
         }
