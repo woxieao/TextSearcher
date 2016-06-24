@@ -44,15 +44,15 @@
                         $scope.alreadySubmit = true;
                         $giqci.post('/api/goods/addcustomproduct', $scope.model).success(function (response) {
                             $scope.flag = response.flag;
+                            $scope.alreadySubmit = false;
                             if ($scope.flag) {
                                 layer.msg(response.msg, { icon: 6 });
-                                $scope.alreadySubmit = false;
                                 $scope.model = { ManufacturerCountry: "036" };
                                 $("#commonhscodes").next().find("span.select2-selection__rendered").html("");
                                 $("#ManufacturerCountry").next().find("span.select2-selection__rendered").html("");
                             } else {
                                 layer.alert(response.msg);
-                            }
+                              }
                         }, $scope);
                     } else {
                         $scope.alreadySubmit = false;
