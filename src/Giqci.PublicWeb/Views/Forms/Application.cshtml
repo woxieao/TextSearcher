@@ -229,6 +229,20 @@
                     _object.HandlerType = -1;
                 };
 
+                $scope.myKeyupStart = function (e,index) {
+                    if(e.keyCode==13){
+                        $("#addZcodeItemZCodeEnd_"+index).focus();
+                    }
+                };
+
+                $scope.myKeyupEnd = function (e, _object, index) {
+                    if(e.keyCode==13){
+                        $scope.validAddzcodeItem(_object, index);
+                        $("#addZcodeItemZCodeEnd_"+index).blur();
+                        $("#addZcodeItemZCodeStart_"+index).focus();
+                    }
+                };
+
                 //添加真知码操作（需在验证通过后）
                 $scope.addZcodeItem = function (_object, _index) {
                     $("#addZcodeItemZCodeStart_" + _index).attr("placeholder", "首码");
@@ -949,7 +963,7 @@
             <div>
                 <span style="color: red;">*</span> 带星号的为必填项
             </div>
-            <form name="appform" class="form-horizontal" method="POST" novalidate enctype="multipart/form-data" id="uploadForm" onsubmit="return CheckIsUpload();">
+            <form name="appform" onkeydown="if(event.keyCode==13)return false;" class="form-horizontal" method="POST" novalidate enctype="multipart/form-data" id="uploadForm" onsubmit="return CheckIsUpload();">
                 <div class="form-group">
 
                     <label class="col-sm-2 control-label">证书类别 <span style="color: red;">*</span></label>
@@ -1271,10 +1285,13 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <input type="text" ng-model="item.addZcodeItem.ZCodeStart" id="addZcodeItemZCodeStart_{{$index}}" class="form-control" maxlength="16"  placeholder="首码" data-placement="top" title="请输入16位首码" ng-blur="validAddzcodeItem(item,$index)" />
+                                            <input type="text" ng-model="item.addZcodeItem.ZCodeStart" id="addZcodeItemZCodeStart_{{$index}}" class="form-control" maxlength="16"  
+                                                  ng-keyup="myKeyupStart($event,$index)" placeholder="首码" data-placement="top" title="请输入16位首码" ng-blur="validAddzcodeItem(item,$index)" />
                                         </td>
                                         <td>
-                                            <input type="text" ng-model="item.addZcodeItem.ZCodeEnd" id="addZcodeItemZCodeEnd_{{$index}}" class="form-control" maxlength="16"  placeholder="尾码" data-placement="top" title="请输入16位尾码" ng-blur="validAddzcodeItem(item,$index)" />
+                                            <input type="text" ng-model="item.addZcodeItem.ZCodeEnd" id="addZcodeItemZCodeEnd_{{$index}}" class="form-control" maxlength="16"  
+                                                   ng-keyup="myKeyupEnd($event,item,$index)" placeholder="尾码"  
+                                                   title="请输入16位尾码" ng-blur="validAddzcodeItem(item,$index)" />
                                         </td>
                                         <!--暂时去掉真知码的添加按钮-->
                                         <td>

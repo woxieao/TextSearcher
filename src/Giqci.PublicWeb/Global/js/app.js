@@ -286,6 +286,11 @@ app.controller('GoodsListController', [
             $("#form-add-custom-product").modal("show");
             $("#form-product").modal("hide");
         };
+
+        $("#form-add-custom-product").on('hide.bs.modal', function () {
+            layer.closeAll();
+        });
+
         var _modalEditMerchantProduct = document.getElementById("form-add-custom-product");
         angular.element(_modalEditMerchantProduct).on('hide.bs.modal', function () {
             $scope.CustomDialogModel = null;
@@ -295,10 +300,15 @@ app.controller('GoodsListController', [
             $giqci.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
                 if (response.flag) {
                     $("#form-add-custom-product").modal("hide");
-                    layer.alert("提交成功", function (index) {
-                        window.location.reload();
-                        layer.close(index);
-                    });
+                    //layer.alert("提交成功", function (index) {
+                    //    window.location.reload();
+                    //    layer.close(index);
+                    //});
+
+                    
+                    layer.msg('提交成功', { icon: 6 });
+                    layer.close();
+
                 }
                 var _tipType = response.flag ? "success" : "danger";
                 alertService.add(_tipType, response.msg || "未知错误", 3000);
