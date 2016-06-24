@@ -11,6 +11,7 @@
             '$http', '$scope', '$location', '$log', 'alertService', function ($http, $scope, $location, $log, alertService) {
                 $scope.model = ObjDecodeToJson(@HtmlExtensions.RawJson(Model));
                 $scope.flag = null;
+                $scope.alreadySubmit = false;
                 $(function () {
                     $('.datetimepicker').datetimepicker({
                         language: 'zh-CN',
@@ -38,16 +39,24 @@
                 $scope.model.ManufacturerCountry = '036';
                 $scope.loadCountries();
 
-                $scope.submitForm = function () {
-                    $giqci.post('/api/goods/addcustomproduct', $scope.model).success(function (response) {
-                        $scope.msg = response.msg;
-                        $scope.flag = response.flag;
-                        if ($scope.flag) {
-                            $scope.model = {};
-                            $("#commonhscodes").next().find("span.select2-selection__rendered").html("");
-                            $("#ManufacturerCountry").next().find("span.select2-selection__rendered").html("");
-                        }
-                    }, $scope);
+                $scope.submitForm = function (isValid) {
+                    if (isValid) {
+                        $scope.alreadySubmit = true;
+                        $giqci.post('/api/goods/addcustomproduct', $scope.model).success(function (response) {
+                            $scope.flag = response.flag;
+                            if ($scope.flag) {
+                                layer.msg(response.msg, { icon: 6 });
+                                $scope.alreadySubmit = false;
+                                $scope.model = { ManufacturerCountry: "036" };
+                                $("#commonhscodes").next().find("span.select2-selection__rendered").html("");
+                                $("#ManufacturerCountry").next().find("span.select2-selection__rendered").html("");
+                            } else {
+                                layer.alert(response.msg);
+                            }
+                        }, $scope);
+                    } else {
+                        $scope.alreadySubmit = false;
+                    }
                 };
             }
         ]);
@@ -64,52 +73,47 @@
             </h3>
         </div>
         <div class="panel-body">
-            <div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
-                <button aria-label="Close" data-dismiss="alert" ng-click="alert.close()" class="close" type="button">
-                    <span aria-hidden="true">×</span>
-                </button>
-                <span ng-bind="alert.msg"></span>
-            </div>
-            <div class="" ng-show="msg!=null">
-                <ul class="help-block">
-                    <li class="{{flag?'alert alert-success':'alert alert-danger'}}">{{msg}}</li>
-                </ul>
-            </div>
-            <form name="appform" class="form-horizontal" method="POST" novalidate>
+            <form name="appform" class="form-horizontal" method="POST" ng-submit="submitForm(appform.$valid)" novalidate>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">自定义标识</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-8">
                         <input type="text" ng-model="model.Code" maxlength="50" class="form-control" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">名称(英文) <span style="color: red;">*</span></label>
-                    <div class="col-sm-10">
-                        <input type="text" ng-model="model.DescriptionEn" class="form-control" />
+                    <div class="col-sm-8">
+                        <input type="text" ng-model="model.DescriptionEn" class="form-control"
+                               ucc-require="名称不能为空"  submit-btn-id="showProduct" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">名称(中文)<span style="color: red;">*</span></label>
-                    <div class="col-sm-10">
-                        <input type="text" ng-model="model.Description" class="form-control" />
+                    <div class="col-sm-8">
+                        <input type="text" ng-model="model.Description" class="form-control"
+                               ucc-require="名称不能为空"  submit-btn-id="showProduct" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">品牌 <span style="color: red;">*</span></label>
-                    <div class="col-sm-10">
-                        <input type="text" ng-model="model.Brand" class="form-control" />
+                    <div class="col-sm-8">
+                        <input type="text" ng-model="model.Brand" class="form-control" 
+                               ucc-require="品牌不能为空"  submit-btn-id="showProduct"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">HS编码 <span style="color: red;">*</span></label>
-                    <div class="col-sm-10">
-                        <select id="commonhscodes" ajax-select ajax-url="commonhscodes" ng-model="model.HsCode" class="form-control" style="width: 100%"></select>
+                    <div class="col-sm-8">
+                        <select id="commonhscodes" ajax-select ajax-url="commonhscodes" 
+                                ng-model="model.HsCode" class="form-control" >
+                        </select>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">包装 <span style="color: red;">*</span></label>
-                    <div class="col-sm-10">
-                        <select ng-model="model.Package" class="form-control half-form-control">
+                    <div class="col-sm-8">
+                        <select ng-model="model.Package" class="form-control half-form-control"
+                                ucc-require="请选择包装类型"  submit-btn-id="showProduct">
                             <option value="罐装">罐装</option>
                             <option value="瓶装">瓶装</option>
                             <option value="袋装">袋装</option>
@@ -119,26 +123,30 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">规格 <span style="color: red;">*</span></label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" ng-model="model.Spec" />
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" ng-model="model.Spec"
+                               ucc-require="规格不能为空"  submit-btn-id="showProduct" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">制造商 <span style="color: red;">*</span></label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" ng-model="model.Manufacturer" />
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" ng-model="model.Manufacturer" 
+                               ucc-require="制造商不能为空"  submit-btn-id="showProduct"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">原产国 <span style="color: red;">*</span></label>
-                    <div class="col-sm-10">
-                        <select ajax-country ajax-url="countries" id="ManufacturerCountry" ng-model="model.ManufacturerCountry" class="form-control" style="width: 100%"></select>
+                    <div class="col-sm-8">
+                        <select ajax-country ajax-url="countries" id="ManufacturerCountry" 
+                                ng-model="model.ManufacturerCountry" class="form-control" style="width: 100%">
+                        </select>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button class="btn btn-default" ng-click="submitForm()">
+                        <button class="btn btn-default" id="showProduct" type="submit" ng-disabled="alreadySubmit">
                             <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
                         </button>
                     </div>

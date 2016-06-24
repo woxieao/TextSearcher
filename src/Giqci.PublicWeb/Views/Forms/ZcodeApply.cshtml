@@ -14,23 +14,25 @@
             </h3>
         </div>
         <div class="panel-body">
-            <form name="appform" class="form-horizontal" novalidate>
+            <form name="appform" ng-submit="Add(appform.$valid)" class="form-horizontal" novalidate>
                 <div class="form-group">
                     <label class="col-sm-2 control-label form-control-static">发码类型</label>
-                    <div class="col-sm-10 form-control-static">
+                    <div class="col-sm-8 form-control-static">
                         <input type="radio" name="ZcodeType" ng-model="ZcodeType" value="0" id="ZcodeType_0" /><label style="font-weight: normal;" for="ZcodeType_0">实体码</label>
                         <input type="radio" name="ZcodeType" ng-model="ZcodeType" value="1" id="ZcodeType_1" /><label style="font-weight: normal;" for="ZcodeType_1">电子码</label>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label form-control-static">数量</label>
-                    <div class="col-sm-10 form-control-static">
-                        <input type="number" maxlength="7" min="1" class="form-control" placeholder="真知码数量" ng-model="Count" />
+                    <div class="col-sm-8 form-control-static">
+                        <input type="text" maxlength="7" min="1" class="form-control" placeholder="真知码数量" 
+                               ucc-max-length="7" ucc-min-length="1" required
+                               submit-btn-id="zcodeSubmit" ng-model="Count" />
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button class="btn btn-default" ng-click="Add()">
+                        <button class="btn btn-default" id="zcodeSubmit">
                             <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
                         </button>
                     </div>

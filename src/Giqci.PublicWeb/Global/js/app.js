@@ -5,7 +5,7 @@ $(function () {
 
 });
 
-var app = angular.module("giqci", ['giqciService']);
+var app = angular.module("giqci", ['giqciService', 'ngTipValidate']);
 
 /* account login */
 app.controller("LoginController", [
@@ -114,15 +114,25 @@ app.controller("ChanagePasswordController", [
                 };
                 $giqci.post('/api/account/chanagepassword', $scope.formData).then(function (response) {
                     if (response.data.result) {
-                        alertService.add('success', "密码修改成功");
+                        //alertService.add('success', "密码修改成功");
+                        layer.msg('密码修改成功', { icon: 6 });
                     } else {
-                        alertService.add('danger', response.data.message || "密码不匹配");
+                        //alertService.add('danger', response.data.message || "密码不匹配");
+                        layer.alert(response.data.message || "密码不匹配");
                     }
                     $scope.enableDisableButton = false;
                     $scope.submitButton = ' 更改密码 ';
                 }, $scope);
             }
         };
+        $scope.validateFun = function (str1,str2) {
+            if (str1!=str2) {
+                return "两次密码输入不一致";
+            }else {
+                //验证成功返回0 或者 null 或者 false
+                return 0;
+            }
+        }
     }
 ]);
 
@@ -461,14 +471,6 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
     $scope.loadMerchant();
 
     $scope.add = function () {
-        $scope.UserNameErr = false;
-        $scope.UserAddressErr = false;
-        $scope.UserContactErr = false;
-        $scope.UserPhoneErr = false;
-        $scope.UserNameValid = false;
-        $scope.UserAddressValid = false;
-        $scope.UserContactValid = false;
-        $scope.UserPhoneValid = false;
         $scope.alreadySubmit = false;
         $scope.dialogModelMerchant = {
             UserName: "",
@@ -479,57 +481,40 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
         $("#merchant-add").modal("show");
     };
 
-    $scope.validUserName = function (str) {
-        $scope.UserNameErr = (str == "" || str == undefined);
-        $scope.UserNameValid = !(str == "" || str == undefined);
-    };
+    $('#merchant-add').on('hidden.bs.modal', function (e) {
+        layer.closeAll();
+    })
 
-    $scope.validUserAddress = function (str) {
-        $scope.UserAddressErr = (str == "" || str == undefined);
-        $scope.UserAddressValid = !(str == "" || str == undefined);
-    }
-
-    $scope.validUserContact = function (str) {
-        $scope.UserContactErr = (str == "" || str == undefined);
-        $scope.UserContactValid = !(str == "" || str == undefined);
-    };
-
-    $scope.validUserPhone = function (str) {
-        $scope.UserPhoneErr = (str == "" || str == undefined);
-        $scope.UserPhoneValid = !(str == "" || str == undefined);
-    }
-
-    $scope.validAddMerchant = function () {
+    $scope.validAddMerchant = function (obj) {
         $scope.alreadySubmit = true;
+        var reg = !(obj.UserName == "" || obj.UserName == undefined)
+        && !(obj.UserAddress == "" || obj.UserAddress == undefined)
+        && !(obj.UserContact == "" || obj.UserContact == undefined)
+        && !(obj.UserPhone == "" || obj.UserPhone == undefined);
         var _url = "";
         if ($scope.dialogModelMerchant.Id == null) {
             _url = '/api/UserProfile/AddProfile';
         } else {
             _url = '/api/UserProfile/UpdateProfile';
         }
-        var reg=$scope.UserNameValid && $scope.UserAddressValid && $scope.UserContactValid && $scope.UserPhoneValid;
         if (reg) {
             $scope.addMerchant(_url);
         } else {
-            $scope.validUserName($scope.dialogModelMerchant.UserName);
-            $scope.validUserAddress($scope.dialogModelMerchant.UserAddress);
-            $scope.validUserContact($scope.dialogModelMerchant.UserContact);
-            $scope.validUserPhone($scope.dialogModelMerchant.UserPhone);
+            $scope.alreadySubmit = false;
         }
     };
 
     $scope.addMerchant = function (url) {
         $giqci.post(url, { userProfile: $scope.dialogModelMerchant }).success(function (data) {
             if (data.flag) {
+                $scope.alreadySubmit = true;
                 $scope.loadMerchant();
                 $("#merchant-add").modal("hide");
             } else {
-                $scope.showError = true;
                 var _errormsg = '';
                 for (var i = data.errorMsg.length; i > 0 ; i--) {
                     _errormsg += data.errorMsg[i - 1] + "\r\n";
                 }
-                console.log(_errormsg);
                 alertService.add("danger", _errormsg || "未知错误", 3000);
                 $scope.errorMsg = _errormsg || '未知错误';
             }
@@ -537,6 +522,7 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
     };
 
     $scope.edit = function (_id) {
+        $scope.alreadySubmit = false;
         $giqci.post(
           '/api/UserProfile/GetProfileDeatil', { ProfileId: _id }).success(function (data) {
               $scope.dialogModelMerchant = data.result;
@@ -588,22 +574,30 @@ app.controller("BreathController", [
 app.controller("ZcodeApplyController", [
     '$http', '$scope', function ($http, $scope) {
         $scope.ZcodeType = 0;
-        $scope.Add = function () {
-            if ($scope.Count * 1 > 0) {
-                layer.confirm("确定申请" + $scope.Count + "个真知码?", function (l) {
-                    $giqci.post('/api/forms/addzcodeapply', { ZcodeType: $scope.ZcodeType, Count: $scope.Count }).success(function (data) {
-                        if (data.flag) {
-                            layer.alert("申请成功", function (index) {
-                                window.location.href = "/forms/zcodeapplylist";
-                                layer.close(index);
-                            });
-                        }
-                    }, $scope);
-                    layer.close(l);
-                });
+        $scope.alreadySubmit = false;
+        $scope.Add = function (isValid) {
+            if (isValid) {
+                $scope.alreadySubmit = true;
+                if ($scope.Count * 1 > 0) {
+                    layer.confirm("确定申请" + $scope.Count + "个真知码?", function (l) {
+                        $giqci.post('/api/forms/addzcodeapply', { ZcodeType: $scope.ZcodeType, Count: $scope.Count }).success(function (data) {
+                            if (data.flag) {
+                                layer.alert("申请成功", function (index) {
+                                    window.location.href = "/forms/zcodeapplylist";
+                                    layer.close(index);
+                                });
+                            }
+                        }, $scope);
+                        layer.close(l);
+                    });
+                } else {
+                    $scope.alreadySubmit = false;
+                    layer.alert("真知码数量必须大于0");
+                }
             } else {
-                layer.alert("真知码数量必须大于0");
+                $scope.alreadySubmit = false;
             }
+            
         }
     }
 ]);

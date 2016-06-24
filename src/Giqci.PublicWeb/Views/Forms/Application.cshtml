@@ -176,7 +176,6 @@
                 };
                 $scope.getCustomProductList();
 
-
                 $scope.selectProduct = function (_selected, _object) {
                     if (_selected != null) {
                         _object.DescriptionEn = _selected.DescriptionEn;
@@ -531,31 +530,40 @@
                         UserContact: "",
                         UserPhone: ""
                     };
-                    $("#merchant-add").modal("show");
+                    $("#merchant-add-form").modal("show");
                     $("#form-merchant-list").modal("hide");
                 };
 
-                $scope.submitAddMerchant = function () {
-                    var _url = "";
-                    if ($scope.dialogModelMerchant.Id == null) {
-                        _url = '/api/UserProfile/AddProfile';
-                    } else {
-                        _url = '/api/UserProfile/UpdateProfile';
-                    }
-                    $giqci.post(_url,
-                    { userProfile: $scope.dialogModelMerchant }).success(function (data) {
-                        if (data.flag) {
-                            $scope.loadMerchant();
-                            $("#merchant-add").modal("hide");
-                            $("#form-merchant-list").modal("show");
+                $('#merchant-add-form').on('hidden.bs.modal', function (e) {
+                    layer.closeAll();
+                })
+
+                $scope.submitAddMerchant = function (isValid) {
+                    if (isValid) {
+                        var _url = "";
+                        if ($scope.dialogModelMerchant.Id == null) {
+                            _url = '/api/UserProfile/AddProfile';
                         } else {
-                            var _errormsg = '';
-                            for (var i = data.errorMsg.length; i > 0; i--) {
-                                _errormsg += data.errorMsg[i - 1] + "\r\n";
-                            }
-                            alertService.add("danger", _errormsg || "未知错误", 3000);
+                            _url = '/api/UserProfile/UpdateProfile';
                         }
-                    }, $scope);
+                        $giqci.post(_url,
+                        { userProfile: $scope.dialogModelMerchant }).success(function (data) {
+                            if (data.flag) {
+                                $scope.loadMerchant();
+                                $("#merchant-add-form").modal("hide");
+                                $("#form-merchant-list").modal("show");
+                            } else {
+                                var _errormsg = '';
+                                for (var i = data.errorMsg.length; i > 0; i--) {
+                                    _errormsg += data.errorMsg[i - 1] + "\r\n";
+                                }
+                                alertService.add("danger", _errormsg || "未知错误", 3000);
+                            }
+                        }, $scope);
+                    } else {
+
+                    }
+                    
                 };
                 $scope.editMerchant = function (_id) {
                     $giqci.post('/api/UserProfile/GetProfileDeatil',
@@ -565,7 +573,7 @@
                         $scope.dialogModelMerchant = data.result;
                     }, $scope);
                     $(".merchant-add-title").html("编辑常用商户信息");
-                    $("#merchant-add").modal("show");
+                    $("#mmerchant-add-form").modal("show");
                     $("#form-merchant-list").modal("hide");
                 };
                 $scope.removeMerchant = function (_object) {
@@ -612,25 +620,34 @@
                     $("#CustomDialogModelHsCode").next().find("span.select2-selection__rendered").html("");
                     $scope.CustomDialogModel = { HsCode: '', ManufacturerCountry: "036" };
                 };
+                
+                $("#form-add-custom-product").on('hidden.bs.modal', function (e) {
+                    layer.closeAll();
+                })
+
                 $scope.addGoodsProduct = function () {
                     $("#form-product").modal("hide");
                     $("#form-add-goods-product").modal("show");
                     $scope.DialogProductCiqCode = "";
                     $scope.dialogProductList = null;
                 };
-                $scope.submitAddCustomProduct = function () {
-                    var _btnsubmitAddCustomProduct = document.getElementById("submitAddCustomProduct");
-                    angular.element(_btnsubmitAddCustomProduct).attr("disabled", true);
-                    $giqci.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
-                        if (response.flag) {
-                            $scope.getCustomProductList();
-                            layer.alert("提交成功", function (l) { $scope.showProductList(); layer.close(l);});
-                        //$("#form-add-custom-product").modal("hide");
-                        }
-                        angular.element(_btnsubmitAddCustomProduct).attr("disabled", false);
-                        var _tipType = response.flag ? "success" : "danger";
-                        alertService.add(_tipType, response.msg || "未知错误", 3000);
-                    }, $scope);
+                $scope.submitAddCustomProduct = function (isValid) {
+                    console.log(isValid);
+                    if (isValid) {
+                        var _btnsubmitAddCustomProduct = document.getElementById("submitAddCustomProduct");
+                        angular.element(_btnsubmitAddCustomProduct).attr("disabled", true);
+                        $giqci.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
+                            if (response.flag) {
+                                $scope.getCustomProductList();
+                                layer.alert("提交成功", function (l) { $scope.showProductList(); layer.close(l); });
+                                //$("#form-add-custom-product").modal("hide");
+                            }
+                            angular.element(_btnsubmitAddCustomProduct).attr("disabled", false);
+                            var _tipType = response.flag ? "success" : "danger";
+                            //alertService.add(_tipType, response.msg || "未知错误", 3000);
+                            layer.alert(response.msg || "未知错误");
+                        }, $scope);
+                    }
                 };
                 $scope.submitAddGoodsProduct = function () {
                     $giqci.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
@@ -643,7 +660,8 @@
                             //$("#form-add-custom-product").modal("hide");
                         }
                         var _tipType = response.flag ? "success" : "danger";
-                        alertService.add(_tipType, response.msg || "未知错误", 3000);
+                        //alertService.add(_tipType, response.msg || "未知错误", 3000);
+                        layer.alert(response.msg || "未知错误");
                     }, $scope);
                 };
                 $scope.getDialogProductList = function () {
@@ -659,14 +677,16 @@
                         { ciqCode: $scope.DialogProductCiqCode }).success(function (data) {
                             if (data.result == null) {
                                 $scope.dialogProductList = null;
-                                alertService.add('danger', "该备案号不存在", 3000);
+                                //alertService.add('danger', "该备案号不存在", 3000);
+                                layer.alert("该备案号不存在");
                             } else {
                                 $scope.dialogProductList = data.result;
                             }
                         }, $scope);
                     } else {
                         $scope.dialogProductList = null;
-                        alertService.add('danger', "正确的备案号格式为[ICIP+14个数字]或[10个数字]", 3000);
+                        //alertService.add('danger', "正确的备案号格式为[ICIP+14个数字]或[10个数字]", 3000);
+                        layer.alert("正确的备案号格式为[ICIP+14个数字]或[10个数字]");
                     }
                 };
                 $scope.addDialogGoodsProduct = function () {
@@ -679,7 +699,8 @@
                                     layer.alert("提交成功", function (l) { $scope.showProductList(); layer.close(l) });
                                 }
                                 var _tipType = data.result ? "success" : "danger";
-                                alertService.add(_tipType, data.msg || "未知错误", 3000);
+                                //alertService.add(_tipType, data.msg || "未知错误", 3000);
+                                layer.alert(response.msg || "未知错误");
                             }, $scope);
                         }
                         layer.close(l);
@@ -735,14 +756,16 @@
                     var reg2 = /^ICIP\d{14}$/i;
                     if (!(reg.test($scope.CiqCode) || reg2.test($scope.CiqCode))) {
                         $scope.Product = null;
-                        alertService.add('danger', "正确的备案号格式为[ICIP+14个数字]或[10个数字]", 3000);
+                        //alertService.add('danger', "正确的备案号格式为[ICIP+14个数字]或[10个数字]", 3000);
+                        layer.alert('正确的备案号格式为[ICIP+14个数字]或[10个数字]');
                         return;
                     } else {
                         $giqci.post('/api/goods/searchproduct', { ciqCode: $scope.CiqCode })
                         .success(function (data) {
                             if (data.result == null) {
                                 $scope.Product = null;
-                                alertService.add('danger', "该备案号不存在", 3000);
+                                //alertService.add('danger', "该备案号不存在", 3000);
+                                layer.alert("该备案号不存在");
                             } else {
                                 $scope.Product = data.result;
                                 $scope.changeProductList = true;
@@ -764,7 +787,8 @@
                 $scope.submitChangeProduct = function (_customProductId, _ciqCode) {
                     angular.element(_form_submitAddCustomProduct).attr("disabled", true);
                     if (false === $scope.isSearch || _customProductId == null || _ciqCode == null) {
-                        alertService.add('danger', "请搜索并获取备案商品信息", 3000);
+                        //alertService.add('danger', "请搜索并获取备案商品信息", 3000);
+                        layer.alert("请搜索并获取备案商品信息");
                         return;
                     };
                     $giqci.post('/api/goods/convertproduct/' + _customProductId + '/' + _ciqCode,
@@ -772,7 +796,8 @@
                     ).success(function (response) {
                         $scope.isSearch = false;
                         if (response.flag) {
-                            alertService.add('success', "数据已经转换成功", 3000);
+                            //alertService.add('success', "数据已经转换成功", 3000);
+                            layer.msg("数据已经转换成功", { icon: 6 });
                             //$scope.list($scope.postData);
                             $scope.getGoodsList();
                             //$scope.list2($scope.postData);
@@ -781,7 +806,8 @@
                             angular.element(_modal).modal("hide");
                         } else {
                             angular.element(_form_submitAddCustomProduct).attr("disabled", false);
-                            alertService.add('danger', response.msg, 3000);
+                            //alertService.add('danger', response.msg, 3000);
+                            layer.alert(response.msg);
                         }
                     }, $scope);
                 };
@@ -984,7 +1010,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">申请人 <span style="color: red;">*</span></label>
 
-                    <div class="col-sm-10">
+                    <div class="col-sm-8">
                         <input type="text" maxlength="100" name="Application.Applicant" ng-model="model.Application.Applicant" class="form-control" placeholder="全称" />
                         <input type="text" maxlength="400" name="Application.ApplicantAddr" ng-model="model.Application.ApplicantAddr" class="form-control" placeholder="地址" />
                         <input type="text" maxlength="100" name="Application.ApplicantContact" ng-model="model.Application.ApplicantContact" class="form-control" placeholder="联系人" />
@@ -1005,7 +1031,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
+                    <div class="col-sm-offset-2 col-sm-8">
                         <input type="text" maxlength="100" name="Application.Exporter" ng-model="model.Application.Exporter" class="form-control" placeholder="全称" />
                         <input type="text" maxlength="400" name="Application.ExporterAddr" ng-model="model.Application.ExporterAddr" class="form-control" placeholder="地址" />
                         <input type="text" maxlength="100" name="Application.ExporterContact" ng-model="model.Application.ExporterContact" class="form-control" placeholder="联系人" />
@@ -1025,7 +1051,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
+                    <div class="col-sm-offset-2 col-sm-8">
                         <input type="text" maxlength="100" name="Application.Importer" ng-model="model.Application.Importer" class="form-control" placeholder="全称" />
                         <input type="text" maxlength="400" name="Application.ImporterAddr" ng-model="model.Application.ImporterAddr" class="form-control" placeholder="地址" />
                         <input type="text" maxlength="100" name="Application.ImporterContact" ng-model="model.Application.ImporterContact" class="form-control" placeholder="联系人" />
@@ -1251,9 +1277,9 @@
                                             <input type="text" ng-model="item.addZcodeItem.ZCodeEnd" id="addZcodeItemZCodeEnd_{{$index}}" class="form-control" maxlength="16"  placeholder="尾码" data-placement="top" title="请输入16位尾码" ng-blur="validAddzcodeItem(item,$index)" />
                                         </td>
                                         <!--暂时去掉真知码的添加按钮-->
-                                        @*<td>
-                                            <button class="btn btn-default btn-sm" type="button" ng-click="validAddzcodeItem(item,$index)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加</button>
-                                        </td>*@
+                                        <td>
+                                            @*<button class="btn btn-default btn-sm" type="button" ng-click="validAddzcodeItem(item,$index)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加</button>*@
+                                        </td>
                                     </tr>
                                 </table>
                             </div>
@@ -1369,14 +1395,14 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">计划发货日期</label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-8">
                         <input type="text" ng-model="model.Application.ShippingDate" class="form-control datetimepicker" placeholder="计划发货日期" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">预约检查日期 <span style="color: red;">*</span></label>
 
-                    <div class="col-sm-10">
+                    <div class="col-sm-8">
                         <input type="text" ng-model="model.Application.InspectionDate" class="form-control datetimepicker" placeholder="预约检查日期 " />
                     </div>
                 </div>
@@ -1384,7 +1410,7 @@
 
                     <label class="col-sm-2 control-label">检验地点 <span style="color: red;">*</span></label>
 
-                    <div class="col-sm-10">
+                    <div class="col-sm-8">
                         <input type="text" ng-model="model.Application.InspectionAddr" class="form-control" placeholder="检验地点" />
                     </div>
                 </div>
@@ -1392,7 +1418,7 @@
 
                     <label class="col-sm-2 control-label">联系人 <span style="color: red;">*</span></label>
 
-                    <div class="col-sm-10">
+                    <div class="col-sm-8">
                         <input type="text" ng-model="model.Application.Inspector" class="form-control" placeholder="联系人" maxlength="100" />
                     </div>
                 </div>
@@ -1400,7 +1426,7 @@
 
                     <label class="col-sm-2 control-label">联系人电话 <span style="color: red;">*</span></label>
 
-                    <div class="col-sm-10">
+                    <div class="col-sm-8">
                         <input type="text" ng-model="model.Application.InspectorTel" class="form-control" placeholder="联系人电话" />
                     </div>
                 </div>
@@ -1408,7 +1434,7 @@
 
                     <label class="col-sm-2 control-label">发货港口 <span style="color: red;">*</span></label>
 
-                    <div class="col-sm-10">
+                    <div class="col-sm-8">
                         <select ajax-select ajax-url="ports" ng-model="model.Application.LoadingPort" ng-options="i.Code as i.CnName group by i.Country for i in model.LoadingPorts" class="form-control selectLoadingPort" style="width: 100%">
                             <option value="">&lt; - 请选择港口 - &gt;</option>
                         </select>
@@ -1418,14 +1444,14 @@
 
                     <label class="col-sm-2 control-label">目的港口 <span style="color: red;">*</span></label>
 
-                    <div class="col-sm-10">
+                    <div class="col-sm-8">
                         <select ajax-select ajax-url="ports" ng-model="model.Application.DestPort" ng-options="i.Code as i.CnName group by i.Country for i in model.DestPorts" class="form-control selectDestPorts" style="width: 100%">
                             <option value="">&lt; - 其他港口 - &gt;</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
+                    <div class="col-sm-offset-2 col-sm-8">
                         <button class="btn btn-default" ng-click="submit()" ng-disabled="submitApp">
                             <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
                         </button>
@@ -1703,40 +1729,44 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
     <!-- merchant edit modal-->
-    <div class="modal" role="dialog" data-backdrop="static" data-keyboard="false" id="merchant-add">
+    <div class="modal" role="dialog" data-backdrop="static" data-keyboard="false" id="merchant-add-form">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
+            <form class="modal-content" name="merchantForm" ng-submit="submitAddMerchant(merchantForm.$valid)" novalidate>
                 <div class="modal-header">
                     <h5 class="modal-title merchant-add-title">添加常用商户信息</h5>
                 </div>
                 <div class="modal-body">
                     <div class="form-horizontal">
-                        <div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
+                        @*<div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
                             <button aria-label="Close" data-dismiss="alert" ng-click="alert.close()" class="close" type="button"><span aria-hidden="true">×</span></button>
                             <span ng-bind="alert.msg"></span>
-                        </div>
+                        </div>*@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">全称 <span style="color: red;">*</span></label>
-                            <div class="col-sm-10">
-                                <input type="text" maxlength="100" ng-model="dialogModelMerchant.UserName" class="form-control" />
+                            <div class="col-sm-8">
+                                <input type="text" ng-model="dialogModelMerchant.UserName" class="form-control"
+                                       ucc-max-length="100" ucc-min-length="1" submit-btn-id="merchantSubmit" required/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">地址 <span style="color: red;">*</span></label>
-                            <div class="col-sm-10">
-                                <input type="text" maxlength="400" ng-model="dialogModelMerchant.UserAddress" class="form-control" />
+                            <div class="col-sm-8">
+                                <input type="text"  ng-model="dialogModelMerchant.UserAddress" class="form-control"
+                                       ucc-max-length="400" ucc-min-length="1" submit-btn-id="merchantSubmit" required />
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">联系人 <span style="color: red;">*</span></label>
-                            <div class="col-sm-10">
-                                <input type="text" maxlength="100" ng-model="dialogModelMerchant.UserContact" class="form-control" />
+                            <div class="col-sm-8">
+                                <input type="text"  ng-model="dialogModelMerchant.UserContact" class="form-control" 
+                                       ucc-max-legth="100" ucc-min-length="1" submit-btn-id="merchantSubmit" required/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">联系电话 <span style="color: red;">*</span></label>
-                            <div class="col-sm-10">
-                                <input type="text" maxlength="100" ng-model="dialogModelMerchant.UserPhone" class="form-control" />
+                            <div class="col-sm-8">
+                                <input type="text" ng-model="dialogModelMerchant.UserPhone" class="form-control"
+                                       ucc-max-length="100" ucc-min-length="1" submit-btn-id="merchantSubmit" required />
                             </div>
                         </div>
                         <div class="form-group">
@@ -1747,12 +1777,12 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-default" ng-click="submitAddMerchant()">
+                    <button class="btn btn-default" type="submit"  id="merchantSubmit">
                         <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交保存
                     </button>
                     <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
                 </div>
-            </div><!-- /.modal-content -->
+            </form><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 </div>
