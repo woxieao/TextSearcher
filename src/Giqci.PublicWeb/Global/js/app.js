@@ -114,11 +114,9 @@ app.controller("ChanagePasswordController", [
                 };
                 $giqci.post('/api/account/chanagepassword', $scope.formData).then(function (response) {
                     if (response.data.result) {
-                        //alertService.add('success', "密码修改成功");
                         layer.msg('密码修改成功', { icon: 6 });
                     } else {
-                        //alertService.add('danger', response.data.message || "密码不匹配");
-                        layer.alert(response.data.message || "密码不匹配");
+                        layer.msg(response.data.message || "密码不匹配", {icon:2});
                     }
                     $scope.enableDisableButton = false;
                     $scope.submitButton = ' 更改密码 ';
@@ -237,6 +235,7 @@ app.controller('FormsListController', [
 /* goods lists */
 app.controller('GoodsListController', [
     '$scope', '$http', 'alertService', function ($scope, $http, alertService) {
+        $scope.alreadySubmit=false;
         $scope.list = function (postData) {
             $giqci.post('/api/goods/getproductlist', postData).success(function (response) {
                 $scope.merchantProductList = response.result;
@@ -286,23 +285,34 @@ app.controller('GoodsListController', [
             $("#form-add-custom-product").modal("show");
             $("#form-product").modal("hide");
         };
+
+        $("#form-add-custom-product").on('hide.bs.modal', function () {
+            layer.closeAll();
+        });
+
         var _modalEditMerchantProduct = document.getElementById("form-add-custom-product");
         angular.element(_modalEditMerchantProduct).on('hide.bs.modal', function () {
             $scope.CustomDialogModel = null;
         });
 
-        $scope.submitAddCustomProduct = function () {
-            $giqci.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
-                if (response.flag) {
-                    $("#form-add-custom-product").modal("hide");
-                    layer.alert("提交成功", function (index) {
-                        window.location.reload();
-                        layer.close(index);
-                    });
-                }
-                var _tipType = response.flag ? "success" : "danger";
-                alertService.add(_tipType, response.msg || "未知错误", 3000);
-            }, $scope);
+        $scope.submitAddCustomProduct = function (isValid) {
+            if (isValid) {
+                $scope.alreadySubmit = true;
+                $giqci.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
+                    if (response.flag) {
+                        $("#form-add-custom-product").modal("hide");
+                        $scope.alreadySubmit = false;
+                        layer.msg('提交成功', { icon: 6 });
+                        layer.close();
+                    } else {
+                        layer.msg(response.msg || "未知错误", { icon: 2 });
+                        $scope.alreadySubmit = false;
+                    }
+                }, $scope);
+            } else {
+                $scope.alreadySubmit = false;
+            }
+            
         };
         $scope.loadCountries = function () {
             $giqci.get("/api/dict/countries",
@@ -529,6 +539,11 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
           }, $scope);
         $("#merchant-add").modal("show");
     };
+
+    $scope.closeMerchant = function () {
+        $("#merchant-add").modal("hide");
+    };
+
     $scope.remove = function (_object) {
         layer.confirm("是否删除该常用商户", function (l) {
             $giqci.post(
