@@ -9,7 +9,7 @@
     var token = Config.Common.CurrentToken;
 }
 <!DOCTYPE html>
-<html>
+<html ng-app="giqci">
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>打印申请</title>
@@ -63,7 +63,7 @@
             }
     </style>
 </head>
-<body ng-app="giqci">
+<body >
     <table ng-controller="ViewAppController" class="gridtable" style="width: 100%;">
         <colgroup>
             <col width="10%" />
@@ -503,12 +503,12 @@
     </table>
     <script src="~/Global/js/jquery-2.1.4.min.js"></script>
     <script src="~/Global/js/angular-1.4.7.min.js"></script>
-    <script src="~/Global/js/service.js?@token"></script>
-    <script src="~/Global/js/app.js?@token"></script>
-    <script src="~/Global/js/directive.js?@token"></script>
+    <script src="~/Global/js/service.js"></script>
+    <script src="~/Global/js/ng-tip-validate.js"></script>
+    <script src="~/Global/js/app.js"></script>
     <script src="~/Scripts/giqci.js?@token"></script>
+ <script src="~/Global/js/directive.js?@token"></script>
     <script type="text/javascript">
-        // var app = angular.module("giqci");
         app.controller('ViewAppController', [
             '$scope', function ($scope) {
                 $scope.model = {};
@@ -518,9 +518,7 @@
                 $scope.IsPrint = "@ViewBag.IsPrint" == "True";
             }
         ]);
-        function print() {
-            //$("#print").jqprint();
-        }
     </script>
+
 </body>
 </html>
