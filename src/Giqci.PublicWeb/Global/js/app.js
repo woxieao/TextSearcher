@@ -302,7 +302,7 @@ app.controller('GoodsListController', [
                     if (response.flag) {
                         $("#form-add-custom-product").modal("hide");
                         $scope.alreadySubmit = false;
-                        layer.msg('提交成功', { icon: 6 });
+                        layer.msg('提交成功', { icon: 6 },function() { window.location.reload(); });
                         layer.close();
                     } else {
                         layer.msg(response.msg || "未知错误", { icon: 2 });
