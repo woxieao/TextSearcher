@@ -586,8 +586,24 @@ app.controller("BreathController", [
     }
 ]);
 
-app.controller("ZcodeApplyController", [
+app.controller("ZcodeApplyListController", [
     '$http', '$scope', function ($http, $scope) {
+        $(function () {
+            $('.datetimepicker').datetimepicker({
+                language: 'zh-CN',
+                format: 'yyyy/mm/dd',
+                autoclose: true,
+                minView: "month",
+                todayBtn: true,
+            }).on("hide",
+                function () {
+                    var $this = $(this);
+                    var _this = this;
+                    $scope.$apply(function () {
+                        $scope[$this.attr('ng-model')] = _this.value;
+                    });
+                });
+        });
         $scope.ZcodeType = 0;
         $scope.alreadySubmit = false;
         $scope.Add = function (isValid) {
@@ -612,12 +628,7 @@ app.controller("ZcodeApplyController", [
             } else {
                 $scope.alreadySubmit = false;
             }
-            
         }
-    }
-]);
-app.controller("ZcodeApplyListController", [
-    '$http', '$scope', function ($http, $scope) {
         $scope.ZcodeApplyList = {};
         $scope.Paging = new PageHandler("/api/forms/getzcodeapplylogs", function (result) {
             $scope.ZcodeApplyList = result.data;
