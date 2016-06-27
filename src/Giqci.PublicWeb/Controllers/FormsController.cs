@@ -123,13 +123,6 @@ namespace Giqci.PublicWeb.Controllers
             return View();
         }
 
-        [Route("forms/zcodeapply")]
-        [HttpGet]
-        public ActionResult ZcodeApply()
-        {
-            return View();
-        }
-
         [Route("forms/zcodeapplylist")]
         [HttpGet]
         public ActionResult ZcodeApplyList()
