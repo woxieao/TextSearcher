@@ -6,7 +6,7 @@
 @model Giqci.Chapi.Models.App.Application
 @{
     Layout = null;
-    var token = string.Format("token={0}", DateTime.Now.Date.Ticks);
+    var token = Config.Common.CurrentToken;
 }
 <!DOCTYPE html>
 <html>
@@ -507,11 +507,8 @@
     <script src="~/Global/js/app.js?@token"></script>
     <script src="~/Global/js/directive.js?@token"></script>
     <script src="~/Scripts/giqci.js?@token"></script>
-    <script src="~/Scripts/jquery.form.js?@token"></script>
-    <script src="http://code.jquery.com/jquery-migrate-1.1.0.js"></script>
-    <script src="~/Global/js/jquery.jqprint-0.3.js"></script>
     <script type="text/javascript">
-        var app = angular.module("giqci");
+        // var app = angular.module("giqci");
         app.controller('ViewAppController', [
             '$scope', function ($scope) {
                 $scope.model = {};
