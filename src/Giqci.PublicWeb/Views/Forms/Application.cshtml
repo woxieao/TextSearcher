@@ -53,6 +53,7 @@
                         HandlerType: 1
                     });
                 };
+
                 $scope.CustomerSubmitButton = "提交";
                 $scope.CustomerenableDisableButton = false;
                 $scope.dataInit = function () {
@@ -60,9 +61,7 @@
                     for (var i = 0; i < $scope.model.Application.ApplicationProducts.length; i++) {
                         $scope.model.Application.ApplicationProducts[i].addItemByBatchNo = "";
                         $scope.model.Application.ApplicationProducts[i].addItemByBatchNo.BatchNo = "";
-                        $scope.model.Application.ApplicationProducts[i].addZcodeItem = "";
-                        $scope.model.Application.ApplicationProducts[i].addZcodeItem.ZCodeStart = "";
-                        $scope.model.Application.ApplicationProducts[i].addZcodeItem.ZCodeEnd = "";
+                        $scope.model.Application.ApplicationProducts[i].addZcodeItem = { ZCodeStart: "", ZCodeEnd:""};
                         for (var j = 0; j < $scope.model.Application.ApplicationProducts[i].ApplicationZCodes.length; j++) {
                             $scope.model.Application.ApplicationProducts[i].ApplicationZCodes[j].HtmlEdit = 0;
                         }
@@ -212,8 +211,6 @@
                     if (_object.addItemByBatchNo.BatchNo == null || _object.addItemByBatchNo.BatchNo == "") {
                         $("#addItemByBatchNoString_" + _index).attr("placeholder", "请输入批次号");
                         $("#addItemByBatchNoDate_" + _index).attr("placeholder", "请输入保质期");
-                        //$("#addItemByBatchNoDate_" + _index).focus();
-                        //$("#addItemByBatchNoString_" + _index).focus();
                         return;
                     }
                     $("#addItemByBatchNoString_" + _index).attr("placeholder", "批次号");
@@ -229,24 +226,96 @@
                     _object.HandlerType = -1;
                 };
 
-                $scope.myKeyupStart = function (e,index) {
+                $scope.myKeyupStart = function (e) {
                     if(e.keyCode==13){
-                        $("#addZcodeItemZCodeEnd_"+index).focus();
+                        document.getElementsByName("zCodeEnd")[0].focus();
                     }
                 };
 
-                $scope.myKeyupEnd = function (e, _object, index) {
+                $scope.myKeyupEnd = function (e, _object) {
                     if(e.keyCode==13){
-                        $scope.validAddzcodeItem(_object, index);
-                        $("#addZcodeItemZCodeEnd_"+index).blur();
-                        $("#addZcodeItemZCodeStart_"+index).focus();
+                        $scope.validAddzcodeItem(_object);
+                        document.getElementsByName("zCodeEnd")[0].blur();
+                        document.getElementsByName("zCodeStart")[0].focus();
                     }
                 };
+
+                $scope.zcodeBlurStart = function (e) {
+                    //空方法，不能去掉
+                }
+
+                $scope.zcodeBlurEnd = function (e) {
+                    //空方法，不能去掉
+                };
+
+
+                //添加真知码自定义指令的验证方法
+                $scope.zCodeValidateStart = function (value,item,bool) {
+                    //首码输入框曾经获取过焦点，判断首码是否有值
+                    if (item.addZcodeItem.hasOwnProperty("ZCodeStart")) {
+                        if (item.addZcodeItem.ZCodeStart == "" || item.addZcodeItem.ZCodeStart == undefined) {
+                            if (item.addZcodeItem.hasOwnProperty("ZCodeEnd") &&
+                                item.addZcodeItem.ZCodeEnd != "" && item.addZcodeItem.ZCodeEnd != undefined) {
+                                //尾码不为空，给出提示
+                                return "请输入16位首码";
+                            } else {
+                                return false;//两个输入框都没填，验证通过
+                            }
+                        } else if ((value+"").length == 16) {
+                            //首码不为空，判断首码和尾码
+                            if (bool) {
+                                $scope.addZcodeItem(item);
+                                return false;
+                            } else {
+                                var input = document.getElementsByName("zCodeEnd");
+                                input[0].focus();
+                                $scope.zCodeValidateEnd(item.addZcodeItem.ZCodeEnd, item, true);
+                            }
+                        } else {
+                            return "请输入16位首码";
+                        }
+                    } else if (item.addZcodeItem.hasOwnProperty("ZCodeEnd") && bool) {
+                        return "请输入16位首码";
+                    } else {
+                        return false;
+                    }
+                };
+
+                //尾码验证
+                $scope.zCodeValidateEnd = function (value, item, bool) {
+                    //尾码输入框曾经获取过焦点，判断尾码是否有值
+                    if (item.addZcodeItem.hasOwnProperty("ZCodeEnd")) {
+                        if (item.addZcodeItem.ZCodeEnd == "" || item.addZcodeItem.ZCodeEnd == undefined) {
+                            if (item.addZcodeItem.hasOwnProperty("ZCodeStart") &&
+                                item.addZcodeItem.ZCodeStart != "" && item.addZcodeItem.ZCodeStart != undefined) {
+                                return "请输入16位尾码";
+                            } else {
+                                return false;//首码尾码都没有填写，验证通过
+                            }
+                        } else if ((value+"").length == 16) {
+                            if (bool) {
+                                $scope.addZcodeItem(item);
+                                return false;
+                            } else {
+                                var input = document.getElementsByName("zCodeStart");
+                                input[0].focus();
+                                $scope.zCodeValidateStart(item.addZcodeItem.ZCodeStart, item, true);
+                            }
+                        } else {
+                            return "请输入16位尾码";
+                        }
+                    } else if (item.addZcodeItem.hasOwnProperty("ZCodeStart") && bool) {
+                        return "请输入16位尾码";
+                    } else {
+                        return false;
+                    }
+                };
+
 
                 //添加真知码操作（需在验证通过后）
-                $scope.addZcodeItem = function (_object, _index) {
-                    $("#addZcodeItemZCodeStart_" + _index).attr("placeholder", "首码");
-                    $("#addZcodeItemZCodeEnd_" + _index).attr("placeholder", "尾码");
+                $scope.addZcodeItem = function (_object) {
+                    document.getElementsByName("zCodeStart")[0].setAttribute("placeholder", "首码");
+                    document.getElementsByName("zCodeEnd")[0].setAttribute("placeholder", "尾码");
                     _object.ApplicationZCodes.push({
                         ZCodeStart: _object.addZcodeItem.ZCodeStart,
                         ZCodeEnd: _object.addZcodeItem.ZCodeEnd,
@@ -258,30 +327,55 @@
                 };
                 $scope.removeZcodeItem = function (_object) {
                     _object.HandlerType = -1;
+                    layer.closeAll();
                 };
                 $scope.editZcodeItem = function (_object) {
                     _object.HtmlEdit = 1;
                 };
 
                 //已成功添加真知码，再次编辑时的验证
-                $scope.validZcodeItem = function (_object,_index) {
+                $scope.validZcodeItem = function (_object) {
+                    //空方法，不能去掉
+                };
+
+                //已成功添加真知码，再次编辑时的首码验证
+                $scope.validZcodeStart = function (_object) {
+                    //真知码为空，不验证
                     var noZcode = _object.ZCodeStart == "" && _object.ZCodeEnd == "";
-                    var pass = _object.ZCodeStart.length == 16 && _object.ZCodeEnd.length == 16;
+                    //首码尾码都不为空，且都够16位，验证通过
+                    var pass = _object.ZCodeStart.length === 16 && _object.ZCodeEnd.length === 16;
                     if (pass) {
-                        $("#ZCodeStart_" + _index).tooltip('destroy');
-                        $("#ZCodeEnd_" + _index).tooltip('destroy');
                         _object.HtmlEdit = 0;
-                        return;
+                        layer.closeAll();
+                        return false;
                     } else if(noZcode){
                         $scope.removeZcodeItem(_object);
-                    }else {
-                        $("#ZCodeStart_" + _index).tooltip('show');
-                        $("#ZCodeEnd_" + _index).tooltip('show');
-                        return;
+                        layer.closeAll();
+                    } else if (_object.ZCodeStart.length !== 16) {
+                        return "请输入16位首码";
+                    } 
+                };
+
+                //已成功添加真知码，再次编辑时的尾码验证
+                $scope.validZcodeEnd = function (_object) {
+                    //真知码为空，不验证
+                    var noZcode = _object.ZCodeStart == "" && _object.ZCodeEnd == "";
+                    //首码尾码都不为空，且都够16位，验证通过
+                    var pass = _object.ZCodeStart.length === 16 && _object.ZCodeEnd.length === 16;
+                    if (pass) {
+                        _object.HtmlEdit = 0;
+                        layer.closeAll();
+                        return false;
+                    }else if(noZcode){
+                        $scope.removeZcodeItem(_object);
+                        layer.closeAll();
+                    } else if (_object.ZCodeEnd.length !== 16) {
+                        return "请输入16位尾码";
                     }
                 };
 
-                $scope.validAddzcodeItem = function (_object, _index) {
+                //添加真知码时的验证
+                $scope.validAddzcodeItem = function (_object) {
                     //真知码为空，不验证
                     var noZcode = ((_object.addZcodeItem.ZCodeEnd == null) || (_object.addZcodeItem.ZCodeEnd == ""))
                         && ((_object.addZcodeItem.ZCodeStart == null) || (_object.addZcodeItem.ZCodeStart == ""));
@@ -291,27 +385,26 @@
                         (_object.addZcodeItem.ZCodeStart != null && _object.addZcodeItem.ZCodeStart.length === 16) &&
                         (_object.addZcodeItem.ZCodeEnd != null && _object.addZcodeItem.ZCodeEnd.length === 16);
                     if (pass) {
-                        $scope.addZcodeItem(_object, _index);
-                        $("#addZcodeItemZCodeStart_" + _index).tooltip('destroy');
-                        $("#addZcodeItemZCodeEnd_" + _index).tooltip('destroy');
+                        $scope.addZcodeItem(_object);
+                        layer.closeAll();
                         return;
                     } else if (noZcode) {
-                        $("#addZcodeItemZCodeStart_" + _index).tooltip('destroy');
-                        $("#addZcodeItemZCodeEnd_" + _index).tooltip('destroy');
                         return;
                     }else {
-                        $("#addZcodeItemZCodeStart_" + _index).tooltip('show');
-                        $("#addZcodeItemZCodeEnd_" + _index).tooltip('show');
                         return;
                     }
                 };
-                $scope.submitZcodeItem = function (_object,_index) {
+
+                //再次编辑真知码，点击确定按钮
+                $scope.submitZcodeItem = function (_object,index) {
                     if (_object.ZCodeStart == null || _object.ZCodeStart == "" || _object.ZCodeStart.length !== 16) {
-                        $("#ZCodeStart_" + _index).tooltip('show');
+                        document.getElementsByName("zCodeEditStart"+index)[0].focus();
+                        $scope.validZcodeStart(_object);
                         return;
                     }
                     if (_object.ZCodeEnd == null || _object.ZCodeEnd == "" || _object.ZCodeEnd.length !== 16) {
-                        $("#ZCodeEnd_" + _index).tooltip('show');
+                        document.getElementsByName("zCodeEditEnd" + index)[0].focus();
+                        $scope.validZcodeEnd(_object);
                         return;
                     }
                     _object.HtmlEdit = 0;
@@ -963,7 +1056,8 @@
             <div>
                 <span style="color: red;">*</span> 带星号的为必填项
             </div>
-            <form name="appform" onkeydown="if(event.keyCode==13)return false;" class="form-horizontal" method="POST" novalidate enctype="multipart/form-data" id="uploadForm" onsubmit="return CheckIsUpload();">
+            <form name="appform" onkeydown="if(event.keyCode==13)return false;" class="form-horizontal" ng-submit="submit()"
+                  method="POST" novalidate enctype="multipart/form-data" id="uploadForm" onsubmit="return CheckIsUpload();">
                 <div class="form-group">
 
                     <label class="col-sm-2 control-label">证书类别 <span style="color: red;">*</span></label>
@@ -1072,6 +1166,7 @@
                         <input type="text" maxlength="100" name="Application.ImporterPhone" ng-model="model.Application.ImporterPhone" class="form-control" placeholder="联系电话" />
                     </div>
                 </div>
+                <!--商品资料-->
                 <div class="form-group">
                     <label class="col-sm-2 control-label">商品资料</label>
                     <div class="col-sm-10">
@@ -1263,11 +1358,29 @@
                                             <p class="form-control-static">真知码 {{$index+1}}</p>
                                         </td>
                                         <td>
-                                            <input ng-if="zcode.HtmlEdit==1" type="text" ng-model="zcode.ZCodeStart" maxlength="16" class="form-control" id="ZCodeStart_{{$index}}" data-placement="top" title="请输入16位首码" ng-blur="validZcodeItem(zcode,$index)"/>
+                                            <input ng-if="zcode.HtmlEdit==1" 
+                                                   type="text"
+                                                   ng-model="zcode.ZCodeStart" 
+                                                   maxlength="16" 
+                                                   ucc-tip-direction="1"
+                                                   class="form-control" 
+                                                   name="zCodeEditStart{{$index}}"
+                                                   ucc-validate-func="validZcodeStart(zcode)"
+                                                   submit-btn-id="applicationSubmit"
+                                                   ng-blur="validZcodeItem(zcode)"/>
                                             <p ng-if="zcode.HtmlEdit==0" ng-model="zcode.ZCodeStart" class="form-control-static">{{zcode.ZCodeStart}}</p>
                                         </td>
                                         <td>
-                                            <input ng-if="zcode.HtmlEdit==1" type="text" ng-model="zcode.ZCodeEnd" maxlength="16" class="form-control" id="ZCodeEnd_{{$index}}" data-placement="top" title="请输入16位尾码" ng-blur="validZcodeItem(zcode,$index)"/>
+                                            <input ng-if="zcode.HtmlEdit==1" 
+                                                   type="text" 
+                                                   ng-model="zcode.ZCodeEnd" 
+                                                   maxlength="16" 
+                                                   ucc-tip-direction="1"
+                                                   class="form-control" 
+                                                   name="zCodeEditEnd{{$index}}"
+                                                   ucc-validate-func="validZcodeEnd(zcode)"
+                                                   submit-btn-id="applicationSubmit"
+                                                   ng-blur="validZcodeItem(zcode)"/>
                                             <p ng-if="zcode.HtmlEdit==0" ng-model="zcode.ZCodeEnd" class="form-control-static">{{zcode.ZCodeEnd}}</p>
                                         </td>
                                         <td>
@@ -1285,13 +1398,32 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <input type="text" ng-model="item.addZcodeItem.ZCodeStart" id="addZcodeItemZCodeStart_{{$index}}" class="form-control" maxlength="16"  
-                                                  ng-keyup="myKeyupStart($event,$index)" placeholder="首码" data-placement="top" title="请输入16位首码" ng-blur="validAddzcodeItem(item,$index)" />
+                                            <!--ng-blur="validAddzcodeItem(item,$index)" ng-keyup="myKeyupStart($event,$index)" id="addZcodeItemZCodeStart_{{$index}}"-->
+                                            <input type="text" 
+                                                   ng-model="item.addZcodeItem.ZCodeStart" 
+                                                   ucc-tip-direction="1" 
+                                                   ucc-validate-func="zCodeValidateStart(value,item,false);"
+                                                   class="form-control" 
+                                                   maxlength="16" 
+                                                   submit-btn-id="applicationSubmit" 
+                                                   placeholder="首码" 
+                                                   ng-blur="zcodeBlurStart($event)" 
+                                                   ng-keyup="myKeyupStart($event)"
+                                                   name="zCodeStart"/>
                                         </td>
                                         <td>
-                                            <input type="text" ng-model="item.addZcodeItem.ZCodeEnd" id="addZcodeItemZCodeEnd_{{$index}}" class="form-control" maxlength="16"  
-                                                   ng-keyup="myKeyupEnd($event,item,$index)" placeholder="尾码"  
-                                                   title="请输入16位尾码" ng-blur="validAddzcodeItem(item,$index)" />
+                                            <!--title="请输入16位尾码" ng-blur="validAddzcodeItem(item,$index)" ng-keyup="myKeyupEnd($event,item,$index)" id="addZcodeItemZCodeEnd_{{$index}}"-->
+                                            <input type="text" 
+                                                   ng-model="item.addZcodeItem.ZCodeEnd" 
+                                                   ucc-tip-direction="1"  
+                                                   ucc-validate-func="zCodeValidateEnd(value,item,false)"
+                                                   class="form-control" 
+                                                   maxlength="16" 
+                                                   submit-btn-id="applicationSubmit" 
+                                                   placeholder="尾码" 
+                                                   ng-blur="zcodeBlurEnd($event)"
+                                                   ng-keyup="myKeyupEnd($event,item)"
+                                                   name="zCodeEnd"/>
                                         </td>
                                         <!--暂时去掉真知码的添加按钮-->
                                         <td>
@@ -1469,7 +1601,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-8">
-                        <button class="btn btn-default" ng-click="submit()" ng-disabled="submitApp">
+                        <button class="btn btn-default" type="submit" id="applicationSubmit" ng-disabled="submitApp">
                             <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
                         </button>
 
