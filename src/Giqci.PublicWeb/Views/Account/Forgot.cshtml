@@ -13,16 +13,22 @@
             <span ng-bind="alert.msg"></span>
         </div>
         <form name="appform" class="form-horizontal" method="POST" ng-submit="submitForm(appform.$valid)" novalidate>
-            <div class="form-group" ng-class="{ 'has-error' : appform.email.$invalid && appform.email.$dirty }">
-                <label class="col-sm-2 control-label">邮箱 <span style="color: red;">*</span> </label>
-                <div class="col-sm-5">
-                    <input name="email" type="email" class="form-control" required ng-model="user.email" />
-                    <small ng-show="appform.email.$invalid" class="help-block">请填写正确的邮箱</small>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">邮箱 <span style="color: red;">*</span> </label>
+                <div class="col-sm-6">
+                    <input name="email" 
+                           type="text" 
+                           class="form-control" 
+                           required 
+                           ucc-require="邮箱不能为空" 
+                           submit-btn-id="forgotSubmit"
+                           ucc-email
+                           ng-model="user.email" />
                 </div>
             </div>
             <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-8">
-                    <button class="btn btn-default" ng-disabled="enableDisableButton">
+                <div class="col-sm-offset-3 col-sm-8">
+                    <button type="submit" id="forgotSubmit" class="btn btn-default" ng-disabled="enableDisableButton">
                         <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> {{submitButton}}
                     </button>
                 </div>
