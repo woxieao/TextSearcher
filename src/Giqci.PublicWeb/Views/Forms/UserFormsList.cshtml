@@ -10,10 +10,10 @@
             </h3>
         </div>
         <div class="panel-body">
-            <div class="formList-group-bar">
+            <div class="formList-group-bar" style="margin-bottom: 0px;">
                 <form class="form-inline">
                     <div class="form-group">
-                        <input ng-model="applyNo" placeholder="申请号" class="form-control"/>
+                        <input ng-model="applyNo" placeholder="申请号" class="form-control" />
                         状态: <select ng-model="status" ng-options="s.value as s.name for s in statusValues" class="form-control">
                             <option value="">-- 全部 --</option>
                         </select>
@@ -26,7 +26,7 @@
                 </form>
 
             </div>
-            <small style="padding: 3px; margin-top: 10px; width: 100%; position: relative;">当前状态为“新申请”的申请号，商户可自行更改编辑；其他状态的申请，编辑请联系GIQCI客服人员。</small>
+            <div style="padding: 3px; margin-top: 4px; margin-bottom: 4px; color: blue; width: 100%; position: relative;"><small>当前状态为“新申请”的申请号，商户可自行更改编辑；其他状态的申请，编辑请联系GIQCI客服人员。</small></div>
             <table class="table table-striped">
                 <colgroup>
                     <col width='100' />
