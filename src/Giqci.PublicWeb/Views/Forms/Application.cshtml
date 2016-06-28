@@ -557,7 +557,12 @@
                         //    $scope.submitApp = false;
                         //    $log.warn(response);
                         //}
-                    );
+                    ).error(function () {
+                        layer.alert("服务器异常！");
+                        $scope.$apply(function () {
+                            $scope.submitApp = false;
+                        });
+                    });
                 };
 
                 $scope.updateClock = function () {
