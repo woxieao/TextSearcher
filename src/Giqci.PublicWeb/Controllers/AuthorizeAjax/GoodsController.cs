@@ -136,10 +136,10 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                 {
                     return new AjaxResult(new { flag = false, msg = "制造商中含有不合法字符" });
                 }
-                var regDes = new Regex(@"^[a-zA-Z\s]*$");
+                var regDes = new Regex(@"^[a-zA-Z\s\d]*$");
                 if (!regDes.IsMatch(product.DescriptionEn))
                 {
-                    return new AjaxResult(new { flag = false, msg = "英文名称只能是英文字母" });
+                    return new AjaxResult(new { flag = false, msg = "名称(英文)只能包含英文或数字" });
                 }
                 if (product.Id > 0)
                 {
