@@ -20,11 +20,7 @@
                 $scope.model.Application = ObjDecodeToJson(@HtmlExtensions.RawJson(Model));
 
                 $scope.isNewApp = $scope.model.Application.Key == null;
-
-                window.onbeforeunload = function () {
-                    return "";
-                }
-
+                
                 $scope.additem = function () {
                     $scope.model.Application.ApplicationProducts.push({
                         DescriptionEn: "",
@@ -82,6 +78,9 @@
                     $scope.appshow = true;
                     $("#appliction-form").show();
                 } else {
+                    window.onbeforeunload = function () {
+                        return "确定离开本页面吗";
+                    }
                     $scope.acceptshow = true;
                     $scope.appshow = false;
                     $("#accept-form").hide();
@@ -476,6 +475,9 @@
                     $(currentElement).select2({ theme: "bootstrap", width: 'resolve' });
                 };
                 $scope.accept = function () {
+                    window.onbeforeunload = function () {
+                        return "确定离开本页面吗";
+                    }
                     $scope.acceptshow = false;
                     $scope.appshow = true;
                     $("#accept-form").hide();
