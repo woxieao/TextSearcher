@@ -225,17 +225,17 @@
                     _object.HandlerType = -1;
                 };
 
-                $scope.myKeyupStart = function (e) {
+                $scope.myKeyupStart = function (e,_index) {
                     if(e.keyCode==13){
-                        document.getElementsByName("zCodeEnd")[0].focus();
+                        document.getElementsByName("zCodeEnd"+_index)[0].focus();
                     }
                 };
 
-                $scope.myKeyupEnd = function (e, _object) {
-                    if(e.keyCode==13){
-                        $scope.validAddzcodeItem(_object);
-                        document.getElementsByName("zCodeEnd")[0].blur();
-                        document.getElementsByName("zCodeStart")[0].focus();
+                $scope.myKeyupEnd = function (e, _object, _index) {
+                    if (e.keyCode == 13) {
+                        $scope.validAddzcodeItem(_object,_index);
+                        document.getElementsByName("zCodeEnd" + _index)[0].blur();
+                        document.getElementsByName("zCodeStart" + _index)[0].focus();
                     }
                 };
 
@@ -249,7 +249,7 @@
 
 
                 //添加真知码自定义指令的验证方法
-                $scope.zCodeValidateStart = function (value,item,bool) {
+                $scope.zCodeValidateStart = function (value,item,bool,_index) {
                     //首码输入框曾经获取过焦点，判断首码是否有值
                     if (item.addZcodeItem.hasOwnProperty("ZCodeStart")) {
                         if (item.addZcodeItem.ZCodeStart == "" || item.addZcodeItem.ZCodeStart == undefined) {
@@ -263,12 +263,12 @@
                         } else if ((value+"").length == 16) {
                             //首码不为空，判断首码和尾码
                             if (bool) {
-                                $scope.addZcodeItem(item);
+                                $scope.addZcodeItem(item,_index);
                                 return false;
                             } else {
-                                var input = document.getElementsByName("zCodeEnd");
+                                var input = document.getElementsByName("zCodeEnd"+_index);
                                 input[0].focus();
-                                $scope.zCodeValidateEnd(item.addZcodeItem.ZCodeEnd, item, true);
+                                $scope.zCodeValidateEnd(item.addZcodeItem.ZCodeEnd, item, true,_index);
                             }
                         } else {
                             return "请输入16位首码";
@@ -281,7 +281,7 @@
                 };
 
                 //尾码验证
-                $scope.zCodeValidateEnd = function (value, item, bool) {
+                $scope.zCodeValidateEnd = function (value, item, bool,_index) {
                     //尾码输入框曾经获取过焦点，判断尾码是否有值
                     if (item.addZcodeItem.hasOwnProperty("ZCodeEnd")) {
                         if (item.addZcodeItem.ZCodeEnd == "" || item.addZcodeItem.ZCodeEnd == undefined) {
@@ -293,12 +293,12 @@
                             }
                         } else if ((value+"").length == 16) {
                             if (bool) {
-                                $scope.addZcodeItem(item);
+                                $scope.addZcodeItem(item,_index);
                                 return false;
                             } else {
-                                var input = document.getElementsByName("zCodeStart");
+                                var input = document.getElementsByName("zCodeStart"+_index);
                                 input[0].focus();
-                                $scope.zCodeValidateStart(item.addZcodeItem.ZCodeStart, item, true);
+                                $scope.zCodeValidateStart(item.addZcodeItem.ZCodeStart, item, true,_index);
                             }
                         } else {
                             return "请输入16位尾码";
@@ -312,9 +312,9 @@
 
 
                 //添加真知码操作（需在验证通过后）
-                $scope.addZcodeItem = function (_object) {
-                    document.getElementsByName("zCodeStart")[0].setAttribute("placeholder", "首码");
-                    document.getElementsByName("zCodeEnd")[0].setAttribute("placeholder", "尾码");
+                $scope.addZcodeItem = function (_object,_index) {
+                    document.getElementsByName("zCodeStart"+_index)[0].setAttribute("placeholder", "首码");
+                    document.getElementsByName("zCodeEnd"+_index)[0].setAttribute("placeholder", "尾码");
                     _object.ApplicationZCodes.push({
                         ZCodeStart: _object.addZcodeItem.ZCodeStart,
                         ZCodeEnd: _object.addZcodeItem.ZCodeEnd,
@@ -374,7 +374,7 @@
                 };
 
                 //添加真知码时的验证
-                $scope.validAddzcodeItem = function (_object) {
+                $scope.validAddzcodeItem = function (_object,_index) {
                     //真知码为空，不验证
                     var noZcode = ((_object.addZcodeItem.ZCodeEnd == null) || (_object.addZcodeItem.ZCodeEnd == ""))
                         && ((_object.addZcodeItem.ZCodeStart == null) || (_object.addZcodeItem.ZCodeStart == ""));
@@ -384,7 +384,7 @@
                         (_object.addZcodeItem.ZCodeStart != null && _object.addZcodeItem.ZCodeStart.length === 16) &&
                         (_object.addZcodeItem.ZCodeEnd != null && _object.addZcodeItem.ZCodeEnd.length === 16);
                     if (pass) {
-                        $scope.addZcodeItem(_object);
+                        $scope.addZcodeItem(_object,_index);
                         layer.closeAll();
                         return;
                     } else if (noZcode) {
@@ -1409,28 +1409,28 @@
                                             <input type="text" 
                                                    ng-model="item.addZcodeItem.ZCodeStart" 
                                                    ucc-tip-direction="1" 
-                                                   ucc-validate-func="zCodeValidateStart(value,item,false);"
+                                                   ucc-validate-func="zCodeValidateStart(value,item,false,$index);"
                                                    class="form-control" 
                                                    maxlength="16" 
                                                    submit-btn-id="applicationSubmit" 
                                                    placeholder="首码" 
                                                    ng-blur="zcodeBlurStart($event)" 
-                                                   ng-keyup="myKeyupStart($event)"
-                                                   name="zCodeStart"/>
+                                                   ng-keyup="myKeyupStart($event,$index)"
+                                                   name="zCodeStart{{$index}}"/>
                                         </td>
                                         <td>
                                             <!--title="请输入16位尾码" ng-blur="validAddzcodeItem(item,$index)" ng-keyup="myKeyupEnd($event,item,$index)" id="addZcodeItemZCodeEnd_{{$index}}"-->
                                             <input type="text" 
                                                    ng-model="item.addZcodeItem.ZCodeEnd" 
                                                    ucc-tip-direction="1"  
-                                                   ucc-validate-func="zCodeValidateEnd(value,item,false)"
+                                                   ucc-validate-func="zCodeValidateEnd(value,item,false,$index)"
                                                    class="form-control" 
                                                    maxlength="16" 
                                                    submit-btn-id="applicationSubmit" 
                                                    placeholder="尾码" 
                                                    ng-blur="zcodeBlurEnd($event)"
-                                                   ng-keyup="myKeyupEnd($event,item)"
-                                                   name="zCodeEnd"/>
+                                                   ng-keyup="myKeyupEnd($event,item,$index)"
+                                                   name="zCodeEnd{{$index}}"/>
                                         </td>
                                         <!--暂时去掉真知码的添加按钮-->
                                         <td>
