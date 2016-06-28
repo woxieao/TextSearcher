@@ -166,7 +166,9 @@ $giqci.get = function (url, data) {
         }
         layer.alert("提交成功");
     }
-
+    var errorCallBackFunc = function () {
+        console.log("Send Data To " + url + " Failed");
+    };
     function handlerResult(scope, result, callBackFunc, withData) {
         switch (result.status) {
             case -1:
@@ -206,18 +208,24 @@ $giqci.get = function (url, data) {
             success: function (result) {
                 handlerResult(scope, result, callBackFunc, withData);
             },
-            error: function (result) {
-                args.error(result);
+            error: function () {
+                errorCallBackFunc();
             }
         });
     }
 
     self.then = function (callBackFunc, scope) {
         sendRequest(scope, callBackFunc, true);
+        return self;
     }
     self.success = function (callBackFunc, scope) {
         sendRequest(scope, callBackFunc, false);
+        return self;
     }
+    self.error = function (func) {
+        errorCallBackFunc = func;
+        return self;
+    };
     return self;
 }
 
@@ -236,7 +244,9 @@ $giqci.post = function (url, data) {
         }
         layer.alert("提交成功");
     }
-
+    var errorCallBackFunc = function () {
+        console.log("Send Data To " + url + " Failed");
+    };
     function handlerResult(scope, result, callBackFunc, withData) {
         switch (result.status) {
             case -1:
@@ -278,17 +288,23 @@ $giqci.post = function (url, data) {
             success: function (result) {
                 handlerResult(scope, result, callBackFunc, withData);
             },
-            error: function (result) {
-                args.error(result);
+            error: function () {
+                errorCallBackFunc();
             }
         });
     }
 
     self.then = function (callBackFunc, scope) {
         sendRequest(scope, callBackFunc, true);
+        return self;
     }
     self.success = function (callBackFunc, scope) {
         sendRequest(scope, callBackFunc, false);
+        return self;
     }
+    self.error = function (func) {
+        errorCallBackFunc = func;
+        return self;
+    };
     return self;
 }
