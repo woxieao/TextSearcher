@@ -35,58 +35,99 @@
         </div>
         <div id="reg" ng-show="regshow">
             <form name="appform" class="form-horizontal" method="POST" ng-submit="submitForm(appform.$valid,user.password != user.confirm_password)" novalidate>
-                <div class="form-group" ng-class="{ 'has-error' : appform.email.$invalid && appform.email.$dirty }">
+                <div class="form-group">
                     <label class="col-sm-2 control-label">邮箱 <span style="color: red;">*</span> </label>
-                    <div class="col-sm-10">
-                        <input name="email" type="email" class="form-control" ng-model="user.email" required />
-                        <small ng-show="appform.email.$invalid" class="help-block">请填写正确的邮箱</small>
+                    <div class="col-sm-8">
+                        <input name="email" 
+                               type="text" 
+                               class="form-control" 
+                               ng-model="user.email" 
+                               required 
+                               ucc-require="邮箱不能为空" 
+                               submit-btn-id="registerSubmit"
+                               ucc-email/>
                     </div>
                 </div>
-                <div class="form-group" ng-class="{ 'has-error' : (appform.password.$error.required || appform.password.$error.minlength || appform.password.$error.maxlength) && !appform.password.$pristine }">
+                <div class="form-group">
                     <label class="col-sm-2 control-label">密码 <span style="color: red;">*</span> </label>
-                    <div class="col-sm-10">
-                        <input name="password" type="password" class="form-control" ng-model="user.password" required ng-minlength="6" ng-maxlength="20" />
-                        <small ng-show="appform.password.$error.required || appform.password.$error.minlength || appform.password.$error.maxlength" class="help-block">密码长度为6-20个字符</small>
+                    <div class="col-sm-8">
+                        <input name="password" 
+                               type="password" 
+                               class="form-control" 
+                               ng-model="user.password" 
+                               required
+                               placeholder="密码长度为6-20个字符"
+                               ucc-max-length="20" 
+                               maxlength="20"
+                               ucc-min-length="6" 
+                               submit-btn-id="registerSubmit"/>
                     </div>
                 </div>
-                <div class="form-group" ng-class="{ 'has-error' : user.password != user.confirm_password }">
+                <div class="form-group">
                     <label class="col-sm-2 control-label">确认密码 <span style="color: red;">*</span> </label>
-                    <div class="col-sm-10">
-                        <input name="confirm_password" type="password" class="form-control" ng-model="user.confirm_password" required ng-minlength="6" ng-maxlength="20" />
-                        <small ng-show="user.password != user.confirm_password">两次密码输入不一致</small>
+                    <div class="col-sm-8">
+                        <input name="confirm_password" 
+                               type="password" 
+                               class="form-control" 
+                               ng-model="user.confirm_password" 
+                               required 
+                               maxlength="20"
+                               submit-btn-id="registerSubmit"
+                               ucc-validate-func="validateFun(user.password,user.confirm_password)"
+                               placeholder="请再次输入密码" />
                     </div>
                 </div>
-                <div class="form-group" ng-class="{ 'has-error' : appform.name.$error.required && !appform.name.$pristine }">
+                <div class="form-group">
                     <label class="col-sm-2 control-label">公司名 <span style="color: red;">*</span> </label>
-                    <div class="col-sm-10">
-                        <input name="name" type="text" class="form-control" ng-model="user.name" required />
-                        <small ng-show="appform.name.$error.required" class="help-block">公司名不能为空</small>
+                    <div class="col-sm-8">
+                        <input name="name" 
+                               type="text" 
+                               class="form-control" 
+                               ng-model="user.name" 
+                               ucc-require="公司名不能为空"
+                               submit-btn-id="registerSubmit"
+                               required />
                     </div>
                 </div>
-                <div class="form-group" ng-class="{ 'has-error' : appform.address.$error.required && !appform.address.$pristine }">
+                <div class="form-group">
                     <label class="col-sm-2 control-label">公司地址 <span style="color: red;">*</span> </label>
-                    <div class="col-sm-10">
-                        <input name="address" type="text" class="form-control" ng-model="user.address" required />
-                        <small ng-show="appform.address.$error.required" class="help-block">公司地址不能为空</small>
+                    <div class="col-sm-8">
+                        <input name="address" 
+                               type="text" 
+                               class="form-control" 
+                               ng-model="user.address" 
+                               ucc-require="公司地址不能为空"
+                               submit-btn-id="registerSubmit"
+                               required />
                     </div>
                 </div>
-                <div class="form-group" ng-class="{ 'has-error' : appform.contact.$error.required && !appform.contact.$pristine }">
+                <div class="form-group">
                     <label class="col-sm-2 control-label">联系人 <span style="color: red;">*</span> </label>
-                    <div class="col-sm-10">
-                        <input name="contact" type="text" class="form-control" ng-model="user.contact" required />
-                        <small ng-show="appform.contact.$error.required" class="help-block">联系人不能为空</small>
+                    <div class="col-sm-8">
+                        <input name="contact" 
+                               type="text" 
+                               class="form-control" 
+                               ng-model="user.contact" 
+                               ucc-require="联系人不能为空"
+                               submit-btn-id="registerSubmit"
+                               required />
                     </div>
                 </div>
-                <div class="form-group" ng-class="{ 'has-error' : appform.phone.$error.required  && !appform.phone.$pristine}">
+                <div class="form-group">
                     <label class="col-sm-2 control-label">电话 <span style="color: red;">*</span> </label>
-                    <div class="col-sm-10">
-                        <input name="phone" type="text" class="form-control" ng-model="user.phone" required />
-                        <small ng-show="appform.phone.$error.required" class="help-block">电话不能为空</small>
+                    <div class="col-sm-8">
+                        <input name="phone" 
+                               type="text" 
+                               class="form-control" 
+                               ng-model="user.phone"
+                               ucc-require="电话不能为空" 
+                               submit-btn-id="registerSubmit"
+                               required />
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-8">
-                        <button class="btn btn-default" ng-disabled="enableDisableButton">
+                        <button type="submit" id="registerSubmit" class="btn btn-default" ng-disabled="enableDisableButton">
                             <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> {{submitButton}}
                         </button>
                     </div>

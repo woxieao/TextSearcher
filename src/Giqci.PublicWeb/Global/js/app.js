@@ -73,6 +73,18 @@ app.controller("RegController", [
             $scope.acceptshow = false;
             $scope.regshow = true;
         };
+
+        $scope.validateFun = function (str1,str2) {
+            if(str1==undefined|| str1==""){
+                return "请先输入密码，再输入确认密码";
+            }else if (str1 != str2) {
+                return "两次密码输入不一致";
+            } else{
+                //验证成功返回0 或者 null 或者 false
+                return 0;
+            } 
+        };
+
         $scope.submitForm = function (isValid, PasswordValid) {
             if (isValid && !PasswordValid) {
                 $scope.enableDisableButton = true;
