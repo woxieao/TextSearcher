@@ -732,3 +732,14 @@ ul,li,ol{
 .user-nav-dropdown {z-index:29891020;}
 /*表单必填项星号*/
 .input-require-color{color:red;}
+/*报验申请table样式调整*/
+.application-table-margin{margin-bottom:0 !important;}
+.application-product-area{background-color:transparent;}
+.application-table-head{background-color:aliceblue !important;}
+.application-product-area td{
+    padding:4px !important;
+    vertical-align: middle !important;
+}
+.application-product-area th{padding:4px !important;}
+.application-table-striped{background-color: #f9f9f9 !important;}
+.application-product-county {}
