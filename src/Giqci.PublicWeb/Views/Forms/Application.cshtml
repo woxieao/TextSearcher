@@ -74,14 +74,14 @@
                 $scope.errors = [];
 
                 if ($scope.model.Application.Key != null) {
+                    window.onbeforeunload = function () {
+                        return "即将离开本页面";
+                    }
                     $scope.acceptshow = false;
                     $scope.appshow = true;
                     $("#appliction-form").show();
                 } else {
-                    window.onbeforeunload = function () {
-                        return "确定离开本页面吗";
-                    }
-                    $scope.acceptshow = true;
+                  $scope.acceptshow = true;
                     $scope.appshow = false;
                     $("#accept-form").hide();
                 };
@@ -476,7 +476,7 @@
                 };
                 $scope.accept = function () {
                     window.onbeforeunload = function () {
-                        return "确定离开本页面吗";
+                        return "即将离开本页面";
                     }
                     $scope.acceptshow = false;
                     $scope.appshow = true;
