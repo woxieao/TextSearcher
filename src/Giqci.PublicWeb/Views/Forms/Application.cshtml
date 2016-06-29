@@ -145,9 +145,7 @@
                     }
                     $giqci.post('/api/forms/RemoveAppCache'
                     ).success(function (response) {
-                        alertService.add('success', "读取成功 (并已删除了暂存的申请,若需暂存,请再次点击暂存)", 6000);
-                        $location.hash("h1");
-                        $anchorScroll();
+                        layer.msg("读取成功 (并已删除了暂存的申请,若需暂存,请再次点击暂存)", { icon: 6, time: 6000 });
                     }, $scope);
                 }
                 $scope.isSaveingCache = false;
@@ -155,10 +153,9 @@
                     $scope.isSaveingCache = true;
                     $giqci.post('/api/forms/SaveAppCache',
                         $scope.model.Application).success(function (result) {
-                            alertService.add('success', "暂存成功,下次可以直接读取本次保存的数据", 3000);
-                            $location.hash("h1");
-                            $anchorScroll();
-                            $scope.isSaveingCache = false;
+                            layer.msg("暂存成功,下次可以直接读取本次保存的数据", { icon: 6 }, function () {
+                                $scope.isSaveingCache = false;
+                            });
                         }, $scope);
                 }
                 $scope.getGoodsList = function () {
@@ -1061,13 +1058,13 @@
                 <span ng-bind="alert.msg"></span>
             </div>
             <div>
-                <span style="color: red;">*</span> 带星号的为必填项
+                <span class="input-require-color">&nbsp;&lowast;</span> 带星号的为必填项
             </div>
             <form name="appform" onkeydown="if(event.keyCode==13)return false;" class="form-horizontal" ng-submit="submit()"
                   method="POST" novalidate enctype="multipart/form-data" id="uploadForm" onsubmit="return CheckIsUpload();">
                 <div class="form-group">
 
-                    <label class="col-sm-2 control-label">证书类别 <span style="color: red;">*</span></label>
+                    <label class="col-sm-2 control-label">证书类别<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-10">
                         <div class="checkbox">
@@ -1105,7 +1102,7 @@
                 </div>
                 <div class="form-group">
 
-                    <label class="col-sm-2 control-label">商业目的 <span style="color: red;">*</span></label>
+                    <label class="col-sm-2 control-label">商业目的<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-10">
                         <div class="radio">
@@ -1115,7 +1112,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">申请企业备案号</label>
+                    <label class="col-sm-2 control-label">申请企业备案号<span>&nbsp;&nbsp;</span></label>
                     <div class="col-sm-10">
                         <p class="form-control-static">
                             <input type="hidden" name="Application.ApplicantCode" ng-model="model.Application.ApplicantCode" />{{model.Application.ApplicantCode}}
@@ -1123,7 +1120,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">申请人 <span style="color: red;">*</span></label>
+                    <label class="col-sm-2 control-label">申请人<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-8">
                         <input type="text" maxlength="100" name="Application.Applicant" ng-model="model.Application.Applicant" class="form-control" placeholder="全称" />
@@ -1134,7 +1131,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">出口商 <span style="color: red;">*</span> </label>
+                    <label class="col-sm-2 control-label">出口商<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-6">
                         <select class="form-control" ng-change="selectExporter(Exporter)" ng-model="Exporter" ng-options="merchant.UserName for merchant in loadMerchantInfo">
@@ -1154,8 +1151,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label ng-if="model.Application.TradeType==4" class="col-sm-2 control-label">进口商 <span style="color: red;">*</span> </label>
-                    <label ng-if="model.Application.TradeType==1" class="col-sm-2 control-label">代理进口商 <span style="color: red;">*</span></label>
+                    <label ng-if="model.Application.TradeType==4" class="col-sm-2 control-label">进口商<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label ng-if="model.Application.TradeType==1" class="col-sm-2 control-label">代理进口商<span class="input-require-color">&nbsp;&lowast;</span></label>
                     <div class="col-sm-6">
                         <select class="form-control" ng-change="selectImporter(Importer)" ng-model="Importer" ng-options="merchant.UserName for merchant in loadMerchantInfo">
                             <option value="">--请选择--</option>
@@ -1175,36 +1172,36 @@
                 </div>
                 <!--商品资料-->
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">商品资料</label>
-                    <div class="col-sm-10">
-                        <div ng-repeat="item in model.Application.ApplicationProducts | filter:listFilter">
-                            <table class="table">
+                    <label class="col-sm-2 control-label">商品资料<span>&nbsp;&nbsp;</span></label>
+                    <div class="col-sm-8">
+                        <div ng-repeat="item in model.Application.ApplicationProducts | filter:listFilter" class="application-product-area">
+                            <table class="table table-hover application-table-margin">
                                 <colgroup>
-                                    <col width="120" />
+                                    <col width="140" />
                                     <col width="360" />
                                     <col width="120" />
                                     <col width="360" />
                                 </colgroup>
-                                <tr style="background-color: #f9f9f9;">
+                                <tr class="application-table-head">
                                     <th>
                                         <p class="form-control-static">商品 {{$index+1}}</p>
                                     </th>
                                     <td colspan="3">
-                                        <button class="btn btn-default" type="button" ng-click="removeitem(item)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button>
+                                        <button class="btn btn-default btn-sm" type="button" ng-click="removeitem(item)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>
-                                        <p class="form-control-static">常用商品 <span style="color: red;">*</span></p>
+                                        <p class="form-control-static">常用商品<span class="input-require-color">&nbsp;&lowast;</span></p>
                                     </th>
                                     <td colspan="3">
-                                        <div class="form-group">
+                                        <div class="form-group application-table-margin">
                                             <div class="col-sm-8">
                                                 <p class="form-control-static" ng-if="isEdit&&item.HandlerType!=1">{{item.CiqCode?item.CiqCode:"-"}}</p>
-                                                <select ajax-product class="form-control" ng-if="!isEdit||(isEdit&&item.HandlerType==1)" ng-change="selectProduct(select,item)" ng-model="select" style="width:100%;"></select>
+                                                <select ajax-product class="form-control " ng-if="!isEdit||(isEdit&&item.HandlerType==1)" ng-change="selectProduct(select,item)" ng-model="select" style="width:100%;"></select>
                                                 <input type="hidden" ng-model="item.CiqCode" />
                                             </div>
-                                            <div class="col-sm-4">
+                                            <div class="col-sm-3">
                                                 <a class="btn btn-default" data-toggle="modal" data-target="#form-product"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;添加/管理</a>
                                             </div>
                                         </div>
@@ -1275,20 +1272,6 @@
 
                                     </td>
                                 </tr>
-                                <tr>
-                                    <th>
-                                        <p class="form-control-static">
-                                            数量 <span style="color: red;">*</span>
-                                        </p>
-                                    </th>
-                                    <td>
-                                        <input type="number" ng-model="item.Quantity" class="form-control" placeholder="数量" min="0" />
-                                    </td>
-                                    <th>
-
-                                    </th>
-                                    <td></td>
-                                </tr>
                                 <tr ng-show="model.Application.C102">
                                     <th>
                                         <p class="form-control-static">品质检验</p>
@@ -1299,26 +1282,40 @@
                                         </div>
                                     </td>
                                     <th>
-                                        <p class="form-control-static" ng-show="item.C102">检测项目 <span style="color: red;">*</span> </p>
+                                        <p class="form-control-static" ng-show="item.C102">检测项目<span class="input-require-color">&nbsp;&lowast;</span></p>
                                     </th>
                                     <td>
                                         <span ng-show="item.C102"><input type="text" ng-model="item.C102Comment" class="form-control" maxlength="100" /></span>
                                     </td>
                                 </tr>
                             </table>
-                            <!--批次号-->
+                            <!--批次号&数量-->
                             <div>
-                                <table class="table">
+                                <table class="table table-hover application-table-margin">
                                     <colgroup>
                                         <col width="180" />
                                         <col />
                                         <col />
                                         <col width="180" />
                                     </colgroup>
+                                    <tr>
+                                        <th class="application-product-county">
+                                            <p class="form-control-static">
+                                                数量<span class="input-require-color">&nbsp;&lowast;</span>
+                                            </p>
+                                        </th>
+                                        <td colspan="2">
+                                            <input type="number" ng-model="item.Quantity" class="form-control" placeholder="数量" min="0" />
+                                        </td>
+                                        <th>
+
+                                        </th>
+                                        <td></td>
+                                    </tr>
                                     <tr ng-repeat="batch in item.ProductItemList | filter:listFilter">
                                         <td>
                                             <div class="form-control-static">
-                                                批次号/保质期 {{$index+1}}<span style="color: red;">*</span>
+                                                批次号/保质期 {{$index+1}}<span class="input-require-color">&nbsp;&lowast;</span>
                                             </div>
                                         </td>
                                         <td colspan="2">
@@ -1331,7 +1328,7 @@
                                             <div class="form-control-static">
                                                 <input type="radio" ng-model="batch.batchNoOrDate" id="batch_1_{{$index+1}}" checked /><label for="batch_1_{{$index+1}}">批次号</label>
                                                 <input type="radio" ng-model="batch.batchNoOrDate" value="1" id="batch_0_{{$index+1}}" /><label for="batch_0_{{$index+1}}">保质期</label>
-                                                <span style="color: red;">*</span>
+                                                <span class="input-require-color">&nbsp;&lowast;</span>
                                             </div>
                                         </td>
                                         <td colspan="2">
@@ -1347,7 +1344,7 @@
                             <!--end 批次号-->
                             <!--真知码-->
                             <div>
-                                <table class="table">
+                                <table class="table table-hover ">
                                     <colgroup>
                                         <col width="180" />
                                         <col />
@@ -1447,7 +1444,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">运输方式</label>
+                    <label class="col-sm-2 control-label">运输方式<span>&nbsp;&nbsp;</span></label>
                     <div class="col-sm-10">
                         <div class="radio">
                             <label><input type="radio" ng-model="model.Application.ShippingMethod" value="1" />空运</label>
@@ -1457,7 +1454,7 @@
                     </div>
                 </div>
                 <div class="form-group" ng-show="model.Application.ShippingMethod == 2">
-                    <label class="col-sm-2 control-label">船舶资料</label>
+                    <label class="col-sm-2 control-label">船舶资料<span>&nbsp;&nbsp;</span></label>
                     <div class="col-sm-10">
                         <div ng-repeat="item in model.Application.ContainerInfos | filter:listFilter">
                             <table class="table table-striped goodsItems">
@@ -1477,14 +1474,14 @@
                                 </tr>
                                 <tr>
                                     <th>
-                                        <p class="form-control-static">装箱号 <span style="color: red;">*</span></p>
+                                        <p class="form-control-static">装箱号<span class="input-require-color">&nbsp;&lowast;</span></p>
                                     </th>
                                     <td>
                                         <p class="form-control-static" ng-if="item.HandlerType==0" ng-model="item.ContainerNumber">{{item.ContainerNumber}}</p>
                                         <input type="text" ng-if="item.HandlerType==1" ng-model="item.ContainerNumber" class="form-control" placeholder="装箱号" />
                                     </td>
                                     <th>
-                                        <p class="form-control-static">铅封号 <span style="color: red;">*</span></p>
+                                        <p class="form-control-static">铅封号<span class="input-require-color">&nbsp;&lowast;</span></p>
                                     </th>
                                     <td>
                                         <p class="form-control-static" ng-if="item.HandlerType==0" ng-model="item.SealNumber">{{item.SealNumber}}</p>
@@ -1498,7 +1495,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        提单号
+                        提单号<span>&nbsp;&nbsp;</span>
                     </label>
                     <div class="col-sm-6">
                         <input type="text" ng-model="model.Application.BillNo" class="form-control" placeholder="提单号" />
@@ -1506,7 +1503,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        副提单号
+                        副提单号<span>&nbsp;&nbsp;</span>
                     </label>
                     <div class="col-sm-6">
                         <input type="text" ng-model="model.Application.OtherBillNo" class="form-control" placeholder="副提单号" />
@@ -1514,9 +1511,9 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        <p ng-if="model.Application.ShippingMethod == 1">航班号</p>
-                        <p ng-if="model.Application.ShippingMethod == 2">船舶号</p>
-                        <p ng-if="model.Application.ShippingMethod == 3">车牌号</p>
+                        <p ng-if="model.Application.ShippingMethod == 1">航班号<span>&nbsp;&nbsp;</span></p>
+                        <p ng-if="model.Application.ShippingMethod == 2">船舶号<span>&nbsp;&nbsp;</span></p>
+                        <p ng-if="model.Application.ShippingMethod == 3">车牌号<span>&nbsp;&nbsp;</span></p>
                     </label>
                     <div class="col-sm-6">
                         <input type="text" ng-if="model.Application.ShippingMethod == 1" ng-model="model.Application.Vesselcn" class="form-control" placeholder="航班号" />
@@ -1525,13 +1522,13 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">出发日期</label>
+                    <label class="col-sm-2 control-label">出发日期<span>&nbsp;&nbsp;</span></label>
                     <div class="col-sm-6">
                         <input type="text" ng-model="model.Application.Voyage" class="form-control datetimepicker" placeholder="出发日期" />
                     </div>
                 </div>
                 <div class="form-group" ng-show="model.Application.ShippingMethod != 2">
-                    <label class="col-sm-2 control-label">运输总数量 <span style="color: red;">*</span></label>
+                    <label class="col-sm-2 control-label">运输总数量<span class="input-require-color">&nbsp;&lowast;</span></label>
                     <div class="col-sm-6">
                         <input type="number" ng-model="model.Application.TotalUnits" class="form-control" min="0" placeholder="运输总数量" />
                     </div>
@@ -1540,7 +1537,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">运输总重量 <span style="color: red;">*</span></label>
+                    <label class="col-sm-2 control-label">运输总重量<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-6">
                         <input type="number" ng-model="model.Application.TotalWeight" class="form-control" min="0" placeholder="运输总重量" />
@@ -1550,13 +1547,13 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">计划发货日期</label>
+                    <label class="col-sm-2 control-label">计划发货日期<span>&nbsp;&nbsp;</span></label>
                     <div class="col-sm-8">
                         <input type="text" ng-model="model.Application.ShippingDate" class="form-control datetimepicker" placeholder="计划发货日期" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">预约检查日期 <span style="color: red;">*</span></label>
+                    <label class="col-sm-2 control-label">预约检查日期<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-8">
                         <input type="text" ng-model="model.Application.InspectionDate" class="form-control datetimepicker" placeholder="预约检查日期 " />
@@ -1564,7 +1561,7 @@
                 </div>
                 <div class="form-group">
 
-                    <label class="col-sm-2 control-label">检验地点 <span style="color: red;">*</span></label>
+                    <label class="col-sm-2 control-label">检验地点<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-8">
                         <input type="text" ng-model="model.Application.InspectionAddr" class="form-control" placeholder="检验地点" />
@@ -1572,7 +1569,7 @@
                 </div>
                 <div class="form-group">
 
-                    <label class="col-sm-2 control-label">联系人 <span style="color: red;">*</span></label>
+                    <label class="col-sm-2 control-label">联系人<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-8">
                         <input type="text" ng-model="model.Application.Inspector" class="form-control" placeholder="联系人" maxlength="100" />
@@ -1580,7 +1577,7 @@
                 </div>
                 <div class="form-group">
 
-                    <label class="col-sm-2 control-label">联系人电话 <span style="color: red;">*</span></label>
+                    <label class="col-sm-2 control-label">联系人电话<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-8">
                         <input type="text" ng-model="model.Application.InspectorTel" class="form-control" placeholder="联系人电话" />
@@ -1588,7 +1585,7 @@
                 </div>
                 <div class="form-group">
 
-                    <label class="col-sm-2 control-label">发货港口 <span style="color: red;">*</span></label>
+                    <label class="col-sm-2 control-label">发货港口<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-8">
                         <select ajax-select ajax-url="ports" ng-model="model.Application.LoadingPort" ng-options="i.Code as i.CnName group by i.Country for i in model.LoadingPorts" class="form-control selectLoadingPort" style="width: 100%">
@@ -1598,7 +1595,7 @@
                 </div>
                 <div class="form-group">
 
-                    <label class="col-sm-2 control-label">目的港口 <span style="color: red;">*</span></label>
+                    <label class="col-sm-2 control-label">目的港口<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-8">
                         <select ajax-select ajax-url="ports" ng-model="model.Application.DestPort" ng-options="i.Code as i.CnName group by i.Country for i in model.DestPorts" class="form-control selectDestPorts" style="width: 100%">
@@ -1638,7 +1635,7 @@
                         </div>
                         <div class="form-group" ng-class="{ 'has-error' : (appform.email.$invalid && appform.email.$dirty) || user.email=='' }">
 
-                            <label class="col-sm-2 control-label">邮箱 <span style="color: red;">*</span>: </label>
+                            <label class="col-sm-2 control-label">邮箱<span class="input-require-color">&nbsp;&lowast;</span>: </label>
 
                             <div class="col-sm-8">
                                 <input name="email" type="email" class="form-control" required ng-model="user.email" />
@@ -1647,7 +1644,7 @@
                         </div>
                         <div class="form-group" ng-class="{ 'has-error' : (appform.password.$error.required && !appform.password.$pristine) || user.password=='' }">
 
-                            <label class="col-sm-2 control-label">密码 <span style="color: red;">*</span>: </label>
+                            <label class="col-sm-2 control-label">密码<span class="input-require-color">&nbsp;&lowast;</span>: </label>
 
                             <div class="col-sm-8">
                                 <input name="password" type="password" class="form-control" required ng-model="user.password" />
@@ -1898,28 +1895,28 @@
                                 <span ng-bind="alert.msg"></span>
                             </div>*@
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">全称 <span style="color: red;">*</span></label>
+                            <label class="col-sm-2 control-label">全称<span class="input-require-color">&nbsp;&lowast;</span></label>
                             <div class="col-sm-8">
                                 <input type="text" ng-model="dialogModelMerchant.UserName" class="form-control"
                                        ucc-max-length="100" ucc-min-length="1" submit-btn-id="merchantSubmit" required />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">地址 <span style="color: red;">*</span></label>
+                            <label class="col-sm-2 control-label">地址<span class="input-require-color">&nbsp;&lowast;</span></label>
                             <div class="col-sm-8">
                                 <input type="text" ng-model="dialogModelMerchant.UserAddress" class="form-control"
                                        ucc-max-length="400" ucc-min-length="1" submit-btn-id="merchantSubmit" required />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">联系人 <span style="color: red;">*</span></label>
+                            <label class="col-sm-2 control-label">联系人<span class="input-require-color">&nbsp;&lowast;</span></label>
                             <div class="col-sm-8">
                                 <input type="text" ng-model="dialogModelMerchant.UserContact" class="form-control"
                                        ucc-max-legth="100" ucc-min-length="1" submit-btn-id="merchantSubmit" required />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">联系电话 <span style="color: red;">*</span></label>
+                            <label class="col-sm-2 control-label">联系电话<span class="input-require-color">&nbsp;&lowast;</span></label>
                             <div class="col-sm-8">
                                 <input type="text" ng-model="dialogModelMerchant.UserPhone" class="form-control"
                                        ucc-max-length="100" ucc-min-length="1" submit-btn-id="merchantSubmit" required />
