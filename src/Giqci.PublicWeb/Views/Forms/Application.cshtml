@@ -103,7 +103,7 @@
                 });
 
                 $scope.listFilter = function (item) {
-                    return item.HandlerType === 1 || item.HandlerType === 0;
+                    return item.HandlerType === 1 || item.HandlerType === 0 || item.HandlerType===2;
                 };
 
                 $scope.addContainerInfo = function () {
@@ -310,7 +310,6 @@
                     }
                 };
 
-
                 //添加真知码操作（需在验证通过后）
                 $scope.addZcodeItem = function (_object,_index) {
                     document.getElementsByName("zCodeStart"+_index)[0].setAttribute("placeholder", "首码");
@@ -330,6 +329,7 @@
                 };
                 $scope.editZcodeItem = function (_object) {
                     _object.HtmlEdit = 1;
+                    _object.HandlerType = 2;
                 };
 
                 //已成功添加真知码，再次编辑时的验证

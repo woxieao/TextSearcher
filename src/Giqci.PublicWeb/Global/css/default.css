@@ -730,3 +730,5 @@ ul,li,ol{
 .batchNo-input{background-color:transparent !important;}
 /*导航下拉菜单*/
 .user-nav-dropdown {z-index:29891020;}
+/*表单必填项星号*/
+.input-require-color{color:red;}
