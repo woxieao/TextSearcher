@@ -625,10 +625,11 @@ app.controller("ZcodeApplyListController", [
                     layer.confirm("确定申请" + $scope.Count + "个真知码?", function (l) {
                         $giqci.post('/api/forms/addzcodeapply', { ZcodeType: $scope.ZcodeType, Count: $scope.Count }).success(function (data) {
                             if (data.flag) {
-                                layer.alert("申请成功", function (index) {
+                                layer.msg("申请成功", {icon:6});
+                                setTimeout(function () {
                                     window.location.href = "/forms/zcodeapplylist";
-                                    layer.close(index);
-                                });
+                                    layer.close(1);
+                                },1000);
                             }
                         }, $scope);
                         layer.close(l);
