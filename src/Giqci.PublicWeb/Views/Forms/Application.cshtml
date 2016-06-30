@@ -728,6 +728,7 @@
                     $("#form-product").modal("show");
                     $("#form-add-custom-product").modal("hide");
                     $("#form-add-goods-product").modal("hide");
+                    layer.closeAll();
                 };
                 var _modalEditMerchantProduct = document.getElementById("form-add-custom-product");
                 angular.element(_modalEditMerchantProduct).on('hide.bs.modal', function () {
