@@ -62,7 +62,6 @@
                             $scope.model.Application.ApplicationProducts[i].ApplicationZCodes[j].HtmlEdit = 0;
                         }
                     }
-                    console.log($scope.model.Application.ApplicationProducts);
                 };
                 if ($scope.model.Application.Key == null) {
                     $scope.model.Application.TradeType = "4";
@@ -207,12 +206,12 @@
                 };
                 $scope.addItemByBatchNo = function (_object, _index) {
                     if (_object.addItemByBatchNo.BatchNo == null || _object.addItemByBatchNo.BatchNo == "") {
-                        $("#addItemByBatchNoString_" + _index).attr("placeholder", "请输入批次号");
-                        $("#addItemByBatchNoDate_" + _index).attr("placeholder", "请输入保质期");
+                        document.getElementsByName("addItemByBatchNoString_" + _index)[0].setAttribute("placeholder", "请输入批次号");
+                        document.getElementsByName("addItemByBatchNoDate_" + _index)[0].setAttribute("placeholder", "请输入保质期");
                         return;
                     }
-                    $("#addItemByBatchNoString_" + _index).attr("placeholder", "批次号");
-                    $("#addItemByBatchNoDate_" + _index).attr("placeholder", "保质期");
+                    document.getElementsByName("addItemByBatchNoString_" + _index)[0].setAttribute("placeholder", "批次号");
+                    document.getElementsByName("addItemByBatchNoDate_" + _index)[0].setAttribute("placeholder", "保质期");
                     _object.ProductItemList.push({
                         BatchNo: _object.addItemByBatchNo.BatchNo == null ? " " : _object.addItemByBatchNo.BatchNo,
                         HandlerType: 1
@@ -518,52 +517,60 @@
                     }, $scope);
                 };
 
-                $scope.submit = function () {
-                    if ($scope.model.Application.ShippingMethod == 1) {
-                        $scope.model.Application.ContainerInfos = [];
-                    }
-                    for (var i = 0; i < $scope.model.Application.ApplicationProducts.length; i++) {
-                        $scope.model.Application.ApplicationProducts[i].Index = i;
-                        for (var j = 0; j < $scope.model.Application.ApplicationProducts[i].ProductItemList.length; j++) {
-                            $scope.model.Application.ApplicationProducts[i].ProductItemList[j].ManufacturerDate = $filter('date')($scope.model.Application.ApplicationProducts[i].ProductItemList[j].ManufacturerDate, 'yyyy/MM/dd');
-                            $scope.model.Application.ApplicationProducts[i].ProductItemList[j].ExpiryDate = $filter('date')($scope.model.Application.ApplicationProducts[i].ProductItemList[j].ExpiryDate, 'yyyy/MM/dd');
+                $scope.submit = function (isValid) {
+                    if (isValid) {
+                        if ($scope.model.Application.ShippingMethod == 1) {
+                            $scope.model.Application.ContainerInfos = [];
                         }
-                        if (!$scope.show_c_102) {
-                            $scope.model.Application.ApplicationProducts[i].C102 = false;
-                            $scope.model.Application.ApplicationProducts[i].C102Comment = "";
-                        }
-                    }
-                    $scope.submitApp = true;
-                    $giqci.post('/api/forms/app', $scope.model.Application).then(function (response) {
-                        if (response.data.isLogin) {
-                            if (response.data.errors) {
-                                $scope.errors = response.data.errors;
-                                $location.hash("h1");
-                                $anchorScroll();
-                                $scope.dataInit();
-                            } else {
-                                $scope.resultMessage = response.data.isNew ? "证书申请成功！申请编号为" + response.data.appkey : "数据更新成功";
+                        for (var i = 0; i < $scope.model.Application.ApplicationProducts.length; i++) {
+                            $scope.model.Application.ApplicationProducts[i].Index = i;
+                            for (var j = 0; j < $scope.model.Application.ApplicationProducts[i].ProductItemList.length; j++) {
+                                $scope.model.Application.ApplicationProducts[i].ProductItemList[j].ManufacturerDate = $filter('date')($scope.model.Application.ApplicationProducts[i].ProductItemList[j].ManufacturerDate, 'yyyy/MM/dd');
+                                $scope.model.Application.ApplicationProducts[i].ProductItemList[j].ExpiryDate = $filter('date')($scope.model.Application.ApplicationProducts[i].ProductItemList[j].ExpiryDate, 'yyyy/MM/dd');
                             }
-                        } else {
-                            $scope.login = { result: true, error: "" };
-                            $scope.user = { email: "", password: "" }
-                            $('#form-login').modal();
+                            if (!$scope.show_c_102) {
+                                $scope.model.Application.ApplicationProducts[i].C102 = false;
+                                $scope.model.Application.ApplicationProducts[i].C102Comment = "";
+                            }
                         }
-                        $scope.submitApp = false;
-                    }, $scope
-                        //,function (response) {
-                        //    $scope.errors = ["服务器异常,请重试"];
-                        //    $location.hash("h1");
-                        //    $anchorScroll();
-                        //    $scope.submitApp = false;
-                        //    $log.warn(response);
-                        //}
-                    ).error(function () {
-                        layer.alert("服务器异常！");
-                        $scope.$apply(function () {
+                        $scope.submitApp = true;
+                        $giqci.post('/api/forms/app', $scope.model.Application).then(function (response) {
+                            if (response.data.isLogin) {
+                                if (response.data.errors) {
+                                    //$scope.errors = response.data.errors;
+                                    layer.alert(response.data.errors[0], function (index) {
+                                        layer.close(index);
+                                    });
+                                    //$location.hash("h1");
+                                    //$anchorScroll();
+                                    $scope.dataInit();
+                                } else {
+                                    $scope.resultMessage = response.data.isNew ? "证书申请成功！申请编号为" + response.data.appkey : "数据更新成功";
+                                }
+                            } else {
+                                $scope.login = { result: true, error: "" };
+                                $scope.user = { email: "", password: "" }
+                                $('#form-login').modal();
+                            }
                             $scope.submitApp = false;
+                        }, $scope
+                            //,function (response) {
+                            //    $scope.errors = ["服务器异常,请重试"];
+                            //    $location.hash("h1");
+                            //    $anchorScroll();
+                            //    $scope.submitApp = false;
+                            //    $log.warn(response);
+                            //}
+                        ).error(function () {
+                            layer.alert("服务器异常！");
+                            $scope.$apply(function () {
+                                $scope.submitApp = false;
+                            });
                         });
-                    });
+                    } else {
+                        $scope.submitApp = false;
+                    }
+                    
                 };
 
                 $scope.updateClock = function () {
@@ -745,19 +752,18 @@
                     $scope.dialogProductList = null;
                 };
                 $scope.submitAddCustomProduct = function (isValid) {
-                    console.log(isValid);
                     if (isValid) {
                         var _btnsubmitAddCustomProduct = document.getElementById("submitAddCustomProduct");
                         angular.element(_btnsubmitAddCustomProduct).attr("disabled", true);
                         $giqci.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
                             if (response.flag) {
                                 $scope.getCustomProductList();
-                                layer.alert("提交成功", function (l) { $scope.showProductList(); layer.close(l); });
-                                //$("#form-add-custom-product").modal("hide");
+                                layer.msg("提交成功", { icon: 6 }, function () {
+                                    $scope.showProductList();
+                                });
                             }
                             angular.element(_btnsubmitAddCustomProduct).attr("disabled", false);
                             var _tipType = response.flag ? "success" : "danger";
-                            //alertService.add(_tipType, response.msg || "未知错误", 3000);
                             layer.alert(response.msg || "未知错误");
                         }, $scope);
                     }
@@ -766,14 +772,11 @@
                     $giqci.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
                         if (response.flag) {
                             $scope.getGoodsList();
-                            layer.alert("提交成功",function(l) {
+                            layer.msg("提交成功",{icon:6},function(l) {
                                 $scope.showProductList();
-                                layer.close(l);
                             });
-                            //$("#form-add-custom-product").modal("hide");
                         }
                         var _tipType = response.flag ? "success" : "danger";
-                        //alertService.add(_tipType, response.msg || "未知错误", 3000);
                         layer.alert(response.msg || "未知错误");
                     }, $scope);
                 };
@@ -783,14 +786,15 @@
                         var reg2 = /^ICIP\d{14}$/i;
                         if (!(reg.test($scope.DialogProductCiqCode) || reg2.test($scope.DialogProductCiqCode))) {
                             $scope.Product = null;
-                            alertService.add('danger', "正确的备案号格式为[ICIP+14个数字]或[10个数字]", 3000);
+                            layer.alert("正确的备案号格式为[ICIP+14个数字]或[10个数字]", function (index) {
+                                layer.close(index);
+                            });
                             return;
                         }
                         $giqci.post('/api/goods/searchproduct',
                         { ciqCode: $scope.DialogProductCiqCode }).success(function (data) {
                             if (data.result == null) {
                                 $scope.dialogProductList = null;
-                                //alertService.add('danger', "该备案号不存在", 3000);
                                 layer.alert("该备案号不存在");
                             } else {
                                 $scope.dialogProductList = data.result;
@@ -798,7 +802,6 @@
                         }, $scope);
                     } else {
                         $scope.dialogProductList = null;
-                        //alertService.add('danger', "正确的备案号格式为[ICIP+14个数字]或[10个数字]", 3000);
                         layer.alert("正确的备案号格式为[ICIP+14个数字]或[10个数字]");
                     }
                 };
@@ -809,10 +812,9 @@
                             { ciqCode: $scope.dialogProductList.CiqCode }).success(function (data) {
                                 if (data.result) {
                                     $scope.getGoodsList();
-                                    layer.alert("提交成功", function (l) { $scope.showProductList(); layer.close(l) });
+                                    layer.msg("提交成功",{icon:6}, function () { $scope.showProductList();});
                                 }
                                 var _tipType = data.result ? "success" : "danger";
-                                //alertService.add(_tipType, data.msg || "未知错误", 3000);
                                 layer.alert(response.msg || "未知错误");
                             }, $scope);
                         }
@@ -869,15 +871,15 @@
                     var reg2 = /^ICIP\d{14}$/i;
                     if (!(reg.test($scope.CiqCode) || reg2.test($scope.CiqCode))) {
                         $scope.Product = null;
-                        //alertService.add('danger', "正确的备案号格式为[ICIP+14个数字]或[10个数字]", 3000);
-                        layer.alert('正确的备案号格式为[ICIP+14个数字]或[10个数字]');
+                        layer.alert('正确的备案号格式为[ICIP+14个数字]或[10个数字]', function (index) {
+                            layer.close(index);
+                        });
                         return;
                     } else {
                         $giqci.post('/api/goods/searchproduct', { ciqCode: $scope.CiqCode })
                         .success(function (data) {
                             if (data.result == null) {
                                 $scope.Product = null;
-                                //alertService.add('danger', "该备案号不存在", 3000);
                                 layer.alert("该备案号不存在");
                             } else {
                                 $scope.Product = data.result;
@@ -900,7 +902,6 @@
                 $scope.submitChangeProduct = function (_customProductId, _ciqCode) {
                     angular.element(_form_submitAddCustomProduct).attr("disabled", true);
                     if (false === $scope.isSearch || _customProductId == null || _ciqCode == null) {
-                        //alertService.add('danger', "请搜索并获取备案商品信息", 3000);
                         layer.alert("请搜索并获取备案商品信息");
                         return;
                     };
@@ -909,17 +910,13 @@
                     ).success(function (response) {
                         $scope.isSearch = false;
                         if (response.flag) {
-                            //alertService.add('success', "数据已经转换成功", 3000);
                             layer.msg("数据已经转换成功", { icon: 6 });
-                            //$scope.list($scope.postData);
                             $scope.getGoodsList();
-                            //$scope.list2($scope.postData);
                             $scope.getCustomProductList();
                             angular.element(_form_submitAddCustomProduct).attr("disabled", false);
                             angular.element(_modal).modal("hide");
                         } else {
                             angular.element(_form_submitAddCustomProduct).attr("disabled", false);
-                            //alertService.add('danger', response.msg, 3000);
                             layer.alert(response.msg);
                         }
                     }, $scope);
@@ -1050,11 +1047,11 @@
 
         <div ng-show="!resultMessage">
             <h1 id="h1">证书申请表格</h1>
-            <div class="has-error" ng-show="errors.length > 0">
+            @*<div class="has-error" ng-show="errors.length > 0">
                 <ul class="help-block">
                     <li ng-repeat="err in errors">{{err}}</li>
                 </ul>
-            </div>
+            </div>*@
             <div role="alert" id="alertBox" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
                 <button aria-label="Close" data-dismiss="alert" ng-click="alert.close()" class="close" type="button"><span aria-hidden="true">×</span></button>
                 <span ng-bind="alert.msg"></span>
@@ -1062,7 +1059,7 @@
             <div>
                 <span class="input-require-color">&nbsp;&lowast;</span> 带星号的为必填项
             </div>
-            <form name="appform" onkeydown="if(event.keyCode==13)return false;" class="form-horizontal" ng-submit="submit()"
+            <form name="appForm" onkeydown="if(event.keyCode==13)return false;" class="form-horizontal" ng-submit="submit(appForm.$valid)"
                   method="POST" novalidate enctype="multipart/form-data" id="uploadForm" onsubmit="return CheckIsUpload();">
                 <div class="form-group">
 
@@ -1298,7 +1295,7 @@
                                         <col width="180" />
                                         <col />
                                         <col />
-                                        <col width="180" />
+                                        <col width="163" />
                                     </colgroup>
                                     <tr>
                                         <th class="application-product-county">
@@ -1307,7 +1304,15 @@
                                             </p>
                                         </th>
                                         <td colspan="2">
-                                            <input type="number" ng-model="item.Quantity" class="form-control" placeholder="数量" min="0" />
+                                            <input type="tel" 
+                                                   min="1"
+                                                   ng-model="item.Quantity" 
+                                                   class="form-control" 
+                                                   placeholder="数量" 
+                                                   required
+                                                   ucc-pattern="^\+?[1-9][0-9]*$"
+                                                   ucc-pattern-message="数量填写有误！"
+                                                   submit-btn-id="applicationSubmit"/>
                                         </td>
                                         <th>
 
@@ -1323,7 +1328,7 @@
                                         <td colspan="2">
                                             <p ng-model="batch.BatchNo" class="form-control-static">{{batch.BatchNo}}</p>
                                         </td>
-                                        <td><button class="btn btn-default btn-sm" type="button" ng-click="removeItemByBatchNo(batch)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button></td>
+                                        <td colspan="2"><button class="btn btn-default btn-sm" type="button" ng-click="removeItemByBatchNo(batch)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button></td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -1334,8 +1339,22 @@
                                             </div>
                                         </td>
                                         <td colspan="2">
-                                            <input ng-if="(batch.batchNoOrDate==null)" type="text" ng-model="item.addItemByBatchNo.BatchNo" id="addItemByBatchNoString_{{$index}}" class="form-control" placeholder="批次号" maxlength="100" ng-blur="addItemByBatchNo(item,$index)" />
-                                            <input ng-if="(batch.batchNoOrDate==1)" ng-mouseover="addItemByBatchNoClickHandler($event,item,$index)" type="text" id="addItemByBatchNoDate_{{$index}}" readonly ng-model="item.addItemByBatchNo.BatchNo" class="form-control datetimepicker batchNo-input" placeholder="保质期" maxlength="100" />
+                                            <input ng-show="(batch.batchNoOrDate==null)" 
+                                                   type="text" 
+                                                   ng-model="item.addItemByBatchNo.BatchNo" 
+                                                   name="addItemByBatchNoString_{{$index}}"
+                                                   class="form-control" 
+                                                   placeholder="批次号" 
+                                                   maxlength="100"
+                                                   ng-blur="addItemByBatchNo(item,$index)" />
+                                            <input ng-show="(batch.batchNoOrDate==1)" 
+                                                   ng-mouseover="addItemByBatchNoClickHandler($event,item,$index)" 
+                                                   type="text" 
+                                                   name="addItemByBatchNoDate_{{$index}}" 
+                                                   readonly 
+                                                   ng-model="item.addItemByBatchNo.BatchNo" 
+                                                   class="form-control datetimepicker batchNo-input" 
+                                                   placeholder="保质期" />
                                         </td>
                                         <td colspan="2">
                                             @*<button class="btn btn-default btn-sm" type="button" ng-click="addItemByBatchNo(item,$index)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;添加</button>*@
@@ -1497,10 +1516,16 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        提单号<span>&nbsp;&nbsp;</span>
+                        提单号<span class="input-require-color">&nbsp;&lowast;</span>
                     </label>
                     <div class="col-sm-8">
-                        <input type="text" ng-model="model.Application.BillNo" class="form-control" placeholder="提单号" />
+                        <input type="text" 
+                               ng-model="model.Application.BillNo" 
+                               class="form-control" 
+                               placeholder="提单号"
+                               required
+                               ucc-require="提单号不能为空"
+                               submit-btn-id="applicationSubmit" />
                     </div>
                 </div>
                 <div class="form-group">
@@ -1513,26 +1538,54 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        <p ng-if="model.Application.ShippingMethod == 1">航班号<span>&nbsp;&nbsp;</span></p>
-                        <p ng-if="model.Application.ShippingMethod == 2">船舶号<span>&nbsp;&nbsp;</span></p>
-                        <p ng-if="model.Application.ShippingMethod == 3">车牌号<span>&nbsp;&nbsp;</span></p>
+                        <p ng-if="model.Application.ShippingMethod == 1">航班号<span class="input-require-color">&nbsp;&lowast;</span></p>
+                        <p ng-if="model.Application.ShippingMethod == 2">船舶号<span class="input-require-color">&nbsp;&lowast;</span></p>
+                        <p ng-if="model.Application.ShippingMethod == 3">车牌号<span class="input-require-color">&nbsp;&lowast;</span></p>
                     </label>
                     <div class="col-sm-8">
-                        <input type="text" ng-if="model.Application.ShippingMethod == 1" ng-model="model.Application.Vesselcn" class="form-control" placeholder="航班号" />
-                        <input type="text" ng-if="model.Application.ShippingMethod == 2" ng-model="model.Application.Vesselcn" class="form-control" placeholder="船舶号" />
-                        <input type="text" ng-if="model.Application.ShippingMethod == 3" ng-model="model.Application.Vesselcn" class="form-control" placeholder="车牌号" />
+                        <input type="text" 
+                               ng-if="model.Application.ShippingMethod == 1" 
+                               ng-model="model.Application.Vesselcn" 
+                               class="form-control" 
+                               placeholder="航班号"
+                               required
+                               ucc-require="航班号不能为空"
+                               submit-btn-id="applicationSubmit" />
+                        <input type="text" 
+                               ng-if="model.Application.ShippingMethod == 2" 
+                               ng-model="model.Application.Vesselcn" 
+                               class="form-control" 
+                               placeholder="船舶号"
+                               required
+                               ucc-require="船舶号不能为空"
+                               submit-btn-id="applicationSubmit" />
+                        <input type="text" 
+                               ng-if="model.Application.ShippingMethod == 3" 
+                               ng-model="model.Application.Vesselcn" 
+                               class="form-control" 
+                               placeholder="车牌号"
+                               required
+                               ucc-require="车牌号不能为空"
+                               submit-btn-id="applicationSubmit" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">出发日期<span>&nbsp;&nbsp;</span></label>
+                    <label class="col-sm-2 control-label">出发日期<span class="input-require-color">&nbsp;&lowast;</span></label>
                     <div class="col-sm-8">
-                        <input type="text" ng-model="model.Application.Voyage" class="form-control datetimepicker" placeholder="出发日期" />
+                        <input type="text" ng-model="model.Application.Voyage" readonly class="form-control datetimepicker batchNo-input" placeholder="出发日期" />
                     </div>
                 </div>
                 <div class="form-group" ng-show="model.Application.ShippingMethod != 2">
                     <label class="col-sm-2 control-label">运输总数量<span class="input-require-color">&nbsp;&lowast;</span></label>
                     <div class="col-sm-6">
-                        <input type="number" ng-model="model.Application.TotalUnits" class="form-control" min="0" placeholder="运输总数量" />
+                        <input type="tel" 
+                               ng-model="model.Application.TotalUnits" 
+                               class="form-control" 
+                               min="0" 
+                               placeholder="运输总数量"
+                               ucc-require="运输总数量不能为空"
+                               submit-btn-id="applicationSubmit"
+                               required />
                     </div>
                     <div class="col-sm-4">
                         <p class="form-control-static">Pallet(s)</p>
@@ -1542,7 +1595,14 @@
                     <label class="col-sm-2 control-label">运输总重量<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-6">
-                        <input type="number" ng-model="model.Application.TotalWeight" class="form-control" min="0" placeholder="运输总重量" />
+                        <input 
+                               type="tel" 
+                               ng-model="model.Application.TotalWeight" 
+                               class="form-control" 
+                               min="0" 
+                               placeholder="运输总重量"
+                               ucc-require="运输总重量不能为空"
+                               submit-btn-id="applicationSubmit" />
                     </div>
                     <div class="col-sm-4">
                         <p class="form-control-static">KG</p>
@@ -1558,7 +1618,7 @@
                     <label class="col-sm-2 control-label">预约检查日期<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-8">
-                        <input type="text" ng-model="model.Application.InspectionDate" class="form-control datetimepicker" placeholder="预约检查日期 " />
+                        <input type="text" ng-model="model.Application.InspectionDate" readonly class="form-control datetimepicker batchNo-input" placeholder="预约检查日期 " />
                     </div>
                 </div>
                 <div class="form-group">
@@ -1574,7 +1634,14 @@
                     <label class="col-sm-2 control-label">联系人<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-8">
-                        <input type="text" ng-model="model.Application.Inspector" class="form-control" placeholder="联系人" maxlength="100" />
+                        <input type="text" 
+                               ng-model="model.Application.Inspector" 
+                               class="form-control" 
+                               placeholder="联系人" 
+                               maxlength="100"
+                               ucc-max-length="100"
+                               ucc-require="联系人不能为空"
+                               submit-btn-id="applicationSubmit" />
                     </div>
                 </div>
                 <div class="form-group">
@@ -1582,7 +1649,13 @@
                     <label class="col-sm-2 control-label">联系人电话<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-8">
-                        <input type="text" ng-model="model.Application.InspectorTel" class="form-control" placeholder="联系人电话" />
+                        <input type="text" 
+                               ng-model="model.Application.InspectorTel" 
+                               class="form-control" 
+                               placeholder="联系人电话"
+                               required
+                               ucc-require="联系人电话不能为空"
+                               submit-btn-id="applicationSubmit" />
                     </div>
                 </div>
                 <div class="form-group">
@@ -1618,7 +1691,6 @@
                 </div>
             </form>
         </div>
-
     </div>
     <!--login modal-->
     <div class="modal" role="dialog" aria-labelledby="gridSystemModalLabel" id="form-login">
@@ -1776,10 +1848,10 @@
                     <h5 class="modal-title">添加备案商品</h5>
                 </div>
                 <div class="modal-body">
-                    <div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
+                    @*<div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
                         <button aria-label="Close" data-dismiss="alert" ng-click="alert.close()" class="close" type="button"><span aria-hidden="true">×</span></button>
                         <span ng-bind="alert.msg"></span>
-                    </div>
+                    </div>*@
                     <form name="appform" class="form-horizontal" novalidate>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">商品备案号</label>

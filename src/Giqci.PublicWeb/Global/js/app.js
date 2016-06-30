@@ -128,7 +128,9 @@ app.controller("ChanagePasswordController", [
                     if (response.data.result) {
                         layer.msg('密码修改成功', { icon: 6 });
                     } else {
-                        layer.msg(response.data.message || "密码不匹配", {icon:2});
+                        layer.alert(response.data.message || "密码不匹配", function (index) {
+                            layer.close(index);
+                        });
                     }
                     $scope.enableDisableButton = false;
                     $scope.submitButton = ' 更改密码 ';
@@ -317,7 +319,9 @@ app.controller('GoodsListController', [
                         layer.msg('提交成功', { icon: 6 },function() { window.location.reload(); });
                         layer.close();
                     } else {
-                        layer.msg(response.msg || "未知错误", { icon: 2 });
+                        layer.alert(response.msg || "未知错误", function (index) {
+                            layer.close(index);
+                        });
                         $scope.alreadySubmit = false;
                     }
                 }, $scope);
