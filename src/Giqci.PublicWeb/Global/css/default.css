@@ -734,12 +734,9 @@ ul,li,ol{
 .input-require-color{color:red;}
 /*报验申请table样式调整*/
 .application-table-margin{margin-bottom:0 !important;}
-.application-product-area{background-color:transparent;}
+.application-product-area{background-color:transparent;margin-bottom:40px !important;}
 .application-table-head{background-color:aliceblue !important;}
-.application-product-area td{
-    padding:4px !important;
-    vertical-align: middle !important;
-}
-.application-product-area th{padding:4px !important;}
+.application-product-area td{padding:4px !important;vertical-align: middle !important;}
+.application-product-area th{padding:4px !important;vertical-align:middle !important;}
+.application-product-area input[type=radio],label{margin:0 !important;}
 .application-table-striped{background-color: #f9f9f9 !important;}
-.application-product-county {}

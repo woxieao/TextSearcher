@@ -1336,7 +1336,7 @@
                                             <input ng-if="(batch.batchNoOrDate==null)" type="text" ng-model="item.addItemByBatchNo.BatchNo" id="addItemByBatchNoString_{{$index}}" class="form-control" placeholder="批次号" maxlength="100" ng-blur="addItemByBatchNo(item,$index)" />
                                             <input ng-if="(batch.batchNoOrDate==1)" ng-mouseover="addItemByBatchNoClickHandler($event,item,$index)" type="text" id="addItemByBatchNoDate_{{$index}}" readonly ng-model="item.addItemByBatchNo.BatchNo" class="form-control datetimepicker batchNo-input" placeholder="保质期" maxlength="100" />
                                         </td>
-                                        <td>
+                                        <td colspan="2">
                                             @*<button class="btn btn-default btn-sm" type="button" ng-click="addItemByBatchNo(item,$index)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;添加</button>*@
                                         </td>
                                     </tr>
@@ -1456,7 +1456,7 @@
                 </div>
                 <div class="form-group" ng-show="model.Application.ShippingMethod == 2">
                     <label class="col-sm-2 control-label">船舶资料<span>&nbsp;&nbsp;</span></label>
-                    <div class="col-sm-10">
+                    <div class="col-sm-8">
                         <div ng-repeat="item in model.Application.ContainerInfos | filter:listFilter">
                             <table class="table table-striped goodsItems">
                                 <colgroup>
@@ -1498,7 +1498,7 @@
                     <label class="col-sm-2 control-label">
                         提单号<span>&nbsp;&nbsp;</span>
                     </label>
-                    <div class="col-sm-6">
+                    <div class="col-sm-8">
                         <input type="text" ng-model="model.Application.BillNo" class="form-control" placeholder="提单号" />
                     </div>
                 </div>
@@ -1506,7 +1506,7 @@
                     <label class="col-sm-2 control-label">
                         副提单号<span>&nbsp;&nbsp;</span>
                     </label>
-                    <div class="col-sm-6">
+                    <div class="col-sm-8">
                         <input type="text" ng-model="model.Application.OtherBillNo" class="form-control" placeholder="副提单号" />
                     </div>
                 </div>
@@ -1516,7 +1516,7 @@
                         <p ng-if="model.Application.ShippingMethod == 2">船舶号<span>&nbsp;&nbsp;</span></p>
                         <p ng-if="model.Application.ShippingMethod == 3">车牌号<span>&nbsp;&nbsp;</span></p>
                     </label>
-                    <div class="col-sm-6">
+                    <div class="col-sm-8">
                         <input type="text" ng-if="model.Application.ShippingMethod == 1" ng-model="model.Application.Vesselcn" class="form-control" placeholder="航班号" />
                         <input type="text" ng-if="model.Application.ShippingMethod == 2" ng-model="model.Application.Vesselcn" class="form-control" placeholder="船舶号" />
                         <input type="text" ng-if="model.Application.ShippingMethod == 3" ng-model="model.Application.Vesselcn" class="form-control" placeholder="车牌号" />
@@ -1524,7 +1524,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">出发日期<span>&nbsp;&nbsp;</span></label>
-                    <div class="col-sm-6">
+                    <div class="col-sm-8">
                         <input type="text" ng-model="model.Application.Voyage" class="form-control datetimepicker" placeholder="出发日期" />
                     </div>
                 </div>
@@ -1550,7 +1550,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">计划发货日期<span>&nbsp;&nbsp;</span></label>
                     <div class="col-sm-8">
-                        <input type="text" ng-model="model.Application.ShippingDate" class="form-control datetimepicker" placeholder="计划发货日期" />
+                        <input type="text" ng-model="model.Application.ShippingDate" readonly class="form-control datetimepicker batchNo-input" placeholder="计划发货日期" />
                     </div>
                 </div>
                 <div class="form-group">
