@@ -158,6 +158,7 @@
                                 $scope.$apply();
                             });
                         }, $scope);
+                    
                 }
                 $scope.getGoodsList = function () {
                     $giqci.post('/api/goods/getproductlist').success(function (response) {
@@ -1610,7 +1611,7 @@
                             <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
                         </button>
 
-                        <button ng-show="isNewApp" ng-disabled="isSaveingCache" class="btn btn-info" ng-click="SaveAppCache()">
+                        <button ng-show="isNewApp" type="button" ng-disabled="isSaveingCache" class="btn btn-info" ng-click="SaveAppCache()">
                             <span class="glyphicon glyphicon-save" aria-hidden="true"></span> 暂存
                         </button>
                     </div>
