@@ -100,7 +100,7 @@
                 <tr ng-repeat="zcodeApply in ZcodeApplyList">
                     <td>{{zcodeApply.ZcodeType=='EntityCode'?"实体码":"电子码"}}</td>
                     <td class="td-ellipsis">{{zcodeApply.Count}}</td>
-                    <td>{{zcodeApply.ApplyTime| date:'yyyy/MM/dd hh:mm'}}</td>
+                    <td>{{zcodeApply.ApplyTime| date:'yyyy/MM/dd HH:mm'}}</td>
                     <td>
                         <p ng-if="zcodeApply.HandleStatus=='Submited'">已提交</p>
                         <p ng-if="zcodeApply.HandleStatus=='Issued'">已下发</p>
