@@ -760,6 +760,7 @@
                                 $scope.getCustomProductList();
                                 layer.msg("提交成功", { icon: 6 }, function () {
                                     $scope.showProductList();
+                                    angular.element(_btnsubmitAddCustomProduct).attr("disabled", false);
                                 });
                             } else {
                                 angular.element(_btnsubmitAddCustomProduct).attr("disabled", false);
@@ -780,29 +781,24 @@
                         layer.alert(response.msg || "未知错误");
                     }, $scope);
                 };
-                $scope.getDialogProductList = function () {
-                    if ($scope.DialogProductCiqCode != "" && $scope.DialogProductCiqCode != null) {
-                        var reg = /^\d{10}$/;
-                        var reg2 = /^ICIP\d{14}$/i;
-                        if (!(reg.test($scope.DialogProductCiqCode) || reg2.test($scope.DialogProductCiqCode))) {
-                            $scope.Product = null;
-                            layer.alert("正确的备案号格式为[ICIP+14个数字]或[10个数字]", function (index) {
-                                layer.close(index);
-                            });
-                            return;
-                        }
+
+                $scope.alreadySearchApp = false;
+                $scope.getDialogProductList = function (isValid) {
+                    if (isValid) {
+                        $scope.alreadySearchApp = true;
                         $giqci.post('/api/goods/searchproduct',
                         { ciqCode: $scope.DialogProductCiqCode }).success(function (data) {
                             if (data.result == null) {
                                 $scope.dialogProductList = null;
                                 layer.alert("该备案号不存在");
+                                $scope.alreadySearchApp = false;
                             } else {
                                 $scope.dialogProductList = data.result;
+                                $scope.alreadySearchApp = false;
                             }
                         }, $scope);
                     } else {
-                        $scope.dialogProductList = null;
-                        layer.alert("正确的备案号格式为[ICIP+14个数字]或[10个数字]");
+                        $scope.alreadySearchApp = false;
                     }
                 };
                 $scope.addDialogGoodsProduct = function () {
@@ -1853,14 +1849,25 @@
                         <button aria-label="Close" data-dismiss="alert" ng-click="alert.close()" class="close" type="button"><span aria-hidden="true">×</span></button>
                         <span ng-bind="alert.msg"></span>
                     </div>*@
-                    <form name="appform" class="form-horizontal" novalidate>
+                    <form name="addGoodForm" class="form-horizontal" novalidate>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">商品备案号</label>
                             <div class="col-sm-8">
                                 <div class="input-group">
-                                    <input type="text" placeholder="请输入完整的商品备案号" ng-model="DialogProductCiqCode" class="form-control" />
+                                    <input type="text" 
+                                           placeholder="请输入完整的商品备案号" 
+                                           ng-model="DialogProductCiqCode" 
+                                           class="form-control"
+                                           required
+                                           ucc-pattern="^((\d{10})|(ICIP\d{14}))$"
+                                           ucc-tip-direction="3" 
+                                           submit-btn-id="searchButtonApp"
+                                           ucc-pattern-message="正确的备案号格式为[ICIP+14个数字]或[10个数字]！" />
                                     <span class="input-group-btn">
-                                        <button class="btn btn-default" ng-click="getDialogProductList()">
+                                        <button class="btn btn-default" 
+                                                id="searchButtonApp" 
+                                                ng-click="getDialogProductList(addGoodForm.$valid)"
+                                                ng-disabled="alreadySearchApp">
                                             <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 搜索
                                         </button>
                                     </span>
@@ -1903,7 +1910,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" ng-click="showProductList()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> 返回</button>
+                    <button type="button" class="btn btn-default" id="searchButtonApp" ng-click="showProductList()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> 返回</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
