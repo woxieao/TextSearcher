@@ -304,6 +304,10 @@ app.controller('GoodsListController', [
             layer.closeAll();
         });
 
+        $("#form-change-product").on('hide.bs.modal', function () {
+            layer.closeAll();
+        });
+
         var _modalEditMerchantProduct = document.getElementById("form-add-custom-product");
         angular.element(_modalEditMerchantProduct).on('hide.bs.modal', function () {
             $scope.CustomDialogModel = null;
@@ -315,21 +319,20 @@ app.controller('GoodsListController', [
                 $giqci.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
                     if (response.flag) {
                         $("#form-add-custom-product").modal("hide");
-                        $scope.alreadySubmit = false;
                         layer.msg('提交成功', { icon: 6 },function() { window.location.reload(); });
                         layer.close();
                     } else {
                         layer.alert(response.msg || "未知错误", function (index) {
                             layer.close(index);
                         });
-                        $scope.alreadySubmit = false;
                     }
+                    $scope.alreadySubmit = false;
                 }, $scope);
             } else {
                 $scope.alreadySubmit = false;
             }
-            
         };
+
         $scope.loadCountries = function () {
             $giqci.get("/api/dict/countries",
             { 'code': "" }).success(function (data) {
@@ -354,29 +357,31 @@ app.controller('GoodsListController', [
         $scope.CiqCode = '';
         $scope.changeProductList = false;
         $scope.isSearch = false;
-        $scope.getproductlist = function () {
-            $scope.isSearch = true;
-            var reg = /^\d{10}$/;
-            var reg2 = /^ICIP\d{14}$/i;
-            if (!(reg.test($scope.CiqCode) || reg2.test($scope.CiqCode))) {
-                $scope.Product = null;
-                alertService.add('danger', "正确的备案号格式为[ICIP+14个数字]或[10个数字]", 3000);
-                return;
-            } else {
+        $scope.changeProductSubmitApp = false;
+        $scope.getproductlist = function (isValid) {
+            if (isValid) {
+                $scope.changeProductSubmitApp = true;
                 $giqci.post('/api/goods/searchproduct', { ciqCode: $scope.CiqCode })
                 .success(function (data) {
                     if (data.result == null) {
                         $scope.Product = null;
-                        alertService.add('danger', "该备案号不存在", 3000);
+                        layer.alert("该备案号不存在", function (index) {
+                            layer.close(index);
+                        });
                     } else {
                         $scope.Product = data.result;
                         $scope.changeProductList = true;
+                        $scope.isSearch = true;
                     }
+                    $scope.changeProductSubmitApp = false;
                 }, $scope);
+            } else {
+                $scope.changeProductSubmitApp = false;
             }
         };
 
         var _modal = document.getElementById("form-change-product");
+        var _form_submitAddCustomProduct = document.getElementById("submitAddCustomProduct");
         $scope.changeProduct = function (index) {
             $scope.changeProductList = false;
             $scope.CiqCode = '';
@@ -384,8 +389,12 @@ app.controller('GoodsListController', [
             $scope.ChangeProductDialogModel = CallByValue($scope.customProductList[index]);
         };
         $scope.submitChangeProduct = function (_customProductId, _ciqCode) {
+            angular.element(_form_submitAddCustomProduct).attr("disabled", true);
             if (false === $scope.isSearch || _customProductId == null || _ciqCode == null) {
-                alertService.add('danger', "请搜索并获取备案商品信息", 3000);
+                layer.alert("请搜索并获取备案商品信息", function (index) {
+                    layer.close(index);
+                    angular.element(_form_submitAddCustomProduct).attr("disabled", false);
+                });
                 return;
             };
             $giqci.post('/api/goods/convertproduct/' + _customProductId + '/' + _ciqCode,
@@ -393,12 +402,17 @@ app.controller('GoodsListController', [
             ).success(function (response) {
                 $scope.isSearch = false;
                 if (response.flag) {
-                    alertService.add('success', "数据已经转换成功", 3000);
-                    $scope.list($scope.postData);
-                    $scope.list2($scope.postData);
-                    angular.element(_modal).modal("hide");
+                    layer.msg("数据已经转换成功", { icon: 6 }, function () {
+                        $scope.list($scope.postData);
+                        $scope.list2($scope.postData);
+                        angular.element(_form_submitAddCustomProduct).attr("disabled", false);
+                        angular.element(_modal).modal("hide");
+                    });
                 } else {
-                    alertService.add('danger', response.msg, 3000);
+                    angular.element(_form_submitAddCustomProduct).attr("disabled", false);
+                    layer.alert(response.msg, function (index) {
+                        layer.close(index);
+                    });
                 }
             }, $scope);
         };
