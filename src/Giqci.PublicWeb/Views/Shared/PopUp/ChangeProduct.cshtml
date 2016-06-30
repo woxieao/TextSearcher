@@ -8,18 +8,25 @@
                 <h5 class="modal-title form-add-custom-product-title">转为备案商品</h5>
             </div>
             <div class="modal-body">
-                <form name="appform" class="form-horizontal" novalidate>
-                    <div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
+                <form name="changProductForm" class="form-horizontal"  novalidate>
+                    @*<div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
                         <button aria-label="Close" data-dismiss="alert" ng-click="alert.close()" class="close" type="button"><span aria-hidden="true">×</span></button>
                         <span ng-bind="alert.msg"></span>
-                    </div>
+                    </div>*@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">商品备案号</label>
                         <div class="col-sm-8">
                             <div class="input-group">
-                                <input type="text" placeholder="请输入完整的商品备案号" ng-model="CiqCode" class="form-control"/>
+                                <input type="text" 
+                                       placeholder="请输入完整的商品备案号" 
+                                       ng-model="CiqCode" 
+                                       class="form-control"
+                                       ucc-pattern="^((\d{10})|(ICIP\d{14}))$"
+                                       ucc-tip-direction="3" 
+                                       submit-btn-id="changeSearchButton"
+                                       ucc-pattern-message="正确的备案号格式为[ICIP+14个数字]或[10个数字]！"/>
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" ng-click="getproductlist()">
+                                    <button class="btn btn-default" id="changeSearchButton" type="submit" ng-click="getproductlist(changProductForm.$valid)" ng-disabled="changeProductSubmitApp">
                                         <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 搜索
                                     </button>
                                 </span>

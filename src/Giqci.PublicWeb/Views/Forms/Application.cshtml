@@ -408,13 +408,6 @@
                 };
 
                 $scope.Product = null;
-                $scope.getproductlist = function () {
-                    if ($scope.CiqCode != "") {
-                        $giqci.post(
-                            '/api/goods/searchproduct',
-                            { ciqCode: $scope.CiqCode }).success(function (data) { $scope.Product = data.result; }, $scope);
-                    }
-                }
 
                 $scope.selectGoods = function (index) {
                     $giqci.post('/api/goods/searchproduct',
@@ -505,7 +498,6 @@
                     password: ""
                 }
                 $scope.submitLoginForm = function () {
-                    console.log($scope.user);
                     $giqci.post('/api/account/login', $scope.user).then(function (response) {
                         if (response.data.result) {
                             $('#form-login').modal('hide');
@@ -677,7 +669,9 @@
                                 for (var i = data.errorMsg.length; i > 0; i--) {
                                     _errormsg += data.errorMsg[i - 1] + "\r\n";
                                 }
-                                alertService.add("danger", _errormsg || "未知错误", 3000);
+                                layer.alert(_errormsg || "未知错误", function (index) {
+                                    layer.close(index);
+                                });
                             }
                         }, $scope);
                     } else {
@@ -761,10 +755,10 @@
                                 layer.msg("提交成功", { icon: 6 }, function () {
                                     $scope.showProductList();
                                 });
+                            } else {
+                                angular.element(_btnsubmitAddCustomProduct).attr("disabled", false);
+                                layer.alert(response.msg || "未知错误");
                             }
-                            angular.element(_btnsubmitAddCustomProduct).attr("disabled", false);
-                            var _tipType = response.flag ? "success" : "danger";
-                            layer.alert(response.msg || "未知错误");
                         }, $scope);
                     }
                 };
@@ -861,31 +855,36 @@
                 }
                 //console.log($scope.allowType);
 
+
+                $("#form-change-product").on('hide.bs.modal', function () {
+                    layer.closeAll();
+                });
+
+
                 //change product
                 $scope.CiqCode = '';
                 $scope.changeProductList = false;
                 $scope.isSearch = false;
-                $scope.getproductlist = function () {
-                    $scope.isSearch = true;
-                    var reg = /^\d{10}$/;
-                    var reg2 = /^ICIP\d{14}$/i;
-                    if (!(reg.test($scope.CiqCode) || reg2.test($scope.CiqCode))) {
-                        $scope.Product = null;
-                        layer.alert('正确的备案号格式为[ICIP+14个数字]或[10个数字]', function (index) {
-                            layer.close(index);
-                        });
-                        return;
-                    } else {
+                $scope.changeProductSubmitApp = false;
+                $scope.getproductlist = function (isValid) {
+                    if (isValid) {
+                        $scope.changeProductSubmitApp = true;
                         $giqci.post('/api/goods/searchproduct', { ciqCode: $scope.CiqCode })
                         .success(function (data) {
                             if (data.result == null) {
                                 $scope.Product = null;
-                                layer.alert("该备案号不存在");
+                                layer.alert("该备案号不存在", function (index) {
+                                    layer.close(index);
+                                });
                             } else {
                                 $scope.Product = data.result;
                                 $scope.changeProductList = true;
+                                $scope.isSearch = true;
                             }
+                            $scope.changeProductSubmitApp = false;
                         }, $scope);
+                    } else {
+                        $scope.changeProductSubmitApp = false;
                     }
                 };
 
@@ -902,7 +901,10 @@
                 $scope.submitChangeProduct = function (_customProductId, _ciqCode) {
                     angular.element(_form_submitAddCustomProduct).attr("disabled", true);
                     if (false === $scope.isSearch || _customProductId == null || _ciqCode == null) {
-                        layer.alert("请搜索并获取备案商品信息");
+                        layer.alert("请搜索并获取备案商品信息", function (index) {
+                            layer.close(index);
+                            angular.element(_form_submitAddCustomProduct).attr("disabled", false);
+                        });
                         return;
                     };
                     $giqci.post('/api/goods/convertproduct/' + _customProductId + '/' + _ciqCode,
@@ -910,14 +912,17 @@
                     ).success(function (response) {
                         $scope.isSearch = false;
                         if (response.flag) {
-                            layer.msg("数据已经转换成功", { icon: 6 });
-                            $scope.getGoodsList();
-                            $scope.getCustomProductList();
-                            angular.element(_form_submitAddCustomProduct).attr("disabled", false);
-                            angular.element(_modal).modal("hide");
+                            layer.msg("数据已经转换成功", { icon: 6 }, function () {
+                                $scope.getGoodsList();
+                                $scope.getCustomProductList();
+                                angular.element(_form_submitAddCustomProduct).attr("disabled", false);
+                                angular.element(_modal).modal("hide");
+                            });
                         } else {
                             angular.element(_form_submitAddCustomProduct).attr("disabled", false);
-                            layer.alert(response.msg);
+                            layer.alert(response.msg, function (index) {
+                                layer.close(index);
+                            });
                         }
                     }, $scope);
                 };
