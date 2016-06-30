@@ -415,45 +415,26 @@ app.controller("GoodsAddController", [
     '$http', '$scope', '$log', '$location', '$anchorScroll', '$timeout', 'alertService', function ($http, $scope, $log, $location, $anchorScroll, $timeout, alertService) {
         $scope.CiqCode = "";
         $scope.Product = null;
-        $scope.errorMsg = "";
-        var reg = /^\d{10}$/;
-        var reg2 = /^ICIP\d{14}$/i;
-        $scope.showError = false;
-
-        //每次按键抬起都会校验输入的商品编号合法性，只是不会自动发请求，除非点击回车或者搜索按钮
-        $scope.validCiqCode = function () {
-            if (!(reg.test($scope.CiqCode) || reg2.test($scope.CiqCode))) {
-                $scope.showError = true;
-                $scope.errorMsg = "正确的备案号格式为[ICIP+14个数字]或[10个数字]";
-            } else {
-                $scope.showError = false;
-            }
-        };
-
-        $scope.getproductlist = function () {
-            
-            if (!(reg.test($scope.CiqCode) || reg2.test($scope.CiqCode))) {
-                $scope.Product = null;
-                //暂时注释掉顶部错误提示
-                //alertService.add('danger', "正确的备案号格式为[ICIP+14个数字]或[10个数字]", 3000);
-                $scope.showError = true;
-                $scope.errorMsg = "正确的备案号格式为[ICIP+14个数字]或[10个数字]";
-                return;
-            }else {
+        $scope.alreadySubmit = false;
+        $scope.getproductlist = function (isValid) {
+            $scope.alreadySubmit = true;
+            if (isValid) {
                 $giqci.post('/api/goods/searchproduct', {
                     ciqCode: $scope.CiqCode
                 }).success(function (data) {
                     if (data.result == null) {
                         $scope.Product = null;
-                        $scope.showError = true;
-                        //暂时注释掉顶部错误提示
-                        //alertService.add('danger', "该备案号不存在", 3000);
-                        $scope.errorMsg = "该备案号不存在";
+                        layer.alert("该备案号不存在", function (index) {
+                            layer.close(index);
+                        });
                         $("#inputCiqCode").focus();
+                        $scope.alreadySubmit = false;
                     } else {
                         $scope.Product = data.result;
                     }
                 }, $scope);
+            } else {
+                $scope.alreadySubmit = false;
             }
         }
         $scope.addProductMsg = null;
@@ -464,9 +445,9 @@ app.controller("GoodsAddController", [
                          {
                              ciqCode: $scope.Product.CiqCode
                          }).success(function (data) {
-                             //$scope.addProductMsg = data.msg;
-                             var _tipType = data.result ? "success" : "danger";
-                             alertService.add(_tipType, data.msg || "未知错误", 3000);
+                             layer.alert(data.msg || "未知错误", function (index) {
+                                 layer.close(index);
+                             });
                          }, $scope);
                 }
                 layer.close(l);

@@ -13,20 +13,22 @@
             </h3>
         </div>
         <div class="panel-body">
-            <div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
-                <button aria-label="Close" data-dismiss="alert" ng-click="alert.close()" class="close" type="button"><span aria-hidden="true">×</span></button>
-                <span ng-bind="alert.msg"></span>
-            </div>
-            <h1>{{addProductMsg}}</h1>
-            <form name="appform"  class="form-horizontal" novalidate>
+            <form name="productForm"  class="form-horizontal" ng-submit="getproductlist(productForm.$valid)" novalidate>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">商品备案号</label>
                     <div class="col-sm-8">
                         <div class="form-inline" ng-class="{'input-error': showError }">
-                            <input  type="text" placeholder="请输入完整的商品备案号" 
-                                   ng-model="CiqCode" class="form-control goodAdd-search-bar" ng-keyup="validCiqCode()"/>
+                            <input type="text" 
+                                   placeholder="请输入完整的商品备案号" 
+                                   ng-model="CiqCode" 
+                                   reuqired
+                                   class="form-control goodAdd-search-bar" 
+                                   ucc-pattern="^((\d{10})|(ICIP\d{14}))$"
+                                   ucc-tip-direction="3" 
+                                   submit-btn-id="searchButton"
+                                   ucc-pattern-message="正确的备案号格式为[ICIP+14个数字]或[10个数字]！"/>
                             <span>
-                                <button class="btn btn-default" ng-click="getproductlist()">
+                                <button class="btn btn-default" type="submit" id="searchButton" ng-disabled="alreadySubmit">
                                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
                                 </button>
                             </span>
