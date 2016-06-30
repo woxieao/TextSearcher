@@ -155,6 +155,7 @@
                         $scope.model.Application).success(function (result) {
                             layer.msg("暂存成功,下次可以直接读取本次保存的数据", { icon: 6 }, function () {
                                 $scope.isSaveingCache = false;
+                                $scope.$apply();
                             });
                         }, $scope);
                 }
