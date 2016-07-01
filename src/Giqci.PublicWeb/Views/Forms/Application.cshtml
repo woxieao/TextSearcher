@@ -175,7 +175,7 @@
                 $scope.selectProduct = function (_selected, _object) {
                     if (_selected != null) {
                         _object.DescriptionEn = _selected.DescriptionEn;
-                        _object.IsEditDescriptionEn = !_selected.IsApproved;
+                        _object.IsEditDescriptionEn = _selected.DescriptionEn == "" || _selected.DescriptionEn == null;// !_selected.IsApproved;
                         _object.Description = _selected.Description;
                         _object.Brand = _selected.Brand;
                         _object.HSCode = _selected.HsCode;
@@ -1330,7 +1330,7 @@
                                     <td colspan="2">
                                         <div class="application-custom-select">
                                             <p class="form-control-static break-word" ng-if="isEdit&&item.HandlerType!=1">{{item.CiqCode?item.CiqCode:"-"}}</p>
-                                            <select ajax-product class="form-control" ng-if="!isEdit||(isEdit&&item.HandlerType==1)" ng-change="selectProduct(select,item)" ng-model="select" ></select>
+                                            <select ajax-product class="form-control" ng-if="!isEdit||(isEdit&&item.HandlerType==1)" ng-change="selectProduct(select,item)" ng-model="select" style="width:100%;"></select>
                                             <input type="hidden" ng-model="item.CiqCode" />
                                         </div>
                                     </td>
