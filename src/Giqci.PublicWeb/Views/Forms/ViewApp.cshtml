@@ -92,11 +92,19 @@
                     <div class="col-sm-8">
                         <div ng-repeat="item in model.Application.ApplicationProducts" class="application-product-area">
                             <table class="table table-hover application-table-margin">
+                                <colgroup>
+                                    <col width="150">
+                                    <col width="235">
+                                    <col width="150">
+                                    <col width="235">
+                                </colgroup>
                                 <tr class="application-table-head">
                                     <th>
                                         <p class="form-control-static">商品 {{$index+1}}</p>
                                     </th>
-                                    <td colspan="3"></td>
+                                    <td></td>
+                                    <th></th>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <th>
@@ -107,16 +115,16 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th style="width: 160px;">
+                                    <th>
                                         <p class="form-control-static">名称(英文)</p>
                                     </th>
-                                    <td style="width: 460px;">
+                                    <td>
                                         <p class="form-control-static">{{item.DescriptionEn}}</p>
                                     </td>
-                                    <th style="width: 160px;">
+                                    <th>
                                         <p class="form-control-static">名称(中文)</p>
                                     </th>
-                                    <td style="width: 460px;">
+                                    <td>
                                         <p class="form-control-static">{{item.Description}}</p>
                                     </td>
                                 </tr>
@@ -191,8 +199,8 @@
                             <div>
                                 <table class="table table-hover application-table-margin">
                                     <colgroup>
-                                        <col width="140" />
-                                        <col width="360" />
+                                        <col width="150" />
+                                        <col width="620" />
                                     </colgroup>
                                     <tr ng-repeat="batch in item.ProductItemList">
                                         <th>
@@ -201,8 +209,6 @@
                                         <td>
                                             <p class="form-control-static">{{batch.BatchNo}}</p>
                                         </td>
-                                        <th></th>
-                                        <td></td>
                                     </tr>
                                 </table>
                             </div>
@@ -210,9 +216,9 @@
                             <!--真知码-->
                             <table class="table table-hover ">
                                 <colgroup>
-                                    <col width="120" />
-                                    <col width="360" />
-                                    <col width="360" />
+                                    <col width="150" />
+                                    <col width="310" />
+                                    <col width="310" />
                                 </colgroup>
                                 <tr>
                                     <th><p class="form-control-static">真知码</p></th>
@@ -237,9 +243,9 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">运输方式</label>
-                    <span class="col-sm-2 form-control-static" ng-if="model.Application.ShippingMethod==1">空运</span>
-                    <span class="col-sm-2 form-control-static" ng-if="model.Application.ShippingMethod==2">海运</span>
-                    <span class="col-sm-2 form-control-static" ng-if="model.Application.ShippingMethod==3">陆运</span>
+                    <span class="col-sm-8 form-control-static" ng-if="model.Application.ShippingMethod==1">空运</span>
+                    <span class="col-sm-8 form-control-static" ng-if="model.Application.ShippingMethod==2">海运</span>
+                    <span class="col-sm-8 form-control-static" ng-if="model.Application.ShippingMethod==3">陆运</span>
                 </div>
                 <div class="form-group" ng-show="model.Application.ShippingMethod === 2">
                     <label class="col-sm-2 control-label">船舶资料</label>
@@ -268,11 +274,11 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">提单号</label>
-                    <span class="col-sm-2 form-control-static">{{model.Application.BillNo}}</span>
+                    <span class="col-sm-8 form-control-static">{{model.Application.BillNo}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">副提单号</label>
-                    <span class="col-sm-2 form-control-static">{{model.Application.OtherBillNo}}</span>
+                    <span class="col-sm-8 form-control-static">{{model.Application.OtherBillNo}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
@@ -280,47 +286,47 @@
                         <p ng-if="model.Application.ShippingMethod == 2">船舶号</p>
                         <p ng-if="model.Application.ShippingMethod == 3">车牌号</p>
                     </label>
-                    <span class="col-sm-2 form-control-static">{{model.Application.Vesselcn}}</span>
+                    <span class="col-sm-8 form-control-static">{{model.Application.Vesselcn}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">出发日期</label>
-                    <span class="col-sm-2 form-control-static">{{model.Application.Voyage}}</span>
+                    <span class="col-sm-8 form-control-static">{{model.Application.Voyage}}</span>
                 </div>
                 <div class="form-group" ng-if="model.Application.ShippingMethod != 2">
                     <label class="col-sm-2 control-label">运输总数量</label>
-                    <span class="col-sm-2 form-control-static">{{model.Application.TotalUnits}}Pallet(s)</span>
+                    <span class="col-sm-8 form-control-static">{{model.Application.TotalUnits}}Pallet(s)</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">运输总重量</label>
-                    <span class="col-sm-2 form-control-static">{{model.Application.TotalWeight | currency:"":2}}KG</span>
+                    <span class="col-sm-8 form-control-static">{{model.Application.TotalWeight | currency:"":2}}KG</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">计划发货日期</label>
-                    <span class="col-sm-2 form-control-static">{{model.Application.ShippingDate | date:'yyyy/MM/dd'}}</span>
+                    <span class="col-sm-8 form-control-static">{{model.Application.ShippingDate | date:'yyyy/MM/dd'}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">预约检查日期</label>
-                    <span class="col-sm-2 form-control-static">{{model.Application.InspectionDate | date:'yyyy/MM/dd'}}</span>
+                    <span class="col-sm-8 form-control-static">{{model.Application.InspectionDate | date:'yyyy/MM/dd'}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">检验地点</label>
-                    <span class="col-sm-2 form-control-static">{{model.Application.InspectionAddr}}</span>
+                    <span class="col-sm-8 form-control-static">{{model.Application.InspectionAddr}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">联系人</label>
-                    <span class="col-sm-2 form-control-static">{{model.Application.Inspector}}</span>
+                    <span class="col-sm-8 form-control-static">{{model.Application.Inspector}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">联系人电话</label>
-                    <span class="col-sm-2 form-control-static">{{model.Application.InspectorTel}}</span>
+                    <span class="col-sm-8 form-control-static">{{model.Application.InspectorTel}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">发货港口</label>
-                    <span ajax-label ajax-url="ports" ng-model="model.Application.LoadingPort" class="col-sm-2 form-control-static">{{model.Application.LoadingPort}}</span>
+                    <span ajax-label ajax-url="ports" ng-model="model.Application.LoadingPort" class="col-sm-8 form-control-static">{{model.Application.LoadingPort}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">目的港口</label>
-                    <span ajax-label ajax-url="ports" ng-model="model.Application.DestPort" class="col-sm-2 form-control-static">{{model.Application.DestPort}}</span>
+                    <span ajax-label ajax-url="ports" ng-model="model.Application.DestPort" class="col-sm-8 form-control-static">{{model.Application.DestPort}}</span>
                 </div>
                 @{
                     var validCerts = (List<Certificate>)ViewBag.ValidCerts;
