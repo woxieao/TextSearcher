@@ -621,7 +621,7 @@ app.controller("ZcodeApplyListController", [
             if (isValid) {
                 $scope.alreadySubmit = true;
                 if ($scope.Count * 1 > 0) {
-                    layer.confirm("确定申请" + $scope.Count + "个真知码?", function (l) {
+                    layer.confirm("确定申请" + $scope.Count + "个真知码? 提交后不可更改", function (l) {
                         $giqci.post('/api/forms/addzcodeapply', { ZcodeType: $scope.ZcodeType, Count: $scope.Count }).success(function (data) {
                             if (data.flag) {
                                 layer.msg("申请成功", { icon: 6, time:1000}, function () {
