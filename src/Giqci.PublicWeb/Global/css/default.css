@@ -727,11 +727,17 @@ ul,li,ol{
 .formList-group-bar{margin-bottom: 25px;margin-top:10px;}
 .formList-group-bar small{color: #4169e1;margin-top:5px;}
 /*保质期输入框*/
-.batchNo-input{background-color:transparent !important;}
+.batchNo-input{background-color:#fff !important;}
+.custom-datetimepicker{padding:6px 12px !important;}
 /*导航下拉菜单*/
 .user-nav-dropdown {z-index:29891020;}
 /*表单必填项星号*/
 .input-require-color{color:red;}
+/*报验申请input组合框前缀*/
+.custom-input-group{min-width:6em !important;}
+/*报验申请商品下拉搜索框*/
+.application-custom-select .select2-container--bootstrap .select2-selection--single .select2-selection__rendered{white-space: nowrap;text-overflow: ellipsis;overflow: hidden;max-width: 329px;}
+.application-custom-select .select2-container--bootstrap{width:auto !important;}
 /*报验申请table样式调整*/
 .application-table-margin{margin-bottom:0 !important;}
 .application-product-area{background-color:transparent;margin-bottom:40px !important;}

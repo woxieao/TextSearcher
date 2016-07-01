@@ -728,6 +728,7 @@
                     $("#form-product").modal("show");
                     $("#form-add-custom-product").modal("hide");
                     $("#form-add-goods-product").modal("hide");
+                    layer.closeAll();
                 };
                 var _modalEditMerchantProduct = document.getElementById("form-add-custom-product");
                 angular.element(_modalEditMerchantProduct).on('hide.bs.modal', function () {
@@ -1125,15 +1126,59 @@
                         </p>
                     </div>
                 </div>
+                @*<div class="form-group">
+                    <label class="col-sm-2 control-label">申请人<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <input type="text" maxlength="100" name="Application.Applicant" ng-model="model.Application.Applicant" class="form-control" placeholder="全称" />
+                    <input type="text" maxlength="400" name="Application.ApplicantAddr" ng-model="model.Application.ApplicantAddr" class="form-control" placeholder="地址" />
+                    <input type="text" maxlength="100" name="Application.ApplicantContact" ng-model="model.Application.ApplicantContact" class="form-control" placeholder="联系人" />
+                    <input type="text" maxlength="100" name="Application.ApplicantPhone" ng-model="model.Application.ApplicantPhone" class="form-control" placeholder="联系电话" />
+                    <input type="text" maxlength="100" name="Application.ApplicantEmail" ng-model="model.Application.ApplicantEmail" class="form-control" placeholder="邮箱" />
+                </div>*@
+
                 <div class="form-group">
                     <label class="col-sm-2 control-label">申请人<span class="input-require-color">&nbsp;&lowast;</span></label>
-
                     <div class="col-sm-8">
-                        <input type="text" maxlength="100" name="Application.Applicant" ng-model="model.Application.Applicant" class="form-control" placeholder="全称" />
-                        <input type="text" maxlength="400" name="Application.ApplicantAddr" ng-model="model.Application.ApplicantAddr" class="form-control" placeholder="地址" />
-                        <input type="text" maxlength="100" name="Application.ApplicantContact" ng-model="model.Application.ApplicantContact" class="form-control" placeholder="联系人" />
-                        <input type="text" maxlength="100" name="Application.ApplicantPhone" ng-model="model.Application.ApplicantPhone" class="form-control" placeholder="联系电话" />
-                        <input type="text" maxlength="100" name="Application.ApplicantEmail" ng-model="model.Application.ApplicantEmail" class="form-control" placeholder="邮箱" />
+                        <div class="input-group">
+                            <span class="input-group-addon custom-input-group" id="application-fullname">全称</span>
+                            <input type="text" maxlength="100" name="Application.Applicant" ng-model="model.Application.Applicant" class="form-control" placeholder="全称" aria-describedby="application-fullname" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"><span>&nbsp;&nbsp;</span></label>
+                    <div class="col-sm-8">
+                        <div class="input-group">
+                            <span class="input-group-addon custom-input-group" id="application-address">地址</span>
+                            <input type="text" maxlength="400" name="Application.ApplicantAddr" ng-model="model.Application.ApplicantAddr" class="form-control" placeholder="地址" aria-describedby="application-address" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"><span>&nbsp;&nbsp;</span></label>
+                    <div class="col-sm-8">
+                        <div class="input-group">
+                            <span class="input-group-addon custom-input-group" id="application-contact">联系人</span>
+                            <input type="text" maxlength="100" name="Application.ApplicantContact" ng-model="model.Application.ApplicantContact" class="form-control" placeholder="联系人" aria-describedby="application-contact"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"><span>&nbsp;&nbsp;</span></label>
+                    <div class="col-sm-8">
+                        <div class="input-group">
+                            <span class="input-group-addon custom-input-group" id="application-phone">联系电话</span>
+                            <input type="text" maxlength="100" name="Application.ApplicantPhone" ng-model="model.Application.ApplicantPhone" class="form-control" placeholder="联系电话" aria-describedby="application-phone"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"><span>&nbsp;&nbsp;</span></label>
+                    <div class="col-sm-8">
+                        <div class="input-group">
+                            <span class="input-group-addon custom-input-group" id="application-email">邮箱</span>
+                            <input type="text" maxlength="100" name="Application.ApplicantEmail" ng-model="model.Application.ApplicantEmail" class="form-control" placeholder="邮箱" aria-describedby="application-email"/>
+                        </div>
                     </div>
                 </div>
                 <div class="form-group">
@@ -1148,14 +1193,48 @@
                         <button class="btn btn-default" type="button" ng-click="merchantList()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加/管理</button>
                     </div>
                 </div>
-                <div class="form-group">
+                @*<div class="form-group">
                     <div class="col-sm-offset-2 col-sm-8">
                         <input type="text" maxlength="100" name="Application.Exporter" ng-model="model.Application.Exporter" class="form-control" placeholder="全称" />
                         <input type="text" maxlength="400" name="Application.ExporterAddr" ng-model="model.Application.ExporterAddr" class="form-control" placeholder="地址" />
                         <input type="text" maxlength="100" name="Application.ExporterContact" ng-model="model.Application.ExporterContact" class="form-control" placeholder="联系人" />
                         <input type="text" maxlength="100" name="Application.ExporterPhone" ng-model="model.Application.ExporterPhone" class="form-control" placeholder="联系电话" />
                     </div>
+                </div>*@
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-8">
+                        <div class="input-group">
+                            <span class="input-group-addon custom-input-group" id="export-fullname">全称</span>
+                            <input type="text" maxlength="100" name="Application.Exporter" ng-model="model.Application.Exporter" class="form-control" placeholder="全称" aria-describedby="export-fullname" />
+                        </div>
+                    </div>
                 </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-8">
+                        <div class="input-group">
+                            <span class="input-group-addon custom-input-group" id="export-address">地址</span>
+                            <input type="text" maxlength="400" name="Application.ExporterAddr" ng-model="model.Application.ExporterAddr" class="form-control" placeholder="地址" aria-describedby="export-address" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-8">
+                        <div class="input-group">
+                            <span class="input-group-addon custom-input-group" id="export-contact">联系人</span>
+                            <input type="text" maxlength="100" name="Application.ExporterContact" ng-model="model.Application.ExporterContact" class="form-control" placeholder="联系人" aria-describedby="export-contact"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-8">
+                        <div class="input-group">
+                            <span class="input-group-addon custom-input-group" id="export-phone">联系电话</span>
+                            <input type="text" maxlength="100" name="Application.ExporterPhone" ng-model="model.Application.ExporterPhone" class="form-control" placeholder="联系电话" aria-describedby="export-phone"/>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="form-group">
                     <label ng-if="model.Application.TradeType==4" class="col-sm-2 control-label">进口商<span class="input-require-color">&nbsp;&lowast;</span></label>
                     <label ng-if="model.Application.TradeType==1" class="col-sm-2 control-label">代理进口商<span class="input-require-color">&nbsp;&lowast;</span></label>
@@ -1168,14 +1247,48 @@
                         <button class="btn btn-default" type="button" ng-click="merchantList()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加/管理</button>
                     </div>
                 </div>
-                <div class="form-group">
+                @*<div class="form-group">
                     <div class="col-sm-offset-2 col-sm-8">
                         <input type="text" maxlength="100" name="Application.Importer" ng-model="model.Application.Importer" class="form-control" placeholder="全称" />
                         <input type="text" maxlength="400" name="Application.ImporterAddr" ng-model="model.Application.ImporterAddr" class="form-control" placeholder="地址" />
                         <input type="text" maxlength="100" name="Application.ImporterContact" ng-model="model.Application.ImporterContact" class="form-control" placeholder="联系人" />
                         <input type="text" maxlength="100" name="Application.ImporterPhone" ng-model="model.Application.ImporterPhone" class="form-control" placeholder="联系电话" />
                     </div>
+                </div>*@
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-8">
+                        <div class="input-group">
+                            <span class="input-group-addon custom-input-group" id="import-fullname">全称</span>
+                            <input type="text" maxlength="100" name="Application.Importer" ng-model="model.Application.Importer" class="form-control" placeholder="全称" aria-describedby="import-fullname"/>
+                        </div>
+                    </div>
                 </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-8">
+                        <div class="input-group">
+                            <span class="input-group-addon custom-input-group" id="import-address">地址</span>
+                            <input type="text" maxlength="400" name="Application.ImporterAddr" ng-model="model.Application.ImporterAddr" class="form-control" placeholder="地址" aria-describedby="import-address"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-8">
+                        <div class="input-group">
+                            <span class="input-group-addon custom-input-group" id="import-contact">联系人</span>
+                            <input type="text" maxlength="100" name="Application.ImporterContact" ng-model="model.Application.ImporterContact" class="form-control" placeholder="联系人" aria-describedby="import-contact"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-8">
+                        <div class="input-group">
+                            <span class="input-group-addon custom-input-group" id="import-phone">联系电话</span>
+                            <input type="text" maxlength="100" name="Application.ImporterPhone" ng-model="model.Application.ImporterPhone" class="form-control" placeholder="联系电话" aria-describedby="import-phone"/>
+                        </div>
+                    </div>
+                </div>
+
                 <!--商品资料-->
                 <div class="form-group">
                     <label class="col-sm-2 control-label">商品资料<span>&nbsp;&nbsp;</span></label>
@@ -1183,25 +1296,27 @@
                         <div ng-repeat="item in model.Application.ApplicationProducts | filter:listFilter" class="application-product-area">
                             <table class="table table-hover application-table-margin">
                                 <colgroup>
-                                    <col width="140" />
-                                    <col width="360" />
-                                    <col width="120" />
-                                    <col width="360" />
+                                    <col width="160" />
+                                    <col width="215" />
+                                    <col width="160" />
+                                    <col width="215" />
                                 </colgroup>
                                 <tr class="application-table-head">
                                     <th>
                                         <p class="form-control-static">商品 {{$index+1}}</p>
                                     </th>
-                                    <td colspan="3">
+                                    <td>
                                         <button class="btn btn-default btn-sm" type="button" ng-click="removeitem(item)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button>
                                     </td>
+                                    <td></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <th>
                                         <p class="form-control-static">常用商品<span class="input-require-color">&nbsp;&lowast;</span></p>
                                     </th>
-                                    <td colspan="3">
-                                        <div class="form-group application-table-margin">
+                                    @*<td colspan="3">
+                                        <div class="application-table-margin">
                                             <div class="col-sm-8">
                                                 <p class="form-control-static" ng-if="isEdit&&item.HandlerType!=1">{{item.CiqCode?item.CiqCode:"-"}}</p>
                                                 <select ajax-product class="form-control " ng-if="!isEdit||(isEdit&&item.HandlerType==1)" ng-change="selectProduct(select,item)" ng-model="select" style="width:100%;"></select>
@@ -1211,6 +1326,16 @@
                                                 <a class="btn btn-default" data-toggle="modal" data-target="#form-product"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;添加/管理</a>
                                             </div>
                                         </div>
+                                    </td>*@
+                                    <td colspan="2">
+                                        <div class="application-custom-select">
+                                            <p class="form-control-static break-word" ng-if="isEdit&&item.HandlerType!=1">{{item.CiqCode?item.CiqCode:"-"}}</p>
+                                            <select ajax-product class="form-control" ng-if="!isEdit||(isEdit&&item.HandlerType==1)" ng-change="selectProduct(select,item)" ng-model="select" ></select>
+                                            <input type="hidden" ng-model="item.CiqCode" />
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-default" data-toggle="modal" data-target="#form-product"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;添加/管理</a>
                                     </td>
                                 </tr>
                                 <tr>
@@ -1244,7 +1369,7 @@
                                         <p class="form-control-static">包装</p>
                                     </th>
                                     <td>
-                                        <p class="form-control-static" ng-model="item.Package">{{item.Package}}</p>
+                                        <p class="form-control-static break-word" ng-model="item.Package">{{item.Package}}</p>
 
                                     </td>
                                 </tr>
@@ -1253,7 +1378,7 @@
                                         <p class="form-control-static">规格</p>
                                     </th>
                                     <td>
-                                        <p class="form-control-static" ng-model="item.Spec">{{item.Spec}}</p>
+                                        <p class="form-control-static break-word" ng-model="item.Spec">{{item.Spec}}</p>
                                     </td>
                                     <th>
                                         <p class="form-control-static">原产国</p>
@@ -1267,14 +1392,14 @@
                                         <p class="form-control-static">HS编码</p>
                                     </th>
                                     <td>
-                                        <p ng-model="item.HSCode" class="form-control-static">{{item.HSCode}}</p>
+                                        <p ng-model="item.HSCode" class="form-control-static break-word">{{item.HSCode}}</p>
                                     </td>
                                     <th>
                                         <p class="form-control-static">制造商</p>
                                     </th>
                                     <td>
 
-                                        <p class="form-control-static" ng-model="item.Manufacturer">{{item.Manufacturer}}</p>
+                                        <p class="form-control-static break-word" ng-model="item.Manufacturer">{{item.Manufacturer}}</p>
 
                                     </td>
                                 </tr>
@@ -1299,10 +1424,10 @@
                             <div>
                                 <table class="table table-hover application-table-margin">
                                     <colgroup>
-                                        <col width="180" />
+                                        <col width="160" />
                                         <col />
                                         <col />
-                                        <col width="163" />
+                                        <col width="215"/>
                                     </colgroup>
                                     <tr>
                                         <th class="application-product-county">
@@ -1321,9 +1446,6 @@
                                                    ucc-pattern-message="数量填写有误！"
                                                    submit-btn-id="applicationSubmit"/>
                                         </td>
-                                        <th>
-
-                                        </th>
                                         <td></td>
                                     </tr>
                                     <tr ng-repeat="batch in item.ProductItemList | filter:listFilter">
@@ -1335,7 +1457,7 @@
                                         <td colspan="2">
                                             <p ng-model="batch.BatchNo" class="form-control-static">{{batch.BatchNo}}</p>
                                         </td>
-                                        <td colspan="2"><button class="btn btn-default btn-sm" type="button" ng-click="removeItemByBatchNo(batch)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button></td>
+                                        <td><button class="btn btn-default btn-sm" type="button" ng-click="removeItemByBatchNo(batch)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button></td>
                                     </tr>
                                     <tr>
                                         <td>
@@ -1360,10 +1482,10 @@
                                                    name="addItemByBatchNoDate_{{$index}}" 
                                                    readonly 
                                                    ng-model="item.addItemByBatchNo.BatchNo" 
-                                                   class="form-control datetimepicker batchNo-input" 
+                                                   class="form-control datetimepicker custom-datetimepicker batchNo-input" 
                                                    placeholder="保质期" />
                                         </td>
-                                        <td colspan="2">
+                                        <td>
                                             @*<button class="btn btn-default btn-sm" type="button" ng-click="addItemByBatchNo(item,$index)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;添加</button>*@
                                         </td>
                                     </tr>
@@ -1374,16 +1496,16 @@
                             <div>
                                 <table class="table table-hover ">
                                     <colgroup>
-                                        <col width="180" />
+                                        <col width="160" />
                                         <col />
                                         <col />
-                                        <col width="180" />
+                                        <col width="215" />
                                     </colgroup>
                                     <tr ng-if="(item.ApplicationZCodes|filter:listFilter).length">
-                                        <th>真知码</th>
-                                        <th>首码</th>
-                                        <th>尾码</th>
-                                        <th>操作</th>
+                                        <th><p class="form-control-static">真知码</p></th>
+                                        <th><p class="form-control-static">首码</p></th>
+                                        <th><p class="form-control-static">尾码</p></th>
+                                        <th><p class="form-control-static">操作</p></th>
                                     </tr>
                                     <tr ng-repeat="zcode in item.ApplicationZCodes | filter:listFilter" ng-dblclick="editZcodeItem(zcode)">
                                         <td>
@@ -1623,7 +1745,13 @@
                     <label class="col-sm-2 control-label">检验地点<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-8">
-                        <input type="text" ng-model="model.Application.InspectionAddr" class="form-control" placeholder="检验地点" />
+                        <input type="text" 
+                               ng-model="model.Application.InspectionAddr" 
+                               class="form-control" 
+                               placeholder="检验地点"
+                               required
+                               ucc-require="检验地点不能为空"
+                               submit-btn-id="applicationSubmit" />
                     </div>
                 </div>
                 <div class="form-group">
@@ -1636,6 +1764,7 @@
                                class="form-control" 
                                placeholder="联系人" 
                                maxlength="100"
+                               required
                                ucc-max-length="100"
                                ucc-require="联系人不能为空"
                                submit-btn-id="applicationSubmit" />

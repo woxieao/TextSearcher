@@ -319,7 +319,7 @@ app.controller('GoodsListController', [
                 $giqci.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
                     if (response.flag) {
                         $("#form-add-custom-product").modal("hide");
-                        layer.msg('提交成功', { icon: 6 },function() { window.location.reload(); });
+                        layer.msg('提交成功', { icon: 6 }, function () { $scope.list2($scope.postData); });
                         layer.close();
                     } else {
                         layer.alert(response.msg || "未知错误", function (index) {
