@@ -297,6 +297,7 @@
     <Content Include="Views\Shared\PopUp\ChangeProduct.cshtml" />
     <Content Include="Views\Shared\PopUp\ProductView.cshtml" />
     <Content Include="Views\Forms\ZcodeApplyList.cshtml" />
+    <Content Include="Views\Shared\PopUp\ViewProduct.cshtml" />
     <None Include="Web.Prod.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
