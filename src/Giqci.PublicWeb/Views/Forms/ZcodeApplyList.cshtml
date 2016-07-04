@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "真知码申请列表";
+    ViewBag.Title = "真知码申请历史";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div ng-controller="ZcodeApplyListController">
@@ -40,9 +40,8 @@
                 <td>
                     <input type="text" 
                            class="form-control" 
-                           placeholder="真知码数量"
+                           placeholder="请输入大于0的整数"
                            ucc-max-length="7" 
-                           ucc-min-length="1" 
                            ucc-tip-direction="1"
                            ucc-pattern="^\+?[1-9][0-9]*$"
                            ucc-pattern-message="数量填写有误！"
@@ -60,7 +59,7 @@
     </form>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">真知码申请列表</h3>
+            <h3 class="panel-title">真知码申请历史</h3>
         </div>
         <div class="panel-body">
             <table class="table table-striped table-layout-fixed">
