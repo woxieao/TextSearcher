@@ -418,6 +418,10 @@ app.directive("ajaxProduct", function ($timeout, $http) {
             scope.dataList = [];
             scope.$watch("ngModel", function (n, o) {
                 $(element).next().find("span.select2-selection__rendered").html('<span class="select2-selection__placeholder">请输入关键词搜索 / 点击“添加/管理”查看所有商品信息并选择</span>');
+                if (scope.item.HSCode != null) {
+                    var newVal = scope.item.Description;
+                    $(element).next().find("span.select2-selection__rendered").html(newVal);
+                }
             }, true);
 
             $element.select2({

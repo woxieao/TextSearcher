@@ -1327,13 +1327,29 @@
                                             </div>
                                         </div>
                                     </td>*@
-                                    <td colspan="2">
+
+                                    @*<td colspan="2">
                                         <div class="application-custom-select">
                                             <p class="form-control-static break-word" ng-if="isEdit&&item.HandlerType!=1">{{item.CiqCode?item.CiqCode:"-"}}</p>
                                             <select ajax-product class="form-control" ng-if="!isEdit||(isEdit&&item.HandlerType==1)" ng-change="selectProduct(select,item)" ng-model="select" style="width:100%;"></select>
                                             <input type="hidden" ng-model="item.CiqCode" />
                                         </div>
+                                    </td>*@
+
+                                    <!--ng-change="selectProduct(select,item)" -->
+                                    <td colspan="2">
+                                        <div class="application-custom-select">
+                                            <select ajax-product 
+                                                    ajax-url="ports" 
+                                                    class="form-control" 
+                                                    ng-change="selectProduct(select,item)"
+                                                    ng-model="select" 
+                                                    style="width:100%;">
+                                                <option value="">请输入关键词搜索</option>
+                                            </select>
+                                        </div>
                                     </td>
+
                                     <td>
                                         <a class="btn btn-default" data-toggle="modal" data-target="#form-product"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;添加/管理</a>
                                     </td>
@@ -1789,7 +1805,7 @@
                     <label class="col-sm-2 control-label">发货港口<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-8">
-                        <select ajax-select ajax-url="ports" ng-model="model.Application.LoadingPort" ng-options="i.Code as i.CnName group by i.Country for i in model.LoadingPorts" class="form-control selectLoadingPort" style="width: 100%">
+                        <select ajax-select ajax-url="ports" ng-model="model.Application.LoadingPort" class="form-control selectLoadingPort" style="width: 100%">
                             <option value="">&lt; - 请选择港口 - &gt;</option>
                         </select>
                     </div>
@@ -1799,7 +1815,7 @@
                     <label class="col-sm-2 control-label">目的港口<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-8">
-                        <select ajax-select ajax-url="ports" ng-model="model.Application.DestPort" ng-options="i.Code as i.CnName group by i.Country for i in model.DestPorts" class="form-control selectDestPorts" style="width: 100%">
+                        <select ajax-select ajax-url="ports" ng-model="model.Application.DestPort" class="form-control selectDestPorts" style="width: 100%">
                             <option value="">&lt; - 其他港口 - &gt;</option>
                         </select>
                     </div>
