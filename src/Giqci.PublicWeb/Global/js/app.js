@@ -299,6 +299,13 @@ app.controller('GoodsListController', [
             $("#form-add-custom-product").modal("show");
             $("#form-product").modal("hide");
         };
+        $scope.lookMerchantProduct = function (index) {
+            $scope.CustomDialogModel = CallByValue($scope.customProductList[index]);
+            $(".form-look-custom-product-title").html("查看非备案商品");
+            $("#CustomDialogModelHsCode").next().find("span.select2-selection__rendered").html("");
+            $("#form-look-custom-product").modal("show");
+            $("#form-product").modal("hide");
+        };
 
         $("#form-add-custom-product").on('hide.bs.modal', function () {
             layer.closeAll();
@@ -344,6 +351,7 @@ app.controller('GoodsListController', [
             $(".form-add-custom-product-title").html("商品列表");
             $("#form-product").modal("show");
             $("#form-add-custom-product").modal("hide");
+            $("#form-look-custom-product").modal("hide");
             $("#form-add-goods-product").modal("hide");
         };
         $scope.showproduct = function (ciqCode) {
