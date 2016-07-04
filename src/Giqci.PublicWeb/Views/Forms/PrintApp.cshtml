@@ -63,7 +63,7 @@
             }
     </style>
 </head>
-<body >
+<body>
     <table ng-controller="ViewAppController" class="gridtable" style="width: 100%;">
         <colgroup>
             <col width="10%" />
@@ -306,7 +306,7 @@
                                     HS编码
                                 </td>
                                 <td>
-                                    <span ajax-label ajax-url="commonhscodes" ng-model="item.HSCode">{{item.HSCode}}</span>
+                                    {{item.HSCode}}
                                 </td>
                                 <td>
                                     制造商
@@ -507,7 +507,7 @@
     <script src="~/Global/js/ng-tip-validate.js"></script>
     <script src="~/Global/js/app.js"></script>
     <script src="~/Scripts/giqci.js?@token"></script>
- <script src="~/Global/js/directive.js?@token"></script>
+    <script src="~/Global/js/directive.js?@token"></script>
     <script type="text/javascript">
         app.controller('ViewAppController', [
             '$scope', function ($scope) {
