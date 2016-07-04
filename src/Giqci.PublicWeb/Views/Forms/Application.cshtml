@@ -811,8 +811,7 @@
                                     $scope.getGoodsList();
                                     layer.msg("提交成功",{icon:6}, function () { $scope.showProductList();});
                                 }
-                                var _tipType = data.result ? "success" : "danger";
-                                layer.alert(response.msg || "未知错误");
+                                layer.alert(data.msg || "未知错误");
                             }, $scope);
                         }
                         layer.close(l);
