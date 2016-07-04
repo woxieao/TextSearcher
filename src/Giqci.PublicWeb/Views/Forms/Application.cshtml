@@ -1358,10 +1358,10 @@
                                         <p class="form-control-static">名称(英文)</p>
                                     </th>
                                     <td>
-                                        <span ng-show="!item.IsEditDescriptionEn">
+                                        <span ng-show="item.DescriptionEn!='' && item.DescriptionEn!=null">
                                             <p class="form-control-static break-word" ng-model="item.DescriptionEn">{{item.DescriptionEn}}</p>
                                         </span>
-                                        <span ng-show="item.IsEditDescriptionEn">
+                                        <span ng-show="item.DescriptionEn==''||item.DescriptionEn==null">
                                             <input type="text" ng-model="item.DescriptionEn" class="form-control" maxlength="100" />
                                         </span>
                                     </td>
