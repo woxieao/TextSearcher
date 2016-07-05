@@ -450,10 +450,10 @@ app.controller("GoodsAddController", [
                             layer.close(index);
                         });
                         $("#inputCiqCode").focus();
-                        $scope.alreadySubmit = false;
                     } else {
                         $scope.Product = data.result;
                     }
+                    $scope.alreadySubmit = false;
                 }, $scope);
             } else {
                 $scope.alreadySubmit = false;
@@ -464,12 +464,14 @@ app.controller("GoodsAddController", [
             layer.confirm('是否添加该商品为常用商品', function (l) {
                 if ($scope.Product != null) {
                     $giqci.post('/api/goods/addproduct',
-                         {
-                             ciqCode: $scope.Product.CiqCode
-                         }).success(function (data) {
-                             layer.alert(data.msg || "未知错误", function (index) {
-                                 layer.close(index);
-                             });
+                         {ciqCode: $scope.Product.CiqCode}).success(function (data) {
+                             if (data.result) {
+                                 layer.msg("添加成功", { icon: 6 });
+                             } else {
+                                 layer.alert(data.msg || "未知错误", function (index) {
+                                     layer.close(index);
+                                 });
+                             }
                          }, $scope);
                 }
                 layer.close(l);
@@ -534,18 +536,23 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
     };
 
     $scope.addMerchant = function (url) {
+        $scope.alreadySubmit = true;
         $giqci.post(url, { userProfile: $scope.dialogModelMerchant }).success(function (data) {
             if (data.flag) {
-                $scope.alreadySubmit = true;
-                $scope.loadMerchant();
-                $("#merchant-add").modal("hide");
+                layer.msg("提交成功", { icon: 6 }, function () {
+                    $scope.alreadySubmit = false;
+                    $scope.loadMerchant();
+                    $("#merchant-add").modal("hide");
+                });
             } else {
+                $scope.alreadySubmit = false;
                 var _errormsg = '';
                 for (var i = data.errorMsg.length; i > 0 ; i--) {
                     _errormsg += data.errorMsg[i - 1] + "\r\n";
                 }
-                alertService.add("danger", _errormsg || "未知错误", 3000);
-                $scope.errorMsg = _errormsg || '未知错误';
+                layer.alert(data.errorMsg[0] || "未知错误", function (index) {
+                    layer.close(index);
+                });
             }
         }, $scope);
     };
@@ -568,14 +575,18 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
             $giqci.post(
               '/api/UserProfile/RemoveProfile', { ProfileId: _object.Id }).success(function (data) {
                   if (data.flag) {
-                      $scope.loadMerchant();
-                      $("#merchant-add").modal("hide");
+                      layer.msg("删除成功", { icon: 6 ,time:1000}, function () {
+                          $scope.loadMerchant();
+                          $("#merchant-add").modal("hide");
+                      });
                   } else {
                       var _errormsg = '';
                       for (var i = data.errorMsg.length; i > 0 ; i--) {
                           _errormsg += data.errorMsg[i - 1] + "\r\n";
                       }
-                      alertService.add("danger", _errormsg || "未知错误", 3000);
+                      layer.alert(data.errorMsg[0] || "未知错误", function (index) {
+                          layer.close(index);
+                      });
                   }
               }, $scope);
             layer.close(l);
