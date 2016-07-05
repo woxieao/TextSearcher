@@ -701,8 +701,14 @@
                         $giqci.post('/api/UserProfile/RemoveProfile',
                             { ProfileId: _object.Id }).success(function (data) {
                                 if (data.flag) {
-                                    $scope.loadMerchant();
-                                    //$("#merchant-add").modal("hide");
+                                    layer.msg("删除成功", { icon: 6, time: 1000 }, function () {
+                                        $scope.loadMerchant();
+                                        //$("#merchant-add").modal("hide");
+                                    });
+                                } else {
+                                    layer.alert(data.msg || "删除失败", function (index) {
+                                        layer.close(index);
+                                    });
                                 }
                             }, $scope); layer.close(l);
                     });
@@ -809,9 +815,10 @@
                             { ciqCode: $scope.dialogProductList.CiqCode }).success(function (data) {
                                 if (data.result) {
                                     $scope.getGoodsList();
-                                    layer.msg("提交成功",{icon:6}, function () { $scope.showProductList();});
+                                    layer.msg("添加成功", { icon: 6 }, function () { $scope.showProductList(); });
+                                } else {
+                                    layer.alert(data.msg || "未知错误");
                                 }
-                                layer.alert(data.msg || "未知错误");
                             }, $scope);
                         }
                         layer.close(l);
@@ -1358,10 +1365,10 @@
                                         <p class="form-control-static">名称(英文)</p>
                                     </th>
                                     <td>
-                                        <span ng-show="item.DescriptionEn!='' && item.DescriptionEn!=null">
+                                        <span ng-show="!item.IsEditDescriptionEn">
                                             <p class="form-control-static break-word" ng-model="item.DescriptionEn">{{item.DescriptionEn}}</p>
                                         </span>
-                                        <span ng-show="item.DescriptionEn==''||item.DescriptionEn==null">
+                                        <span ng-show="item.IsEditDescriptionEn">
                                             <input type="text" ng-model="item.DescriptionEn" class="form-control" maxlength="100" />
                                         </span>
                                     </td>
