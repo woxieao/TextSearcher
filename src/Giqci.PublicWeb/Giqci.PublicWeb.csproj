@@ -61,16 +61,16 @@
       <HintPath>..\..\packages\FluentValidation.6.2.1.0\lib\Net45\FluentValidation.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.ApiProxy, Version=1.0.185.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.ApiProxy.1.0.185\lib\net461\Giqci.ApiProxy.dll</HintPath>
+    <Reference Include="Giqci.ApiProxy, Version=1.0.188.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.ApiProxy.1.0.188\lib\net461\Giqci.ApiProxy.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Giqci.Chapi.Contract, Version=2.0.109.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Giqci.Chapi.Contract.2.0.109\lib\net461\Giqci.Chapi.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Giqci.Contract, Version=1.1.216.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Giqci.Contract.1.1.216\lib\net461\Giqci.Contract.dll</HintPath>
+    <Reference Include="Giqci.Contract, Version=1.1.217.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Giqci.Contract.1.1.217\lib\net461\Giqci.Contract.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ktech.Contract, Version=1.0.17.0, Culture=neutral, processorArchitecture=MSIL">
@@ -150,7 +150,7 @@
   <ItemGroup>
     <Compile Include="App_Start\ApiModule.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\LocalizationHelpers.cs" />
+    <Compile Include="Extensions\LanguageHelper.cs" />
     <Compile Include="App_Start\RegisterComponent.cs" />
     <Compile Include="App_Start\RestClientFactory.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
