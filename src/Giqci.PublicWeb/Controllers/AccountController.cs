@@ -12,7 +12,7 @@ using Giqci.PublicWeb.Models;
 
 namespace Giqci.PublicWeb.Controllers
 {
-    [RoutePrefix("{language}/account")]
+    [RoutePrefix("account")]
     public class AccountController : Controller
     {
         private readonly IMerchantApiProxy _repo;
