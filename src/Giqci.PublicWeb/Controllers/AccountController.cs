@@ -6,11 +6,13 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using Giqci.Chapi.Enums.Dict;
 using Giqci.Interfaces;
+using Giqci.PublicWeb.Models;
 
 namespace Giqci.PublicWeb.Controllers
 {
-    [RoutePrefix("account")]
+    [RoutePrefix("{language}/account")]
     public class AccountController : Controller
     {
         private readonly IMerchantApiProxy _repo;
@@ -23,8 +25,11 @@ namespace Giqci.PublicWeb.Controllers
 
         [Route("login")]
         [HttpGet]
-        public ActionResult Login()
+        public ActionResult Login(string language)
         {
+            LanguageType type;
+            LanguageType.TryParse(language, true, out type);
+            Config.Common.Language =type;
             if (!string.IsNullOrEmpty(User.Identity.Name))
             {
                 return Redirect("/");

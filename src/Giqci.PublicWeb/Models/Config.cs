@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Web.Configuration;
+using Giqci.Chapi.Enums.Dict;
 
 namespace Giqci.PublicWeb.Models
 {
@@ -46,6 +47,8 @@ namespace Giqci.PublicWeb.Models
               new FileInfo(System.Reflection.Assembly.GetExecutingAssembly()
                   .GetName()
                   .CodeBase.Replace("file:///", "")).LastWriteTime.Ticks;
+
+            public static LanguageType Language = LanguageType.Cn;
         }
 
         public struct ApiUrl
