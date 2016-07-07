@@ -1,10 +1,14 @@
 ﻿using System.Net;
 using System.Web.Configuration;
 using System.Web.Mvc;
+using Giqci.ApiProxy.Logging;
+using Giqci.Chapi.Models.Logging;
 using Giqci.PublicWeb.Extensions;
 using Giqci.PublicWeb.Models;
 using Giqci.PublicWeb.Models.Api;
 using Ktech.Core.Mail;
+using Ktech.Mvc.ActionResults;
+using Newtonsoft.Json;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {
@@ -39,6 +43,33 @@ Message:
             m.To.Add(Config.Common.AdminEmail);
             m.SendEmail();
             return new HttpStatusCodeResult(HttpStatusCode.OK);
+        }
+
+        [Route("sendmail")]
+        [HttpPost]
+        public ActionResult SendMail(MailInfo mailInfo)
+        {
+            var str = string.Empty;
+            foreach (var mailData in mailInfo.data)
+            {
+                str += mailData.val;
+            }
+            var log = new LoggingApiProxy(new LogConfig
+            {
+                LogUrl = Config.ApiUrl.LogApiUrl,
+                Log = true
+            });
+            log.LogApiRequest("", "---------EmailTest-------------", str);
+            return new KtechJsonResult(HttpStatusCode.Accepted, str);
+        }
+
+        public class MailInfo
+        {
+            public MailData[] data { get; set; }
+        }
+        public class MailData
+        {
+            public string val { get; set; }
         }
     }
 }
