@@ -53,7 +53,7 @@ Message:
             var str = string.Empty;
             foreach (var mailData in mailInfo.data)
             {
-                str += mailData.Value.val;
+                str += mailData.val;
             }
             var log = new LoggingApiProxy(new LogConfig
             {
@@ -75,12 +75,11 @@ Message:
 
         public class MailInfo
         {
-            public Dictionary<int, MailData> data { get; set; }
+            public MailData[] data { get; set; }
         }
         public class MailData
         {
             public string val { get; set; }
-            public string label { get; set; }
         }
     }
 }
