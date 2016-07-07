@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Collections.Generic;
+using System.Net;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using Giqci.ApiProxy.Logging;
@@ -52,7 +53,7 @@ Message:
             var str = string.Empty;
             foreach (var mailData in mailInfo.data)
             {
-                str += mailData.val;
+                str += mailData.Value.val;
             }
             var log = new LoggingApiProxy(new LogConfig
             {
@@ -60,16 +61,26 @@ Message:
                 Log = true
             });
             log.LogApiRequest("", "---------EmailTest-------------", str);
+            log.LogApiRequest("", "---------EmailTest___All-------", JsonConvert.SerializeObject(Request.Form));
             return new KtechJsonResult(HttpStatusCode.Accepted, str);
+        }
+
+        [Route("Test")]
+        [HttpPost]
+        public ActionResult Test(dynamic mailInfo)
+        {
+            var a = mailInfo["test"];
+            return new KtechJsonResult(HttpStatusCode.Accepted, a);
         }
 
         public class MailInfo
         {
-            public MailData[] data { get; set; }
+            public Dictionary<int, MailData> data { get; set; }
         }
         public class MailData
         {
             public string val { get; set; }
+            public string label { get; set; }
         }
     }
 }
