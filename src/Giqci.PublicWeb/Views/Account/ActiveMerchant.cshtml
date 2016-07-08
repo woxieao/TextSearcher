@@ -1,4 +1,5 @@
-﻿@model Giqci.PublicWeb.Models.Account.LoginViewModel
+﻿@using Giqci.PublicWeb.Extensions
+@model Giqci.PublicWeb.Models.Account.LoginViewModel
 
 @{
     ViewBag.Title = "Active";
@@ -10,7 +11,7 @@
         {
             <div role="alert" class="alert alert-dismissible alert-success">
                 <button aria-label="Close" data-dismiss="alert" class="close" type="button"><span aria-hidden="true">×</span></button>
-                <span>您已经认证通过，现在&nbsp;<a href="login">去登录</a></span>
+                <span>您已经认证通过，现在&nbsp;<a href="@LanCore.GetLanTypeUrl()/account/login">去登录</a></span>
             </div>
         }
         else

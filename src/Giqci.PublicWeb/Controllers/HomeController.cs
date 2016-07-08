@@ -5,9 +5,10 @@ using Giqci.PublicWeb.Models;
 
 namespace Giqci.PublicWeb.Controllers
 {
+    [RoutePrefix("")]
     public class HomeController : Controller
     {
-        private readonly IIpDictionaryService _ipDictionaryService;
+        public readonly IIpDictionaryService _ipDictionaryService;
 
         public HomeController(IIpDictionaryService ipDictionaryService)
         {
@@ -17,7 +18,7 @@ namespace Giqci.PublicWeb.Controllers
         [Route("")]
         public ActionResult Index()
         {
-            const string defaultPage = "forms/app";
+            var defaultPage = "cn/forms/app";
             var hostUrl = string.Empty;
             //< !--功能正常后请删掉,以及Config中的IpRedirectSwitch-- >
             if (Config.MethodSwitch.IpRedirectSwitch)
@@ -30,6 +31,24 @@ namespace Giqci.PublicWeb.Controllers
             }
             return Redirect(string.Format("{0}/{1}", hostUrl, defaultPage));
         }
+
+        [Route("{languageType}")]
+        public ActionResult Index(string languageType)
+        {
+            var defaultPage = languageType + "/forms/app";
+            var hostUrl = string.Empty;
+            //< !--功能正常后请删掉,以及Config中的IpRedirectSwitch-- >
+            if (Config.MethodSwitch.IpRedirectSwitch)
+            {
+                var ipInfo = _ipDictionaryService.GetCountry();
+                if (ipInfo != null)
+                {
+                    hostUrl = Config.Hosts.HostList.ContainsKey(ipInfo.CountryCode) ? Config.Hosts.HostList[ipInfo.CountryCode] : Config.Hosts.HostList["Default"];
+                }
+            }
+            return Redirect(string.Format("{0}/{1}", hostUrl, defaultPage));
+        }
+
 
         [Route("terms")]
         public ActionResult Terms()

@@ -1,4 +1,5 @@
-﻿@model Giqci.PublicWeb.Models.Account.LoginViewModel
+﻿@using Giqci.PublicWeb.Extensions
+@model Giqci.PublicWeb.Models.Account.LoginViewModel
 
 @{
     ViewBag.Title = "Login";
@@ -44,9 +45,9 @@
                         <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> {{submitButton}}
                     </button>
                     &nbsp;
-                    <a href="forgot" class="btn btn-link">忘记密码？</a>
+                    <a href="@LanCore.GetLanTypeUrl()/account/forgot" class="btn btn-link">忘记密码？</a>
                     &nbsp;
-                    <a href="reg" class="btn btn-link">商户注册</a>
+                    <a href="@LanCore.GetLanTypeUrl()/account/reg" class="btn btn-link">商户注册</a>
                 </div>
             </div>
         </form>

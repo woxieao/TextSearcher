@@ -17,7 +17,7 @@ using Ktech.Mvc.ActionResults;
 
 namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
 {
-    [RoutePrefix("api")]
+    [RoutePrefix("{languageType}/api")]
     [AjaxAuthorize]
     public class GoodsController : AjaxController
     {

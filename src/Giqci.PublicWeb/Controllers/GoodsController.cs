@@ -3,12 +3,14 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Giqci.Chapi.Models.Customer;
 using Giqci.Interfaces;
+using Giqci.PublicWeb.Extensions;
 using Giqci.PublicWeb.Services;
 
 namespace Giqci.PublicWeb.Controllers
 {
 
-    [Authorize]
+    [BaseAuthorize]
+    [RoutePrefix("{languageType}")]
     public class GoodsController : Controller
     {
         private readonly IMerchantProductApiProxy _merchantRepository;

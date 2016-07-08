@@ -21,7 +21,7 @@ app.controller("LoginController", [
                 };
                 $giqci.post('/api/account/login', $scope.formData).then(function (response) {
                     if (response.data.result) {
-                        window.location.href = "/forms/app";
+                        window.location.href = $giqci.getLanUrl("/forms/app");
                     } else {
                         alertService.add('danger', response.data.message || "未知错误");
                         $scope.enableDisableButton = false;
@@ -74,15 +74,15 @@ app.controller("RegController", [
             $scope.regshow = true;
         };
 
-        $scope.validateFun = function (str1,str2) {
-            if(str1==undefined|| str1==""){
+        $scope.validateFun = function (str1, str2) {
+            if (str1 == undefined || str1 == "") {
                 return "请先输入密码，再输入确认密码";
-            }else if (str1 != str2) {
+            } else if (str1 != str2) {
                 return "两次密码输入不一致";
-            } else{
+            } else {
                 //验证成功返回0 或者 null 或者 false
                 return 0;
-            } 
+            }
         };
 
         $scope.submitForm = function (isValid, PasswordValid) {
@@ -137,10 +137,10 @@ app.controller("ChanagePasswordController", [
                 }, $scope);
             }
         };
-        $scope.validateFun = function (str1,str2) {
-            if (str1!=str2) {
+        $scope.validateFun = function (str1, str2) {
+            if (str1 != str2) {
                 return "两次密码输入不一致";
-            }else {
+            } else {
                 //验证成功返回0 或者 null 或者 false
                 return 0;
             }
@@ -249,7 +249,7 @@ app.controller('FormsListController', [
 /* goods lists */
 app.controller('GoodsListController', [
     '$scope', '$http', 'alertService', function ($scope, $http, alertService) {
-        $scope.alreadySubmit=false;
+        $scope.alreadySubmit = false;
         $scope.list = function (postData) {
             $giqci.post('/api/goods/getproductlist', postData).success(function (response) {
                 $scope.merchantProductList = response.result;
@@ -464,7 +464,7 @@ app.controller("GoodsAddController", [
             layer.confirm('是否添加该商品为常用商品', function (l) {
                 if ($scope.Product != null) {
                     $giqci.post('/api/goods/addproduct',
-                         {ciqCode: $scope.Product.CiqCode}).success(function (data) {
+                         { ciqCode: $scope.Product.CiqCode }).success(function (data) {
                              if (data.result) {
                                  layer.msg("添加成功", { icon: 6 });
                              } else {
@@ -575,7 +575,7 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
             $giqci.post(
               '/api/UserProfile/RemoveProfile', { ProfileId: _object.Id }).success(function (data) {
                   if (data.flag) {
-                      layer.msg("删除成功", { icon: 6 ,time:1000}, function () {
+                      layer.msg("删除成功", { icon: 6, time: 1000 }, function () {
                           $scope.loadMerchant();
                           $("#merchant-add").modal("hide");
                       });
@@ -643,8 +643,8 @@ app.controller("ZcodeApplyListController", [
                     layer.confirm("确定申请" + $scope.Count + "个真知码? 提交后不可更改", function (l) {
                         $giqci.post('/api/forms/addzcodeapply', { ZcodeType: $scope.ZcodeType, Count: $scope.Count }).success(function (data) {
                             if (data.flag) {
-                                layer.msg("申请成功", { icon: 6, time:1000}, function () {
-                                    window.location.href = "/forms/zcodeapplylist";
+                                layer.msg("申请成功", { icon: 6, time: 1000 }, function () {
+                                    window.location.href =  $giqci.getLanUrl("/forms/zcodeapplylist");
                                 });
                             }
                         }, $scope);

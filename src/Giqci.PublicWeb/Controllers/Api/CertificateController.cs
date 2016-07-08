@@ -11,7 +11,7 @@ using Giqci.PublicWeb.Models.Ajax;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {
-    [RoutePrefix("api")]
+    [RoutePrefix("{languageType}/api")]
     public class CertificateController : AjaxController
     {
         private readonly ICertificateApiProxy _certRepo;

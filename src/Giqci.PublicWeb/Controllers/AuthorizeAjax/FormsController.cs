@@ -25,7 +25,7 @@ using Newtonsoft.Json;
 
 namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
 {
-    [RoutePrefix("api")]
+    [RoutePrefix("{languageType}/api")]
     [AjaxAuthorize]
     public class FormsController : AjaxController
     {
@@ -139,7 +139,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                 var port = _cache.GetPort(model.DestPort);
                 isRequireCiqCode = port.RequireCiqCode;
             }
-            var errors = _dataChecker.ApplicationHasErrors(model, false, isRequireCiqCode);
+            var errors = _dataChecker.ApplicationHasErrors(model, false, isRequireCiqCode, _cache);
             var productList = model.ApplicationProducts;
             if (productList != null)
             {

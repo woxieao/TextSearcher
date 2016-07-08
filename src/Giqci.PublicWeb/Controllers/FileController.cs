@@ -2,9 +2,9 @@
 using Giqci.PublicWeb.Models;
 using Giqci.Tools;
 
-namespace Giqci.PublicWeb.Controllers.Api
+namespace Giqci.PublicWeb.Controllers
 {
-    [RoutePrefix("file")]
+    [RoutePrefix("{languageType}/file")]
     public class FileController : Controller
     {
         [Route("viewfile")]

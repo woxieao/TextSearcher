@@ -1,4 +1,5 @@
-﻿<nav id="top-navbar" class="navbar navbar-default">
+﻿@using Giqci.PublicWeb.Extensions
+<nav id="top-navbar" class="navbar navbar-default">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="true">
@@ -47,7 +48,7 @@
                 <li class="dropdown">
                     <a title="客户专区" href="#" data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true">客户专区 <span class="caret"></span></a>
                     <ul role="menu" class="dropdown-menu">
-                        <li><a title="报验申请" href="/forms/app" target="_self">报验申请</a></li>
+                        <li><a title="报验申请" href="@LanCore.GetLanTypeUrl()/forms/app" target="_self">报验申请</a></li>
                         <li><a title="常见问题" href="http://www.giqci.com/faq/" target="_self">常见问题</a></li>
                         <li><a title="客户投诉" href="http://www.giqci.com/complaint/" target="_self">客户投诉</a></li>
                         </ul>
@@ -60,15 +61,15 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">欢迎， @User.Identity.Name <span class="caret"></span></a>
                         <ul class="dropdown-menu user-nav-dropdown">
-                            <li><a href="/account/profile" target="_self">商户资料</a></li>
-                            <li><a href="/account/merchant" target="_self">常用商户列表</a></li>
-                            <li><a href="/account/password" target="_self">密码修改</a></li>
+                            <li><a href="@LanCore.GetLanTypeUrl()/account/profile" target="_self">商户资料</a></li>
+                            <li><a href="@LanCore.GetLanTypeUrl()/account/merchant" target="_self">常用商户列表</a></li>
+                            <li><a href="@LanCore.GetLanTypeUrl()/account/password" target="_self">密码修改</a></li>
                             @*<li><a href="/certificate/search">证书查询</a></li>*@
-                            <li><a href="/forms/app" target="_self">报验申请</a></li>
-                            <li><a href="/forms/list" target="_self">申请列表</a></li>
-                            <li><a href="/forms/zcodeapplylist" target="_self">真知码申请列表</a></li>
-                            <li><a href="/goods/list" target="_self">常用商品列表</a></li>
-                            <li><a href="/account/signoff" target="_self"><i class="glyphicon glyphicon-log-out"></i>&nbsp;退出</a></li>
+                            <li><a href="@LanCore.GetLanTypeUrl()/forms/app" target="_self">报验申请</a></li>
+                            <li><a href="@LanCore.GetLanTypeUrl()/forms/list" target="_self">申请列表</a></li>
+                            <li><a href="@LanCore.GetLanTypeUrl()/forms/zcodeapplylist" target="_self">真知码申请列表</a></li>
+                            <li><a href="@LanCore.GetLanTypeUrl()/goods/list" target="_self">常用商品列表</a></li>
+                            <li><a href="@LanCore.GetLanTypeUrl()/account/signoff" target="_self"><i class="glyphicon glyphicon-log-out"></i>&nbsp;退出</a></li>
                         </ul>
                     </li>
                 </ul>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web;
+using System.Web.Configuration;
 using Giqci.ApiProxy.Logging;
 using Giqci.ApiProxy.Services;
 using Giqci.Chapi.Enums.Dict;
@@ -25,18 +26,41 @@ namespace Giqci.PublicWeb.Extensions
             Dict = new CachedDictService(httpclient, log);
         }
 
+        public static string KeyToWord(this string wordKeyName, LanguageType languageType)
+        {
+            var result = Dict.GetLanguage(languageType, wordKeyName);
+            //if can not find the result return wordKeyName
+            return string.IsNullOrEmpty(result) ? wordKeyName : result;
+        }
+
+
+
         public static string KeyToWord(this string wordKeyName)
         {
             LanguageType languageType;
             try
             {
-                languageType = (LanguageType)Convert.ToInt32(HttpContext.Current.Request.Cookies["languageType"]);
+                var lanTypeStr = LanCore.GetLanType();
+                Enum.TryParse(lanTypeStr, true, out languageType);
             }
             catch
             {
                 languageType = DefaultLanguage;
             }
-            return Dict.GetLanguage(languageType, wordKeyName);
+            return wordKeyName.KeyToWord(languageType);
+        }
+    }
+
+    public class LanCore
+    {
+        public static string GetLanType()
+        {
+            var lanType = HttpContext.Current.Request.RawUrl.Split('/')[1];
+            return lanType;
+        }
+        public static string GetLanTypeUrl()
+        {
+            return string.Format("/{0}/", GetLanType());
         }
     }
 }

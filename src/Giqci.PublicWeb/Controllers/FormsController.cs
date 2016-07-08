@@ -9,13 +9,15 @@ using System.Web.Security;
 using Giqci.Chapi.Enums.App;
 using Giqci.Chapi.Models.App;
 using Giqci.Interfaces;
+using Giqci.PublicWeb.Extensions;
 using Giqci.PublicWeb.Services;
 using Ktech.Mvc.ActionResults;
 using Application = Giqci.Chapi.Models.App.Application;
 
 namespace Giqci.PublicWeb.Controllers
 {
-    [Authorize]
+    [RoutePrefix("{languageType}")]
+    [BaseAuthorize]
     public class FormsController : Ktech.Mvc.ControllerBase
     {
         private readonly IMerchantApiProxy _merchantRepo;

@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
 {
-    [RoutePrefix("api/UserProfile")]
+    [RoutePrefix("{languageType}/api/UserProfile")]
     [AjaxAuthorize]
     public class UserProfileController : AjaxController
     {

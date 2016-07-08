@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Giqci.PublicWeb.Extensions
+@{
     ViewBag.Title = "添加备案商品";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -8,7 +9,7 @@
             <h3 class="panel-title">
                 添加备案商品
                 <span class="pull-right">
-                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<a href="/goods/list">返回列表</a>
+                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<a href="@LanCore.GetLanTypeUrl()/goods/list">返回列表</a>
                 </span>
             </h3>
         </div>
