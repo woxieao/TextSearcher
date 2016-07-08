@@ -8,7 +8,7 @@ namespace Giqci.PublicWeb.Controllers
     [RoutePrefix("")]
     public class HomeController : Controller
     {
-        public readonly IIpDictionaryService _ipDictionaryService;
+        private readonly IIpDictionaryService _ipDictionaryService;
 
         public HomeController(IIpDictionaryService ipDictionaryService)
         {
@@ -18,7 +18,7 @@ namespace Giqci.PublicWeb.Controllers
         [Route("")]
         public ActionResult Index()
         {
-            var defaultPage = "cn/forms/app";
+            const string defaultPage = "cn/forms/app";
             var hostUrl = string.Empty;
             //< !--功能正常后请删掉,以及Config中的IpRedirectSwitch-- >
             if (Config.MethodSwitch.IpRedirectSwitch)
