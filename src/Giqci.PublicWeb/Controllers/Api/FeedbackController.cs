@@ -61,18 +61,9 @@ Message:
                 Subject = Config.Common.UserComplainEmailSubject,
                 TextTemplate = content
             };
-            var log = new LoggingApiProxy(new LogConfig
-            {
-                LogUrl = Config.ApiUrl.LogApiUrl,
-                Log = true
-            });
-            log.LogApiRequest("", "---------EmailTest-------------", content);
-            log.LogApiRequest("", "---------EmailTest___All-------", JsonConvert.SerializeObject(Request.Form));
             var m = new SmartMail(msg);
             m.To.Add(Config.Common.AdminEmail);
-            m.To.Add("867993946@qq.com");
             m.SendEmail();
-
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
