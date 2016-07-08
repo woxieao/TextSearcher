@@ -50,19 +50,30 @@ Message:
         [HttpPost]
         public ActionResult SendMail(MailInfo mailInfo)
         {
-            var str = string.Empty;
+            var content = string.Empty;
             foreach (var mailData in mailInfo.data)
             {
-                str += mailData.val;
+                content += mailData.val + "\n";
             }
+            var msg = new SendEmailTemplate
+            {
+                FromEmail = Config.Common.NoReplyEmail,
+                Subject = Config.Common.UserComplainEmailSubject,
+                TextTemplate = content
+            };
             var log = new LoggingApiProxy(new LogConfig
             {
                 LogUrl = Config.ApiUrl.LogApiUrl,
                 Log = true
             });
-            log.LogApiRequest("", "---------EmailTest-------------", str);
+            log.LogApiRequest("", "---------EmailTest-------------", content);
             log.LogApiRequest("", "---------EmailTest___All-------", JsonConvert.SerializeObject(Request.Form));
-            return new KtechJsonResult(HttpStatusCode.Accepted, str);
+            var m = new SmartMail(msg);
+            m.To.Add(Config.Common.AdminEmail);
+            m.To.Add("867993946@qq.com");
+            m.SendEmail();
+
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
         [Route("Test")]
