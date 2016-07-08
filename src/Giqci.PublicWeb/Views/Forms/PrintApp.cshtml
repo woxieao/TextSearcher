@@ -1,6 +1,8 @@
 ﻿@using Giqci.Chapi.Models.App
+@using Giqci.PublicWeb.Controllers
 @using Giqci.PublicWeb.Extensions
 @using Giqci.PublicWeb.Models
+@using Giqci.Tools
 @using Ktech.Extensions
 @using Newtonsoft.Json
 @model Giqci.Chapi.Models.App.Application
@@ -64,6 +66,7 @@
     </style>
 </head>
 <body>
+    @("test".KeyToWord())
     <table ng-controller="ViewAppController" class="gridtable" style="width: 100%;">
         <colgroup>
             <col width="10%" />

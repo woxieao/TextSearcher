@@ -139,6 +139,7 @@ function Breath(checkLoginUrl, whenLogOutCallBackFunc, whenLoginedCallBackFunc, 
 
 
 var $giqci = {};
+$giqci.languageTypeCookieName = "languageType";
 $giqci.RunLastPost = function () {
     $giqci.LastPostInfo.SendRequest($giqci.LastPostInfo.Scope, $giqci.LastPostInfo.CallBackFunc, $giqci.LastPostInfo.WithData);
 }
@@ -152,6 +153,7 @@ $giqci.CacheLastPost = function (sendRequest, scope, callBackFunc, withData) {
 };
 
 $giqci.get = function (url, data) {
+    url = $giqci.getLanUrl(url);
     var self = this;
     self.LoginFunc = function () {
         $("#breathBox").modal("show");
@@ -162,7 +164,7 @@ $giqci.get = function (url, data) {
     self.DefaultSuccessFunc = function (result) {
         var callbackData = result.callBackPackage;
         if (callbackData.callBackUrl !== null) {
-            window.location.href = callbackData.callBackUrl;
+            window.location.href = $giqci.getLanUrl(callbackData.callBackUrl);
         }
         layer.alert("提交成功");
     }
@@ -230,6 +232,7 @@ $giqci.get = function (url, data) {
 }
 
 $giqci.post = function (url, data) {
+    url = $giqci.getLanUrl(url);
     var self = this;
     self.LoginFunc = function () {
         $("#breathBox").modal("show");
@@ -240,7 +243,7 @@ $giqci.post = function (url, data) {
     self.DefaultSuccessFunc = function (result) {
         var callbackData = result.callBackPackage;
         if (callbackData.callBackUrl !== null) {
-            window.location.href = callbackData.callBackUrl;
+            window.location.href = $giqci.getLanUrl(callbackData.callBackUrl);
         }
         layer.alert("提交成功");
     }
@@ -312,5 +315,15 @@ $giqci.post = function (url, data) {
 $giqci.setLanguage = function (language) {
     language = language == null ? "Cn" : language;
     var now = new Date();
-    document.cookie = "languageType=" + language + ";expires=" + new Date(now.setFullYear(now.getFullYear() + 1));
+    document.cookie = $giqci.languageTypeCookieName + "=" + language + ";expires=" + new Date(now.setFullYear(now.getFullYear() + 1));
+}
+
+$giqci.getLanUrl = function (url) {
+    var lanType = window.location.pathname.split('/')[1];
+    var lan = "/" + lanType + "/";
+    if (url != null) {
+        return lan + url;
+    } else {
+        return lan;
+    }
 }

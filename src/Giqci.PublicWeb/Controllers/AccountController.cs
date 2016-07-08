@@ -8,11 +8,12 @@ using System.Net.Http;
 using System.Text;
 using Giqci.Chapi.Enums.Dict;
 using Giqci.Interfaces;
+using Giqci.PublicWeb.Extensions;
 using Giqci.PublicWeb.Models;
 
 namespace Giqci.PublicWeb.Controllers
 {
-    [RoutePrefix("account")]
+    [RoutePrefix("{languageType}/account")]
     public class AccountController : Controller
     {
         private readonly IMerchantApiProxy _repo;
@@ -25,21 +26,18 @@ namespace Giqci.PublicWeb.Controllers
 
         [Route("login")]
         [HttpGet]
-        public ActionResult Login(string language)
+        public ActionResult Login(string languageType)
         {
-            LanguageType type;
-            LanguageType.TryParse(language, true, out type);
-            Config.Common.Language =type;
             if (!string.IsNullOrEmpty(User.Identity.Name))
             {
-                return Redirect("/");
+                return Redirect("/" + languageType);
             }
             var model = new LoginViewModel();
             return View(model);
         }
 
         [Route("signoff")]
-        [Authorize]
+        [BaseAuthorize]
         public ActionResult Logoff()
         {
             FormsAuthentication.SignOut();
@@ -56,7 +54,7 @@ namespace Giqci.PublicWeb.Controllers
 
         [Route("profile")]
         [HttpGet]
-        [Authorize]
+        [BaseAuthorize]
         public ActionResult Profile()
         {
             var m = _repo.GetMerchant(User.Identity.Name);
@@ -65,7 +63,7 @@ namespace Giqci.PublicWeb.Controllers
 
         [Route("password")]
         [HttpGet]
-        [Authorize]
+        [BaseAuthorize]
         public ActionResult ChangePassword()
         {
             return View();
@@ -99,7 +97,7 @@ namespace Giqci.PublicWeb.Controllers
             return View();
         }
 
-        [Authorize]
+        [BaseAuthorize]
         [Route("merchant")]
         [HttpGet]
         public ActionResult MerchantList()

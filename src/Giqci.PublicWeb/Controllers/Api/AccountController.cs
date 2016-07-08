@@ -14,7 +14,8 @@ using Ktech.Mvc.ActionResults;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {
-    [RoutePrefix("api")]
+    [RoutePrefix("{languageType}/api")]
+    //[RoutePrefix("api")]
     public class AccountController : AjaxController
     {
         private readonly IMerchantApiProxy _repo;

@@ -1055,7 +1055,7 @@
             <strong>信息提示</strong>
             <p>{{resultMessage}}</p>
             <p>
-                <a href="/forms/app" target="_self">再次申请</a>
+                <a href="@LanCore.GetLanTypeUrl()/forms/app" target="_self">再次申请</a>
             </p>
         </div>
 
@@ -1106,7 +1106,7 @@
                                     <th>文件</th>
                                     <td>
                                         <input ng-show="!item.CertFilePath" type="file" name="file{{$index}}" ng-model="item.CertFilePath" class="form-control autowidth-form-control" accept="{{allowType}}" />
-                                        <a ng-show="item.CertFilePath" href="/file/viewfile?fileFullPath={{item.CertFilePath}}" target="_blank">查看样张{{$index+1}}</a>
+                                        <a ng-show="item.CertFilePath" href="@LanCore.GetLanTypeUrl()/file/viewfile?fileFullPath={{item.CertFilePath}}" target="_blank">查看样张{{$index+1}}</a>
                                     </td>
                                 </tr>
                             </table>

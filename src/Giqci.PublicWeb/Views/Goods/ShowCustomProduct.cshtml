@@ -27,7 +27,7 @@
                         });
                     });
                     if ($scope.model.Id > 0) {
-                        $(".panel-title").html("编辑商品<span class=\"small pull-right\"><span class=\"glyphicon glyphicon-arrow-left\" aria-hidden=\"true\"></span>&nbsp;<a href=\"/goods/list\">返回列表</a></span>");
+                        $(".panel-title").html("编辑商品<span class=\"small pull-right\"><span class=\"glyphicon glyphicon-arrow-left\" aria-hidden=\"true\"></span>&nbsp;<a href=\"@LanCore.GetLanTypeUrl()/goods/list\">返回列表</a></span>");
                     }
                 });
                 $scope.loadCountriesDict = null;
@@ -70,7 +70,7 @@
             <h3 class="panel-title">
                 添加非备案商品
                 <span class="pull-right">
-                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<a href="/goods/list">返回列表</a>
+                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<a href="@LanCore.GetLanTypeUrl()/goods/list">返回列表</a>
                 </span>
             </h3>
         </div>

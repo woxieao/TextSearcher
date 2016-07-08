@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Giqci.PublicWeb.Extensions
+@{
     ViewBag.Title = "申请列表";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -53,7 +54,7 @@
                 <tbody>
                     <tr ng-repeat="emp in persons">
                         <td>
-                            <a href="/forms/app/{{emp.Key}}">{{emp.Key}}</a>
+                            <a href="@LanCore.GetLanTypeUrl()/forms/app/{{emp.Key}}">{{emp.Key}}</a>
                         </td>
                         <td>
                             <span ng-show="emp.C101">溯源证书&nbsp;</span><span ng-show="emp.C102">品质证书&nbsp;</span><span ng-show="emp.C103">标签证书&nbsp;</span>
@@ -65,9 +66,9 @@
                         <td>{{emp.MerchantEmail}}</td>
                         <td>
                             <div class="btn-group">
-                                <a target="_blank" class="btn btn-sm btn-default" href="/forms/app/print/{{emp.Key}}"><span class="glyphicon glyphicon-print"></span> 打印</a>
-                                <a ng-if="emp.Status=='新申请'" class="btn btn-sm btn-primary" href="/forms/app/{{emp.Key}}">编辑</a>
-                                <a ng-if="emp.Status!='新申请'" class="btn btn-sm btn-info" href="/forms/app/{{emp.Key}}">查看</a>
+                                <a target="_blank" class="btn btn-sm btn-default" href="@LanCore.GetLanTypeUrl()/forms/app/print/{{emp.Key}}"><span class="glyphicon glyphicon-print"></span> 打印</a>
+                                <a ng-if="emp.Status=='新申请'" class="btn btn-sm btn-primary" href="@LanCore.GetLanTypeUrl()/forms/app/{{emp.Key}}">编辑</a>
+                                <a ng-if="emp.Status!='新申请'" class="btn btn-sm btn-info" href="@LanCore.GetLanTypeUrl()/forms/app/{{emp.Key}}">查看</a>
                             </div>
                         </td>
                     </tr>
