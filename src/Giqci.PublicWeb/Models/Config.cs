@@ -24,7 +24,8 @@ namespace Giqci.PublicWeb.Models
 
             public static readonly string FeedbackEmailSubject =
                 WebConfigurationManager.AppSettings[nameof(FeedbackEmailSubject)];
-
+            public static readonly string UserComplainEmailSubject =
+                          WebConfigurationManager.AppSettings[nameof(UserComplainEmailSubject)];
             public static readonly string RegMerchantEmailSubject =
                 WebConfigurationManager.AppSettings[nameof(RegMerchantEmailSubject)];
 
