@@ -717,7 +717,7 @@
                 $scope.UploadExample = function () {
                     $('#uploadForm').ajaxSubmit({
                         type: "post",
-                        url: "/api/forms/savefile",
+                        url: $giqci.getLanUrl("/api/forms/savefile"),
                         success: function (giqciData) {
                             var data = giqciData.data;
                             if (data.Flag) {
