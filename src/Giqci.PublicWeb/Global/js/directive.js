@@ -429,7 +429,7 @@ app.directive("ajaxProduct", function ($timeout, $http) {
                 minimumInputLength: 0,
                 language: "zh-CN",
                 ajax: {
-                    url: "/api/goods/GetAllProduct",
+                    url: $giqci.getLanUrl("/api/goods/GetAllProduct"),
                     dataType: 'json',
                     delay: 250,
                     type: "POST",
