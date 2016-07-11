@@ -5,7 +5,7 @@ if (typeof jQuery === 'undefined') {
 
 function PageHandler(postUrl, callBackFunc, customPageSize) {
     var self = this;
-    var url = $giqci.getLanUrl(postUrl);
+    var url = postUrl;
     var func = callBackFunc;
     var pageSize = customPageSize == null ? 10 : customPageSize;
     self.pageIndex = 1;
@@ -27,20 +27,15 @@ function PageHandler(postUrl, callBackFunc, customPageSize) {
         postData = self.queryCondition;
         postData["pageIndex"] = self.pageIndex;
         postData["pageSize"] = pageSize;
-        $.ajax({
-            url: url,
-            data: postData,
-            type: "POST",
-            success: function (result) {
-                self.lastTimeResultCount = result.data.length;
-                canWeGo(self.pageIndex);
-                func(result);
-            },
-            error: function (result) {
-                console.log(result);
-                layer.alert(":(\nWhoops,looks like something went wrong");
-            }
+        $giqci.post(url, postData).then(function (result) {
+            self.lastTimeResultCount = result.data.length;
+            canWeGo(self.pageIndex);
+            func(result);
+        }).error(function (result) {
+            console.log(result);
+            layer.alert(":(\nWhoops,looks like something went wrong");
         });
+
     }
 
     this.FirstPage = function (postData) {
