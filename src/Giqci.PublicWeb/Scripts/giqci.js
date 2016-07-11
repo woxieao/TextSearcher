@@ -5,7 +5,7 @@ if (typeof jQuery === 'undefined') {
 
 function PageHandler(postUrl, callBackFunc, customPageSize) {
     var self = this;
-    var url = postUrl;
+    var url = $giqci.getLanUrl(postUrl);
     var func = callBackFunc;
     var pageSize = customPageSize == null ? 10 : customPageSize;
     self.pageIndex = 1;
