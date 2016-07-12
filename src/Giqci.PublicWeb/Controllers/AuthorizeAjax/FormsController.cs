@@ -147,7 +147,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                 {
                     if (product.HandlerType == HandlerType.Add && string.IsNullOrEmpty(product.CiqCode) && product.CustomProductId == 0)
                     {
-                        errors.Add("请选择商品");
+                        errors.Add("email_is_not_exist".KeyToWord());
                     }
                 }
             }
@@ -155,27 +155,27 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             {
                 if (!string.IsNullOrEmpty(model.Voyage) && DateTime.Parse(model.Voyage) < DateTime.Now.Date)
                 {
-                    errors.Add("出发日期应大于等于当前时间");
+                    errors.Add("departure_date_should_ be_greater_than_now".KeyToWord());
                 }
                 if (model.InspectionDate < DateTime.Now.Date)
                 {
-                    errors.Add("预约检查日期需大于等于今天");
+                    errors.Add("check_date_should_be_greater_than_now".KeyToWord());
                 }
                 if (!string.IsNullOrEmpty(model.ShippingDate) && DateTime.Parse(model.ShippingDate) < DateTime.Now.Date)
                 {
-                    errors.Add("计划发货日期应大于等于当前时间");
+                    errors.Add("planned_delivery_date_should_be_greater_than_now".KeyToWord());
                 }
                 if (string.IsNullOrEmpty(model.InspectionAddr))
                 {
-                    errors.Add("检验地点不能为空");
+                    errors.Add("inspection_site_can_not_be_empty".KeyToWord());
                 }
                 if (string.IsNullOrEmpty(model.Inspector))
                 {
-                    errors.Add("联系人不能为空");
+                    errors.Add("contact_cannot_be_empty".KeyToWord());
                 }
                 if (string.IsNullOrEmpty(model.InspectorTel))
                 {
-                    errors.Add("联系人电话不能为空");
+                    errors.Add("contact_phone_can_not_be_empty".KeyToWord());
                 }
             }
 
@@ -214,7 +214,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         {
             if (log.Count <= 0)
             {
-                throw new AjaxException("真知码数量必须为正整数");
+                throw new AjaxException("zcode_must_be_a_positive_integer_number".KeyToWord());
             }
             _zCodeApiProxy.SubmitNewApply(new ZcodeApplyLog
             {

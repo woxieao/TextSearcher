@@ -13,7 +13,7 @@ namespace Giqci.PublicWeb.Extensions
             filterContext.Result = new AjaxResult( new AjaxResultPackage
             {
                 status = -1,
-                msg = "登录状态已失效,请重新登陆",
+                msg = "login_status_has_failed".KeyToWord(),
             });
         }
     }

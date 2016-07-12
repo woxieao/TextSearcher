@@ -10,7 +10,8 @@ var app = angular.module("giqci", ['giqciService', 'ngTipValidate']);
 /* account login */
 app.controller("LoginController", [
     '$http', '$scope', '$location', 'alertService', function ($http, $scope, $location, alertService) {
-        $scope.submitButton = ' 登录 ';
+        $scope.submitButton = $giqci.KeyToWord('login_btn');
+   
         $scope.submitForm = function (isValid) {
             if (isValid) {
                 $scope.enableDisableButton = true;

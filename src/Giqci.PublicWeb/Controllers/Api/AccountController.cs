@@ -80,7 +80,7 @@ namespace Giqci.PublicWeb.Controllers.Api
             else
             {
                 result = false;
-                message = "用户名或密码错误!";
+                message = "wrong_username_or_password".KeyToWord();
             }
             return new AjaxResult(new { result = result, message = message });
         }
@@ -114,7 +114,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                 else
                 {
                     result = false;
-                    message = "邮箱不存在";
+                    message = "email_is_not_exist".KeyToWord();
                 }
             }
             catch (Exception ex)

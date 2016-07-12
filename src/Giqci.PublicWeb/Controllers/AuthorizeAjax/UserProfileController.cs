@@ -48,7 +48,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             }
             catch
             {
-                errorMsg.Add("提交异常");
+                errorMsg.Add("submit_exception".KeyToWord());
             }
             return new AjaxResult(new { flag = !errorMsg.Any(), errorMsg = errorMsg });
         }
@@ -66,7 +66,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             }
             catch
             {
-                errorMsg.Add("提交异常");
+                errorMsg.Add("submit_exception".KeyToWord());
             }
             return new AjaxResult(new { flag = !errorMsg.Any(), errorMsg = errorMsg });
         }

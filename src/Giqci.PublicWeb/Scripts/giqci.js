@@ -307,18 +307,86 @@ $giqci.post = function (url, data) {
     return self;
 }
 
-$giqci.setLanguage = function (language) {
-    language = language == null ? "Cn" : language;
-    var now = new Date();
-    document.cookie = $giqci.languageTypeCookieName + "=" + language + ";expires=" + new Date(now.setFullYear(now.getFullYear() + 1));
-}
-
 $giqci.getLanUrl = function (url) {
-    var lanType = window.location.pathname.split('/')[1];
+    var lanType = $giqci.getLanType();
     var lan = "/" + lanType + "/";
     if (url != null) {
         return lan + url;
     } else {
         return lan;
+    }
+}
+
+$giqci.getLanType = function () {
+    return window.location.pathname.split('/')[1].toLocaleLowerCase();
+}
+
+$giqci.LanguageDataKeyName = "languageData";
+$giqci.getLanData = function (callBackFunc) {
+    if (!$giqci.LoadedLanguageData) {
+        $giqci.LoadedLanguageData = true;
+        $.ajax({
+            url: "/api/language/getallwords",
+            type: "GET",
+            success: function (result) {
+                var lanData = JSON.stringify(result.data);
+                localStorage.clear();
+                localStorage.setItem($giqci.LanguageDataKeyName, lanData);
+                if (callBackFunc !== undefined) {
+                    console.log("load language data successfully,calling callback function " + callBackFunc.getName);
+                    callBackFunc();
+                }
+            }
+        });
+    }
+}
+$giqci.LoadedLanguageData = false;
+$giqci.LanguageData = {};
+$giqci.initLanData = function () {
+    try {
+        $giqci.LanguageData = JSON.parse(localStorage.getItem($giqci.LanguageDataKeyName));
+    }
+    catch (ex) {
+        console.log("parse language json data failed,synching the language data");
+        $giqci.getLanData(function () {
+            $giqci.LanguageData = JSON.parse(localStorage.getItem($giqci.LanguageDataKeyName));
+        });
+    }
+}
+$giqci.initLanData();
+$giqci.KeyToWord = function (keyName) {
+    var lanType = $giqci.getLanType();
+    var key = $giqci.LanguageData[keyName];
+    if (key === undefined) {
+        console.log("can not find the key " + keyName + ",refreshing the language data");
+        $giqci.getLanData(function () {
+            $giqci.initLanData();
+            console.log("init language data to $giqci.LanguageData successfully");
+            key = $giqci.LanguageData[keyName];
+            console.log(keyName + (key !== undefined ? " have found" : "still not found"));
+           });
+    }
+    switch (lanType) {
+        case "cn":
+            return key === undefined || key === null ? keyName : key.CnName;
+        case "en":
+            return key === undefined || key === null ? keyName : key.EnName;
+        default:
+            return "UnknownLanguageType";
+    }
+}
+
+
+function AutoLanguager(cnWords, enWords) {
+    var lanType = $giqci.getLanType();
+    switch (lanType) {
+        case "cn":
+            return cnWords;
+        case "en":
+            {
+                return enWords[0].toUpperCase() + enWords.substring(1);
+            }
+        default:
+            return "UnknownLanguageType";
     }
 }
