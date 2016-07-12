@@ -1,6 +1,7 @@
 ﻿@using Giqci.PublicWeb.Extensions
 @{
-    ViewBag.Title =@("".KeyToWord()) "商品列表";
+    //ViewBag.Title =@("".KeyToWord()) "商品列表";
+    ViewBag.Title = "商品列表";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -11,13 +12,13 @@
         </div>
         <div class="panel-body">
             <div class="goodList-search-bar">
-                    <form class="form-inline">
-                        <a class="btn btn-primary btn-sm" href="@LanCore.GetLanTypeUrl()/goods/add">@("".KeyToWord())添加备案商品</a> &nbsp;&nbsp;<a class="btn btn-primary btn-sm" href="@LanCore.GetLanTypeUrl()/goods/showcustomproduct">添加非备案商品</a>
-                        <input type="text" class="form-control" placeholder="@("".KeyToWord())请输入关键字" ng-model="keyword" />
-                        <button class="btn btn-default" ng-click="search()">
-                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> @("".KeyToWord())搜索
-                        </button>
-                    </form>
+                <form class="form-inline">
+                    <a class="btn btn-primary btn-sm" href="@LanCore.GetLanTypeUrl()/goods/add">@("".KeyToWord())添加备案商品</a> &nbsp;&nbsp;<a class="btn btn-primary btn-sm" href="@LanCore.GetLanTypeUrl()/goods/showcustomproduct">添加非备案商品</a>
+                    <input type="text" class="form-control" placeholder="@("".KeyToWord())请输入关键字" ng-model="keyword" />
+                    <button class="btn btn-default" ng-click="search()">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> @("".KeyToWord())搜索
+                    </button>
+                </form>
             </div>
             <ul class="nav nav-tabs">
                 <li class="active">
@@ -34,7 +35,7 @@
                             <colgroup>
                                 <col width='200' />
                                 <col width='120' />
-                                <col/>
+                                <col />
                                 <col width='100' />
                                 <col width='100' />
                                 <col width='100' />
@@ -86,7 +87,7 @@
                             <colgroup>
                                 <col width='140' />
                                 <col width='120' />
-                                <col/>
+                                <col />
                                 <col width='100' />
                                 <col width='80' />
                                 <col width='100' />
