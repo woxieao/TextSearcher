@@ -161,7 +161,7 @@ $giqci.get = function (url, data) {
         if (callbackData.callBackUrl !== null) {
             window.location.href = $giqci.getLanUrl(callbackData.callBackUrl);
         }
-        layer.alert("提交成功");
+        layer.alert($giqci.KeyToWord("submit_successfully"));
     }
     var errorCallBackFunc = function () {
         console.log("Send Data To " + url + " Failed");
@@ -240,7 +240,7 @@ $giqci.post = function (url, data) {
         if (callbackData.callBackUrl !== null) {
             window.location.href = $giqci.getLanUrl(callbackData.callBackUrl);
         }
-        layer.alert("提交成功");
+        layer.alert($giqci.KeyToWord("提交成功"));
     }
     var errorCallBackFunc = function () {
         console.log("Send Data To " + url + " Failed");
@@ -321,24 +321,9 @@ $giqci.getLanType = function () {
     return window.location.pathname.split('/')[1].toLocaleLowerCase();
 }
 
-$giqci.LanguageDataKeyName = "languageData";
-$giqci.LanguageData = {};
-$giqci.getLanData = function () {
-    $.ajax({
-        url: "/api/language/getallwords",
-        type: "GET",
-        success: function (result) {
-            $giqci.LanguageData = result.data;
-        }
-    });
-}
-
-//todo reload everytime?
-$giqci.getLanData();
-
 $giqci.KeyToWord = function (keyName) {
     var lanType = $giqci.getLanType();
-    var key = $giqci.LanguageData[keyName];
+    var key = LanguageData[keyName];
     switch (lanType) {
         case "cn":
             return key === undefined || key === null ? keyName.replace(/_/g, " ") : key.CnName;

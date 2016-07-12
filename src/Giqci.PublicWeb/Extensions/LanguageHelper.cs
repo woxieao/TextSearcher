@@ -7,6 +7,7 @@ using Giqci.Chapi.Enums.Dict;
 using Giqci.Chapi.Models.Logging;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Models;
+using Newtonsoft.Json;
 
 namespace Giqci.PublicWeb.Extensions
 {
@@ -33,6 +34,10 @@ namespace Giqci.PublicWeb.Extensions
             return string.IsNullOrEmpty(result) ? wordKeyName.Replace("_", " ") : result;
         }
 
+        public static HtmlString GetAllWords<T>(this T any)
+        {
+            return new HtmlString(JsonConvert.SerializeObject(Dict.GetAllLanguage()));
+        }
 
 
         public static string KeyToWord(this string wordKeyName)
