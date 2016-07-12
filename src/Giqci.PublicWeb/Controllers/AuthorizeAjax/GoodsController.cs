@@ -74,7 +74,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             }
 
             return new AjaxResult(
-                new { result = result, msg = msg == null ? "添加成功" : "添加失败,可能的原因该商品已添加" });
+                new { result = result, msg = msg == null ? "added_successfully".KeyToWord() : "product_add_failed".KeyToWord() });
         }
 
         [Route("goods/delete")]
@@ -112,11 +112,11 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                 var reg = new Regex("^[a-z0-9A-Z]+$");
                 if (!reg.IsMatch(product.Code))
                 {
-                    return new AjaxResult(new { flag = false, msg = "商品标识只能为数字或者字母" });
+                    return new AjaxResult(new { flag = false, msg = "product_identification_can_only_be_numbers_or_lett".KeyToWord() });
                 }
                 if (isExit)
                 {
-                    return new AjaxResult(new { flag = false, msg = "该商品标识已重复" });
+                    return new AjaxResult(new { flag = false, msg = "the_product_identification_has_been_repeated".KeyToWord() });
                 }
                 //todo 两个商品表合一之后用FluentValidation
                 if (string.IsNullOrEmpty(product.Brand)
@@ -129,16 +129,16 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                     || string.IsNullOrEmpty(product.Spec)
                     || string.IsNullOrEmpty(product.Manufacturer))
                 {
-                    return new AjaxResult(new { flag = false, msg = "商品信息不完整" });
+                    return new AjaxResult(new { flag = false, msg = "commodity_information_is_not_complete".KeyToWord() });
                 }
                 var regManu = new Regex("^[\x20-\x7e]*$");
                 if (!regManu.IsMatch(product.Manufacturer))
                 {
-                    return new AjaxResult(new { flag = false, msg = "制造商中含有不合法字符" });
+                    return new AjaxResult(new { flag = false, msg = "the_manufacturer_contains_illegal_characters".KeyToWord() });
                 }
                 if (!regManu.IsMatch(product.DescriptionEn))
                 {
-                    return new AjaxResult(new { flag = false, msg = "名称(英文)含有不合法字符" });
+                    return new AjaxResult(new { flag = false, msg = "english_name_contains_illegal_characters".KeyToWord() });
                 }
                 if (product.Id > 0)
                 {
@@ -151,13 +151,13 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                 {
                     _merchantRepository.AddCustomProduct(_auth.GetAuth().MerchantId, product);
                 }
-                msg = "提交成功";
+                msg = "submit_successfully".KeyToWord();
                 flag = true;
             }
             catch
             {
                 flag = false;
-                msg = "提交信息不完整";
+                msg = "submit_information_is_not_complete".KeyToWord();
             }
             return new AjaxResult(new { flag = flag, msg = msg });
         }
@@ -269,13 +269,13 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                 var ciqProduct = _productApiProxy.GetProduct(ciqCode);
                 if (ciqProduct == null)
                 {
-                    throw new Exception("该备案号不存在");
+                    throw new Exception("the_record_number_does_not_exist".KeyToWord());
                 }
                 if (!ciqProduct.IsApproved)
                 {
                     if (string.IsNullOrEmpty(enName))
                     {
-                        throw new Exception("请完善商品英文名");
+                        throw new Exception("please_improve_the_english_name_of_goods".KeyToWord());
                     }
                     var productList = new List<ApplicationProduct>
                         {

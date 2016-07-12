@@ -9,7 +9,7 @@ namespace Giqci.PublicWeb.Extensions
         protected override void OnException(ExceptionContext filterContext)
         {
             var ex = filterContext.Exception;
-            var errorMsg = Config.Common.HideServiceError ? (ex is AjaxException ? ex.Message : "服务器异常") : ex.Message;
+            var errorMsg = Config.Common.HideServiceError ? (ex is AjaxException ? ex.Message : "server_exception".KeyToWord()) : ex.Message;
             filterContext.HttpContext.Response.Clear();
             filterContext.Result = new AjaxResult(new AjaxResultPackage
             {

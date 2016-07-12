@@ -30,7 +30,7 @@ namespace Giqci.PublicWeb.Extensions
         {
             var result = Dict.GetLanguage(languageType, wordKeyName);
             //if can not find the result return wordKeyName
-            return string.IsNullOrEmpty(result) ? wordKeyName : result;
+            return string.IsNullOrEmpty(result) ? wordKeyName.Replace("_", " ") : result;
         }
 
 
