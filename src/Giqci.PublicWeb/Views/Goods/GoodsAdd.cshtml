@@ -1,6 +1,7 @@
 ﻿@using Giqci.PublicWeb.Extensions
 @{
-    ViewBag.Title =@("".KeyToWord()) "添加备案商品";
+    //ViewBag.Title =@("".KeyToWord()) "添加备案商品";
+    ViewBag.Title = "添加备案商品";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div ng-controller="GoodsAddController">
@@ -14,20 +15,20 @@
             </h3>
         </div>
         <div class="panel-body">
-            <form name="productForm"  class="form-horizontal" ng-submit="getproductlist(productForm.$valid)" novalidate>
+            <form name="productForm" class="form-horizontal" ng-submit="getproductlist(productForm.$valid)" novalidate>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">@("".KeyToWord())商品备案号</label>
                     <div class="col-sm-8">
                         <div class="form-inline">
-                            <input type="text" 
-                                   placeholder="@("".KeyToWord())请输入完整的商品备案号" 
-                                   ng-model="CiqCode" 
+                            <input type="text"
+                                   placeholder="@("".KeyToWord())请输入完整的商品备案号"
+                                   ng-model="CiqCode"
                                    reuqired
-                                   class="form-control goodAdd-search-bar" 
+                                   class="form-control goodAdd-search-bar"
                                    ucc-pattern="^((\d{10})|(ICIP\d{14}))$"
-                                   ucc-tip-direction="3" 
+                                   ucc-tip-direction="3"
                                    submit-btn-id="searchButton"
-                                   ucc-pattern-message="@("".KeyToWord())正确的备案号格式为[ICIP+14个数字]或[10个数字]！"/>
+                                   ucc-pattern-message="@("".KeyToWord())正确的备案号格式为[ICIP+14个数字]或[10个数字]！" />
                             <span>
                                 <button class="btn btn-default" type="submit" id="searchButton" ng-disabled="alreadySubmit">
                                     <span class="glyphicon glyphicon-search" aria-hidden="true"></span> @("".KeyToWord())搜索
