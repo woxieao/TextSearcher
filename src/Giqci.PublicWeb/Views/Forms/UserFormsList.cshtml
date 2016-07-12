@@ -28,7 +28,7 @@
 
             </div>
             <div style="padding: 3px; margin-top: 4px; margin-bottom: 4px; color: blue; width: 100%; position: relative;"><small>当前状态为“新申请”的申请号，商户可自行更改编辑；其他状态的申请，编辑请联系GIQCI客服人员。</small></div>
-            <table class="table table-striped table-hover">
+            <table class="table custom-table custom-table-striped custom-table-hover">
                 <colgroup>
                     <col width='100' />
                     <col width='240' />
@@ -61,7 +61,7 @@
                         </td>
                         <td>{{emp.TradeType}}</td>
                         <td>{{emp.CreateDate|date:"yyyy/MM/dd"}}</td>
-                        <td>{{emp.Status}}</td>
+                        <td ng-class="{'已接受申请':'custom-text-green','新申请':'custom-text-blue','编辑结束':'custom-text-purple','申请结束':'custom-text-yellow','申请驳回':'custom-text-red'}[emp.Status]">{{emp.Status}}</td>
                         <td>{{emp.Applicant}}</td>
                         <td>{{emp.MerchantEmail}}</td>
                         <td>
