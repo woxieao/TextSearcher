@@ -746,3 +746,16 @@ ul,li,ol{
 .application-product-area th{padding:4px !important;vertical-align:middle !important;}
 .application-product-area input[type=radio],label{margin:0 !important;}
 .application-table-striped{background-color: #f9f9f9 !important;}
+/*table hover自定义样式*/
+.custom-table-hover>tbody>tr:hover{background-color: #EFFEFE !important;}
+.custom-table-striped>tbody>tr:nth-of-type(odd) {background-color: #F9F8F4;}
+/*列表样式*/
+.custom-table>tbody>tr>td, .custom-table>tbody>tr>th, .custom-table>tfoot>tr>td, .custom-table>tfoot>tr>th, .custom-table>thead>tr>td, .custom-table>thead>tr>th {
+     vertical-align: middle !important; 
+}
+/*申请列表*/
+.custom-text-blue{color:#0095AD;}
+.custom-text-green{color:#4B923C;}
+.custom-text-purple{color:#814E96;}
+.custom-text-yellow{color:#D29034;}
+.custom-text-red{color:#EB5A46;}
