@@ -322,70 +322,28 @@ $giqci.getLanType = function () {
 }
 
 $giqci.LanguageDataKeyName = "languageData";
-$giqci.getLanData = function (callBackFunc) {
-    if (!$giqci.LoadedLanguageData) {
-        $giqci.LoadedLanguageData = true;
-        $.ajax({
-            url: "/api/language/getallwords",
-            type: "GET",
-            success: function (result) {
-                var lanData = JSON.stringify(result.data);
-                localStorage.clear();
-                localStorage.setItem($giqci.LanguageDataKeyName, lanData);
-                if (callBackFunc !== undefined) {
-                    console.log("load language data successfully,calling callback function " + callBackFunc.getName);
-                    callBackFunc();
-                }
-            }
-        });
-    }
-}
-$giqci.LoadedLanguageData = false;
 $giqci.LanguageData = {};
-$giqci.initLanData = function () {
-    try {
-        $giqci.LanguageData = JSON.parse(localStorage.getItem($giqci.LanguageDataKeyName));
-    }
-    catch (ex) {
-        console.log("parse language json data failed,synching the language data");
-        $giqci.getLanData(function () {
-            $giqci.LanguageData = JSON.parse(localStorage.getItem($giqci.LanguageDataKeyName));
-        });
-    }
+$giqci.getLanData = function () {
+    $.ajax({
+        url: "/api/language/getallwords",
+        type: "GET",
+        success: function (result) {
+            $giqci.LanguageData = result.data;
+        }
+    });
 }
-$giqci.initLanData();
+
+//todo reload everytime?
+$giqci.getLanData();
+
 $giqci.KeyToWord = function (keyName) {
     var lanType = $giqci.getLanType();
     var key = $giqci.LanguageData[keyName];
-    if (key === undefined) {
-        console.log("can not find the key " + keyName + ",refreshing the language data");
-        $giqci.getLanData(function () {
-            $giqci.initLanData();
-            console.log("init language data to $giqci.LanguageData successfully");
-            key = $giqci.LanguageData[keyName];
-            console.log(keyName + (key !== undefined ? " have found" : "still not found"));
-           });
-    }
     switch (lanType) {
         case "cn":
-            return key === undefined || key === null ? keyName : key.CnName;
+            return key === undefined || key === null ? keyName.replace(/_/g, " ") : key.CnName;
         case "en":
-            return key === undefined || key === null ? keyName : key.EnName;
-        default:
-            return "UnknownLanguageType";
-    }
-}
-
-
-function AutoLanguager(cnWords, enWords) {
-    var lanType = $giqci.getLanType();
-    switch (lanType) {
-        case "cn":
-            return cnWords;
-        case "en":
-            {
-                return enWords[0].toUpperCase() + enWords.substring(1);
-            }
+            return key === undefined || key === null ? keyName.replace(/_/g, " ") : key.EnName;
         default:
             return "UnknownLanguageType";
     }
