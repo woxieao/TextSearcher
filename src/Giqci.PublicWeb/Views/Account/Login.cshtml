@@ -6,7 +6,7 @@
 }
 <div class="panel panel-default" ng-controller="LoginController">
     <div class="panel-heading">
-        <h1 class="panel-title">商户登录</h1>
+        <h1 class="panel-title">@("merchant_login".KeyToWord())</h1>
     </div>
     <div class="panel-body">
         <div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
@@ -15,28 +15,28 @@
         </div>
         <form name="appform" class="form-horizontal" method="POST" ng-submit="submitForm(appform.$valid)" novalidate>
             <div class="form-group">
-                <label class="col-sm-3 control-label ">邮箱<span class="input-require-color">&nbsp;&lowast;</span></label>
+                <label class="col-sm-3 control-label ">@("email".KeyToWord()) <span class="input-require-color">&nbsp;&lowast;</span></label>
                 <div class="col-sm-6">
-                    <input name="email" 
-                           type="text" 
-                           class="form-control" 
-                           required 
-                           ng-model="user.email" 
-                           ucc-email 
-                           ucc-require="请输入邮箱"
-                           submit-btn-id="loginBtn"/>
+                    <input name="email"
+                           type="text"
+                           class="form-control"
+                           required
+                           ng-model="user.email"
+                           ucc-email
+                           ucc-require="@("please_enter_your_email_address".KeyToWord())"
+                           submit-btn-id="loginBtn" />
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">密码<span class="input-require-color">&nbsp;&lowast;</span></label>
+                <label class="col-sm-3 control-label">@("password".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
                 <div class="col-sm-6">
-                    <input name="password" 
-                           type="password" 
-                           class="form-control" 
-                           required 
+                    <input name="password"
+                           type="password"
+                           class="form-control"
+                           required
                            ng-model="user.password"
                            ucc-min-length="6"
-                           submit-btn-id="loginBtn"/>
+                           submit-btn-id="loginBtn" />
                 </div>
             </div>
             <div class="form-group">
@@ -45,9 +45,9 @@
                         <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> {{submitButton}}
                     </button>
                     &nbsp;
-                    <a href="@LanCore.GetLanTypeUrl()/account/forgot" class="btn btn-link">忘记密码？</a>
+                    <a href="@LanCore.GetLanTypeUrl()/account/forgot" class="btn btn-link">@("forget_password".KeyToWord())？</a>
                     &nbsp;
-                    <a href="@LanCore.GetLanTypeUrl()/account/reg" class="btn btn-link">商户注册</a>
+                    <a href="@LanCore.GetLanTypeUrl()/account/reg" class="btn btn-link">@("merchant_register".KeyToWord())</a>
                 </div>
             </div>
         </form>

@@ -7,21 +7,21 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">
-                申请列表
+                @("".KeyToWord())申请列表
             </h3>
         </div>
         <div class="panel-body">
             <div class="formList-group-bar" style="margin-bottom: 0px;">
                 <form class="form-inline">
                     <div class="form-group">
-                        <input ng-model="applyNo" placeholder="申请号" class="form-control" />
-                        状态: <select ng-model="status" ng-options="s.value as s.name for s in statusValues" class="form-control">
-                            <option value="">-- 全部 --</option>
+                        <input ng-model="applyNo" placeholder="@("".KeyToWord())申请号" class="form-control" />
+                        @("".KeyToWord())状态: <select ng-model="status" ng-options="s.value as s.name for s in statusValues" class="form-control">
+                            <option value="">-- @("".KeyToWord())全部 --</option>
                         </select>
                         From: <input ng-model="start" type="text" class="form-control datetimepicker">
                         To: <input ng-model="end" type="text" class="form-control datetimepicker">
                         <button type="button" class="btn btn-default" ng-click="searchApplication()">
-                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> @("".KeyToWord())搜索
                         </button>
                     </div>
                 </form>
@@ -41,14 +41,14 @@
                 </colgroup>
                 <thead>
                     <tr>
-                        <th>申请号</th>
-                        <th>证书类别</th>
-                        <th>商业目的</th>
-                        <th>创建日期</th>
-                        <th>当前状态</th>
-                        <th>申请人</th>
-                        <th>E-Mail</th>
-                        <th>打印</th>
+                        <th>@("".KeyToWord())申请号</th>
+                        <th>@("".KeyToWord())证书类别</th>
+                        <th>@("".KeyToWord())商业目的</th>
+                        <th>@("".KeyToWord())创建日期</th>
+                        <th>@("".KeyToWord())当前状态</th>
+                        <th>@("".KeyToWord())申请人</th>
+                        <th>@("".KeyToWord())E-Mail</th>
+                        <th>@("".KeyToWord())打印</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -57,7 +57,7 @@
                             <a href="@LanCore.GetLanTypeUrl()/forms/app/{{emp.Key}}">{{emp.Key}}</a>
                         </td>
                         <td>
-                            <span ng-show="emp.C101">溯源证书&nbsp;</span><span ng-show="emp.C102">品质证书&nbsp;</span><span ng-show="emp.C103">标签证书&nbsp;</span>
+                            <span ng-show="emp.C101">@("".KeyToWord())溯源证书&nbsp;</span><span ng-show="emp.C102">@("".KeyToWord())品质证书&nbsp;</span><span ng-show="emp.C103">@("".KeyToWord())标签证书&nbsp;</span>
                         </td>
                         <td>{{emp.TradeType}}</td>
                         <td>{{emp.CreateDate|date:"yyyy/MM/dd"}}</td>
@@ -66,9 +66,9 @@
                         <td>{{emp.MerchantEmail}}</td>
                         <td>
                             <div class="btn-group">
-                                <a target="_blank" class="btn btn-sm btn-default" href="@LanCore.GetLanTypeUrl()/forms/app/print/{{emp.Key}}"><span class="glyphicon glyphicon-print"></span> 打印</a>
-                                <a ng-if="emp.Status=='新申请'" class="btn btn-sm btn-primary" href="@LanCore.GetLanTypeUrl()/forms/app/{{emp.Key}}">编辑</a>
-                                <a ng-if="emp.Status!='新申请'" class="btn btn-sm btn-info" href="@LanCore.GetLanTypeUrl()/forms/app/{{emp.Key}}">查看</a>
+                                <a target="_blank" class="btn btn-sm btn-default" href="@LanCore.GetLanTypeUrl()/forms/app/print/{{emp.Key}}"><span class="glyphicon glyphicon-print"></span> @("".KeyToWord())打印</a>
+                                <a ng-if="emp.Status=='新申请'" class="btn btn-sm btn-primary" href="@LanCore.GetLanTypeUrl()/forms/app/{{emp.Key}}">@("".KeyToWord())编辑</a>
+                                <a ng-if="emp.Status!='新申请'" class="btn btn-sm btn-info" href="@LanCore.GetLanTypeUrl()/forms/app/{{emp.Key}}">@("".KeyToWord())查看</a>
                             </div>
                         </td>
                     </tr>
@@ -77,16 +77,16 @@
             <div class="page-list">
                 <ul class="pagination" ng-show="paginationConf.totalItems > 0">
                     <li ng-class="{disabled: postData.pageIndex == 1}" ng-click="indexPage()">
-                        <span>首页</span>
+                        <span>@("".KeyToWord())首页</span>
                     </li>
                     <li ng-class="{disabled: postData.pageIndex == 1}" ng-click="prevPage()">
-                        <span>上一页</span>
+                        <span>@("".KeyToWord())上一页</span>
                     </li>
                     <li class="disabled">
-                        <span>第{{postData.pageIndex}}页</span>
+                        <span>@("".KeyToWord())第{{postData.pageIndex}}@("".KeyToWord())页</span>
                     </li>
                     <li ng-class="{disabled: paginationConf.totalItems < postData.pageSize}" ng-click="nextPage()">
-                        <span>下一页</span>
+                        <span>@("".KeyToWord())下一页</span>
                     </li>
                 </ul>
             </div>

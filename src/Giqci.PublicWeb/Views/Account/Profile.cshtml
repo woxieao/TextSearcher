@@ -7,7 +7,7 @@
 }
 <div class="panel panel-default" ng-controller="ProfileController">
     <div class="panel-heading">
-        <h1 class="panel-title">商家资料修改</h1>
+        <h1 class="panel-title">@("business_information_modification".KeyToWord())</h1>
     </div>
     <div class="panel-body">
         @*<div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
@@ -16,37 +16,37 @@
         </div>*@
         <form name="appform" class="form-horizontal" method="POST" ng-submit="submitForm(appform.$valid)" novalidate>
             <div class="form-group">
-                <label class="col-sm-2 control-label">邮箱</label>
+                <label class="col-sm-2 control-label">@("email".KeyToWord())</label>
                 <div class="col-sm-8">
                     <p class="form-control-static">{{user.Email}}</p>
                 </div>
             </div>
             <div class="form-group" ng-class="{ 'has-error' : appform.name.$error.required && !appform.name.$pristine }">
-                <label class="col-sm-2 control-label">公司名 <span style="color: red;">*</span></label>
+                <label class="col-sm-2 control-label">@("company_name".KeyToWord()) <span style="color: red;">*</span></label>
                 <div class="col-sm-8">
-                    <input name="name" type="text" class="form-control" ng-model="user.Name"  ucc-require="公司名不能为空" submit-btn-id="profileSubmit" />
-                    <small ng-show="appform.name.$error.required" class="help-block">公司名不能为空</small>
+                    <input name="name" type="text" class="form-control" ng-model="user.Name"  ucc-require="@("".KeyToWord())公司名不能为空" submit-btn-id="profileSubmit" />
+                    <small ng-show="appform.name.$error.required" class="help-block">@("".KeyToWord())公司名不能为空</small>
                 </div>
             </div>
             <div class="form-group" ng-class="{ 'has-error' : appform.address.$error.required && !appform.address.$pristine }">
                 <label class="col-sm-2 control-label">公司地址 <span style="color: red;">*</span></label>
                 <div class="col-sm-8">
-                    <input name="address" type="text" class="form-control" ng-model="user.Address" ucc-require="公司地址不能为空" submit-btn-id="profileSubmit"/>
-                    <small ng-show="appform.address.$error.required" class="help-block">公司地址不能为空</small>
+                    <input name="address" type="text" class="form-control" ng-model="user.Address" ucc-require="@("".KeyToWord())公司地址不能为空" submit-btn-id="profileSubmit"/>
+                    <small ng-show="appform.address.$error.required" class="help-block">@("".KeyToWord())公司地址不能为空</small>
                 </div>
             </div>
             <div class="form-group" ng-class="{ 'has-error' : appform.contact.$error.required && !appform.contact.$pristine }">
-                <label class="col-sm-2 control-label">联系人 <span style="color: red;">*</span></label>
+                <label class="col-sm-2 control-label">@("".KeyToWord())联系人 <span style="color: red;">*</span></label>
                 <div class="col-sm-8">
-                    <input name="contact" type="text" class="form-control" ng-model="user.Contact" ucc-require="联系人不能为空"  submit-btn-id="profileSubmit" />
-                    <small ng-show="appform.contact.$error.required" class="help-block">联系人不能为空</small>
+                    <input name="contact" type="text" class="form-control" ng-model="user.Contact" ucc-require="@("".KeyToWord())联系人不能为空"  submit-btn-id="profileSubmit" />
+                    <small ng-show="appform.contact.$error.required" class="help-block">@("".KeyToWord())联系人不能为空</small>
                 </div>
             </div>
             <div class="form-group" ng-class="{ 'has-error' : appform.phone.$error.required  && !appform.phone.$pristine}">
-                <label class="col-sm-2 control-label">电话 <span style="color: red;">*</span></label>
+                <label class="col-sm-2 control-label">@("".KeyToWord())电话 <span style="color: red;">*</span></label>
                 <div class="col-sm-8">
-                    <input name="phone" type="text" class="form-control" ng-model="user.Phone"  ucc-require="电话不能为空"  submit-btn-id="profileSubmit"/>
-                    <small ng-show="appform.phone.$error.required" class="help-block">电话不能为空</small>
+                    <input name="phone" type="text" class="form-control" ng-model="user.Phone"  ucc-require="@("".KeyToWord())电话不能为空"  submit-btn-id="profileSubmit"/>
+                    <small ng-show="appform.phone.$error.required" class="help-block">@("".KeyToWord())电话不能为空</small>
                 </div>
             </div>
             <div class="form-group">
