@@ -12,7 +12,7 @@ app.directive("ajaxSelect", function ($timeout, $http) {
                 $(element).next().find("span.select2-selection__rendered").html('<span class="select2-selection__placeholder">' + $giqci.KeyToWord("please_enter_the_keyword_search") + '</span>');
                 scope.isLoading = false;
                 if (!scope.isLoading && model.$viewValue) {
-                    $giqci.get($giqci.getLanUrl("/api/dict/" + url), { 'code': model.$viewValue }).success(function (data) {
+                    $giqci.get("/api/dict/" + url, { 'code': model.$viewValue }).success(function (data) {
                         if (data.items.length >= 1) {
                             var newVal = '';
                             if (1 === data.items.length) {
@@ -86,7 +86,7 @@ app.directive("ajaxLabel", function ($timeout, $http) {
             scope.$watch(attrs.ngModel, function (n, o) {
                 scope.isLoading = false;
                 if (!scope.isLoading && typeof (model.$viewValue) !== "undefined" && model.$viewValue) {
-                    $giqci.get($giqci.getLanUrl("/api/dict/" + url),
+                    $giqci.get("/api/dict/" + url,
                        { 'code': model.$viewValue }).success(function (data) {
                            if (data.items.length > 0) {
                                var newVal = (url === "commonhscodes") ? data.items[0].Name : data.items[0].CnName;
@@ -509,7 +509,7 @@ app.directive("ajaxCountry", function ($timeout, $http) {
                 $(element).next().find("span.select2-selection__rendered").html('<span class="select2-selection__placeholder">' + $giqci.KeyToWord("please_enter_the_keyword_search") + '</span>');
                 scope.isLoading = false;
                 if (!scope.isLoading && model.$viewValue) {
-                    $giqci.get($giqci.getLanUrl("/api/dict/" + url), { 'code': model.$viewValue }).success(function (data) {
+                    $giqci.get("/api/dict/" + url, { 'code': model.$viewValue }).success(function (data) {
                         if (data.items.length >= 1) {
                             var newVal = '';
                             if (1 === data.items.length) {
