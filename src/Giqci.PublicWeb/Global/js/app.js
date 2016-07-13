@@ -257,10 +257,10 @@ app.controller('GoodsListController', [
             }, $scope);
         };
         $scope.list($scope.postData);
-        $scope.remove = function (ciqCode, index) {
+        $scope.remove = function (key, index) {
             layer.confirm($giqci.KeyToWord("delete_product_msg"), function (l) {
                 $scope.merchantProductList.splice(index, 1);
-                $giqci.post('/api/goods/delete', { ciqCode: ciqCode }).then(function (response) {
+                $giqci.post('/api/goods/delete', { key: key }).then(function (response) {
                     if (response.data.result) {
                     }
                 }, $scope);
@@ -285,9 +285,9 @@ app.controller('GoodsListController', [
             $scope.list2($scope.postData);
         }
         $scope.list2($scope.postData);
-        $scope.remove2 = function (id, index) {
+        $scope.remove2 = function (key, index) {
             layer.confirm($giqci.KeyToWord("delete_product_msg"), function (l) {
-                $giqci.post('/api/goods/deletecustomproduct', { id: id }).then(function (response) {
+                $giqci.post('/api/goods/deletecustomproduct', { key: key }).then(function (response) {
                     $scope.customProductList.splice(index, 1);
                 }, $scope);
                 layer.close(l);
