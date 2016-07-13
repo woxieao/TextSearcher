@@ -217,6 +217,7 @@
     <Content Include="Global.asax" />
     <Content Include="Global\css\select2\select2-bootstrap.css" />
     <Content Include="Global\css\select2\select2.min.css" />
+    <Content Include="Global\images\china.jpg" />
     <Content Include="Global\images\close.png" />
     <Content Include="Global\images\giqci-banner.jpg" />
     <Content Include="Global\images\cnas-small.jpg" />
@@ -228,6 +229,7 @@
     <Content Include="Global\images\loading-1.gif" />
     <Content Include="Global\images\loading-2.gif" />
     <Content Include="Global\images\loading.gif" />
+    <Content Include="Global\images\uk.jpg" />
     <Content Include="Global\js\angular-1.4.7.min.js" />
     <Content Include="Global\js\app.js" />
     <Content Include="Global\js\bootstrap-datetimepicker.min.js" />

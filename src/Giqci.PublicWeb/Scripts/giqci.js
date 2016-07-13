@@ -336,3 +336,7 @@ $giqci.KeyToWord = function (keyName) {
         }
     }
 }
+$giqci.ChangeLanguage = function (lanType) {
+    lanType = lanType == null ? "cn" : lanType;
+    window.location.href = "/" + lanType + "/" + window.location.pathname.replace(/\/cn\//i, "").replace(/\/en\//i, "");
+}
