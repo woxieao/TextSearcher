@@ -1,12 +1,13 @@
-﻿@using Newtonsoft.Json
+﻿@using Giqci.PublicWeb.Extensions
+@using Newtonsoft.Json
 
 @{
-    ViewBag.Title = "证书查询";
+    ViewBag.Title = "certificate_query".KeyToWord();
 }
 <script src="~/Global/js/commalert.js"></script>
 <div class="panel panel-default" ng-controller="CertificateSearchController">
     <div class="panel-heading">
-        <h1 class="panel-title">证书查询</h1>
+        <h1 class="panel-title">@("certificate_query".KeyToWord())</h1>
     </div>
     <div class="panel-body">
         <div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
@@ -15,9 +16,9 @@
         </div>
         <form class="form-inline">
             <div class="form-group">
-                <input ng-model="certNo" placeholder="证书编号" class="form-control" />
+                <input ng-model="certNo" placeholder="@("certificate_number".KeyToWord())" class="form-control" />
                 <button type="button" class="btn btn-default" ng-click="searchApplication()">
-                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 搜索
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> @("search".KeyToWord())
                 </button>
             </div>
         </form>

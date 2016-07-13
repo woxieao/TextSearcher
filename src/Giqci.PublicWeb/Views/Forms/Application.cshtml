@@ -4,7 +4,7 @@
 @using Newtonsoft.Json
 @model Giqci.Chapi.Models.App.Application
 @{
-    ViewBag.Title = "证书申请表格";
+    ViewBag.Title = "certificate_application_form".KeyToWord();
 }
 @section Footer{
 
@@ -50,7 +50,7 @@
                     });
                 };
 
-                $scope.CustomerSubmitButton = "提交";
+                $scope.CustomerSubmitButton = $giqci.KeyToWord("submit");
                 $scope.CustomerenableDisableButton = false;
                 $scope.dataInit = function () {
                     $scope.model.Application.InspectionDate = $filter('date')($scope.model.Application.InspectionDate, 'yyyy/MM/dd');
@@ -74,7 +74,7 @@
 
                 if ($scope.model.Application.Key != null) {
                     window.onbeforeunload = function () {
-                        return "即将离开本页面";
+                        return $giqci.KeyToWord("about_to_leave_this_page");
                     }
                     $scope.acceptshow = false;
                     $scope.appshow = true;
@@ -144,7 +144,7 @@
                     }
                     $giqci.post('/api/forms/RemoveAppCache'
                     ).success(function (response) {
-                        layer.msg("读取成功 (并已删除了暂存的申请,若需暂存,请再次点击暂存)", { icon: 6, time: 6000 });
+                        layer.msg($giqci.KeyToWord("read_temporary_app_success"), { icon: 6, time: 6000 });
                     }, $scope);
                 }
                 $scope.isSaveingCache = false;
@@ -152,7 +152,7 @@
                     $scope.isSaveingCache = true;
                     $giqci.post('/api/forms/SaveAppCache',
                         $scope.model.Application).success(function (result) {
-                            layer.msg("暂存成功,下次可以直接读取本次保存的数据", { icon: 6 }, function () {
+                            layer.msg($giqci.KeyToWord("temporary_storage_success_msg"), { icon: 6 }, function () {
                                 $scope.isSaveingCache = false;
                                 $scope.$apply();
                             });
@@ -206,12 +206,12 @@
                 };
                 $scope.addItemByBatchNo = function (_object, _index) {
                     if (_object.addItemByBatchNo.BatchNo == null || _object.addItemByBatchNo.BatchNo == "") {
-                        document.getElementsByName("addItemByBatchNoString_" + _index)[0].setAttribute("placeholder", "请输入批次号");
-                        document.getElementsByName("addItemByBatchNoDate_" + _index)[0].setAttribute("placeholder", "请输入保质期");
+                        document.getElementsByName("addItemByBatchNoString_" + _index)[0].setAttribute("placeholder",$giqci.KeyToWord("please_enter_a_batch_number") );
+                        document.getElementsByName("addItemByBatchNoDate_" + _index)[0].setAttribute("placeholder", $giqci.KeyToWord("please_enter_a_shelf_life"));
                         return;
                     }
-                    document.getElementsByName("addItemByBatchNoString_" + _index)[0].setAttribute("placeholder", "批次号");
-                    document.getElementsByName("addItemByBatchNoDate_" + _index)[0].setAttribute("placeholder", "保质期");
+                    document.getElementsByName("addItemByBatchNoString_" + _index)[0].setAttribute("placeholder",$giqci.KeyToWord("batch_number") );
+                    document.getElementsByName("addItemByBatchNoDate_" + _index)[0].setAttribute("placeholder",$giqci.KeyToWord("shelf_life"));
                     _object.ProductItemList.push({
                         BatchNo: _object.addItemByBatchNo.BatchNo == null ? " " : _object.addItemByBatchNo.BatchNo,
                         HandlerType: 1
@@ -254,7 +254,7 @@
                             if (item.addZcodeItem.hasOwnProperty("ZCodeEnd") &&
                                 item.addZcodeItem.ZCodeEnd != "" && item.addZcodeItem.ZCodeEnd != undefined) {
                                 //尾码不为空，给出提示
-                                return "请输入16位首码";
+                                return $giqci.KeyToWord("enter_zcode_head_code_msg");
                             } else {
                                 return false;//两个输入框都没填，验证通过
                             }
@@ -269,10 +269,10 @@
                                 $scope.zCodeValidateEnd(item.addZcodeItem.ZCodeEnd, item, true,_index);
                             }
                         } else {
-                            return "请输入16位首码";
+                            return $giqci.KeyToWord("enter_zcode_head_code_msg");
                         }
                     } else if (item.addZcodeItem.hasOwnProperty("ZCodeEnd") && bool) {
-                        return "请输入16位首码";
+                        return $giqci.KeyToWord("enter_zcode_head_code_msg");
                     } else {
                         return false;
                     }
@@ -285,7 +285,7 @@
                         if (item.addZcodeItem.ZCodeEnd == "" || item.addZcodeItem.ZCodeEnd == undefined) {
                             if (item.addZcodeItem.hasOwnProperty("ZCodeStart") &&
                                 item.addZcodeItem.ZCodeStart != "" && item.addZcodeItem.ZCodeStart != undefined) {
-                                return "请输入16位尾码";
+                                return $giqci.KeyToWord("enter_zcode_tail_code_msg");
                             } else {
                                 return false;//首码尾码都没有填写，验证通过
                             }
@@ -299,10 +299,10 @@
                                 $scope.zCodeValidateStart(item.addZcodeItem.ZCodeStart, item, true,_index);
                             }
                         } else {
-                            return "请输入16位尾码";
+                            return $giqci.KeyToWord("enter_zcode_tail_code_msg");
                         }
                     } else if (item.addZcodeItem.hasOwnProperty("ZCodeStart") && bool) {
-                        return "请输入16位尾码";
+                        return $giqci.KeyToWord("enter_zcode_tail_code_msg");
                     } else {
                         return false;
                     }
@@ -310,8 +310,8 @@
 
                 //添加真知码操作（需在验证通过后）
                 $scope.addZcodeItem = function (_object,_index) {
-                    document.getElementsByName("zCodeStart"+_index)[0].setAttribute("placeholder", "首码");
-                    document.getElementsByName("zCodeEnd"+_index)[0].setAttribute("placeholder", "尾码");
+                    document.getElementsByName("zCodeStart"+_index)[0].setAttribute("placeholder",$giqci.KeyToWord("head_code") );
+                    document.getElementsByName("zCodeEnd"+_index)[0].setAttribute("placeholder", $giqci.KeyToWord("tail_code"));
                     _object.ApplicationZCodes.push({
                         ZCodeStart: _object.addZcodeItem.ZCodeStart,
                         ZCodeEnd: _object.addZcodeItem.ZCodeEnd,
@@ -349,7 +349,7 @@
                         $scope.removeZcodeItem(_object);
                         layer.closeAll();
                     } else if (_object.ZCodeStart.length !== 16) {
-                        return "请输入16位首码";
+                        return $giqci.KeyToWord("enter_zcode_head_code_msg") ;
                     }
                 };
 
@@ -367,7 +367,7 @@
                         $scope.removeZcodeItem(_object);
                         layer.closeAll();
                     } else if (_object.ZCodeEnd.length !== 16) {
-                        return "请输入16位尾码";
+                        return $giqci.KeyToWord("enter_zcode_tail_code_msg");
                     }
                 };
 
@@ -467,7 +467,7 @@
                 };
                 $scope.accept = function () {
                     window.onbeforeunload = function () {
-                        return "即将离开本页面";
+                        return $giqci.KeyToWord("about_to_leave_this_page");
                     }
                     $scope.acceptshow = false;
                     $scope.appshow = true;
@@ -537,7 +537,7 @@
                                     //$anchorScroll();
                                     $scope.dataInit();
                                 } else {
-                                    $scope.resultMessage = response.data.isNew ? "证书申请成功！申请编号为" + response.data.appkey : "数据更新成功";
+                                    $scope.resultMessage = response.data.isNew ? $giqci.KeyToWord("certificate_application_success_msg") + response.data.appkey :$giqci.KeyToWord("data_update_success") ;
                                 }
                             } else {
                                 $scope.login = { result: true, error: "" };
@@ -554,7 +554,7 @@
                             //    $log.warn(response);
                             //}
                         ).error(function () {
-                            layer.alert("服务器异常！");
+                            layer.alert($giqci.KeyToWord("server_exception"));
                             $scope.$apply(function () {
                                 $scope.submitApp = false;
                             });
@@ -635,7 +635,7 @@
                     }
                 };
                 $scope.addMerchant = function () {
-                    $(".merchant-add-title").html("添加常用商户信息");
+                    $(".merchant-add-title").html($giqci.KeyToWord("add_common_merchant_information"));
                     $scope.dialogModelMerchant = {
                         UserName: "",
                         UserAddress: "",
@@ -663,7 +663,7 @@
                         $giqci.post(_url,
                         { userProfile: $scope.dialogModelMerchant }).success(function (data) {
                             if (data.flag) {
-                                layer.msg("保存成功", { icon: 6 }, function () {
+                                layer.msg($giqci.KeyToWord("save_success"), { icon: 6 }, function () {
                                     $scope.MerchantHasSaved = false;
                                     $scope.loadMerchant();
                                     $("#merchant-add-form").modal("hide");
@@ -675,7 +675,7 @@
                                 for (var i = data.errorMsg.length; i > 0; i--) {
                                     _errormsg += data.errorMsg[i - 1] + "\r\n";
                                 }
-                                layer.alert(_errormsg || "未知错误", function (index) {
+                                layer.alert(_errormsg || $giqci.KeyToWord("unknown_error"), function (index) {
                                     layer.close(index);
                                 });
                             }
@@ -690,23 +690,23 @@
                     {
                         ProfileId: _id
                     }).success(function (data) {
-                        $(".merchant-add-title").html("编辑常用商户信息");
+                        $(".merchant-add-title").html($giqci.KeyToWord("edit_common_merchant_information"));
                         $("#merchant-add-form").modal("show");
                         $("#form-merchant-list").modal("hide");
                         $scope.dialogModelMerchant = data.result;
                     }, $scope);
                 };
                 $scope.removeMerchant = function (_object) {
-                    layer.confirm("是否删除该常用商户", function (l) {
+                    layer.confirm($giqci.KeyToWord("delete_common_merchant_msg"), function (l) {
                         $giqci.post('/api/UserProfile/RemoveProfile',
                             { ProfileId: _object.Id }).success(function (data) {
                                 if (data.flag) {
-                                    layer.msg("删除成功", { icon: 6, time: 1000 }, function () {
+                                    layer.msg($giqci.KeyToWord("delete_success"), { icon: 6, time: 1000 }, function () {
                                         $scope.loadMerchant();
                                         //$("#merchant-add").modal("hide");
                                     });
                                 } else {
-                                    layer.alert(data.msg || "删除失败", function (index) {
+                                    layer.alert(data.msg ||$giqci.KeyToWord("delete_failed") , function (index) {
                                         layer.close(index);
                                     });
                                 }
@@ -730,7 +730,7 @@
                     });
                 };
                 $scope.showProductList = function () {
-                    $(".form-add-custom-product-title").html("商品列表");
+                    $(".form-add-custom-product-title").html($giqci.KeyToWord("list_of_goods"));
                     $("#form-product").modal("show");
                     $("#form-add-custom-product").modal("hide");
                     $("#form-add-goods-product").modal("hide");
@@ -741,7 +741,7 @@
                     $scope.CustomDialogModel = null;
                 });
                 $scope.addCustomProduct = function () {
-                    $(".form-add-custom-product-title").html("添加非备案商品");
+                    $(".form-add-custom-product-title").html($giqci.KeyToWord("add_customer_goods"));
                     $("#form-product").modal("hide");
                     $("#form-add-custom-product").modal("show");
                     $("#CustomDialogModelHsCode").next().find("span.select2-selection__rendered").html("");
@@ -765,13 +765,13 @@
                         $giqci.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
                             if (response.flag) {
                                 $scope.getCustomProductList();
-                                layer.msg("提交成功", { icon: 6 }, function () {
+                                layer.msg($giqci.KeyToWord("submit_successfully"), { icon: 6 }, function () {
                                     $scope.showProductList();
                                     angular.element(_btnsubmitAddCustomProduct).attr("disabled", false);
                                 });
                             } else {
                                 angular.element(_btnsubmitAddCustomProduct).attr("disabled", false);
-                                layer.alert(response.msg || "未知错误");
+                                layer.alert(response.msg ||$giqci.KeyToWord("unknown_error") );
                             }
                         }, $scope);
                     }
@@ -780,12 +780,12 @@
                     $giqci.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
                         if (response.flag) {
                             $scope.getGoodsList();
-                            layer.msg("提交成功",{icon:6},function(l) {
+                            layer.msg($giqci.KeyToWord("submit_successfully"),{icon:6},function(l) {
                                 $scope.showProductList();
                             });
                         }
                         var _tipType = response.flag ? "success" : "danger";
-                        layer.alert(response.msg || "未知错误");
+                        layer.alert(response.msg ||$giqci.KeyToWord("unknown_error") );
                     }, $scope);
                 };
 
@@ -797,7 +797,7 @@
                         { ciqCode: $scope.DialogProductCiqCode }).success(function (data) {
                             if (data.result == null) {
                                 $scope.dialogProductList = null;
-                                layer.alert("该备案号不存在");
+                                layer.alert($giqci.KeyToWord("the_record_number_does_not_exist"));
                                 $scope.alreadySearchApp = false;
                             } else {
                                 $scope.dialogProductList = data.result;
@@ -809,15 +809,15 @@
                     }
                 };
                 $scope.addDialogGoodsProduct = function () {
-                    layer.confirm('是否添加该商品为常用商品', function (l) {
+                    layer.confirm($giqci.KeyToWord("add_product_msg"), function (l) {
                         if ($scope.dialogProductList != null) {
                             $giqci.post('/api/goods/addproduct',
                             { ciqCode: $scope.dialogProductList.CiqCode }).success(function (data) {
                                 if (data.result) {
                                     $scope.getGoodsList();
-                                    layer.msg("添加成功", { icon: 6 }, function () { $scope.showProductList(); });
+                                    layer.msg($giqci.KeyToWord("added_successfully"), { icon: 6 }, function () { $scope.showProductList(); });
                                 } else {
-                                    layer.alert(data.msg || "未知错误");
+                                    layer.alert(data.msg ||$giqci.KeyToWord("unknown_error") );
                                 }
                             }, $scope);
                         }
@@ -825,7 +825,7 @@
                     });
                 };
                 $scope.removeMerchantProductId = function (Id, index) {
-                    layer.confirm("您确定要删除该商品吗?", function (l) {
+                    layer.confirm($giqci.KeyToWord("delete_product_msg"), function (l) {
                         $giqci.post('/api/goods/deletecustomproduct', { id: Id }).then(function (response) {
                             if (response.data.flag) {
                                 $scope.getCustomProductList();
@@ -835,7 +835,7 @@
                     });
                 };
                 $scope.removeMerchantProductCiq = function (ciqCode, index) {
-                    layer.confirm("您确定要删除该商品吗?", function (l) {
+                    layer.confirm($giqci.KeyToWord("delete_product_msg"), function (l) {
                         $giqci.post('/api/goods/delete', { ciqCode: ciqCode }).then(function (response) {
                             if (response.data.result) {
                                 $scope.getGoodsList();
@@ -846,7 +846,7 @@
                 };
 
                 $scope.editMerchantProduct = function (_object) {
-                    $(".form-add-custom-product-title").html("编辑非备案商品");
+                    $(".form-add-custom-product-title").html($giqci.KeyToWord("edit_custom_product"));
                     $scope.CustomDialogModel = _object;
                     $("#CustomDialogModelHsCode").next().find("span.select2-selection__rendered").html("");
                     $("#form-add-custom-product").modal("show");
@@ -882,7 +882,7 @@
                         .success(function (data) {
                             if (data.result == null) {
                                 $scope.Product = null;
-                                layer.alert("该备案号不存在", function (index) {
+                                layer.alert($giqci.KeyToWord("the_record_number_does_not_exist"), function (index) {
                                     layer.close(index);
                                 });
                             } else {
@@ -910,7 +910,7 @@
                 $scope.submitChangeProduct = function (_customProductId, _ciqCode) {
                     angular.element(_form_submitAddCustomProduct).attr("disabled", true);
                     if (false === $scope.isSearch || _customProductId == null || _ciqCode == null) {
-                        layer.alert("请搜索并获取备案商品信息", function (index) {
+                        layer.alert($giqci.KeyToWord("search_record_commodity_msg"), function (index) {
                             layer.close(index);
                             angular.element(_form_submitAddCustomProduct).attr("disabled", false);
                         });
@@ -921,7 +921,7 @@
                     ).success(function (response) {
                         $scope.isSearch = false;
                         if (response.flag) {
-                            layer.msg("数据已经转换成功", { icon: 6 }, function () {
+                            layer.msg($giqci.KeyToWord("convert_success_msg"), { icon: 6 }, function () {
                                 $scope.getGoodsList();
                                 $scope.getCustomProductList();
                                 angular.element(_form_submitAddCustomProduct).attr("disabled", false);
@@ -1040,10 +1040,10 @@
             <div class="form-group">
                 <div class="col-sm-4" ng-class="{'col-sm-offset-5':AppCache==null,'col-sm-offset-4':AppCache!=null}">
                     <button class="btn btn-default" ng-click="accept()">
-                        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 我接受以上合同条款
+                        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> @("i_accept_the_terms_of_the_contract".KeyToWord())
                     </button>
                     <button class="btn btn-success" ng-show="AppCache!=null" ng-click="RemoveAppCache(true)">
-                        <span class="glyphicon glyphicon-level-up" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;读取暂存的申请&nbsp;&nbsp;&nbsp;
+                        <span class="glyphicon glyphicon-level-up" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@("read_the_temporary_application".KeyToWord())&nbsp;&nbsp;&nbsp;
                     </button>
                 </div>
             </div>
@@ -1052,15 +1052,15 @@
 
     <div ng-show="appshow" id="appliction-form" style="display: none;">
         <div class="alert alert-success" role="alert" ng-show="resultMessage">
-            <strong>信息提示</strong>
+            <strong>@("information_prompt".KeyToWord())</strong>
             <p>{{resultMessage}}</p>
             <p>
-                <a href="@LanCore.GetLanTypeUrl()/forms/app" target="_self">再次申请</a>
+                <a href="@LanCore.GetLanTypeUrl()/forms/app" target="_self">@("apply_again".KeyToWord())</a>
             </p>
         </div>
 
         <div ng-show="!resultMessage">
-            <h1 id="h1">证书申请表格</h1>
+            <h1 id="h1">@("certificate_application_form".KeyToWord())</h1>
             @*<div class="has-error" ng-show="errors.length > 0">
                 <ul class="help-block">
                     <li ng-repeat="err in errors">{{err}}</li>
@@ -1071,42 +1071,42 @@
                 <span ng-bind="alert.msg"></span>
             </div>
             <div>
-                <span class="input-require-color">&nbsp;&lowast;</span> 带星号的为必填项
+                <span class="input-require-color">&nbsp;&lowast;</span> @("an_asterisk_is_required".KeyToWord())
             </div>
             <form name="appForm" onkeydown="if(event.keyCode==13)return false;" class="form-horizontal" ng-submit="submit(appForm.$valid)"
                   method="POST" novalidate enctype="multipart/form-data" id="uploadForm" onsubmit="return CheckIsUpload();">
                 <div class="form-group">
 
-                    <label class="col-sm-2 control-label">证书类别<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label class="col-sm-2 control-label">@("certificate_category".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-10">
                         <div class="checkbox">
-                            <label><input type="checkbox" name="Application.C101" ng-model="model.Application.C101" /> 溯源证书</label>
-                            <label><input type="checkbox" name="Application.C102" ng-model="model.Application.C102" ng-click="check_type_c102()" /> 品质证书</label>
-                            <label><input type="checkbox" name="Application.C103" ng-model="model.Application.C103" /> 标签证书</label>
+                            <label><input type="checkbox" name="Application.C101" ng-model="model.Application.C101" /> @("c101_cert".KeyToWord())</label>
+                            <label><input type="checkbox" name="Application.C102" ng-model="model.Application.C102" ng-click="check_type_c102()" /> @("c102_cert".KeyToWord())</label>
+                            <label><input type="checkbox" name="Application.C103" ng-model="model.Application.C103" /> @("c103_cert".KeyToWord())</label>
                         </div>
                     </div>
                 </div>
                 <div class="form-group" ng-show="model.Application.C103">
                     @*<input type="file" name="file" onchange="if ($(this).val() != '') {angular.element(this).scope().UploadExampleNew()}" />*@
-                    <label class="col-sm-2 control-label">上传标签证书样张</label>
+                    <label class="col-sm-2 control-label">@("upload_sample_label_certificate".KeyToWord())</label>
                     <div class="col-sm-10">
                         <input type="file" name="file" onchange="if ($(this).val() != '') {angular.element(this).scope().UploadExample()}" accept="{{allowType}}" />
                         <div ng-repeat="item in model.Application.ExampleCertList | filter:listFilter">
                             <table class="table table-striped goodsItems">
                                 <tr>
-                                    <th>样张{{$index+1}}</th>
+                                    <th>@("sample".KeyToWord()){{$index+1}}</th>
                                     <td>
                                         <button class="btn btn-default" ng-click="removeExample(item)">
-                                            <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除
+                                            <span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> @("delete".KeyToWord())
                                         </button>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>文件</th>
+                                    <th>@("file".KeyToWord())</th>
                                     <td>
                                         <input ng-show="!item.CertFilePath" type="file" name="file{{$index}}" ng-model="item.CertFilePath" class="form-control autowidth-form-control" accept="{{allowType}}" />
-                                        <a ng-show="item.CertFilePath" href="@LanCore.GetLanTypeUrl()/file/viewfile?fileFullPath={{item.CertFilePath}}" target="_blank">查看样张{{$index+1}}</a>
+                                        <a ng-show="item.CertFilePath" href="@LanCore.GetLanTypeUrl()/file/viewfile?fileFullPath={{item.CertFilePath}}" target="_blank">@("view_file".KeyToWord()){{$index+1}}</a>
                                     </td>
                                 </tr>
                             </table>
@@ -1115,38 +1115,29 @@
                 </div>
                 <div class="form-group">
 
-                    <label class="col-sm-2 control-label">商业目的<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label class="col-sm-2 control-label">@("business_purpose".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-10">
                         <div class="radio">
-                            <label><input type="radio" name="Application.TradeType" ng-model="model.Application.TradeType" value="4" /> 一般贸易</label>
-                            <label><input type="radio" name="Application.TradeType" ng-model="model.Application.TradeType" value="1" /> 电商贸易</label>
+                            <label><input type="radio" name="Application.TradeType" ng-model="model.Application.TradeType" value="4" /> @("general_trade".KeyToWord())</label>
+                            <label><input type="radio" name="Application.TradeType" ng-model="model.Application.TradeType" value="1" /> @("electricity_trade".KeyToWord())</label>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">申请企业备案号<span>&nbsp;&nbsp;</span></label>
+                    <label class="col-sm-2 control-label">@("enterprise_record_number".KeyToWord())<span>&nbsp;&nbsp;</span></label>
                     <div class="col-sm-10">
                         <p class="form-control-static">
                             <input type="hidden" name="Application.ApplicantCode" ng-model="model.Application.ApplicantCode" />{{model.Application.ApplicantCode}}
                         </p>
                     </div>
                 </div>
-                @*<div class="form-group">
-                    <label class="col-sm-2 control-label">申请人<span class="input-require-color">&nbsp;&lowast;</span></label>
-                    <input type="text" maxlength="100" name="Application.Applicant" ng-model="model.Application.Applicant" class="form-control" placeholder="全称" />
-                    <input type="text" maxlength="400" name="Application.ApplicantAddr" ng-model="model.Application.ApplicantAddr" class="form-control" placeholder="地址" />
-                    <input type="text" maxlength="100" name="Application.ApplicantContact" ng-model="model.Application.ApplicantContact" class="form-control" placeholder="联系人" />
-                    <input type="text" maxlength="100" name="Application.ApplicantPhone" ng-model="model.Application.ApplicantPhone" class="form-control" placeholder="联系电话" />
-                    <input type="text" maxlength="100" name="Application.ApplicantEmail" ng-model="model.Application.ApplicantEmail" class="form-control" placeholder="邮箱" />
-                </div>*@
-
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">申请人<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label class="col-sm-2 control-label">@("applicant".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
                     <div class="col-sm-8">
                         <div class="input-group">
-                            <span class="input-group-addon custom-input-group" id="application-fullname">全称</span>
-                            <input type="text" maxlength="100" name="Application.Applicant" ng-model="model.Application.Applicant" class="form-control" placeholder="全称" aria-describedby="application-fullname" />
+                            <span class="input-group-addon custom-input-group" id="application-fullname">@("full_name".KeyToWord())</span>
+                            <input type="text" maxlength="100" name="Application.Applicant" ng-model="model.Application.Applicant" class="form-control" placeholder="@("full_name".KeyToWord())" aria-describedby="application-fullname" />
                         </div>
                     </div>
                 </div>
@@ -1155,8 +1146,8 @@
                     <label class="col-sm-2 control-label"><span>&nbsp;&nbsp;</span></label>
                     <div class="col-sm-8">
                         <div class="input-group">
-                            <span class="input-group-addon custom-input-group" id="application-address">地址</span>
-                            <input type="text" maxlength="400" name="Application.ApplicantAddr" ng-model="model.Application.ApplicantAddr" class="form-control" placeholder="地址" aria-describedby="application-address" />
+                            <span class="input-group-addon custom-input-group" id="application-address">@("address".KeyToWord())</span>
+                            <input type="text" maxlength="400" name="Application.ApplicantAddr" ng-model="model.Application.ApplicantAddr" class="form-control" placeholder="@("address".KeyToWord())" aria-describedby="application-address" />
                         </div>
                     </div>
                 </div>
@@ -1164,8 +1155,8 @@
                     <label class="col-sm-2 control-label"><span>&nbsp;&nbsp;</span></label>
                     <div class="col-sm-8">
                         <div class="input-group">
-                            <span class="input-group-addon custom-input-group" id="application-contact">联系人</span>
-                            <input type="text" maxlength="100" name="Application.ApplicantContact" ng-model="model.Application.ApplicantContact" class="form-control" placeholder="联系人" aria-describedby="application-contact"/>
+                            <span class="input-group-addon custom-input-group" id="application-contact">@("contacts".KeyToWord())</span>
+                            <input type="text" maxlength="100" name="Application.ApplicantContact" ng-model="model.Application.ApplicantContact" class="form-control" placeholder="@("contacts".KeyToWord())" aria-describedby="application-contact"/>
                         </div>
                     </div>
                 </div>
@@ -1173,8 +1164,8 @@
                     <label class="col-sm-2 control-label"><span>&nbsp;&nbsp;</span></label>
                     <div class="col-sm-8">
                         <div class="input-group">
-                            <span class="input-group-addon custom-input-group" id="application-phone">联系电话</span>
-                            <input type="text" maxlength="100" name="Application.ApplicantPhone" ng-model="model.Application.ApplicantPhone" class="form-control" placeholder="联系电话" aria-describedby="application-phone"/>
+                            <span class="input-group-addon custom-input-group" id="application-phone">@("contact_phone".KeyToWord())</span>
+                            <input type="text" maxlength="100" name="Application.ApplicantPhone" ng-model="model.Application.ApplicantPhone" class="form-control" placeholder="@("contact_phone".KeyToWord())" aria-describedby="application-phone"/>
                         </div>
                     </div>
                 </div>
@@ -1182,75 +1173,66 @@
                     <label class="col-sm-2 control-label"><span>&nbsp;&nbsp;</span></label>
                     <div class="col-sm-8">
                         <div class="input-group">
-                            <span class="input-group-addon custom-input-group" id="application-email">邮箱</span>
-                            <input type="text" maxlength="100" name="Application.ApplicantEmail" ng-model="model.Application.ApplicantEmail" class="form-control" placeholder="邮箱" aria-describedby="application-email"/>
+                            <span class="input-group-addon custom-input-group" id="application-email">@("email".KeyToWord())</span>
+                            <input type="text" maxlength="100" name="Application.ApplicantEmail" ng-model="model.Application.ApplicantEmail" class="form-control" placeholder="@("email".KeyToWord())" aria-describedby="application-email"/>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">出口商<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label class="col-sm-2 control-label">@("exporter".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-6">
                         <select class="form-control" ng-change="selectExporter(Exporter)" ng-model="Exporter" ng-options="merchant.UserName for merchant in loadMerchantInfo">
-                            <option value="">--请选择--</option>
+                            <option value="">--@("please_select".KeyToWord())--</option>
                         </select>
                     </div>
                     <div class="col-sm-4">
-                        <button class="btn btn-default" type="button" ng-click="merchantList()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加/管理</button>
+                        <button class="btn btn-default" type="button" ng-click="merchantList()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> @("add_or_manage".KeyToWord())</button>
                     </div>
                 </div>
-                @*<div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-8">
-                        <input type="text" maxlength="100" name="Application.Exporter" ng-model="model.Application.Exporter" class="form-control" placeholder="全称" />
-                        <input type="text" maxlength="400" name="Application.ExporterAddr" ng-model="model.Application.ExporterAddr" class="form-control" placeholder="地址" />
-                        <input type="text" maxlength="100" name="Application.ExporterContact" ng-model="model.Application.ExporterContact" class="form-control" placeholder="联系人" />
-                        <input type="text" maxlength="100" name="Application.ExporterPhone" ng-model="model.Application.ExporterPhone" class="form-control" placeholder="联系电话" />
-                    </div>
-                </div>*@
-
-                <div class="form-group">
+         <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-8">
                         <div class="input-group">
-                            <span class="input-group-addon custom-input-group" id="export-fullname">全称</span>
-                            <input type="text" maxlength="100" name="Application.Exporter" ng-model="model.Application.Exporter" class="form-control" placeholder="全称" aria-describedby="export-fullname" />
+                            <span class="input-group-addon custom-input-group" id="export-fullname">@("full_name".KeyToWord())</span>
+                            <input type="text" maxlength="100" name="Application.Exporter" ng-model="model.Application.Exporter" class="form-control" placeholder="@("full_name".KeyToWord())" aria-describedby="export-fullname" />
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-8">
                         <div class="input-group">
-                            <span class="input-group-addon custom-input-group" id="export-address">地址</span>
-                            <input type="text" maxlength="400" name="Application.ExporterAddr" ng-model="model.Application.ExporterAddr" class="form-control" placeholder="地址" aria-describedby="export-address" />
+                            <span class="input-group-addon custom-input-group" id="export-address">@("address".KeyToWord())</span>
+                            <input type="text" maxlength="400" name="Application.ExporterAddr" ng-model="model.Application.ExporterAddr" class="form-control" placeholder="@("address".KeyToWord())" aria-describedby="export-address" />
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-8">
                         <div class="input-group">
-                            <span class="input-group-addon custom-input-group" id="export-contact">联系人</span>
-                            <input type="text" maxlength="100" name="Application.ExporterContact" ng-model="model.Application.ExporterContact" class="form-control" placeholder="联系人" aria-describedby="export-contact"/>
+                            <span class="input-group-addon custom-input-group" id="export-contact">@("contacts".KeyToWord())</span>
+                            <input type="text" maxlength="100" name="Application.ExporterContact" ng-model="model.Application.ExporterContact" class="form-control" placeholder="@("contacts".KeyToWord())" aria-describedby="export-contact"/>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-8">
                         <div class="input-group">
-                            <span class="input-group-addon custom-input-group" id="export-phone">联系电话</span>
-                            <input type="text" maxlength="100" name="Application.ExporterPhone" ng-model="model.Application.ExporterPhone" class="form-control" placeholder="联系电话" aria-describedby="export-phone"/>
+                            <span class="input-group-addon custom-input-group" id="export-phone">@("contact_phone".KeyToWord())</span>
+                            <input type="text" maxlength="100" name="Application.ExporterPhone" ng-model="model.Application.ExporterPhone" class="form-control" placeholder="@("contact_phone".KeyToWord())" aria-describedby="export-phone"/>
                         </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label ng-if="model.Application.TradeType==4" class="col-sm-2 control-label">进口商<span class="input-require-color">&nbsp;&lowast;</span></label>
-                    <label ng-if="model.Application.TradeType==1" class="col-sm-2 control-label">代理进口商<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label ng-if="model.Application.TradeType==4" class="col-sm-2 control-label">@("importer".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label ng-if="model.Application.TradeType==1" class="col-sm-2 control-label">@("agent_importer".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
                     <div class="col-sm-6">
                         <select class="form-control" ng-change="selectImporter(Importer)" ng-model="Importer" ng-options="merchant.UserName for merchant in loadMerchantInfo">
-                            <option value="">--请选择--</option>
+                            <option value="">--@("please_select".KeyToWord())--</option>
                         </select>
                     </div>
                     <div class="col-sm-4">
-                        <button class="btn btn-default" type="button" ng-click="merchantList()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加/管理</button>
+                        <button class="btn btn-default" type="button" ng-click="merchantList()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> @("add_or_manage".KeyToWord())</button>
                     </div>
                 </div>
                 @*<div class="form-group">
@@ -1265,39 +1247,39 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-8">
                         <div class="input-group">
-                            <span class="input-group-addon custom-input-group" id="import-fullname">全称</span>
-                            <input type="text" maxlength="100" name="Application.Importer" ng-model="model.Application.Importer" class="form-control" placeholder="全称" aria-describedby="import-fullname"/>
+                            <span class="input-group-addon custom-input-group" id="import-fullname">@("full_name".KeyToWord())</span>
+                            <input type="text" maxlength="100" name="Application.Importer" ng-model="model.Application.Importer" class="form-control" placeholder="@("full_name".KeyToWord())" aria-describedby="import-fullname"/>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-8">
                         <div class="input-group">
-                            <span class="input-group-addon custom-input-group" id="import-address">地址</span>
-                            <input type="text" maxlength="400" name="Application.ImporterAddr" ng-model="model.Application.ImporterAddr" class="form-control" placeholder="地址" aria-describedby="import-address"/>
+                            <span class="input-group-addon custom-input-group" id="import-address">@("address".KeyToWord())</span>
+                            <input type="text" maxlength="400" name="Application.ImporterAddr" ng-model="model.Application.ImporterAddr" class="form-control" placeholder="@("address".KeyToWord())" aria-describedby="import-address"/>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-8">
                         <div class="input-group">
-                            <span class="input-group-addon custom-input-group" id="import-contact">联系人</span>
-                            <input type="text" maxlength="100" name="Application.ImporterContact" ng-model="model.Application.ImporterContact" class="form-control" placeholder="联系人" aria-describedby="import-contact"/>
+                            <span class="input-group-addon custom-input-group" id="import-contact">@("contacts".KeyToWord())</span>
+                            <input type="text" maxlength="100" name="Application.ImporterContact" ng-model="model.Application.ImporterContact" class="form-control" placeholder="@("contacts".KeyToWord())" aria-describedby="import-contact"/>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-8">
                         <div class="input-group">
-                            <span class="input-group-addon custom-input-group" id="import-phone">联系电话</span>
-                            <input type="text" maxlength="100" name="Application.ImporterPhone" ng-model="model.Application.ImporterPhone" class="form-control" placeholder="联系电话" aria-describedby="import-phone"/>
+                            <span class="input-group-addon custom-input-group" id="import-phone">@("contact_phone".KeyToWord())</span>
+                            <input type="text" maxlength="100" name="Application.ImporterPhone" ng-model="model.Application.ImporterPhone" class="form-control" placeholder="@("contact_phone".KeyToWord())" aria-describedby="import-phone"/>
                         </div>
                     </div>
                 </div>
 
                 <!--商品资料-->
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">商品资料<span>&nbsp;&nbsp;</span></label>
+                    <label class="col-sm-2 control-label">@("commodity_information".KeyToWord())<span>&nbsp;&nbsp;</span></label>
                     <div class="col-sm-8">
                         <div ng-repeat="item in model.Application.ApplicationProducts | filter:listFilter" class="application-product-area">
                             <table class="table table-hover application-table-margin">
@@ -1309,17 +1291,17 @@
                                 </colgroup>
                                 <tr class="application-table-head">
                                     <th>
-                                        <p class="form-control-static">商品 {{$index+1}}</p>
+                                        <p class="form-control-static">@("goods".KeyToWord()) {{$index+1}}</p>
                                     </th>
                                     <td>
-                                        <button class="btn btn-default btn-sm" type="button" ng-click="removeitem(item)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button>
+                                        <button class="btn btn-default btn-sm" type="button" ng-click="removeitem(item)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> @("delete".KeyToWord())</button>
                                     </td>
                                     <td></td>
                                     <td></td>
                                 </tr>
                                 <tr>
                                     <th>
-                                        <p class="form-control-static">常用商品<span class="input-require-color">&nbsp;&lowast;</span></p>
+                                        <p class="form-control-static">@("common_goods".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></p>
                                     </th>
                                     @*<td colspan="3">
                                         <div class="application-table-margin">
@@ -1351,18 +1333,18 @@
                                                     ng-change="selectProduct(select,item)"
                                                     ng-model="select" 
                                                     style="width:100%;">
-                                                <option value="">请输入关键词搜索</option>
+                                                <option value="">@("please_enter_the_keyword_to_search".KeyToWord())</option>
                                             </select>
                                         </div>
                                     </td>
 
                                     <td>
-                                        <a class="btn btn-default" data-toggle="modal" data-target="#form-product"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;添加/管理</a>
+                                        <a class="btn btn-default" data-toggle="modal" data-target="#form-product"><span class="glyphicon glyphicon-link" aria-hidden="true"></span>&nbsp;@("add_or_manage".KeyToWord())</a>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>
-                                        <p class="form-control-static">名称(英文)</p>
+                                        <p class="form-control-static">@("name".KeyToWord())(@("english".KeyToWord()))</p>
                                     </th>
                                     <td>
                                         <span ng-show="!item.IsEditDescriptionEn">
@@ -1373,7 +1355,7 @@
                                         </span>
                                     </td>
                                     <th>
-                                        <p class="form-control-static">名称(中文)</p>
+                                        <p class="form-control-static">@("name".KeyToWord())(@("chinese".KeyToWord()))</p>
                                     </th>
                                     <td>
                                         <p class="form-control-static break-word" ng-model="item.Description">{{item.Description}}</p>
@@ -1381,14 +1363,14 @@
                                 </tr>
                                 <tr>
                                     <th>
-                                        <p class="form-control-static">品牌</p>
+                                        <p class="form-control-static">@("brand".KeyToWord())</p>
                                     </th>
                                     <td>
                                         <p class="form-control-static break-word" ng-model="item.Brand">{{item.Brand}}</p>
 
                                     </td>
                                     <th>
-                                        <p class="form-control-static">包装</p>
+                                        <p class="form-control-static">@("package".KeyToWord())</p>
                                     </th>
                                     <td>
                                         <p class="form-control-static break-word" ng-model="item.Package">{{item.Package}}</p>
@@ -1397,13 +1379,13 @@
                                 </tr>
                                 <tr>
                                     <th>
-                                        <p class="form-control-static">规格</p>
+                                        <p class="form-control-static">@("spec".KeyToWord())</p>
                                     </th>
                                     <td>
                                         <p class="form-control-static break-word" ng-model="item.Spec">{{item.Spec}}</p>
                                     </td>
                                     <th>
-                                        <p class="form-control-static">原产国</p>
+                                        <p class="form-control-static">@("country_of_origin".KeyToWord())</p>
                                     </th>
                                     <td>
                                         <p ajax-label ajax-url="countries" ng-model="item.ManufacturerCountry" class="form-control-static">{{item.ManufacturerCountry}}</p>
@@ -1411,13 +1393,13 @@
                                 </tr>
                                 <tr>
                                     <th>
-                                        <p class="form-control-static">HS编码</p>
+                                        <p class="form-control-static">@("hs_code".KeyToWord())</p>
                                     </th>
                                     <td>
                                         <p ng-model="item.HSCode" class="form-control-static break-word">{{item.HSCode}}</p>
                                     </td>
                                     <th>
-                                        <p class="form-control-static">制造商</p>
+                                        <p class="form-control-static">@("manufacturer".KeyToWord())</p>
                                     </th>
                                     <td>
 
@@ -1427,15 +1409,15 @@
                                 </tr>
                                 <tr ng-show="model.Application.C102">
                                     <th>
-                                        <p class="form-control-static">品质检验</p>
+                                        <p class="form-control-static">@("quality_restriction".KeyToWord())</p>
                                     </th>
                                     <td>
                                         <div class="checkbox">
-                                            <label><input type="checkbox" ng-model="item.C102" />是否检查</label>
+                                            <label><input type="checkbox" ng-model="item.C102" />@("is_check".KeyToWord())</label>
                                         </div>
                                     </td>
                                     <th>
-                                        <p class="form-control-static" ng-show="item.C102">检测项目<span class="input-require-color">&nbsp;&lowast;</span></p>
+                                        <p class="form-control-static" ng-show="item.C102">@("test_item".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></p>
                                     </th>
                                     <td>
                                         <span ng-show="item.C102"><input type="text" ng-model="item.C102Comment" class="form-control" maxlength="100" /></span>
@@ -1454,7 +1436,7 @@
                                     <tr>
                                         <th class="application-product-county">
                                             <p class="form-control-static">
-                                                数量<span class="input-require-color">&nbsp;&lowast;</span>
+                                                @("quantity".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span>
                                             </p>
                                         </th>
                                         <td colspan="2">
@@ -1462,10 +1444,10 @@
                                                    min="1"
                                                    ng-model="item.Quantity" 
                                                    class="form-control" 
-                                                   placeholder="数量" 
+                                                   placeholder="@("quantity".KeyToWord())" 
                                                    required
                                                    ucc-pattern="^\+?[1-9][0-9]*$"
-                                                   ucc-pattern-message="数量填写有误！"
+                                                   ucc-pattern-message="@("wrong_number".KeyToWord())！"
                                                    submit-btn-id="applicationSubmit"/>
                                         </td>
                                         <td></td>
@@ -1473,19 +1455,19 @@
                                     <tr ng-repeat="batch in item.ProductItemList | filter:listFilter">
                                         <td>
                                             <div class="form-control-static">
-                                                批次号/保质期 {{$index+1}}<span class="input-require-color">&nbsp;&lowast;</span>
+                                                @("batch_number_or_shelf_life".KeyToWord()) {{$index+1}}<span class="input-require-color">&nbsp;&lowast;</span>
                                             </div>
                                         </td>
                                         <td colspan="2">
                                             <p ng-model="batch.BatchNo" class="form-control-static">{{batch.BatchNo}}</p>
                                         </td>
-                                        <td><button class="btn btn-default btn-sm" type="button" ng-click="removeItemByBatchNo(batch)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button></td>
+                                        <td><button class="btn btn-default btn-sm" type="button" ng-click="removeItemByBatchNo(batch)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> @("delete".KeyToWord())</button></td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <div class="form-control-static">
-                                                <input type="radio" ng-model="batch.batchNoOrDate" id="batch_1_{{$index+1}}" checked /><label for="batch_1_{{$index+1}}">批次号</label>
-                                                <input type="radio" ng-model="batch.batchNoOrDate" value="1" id="batch_0_{{$index+1}}" /><label for="batch_0_{{$index+1}}">保质期</label>
+                                                <input type="radio" ng-model="batch.batchNoOrDate" id="batch_1_{{$index+1}}" checked /><label for="batch_1_{{$index+1}}">@("batch_number".KeyToWord())</label>
+                                                <input type="radio" ng-model="batch.batchNoOrDate" value="1" id="batch_0_{{$index+1}}" /><label for="batch_0_{{$index+1}}">@("shelf_life".KeyToWord())</label>
                                                 <span class="input-require-color">&nbsp;&lowast;</span>
                                             </div>
                                         </td>
@@ -1495,7 +1477,7 @@
                                                    ng-model="item.addItemByBatchNo.BatchNo" 
                                                    name="addItemByBatchNoString_{{$index}}"
                                                    class="form-control" 
-                                                   placeholder="批次号" 
+                                                   placeholder="@("batch_number".KeyToWord())" 
                                                    maxlength="100"
                                                    ng-blur="addItemByBatchNo(item,$index)" />
                                             <input ng-show="(batch.batchNoOrDate==1)" 
@@ -1505,7 +1487,7 @@
                                                    readonly 
                                                    ng-model="item.addItemByBatchNo.BatchNo" 
                                                    class="form-control custom-datetimepicker batchNo-input" 
-                                                   placeholder="保质期" />
+                                                   placeholder="@("shelf_life".KeyToWord())" />
                                         </td>
                                         <td>
                                             @*<button class="btn btn-default btn-sm" type="button" ng-click="addItemByBatchNo(item,$index)"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;添加</button>*@
@@ -1524,14 +1506,14 @@
                                         <col width="215" />
                                     </colgroup>
                                     <tr ng-if="(item.ApplicationZCodes|filter:listFilter).length">
-                                        <th><p class="form-control-static">真知码</p></th>
-                                        <th><p class="form-control-static">首码</p></th>
-                                        <th><p class="form-control-static">尾码</p></th>
-                                        <th><p class="form-control-static">操作</p></th>
+                                        <th><p class="form-control-static">@("zcode".KeyToWord())</p></th>
+                                        <th><p class="form-control-static">@("head_code".KeyToWord())</p></th>
+                                        <th><p class="form-control-static">@("tail_code".KeyToWord())</p></th>
+                                        <th><p class="form-control-static">@("operation".KeyToWord())</p></th>
                                     </tr>
                                     <tr ng-repeat="zcode in item.ApplicationZCodes | filter:listFilter" ng-dblclick="editZcodeItem(zcode)">
                                         <td>
-                                            <p class="form-control-static">真知码 {{$index+1}}</p>
+                                            <p class="form-control-static">@("zcode".KeyToWord()) {{$index+1}}</p>
                                         </td>
                                         <td>
                                             <input ng-if="zcode.HtmlEdit==1"
@@ -1561,16 +1543,16 @@
                                         </td>
                                         <td>
                                             <div class="btn-group">
-                                                <button ng-if="zcode.HtmlEdit==0" class="btn btn-default btn-sm" type="button" ng-click="editZcodeItem(zcode)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> 编辑</button>
-                                                <button ng-if="zcode.HtmlEdit==1" class="btn btn-default btn-sm" type="button" ng-click="submitZcodeItem(zcode,$index)"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 确认</button>
-                                                <button class="btn btn-default btn-sm" type="button" ng-click="removeZcodeItem(zcode)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button>
+                                                <button ng-if="zcode.HtmlEdit==0" class="btn btn-default btn-sm" type="button" ng-click="editZcodeItem(zcode)"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span> @("edit".KeyToWord())</button>
+                                                <button ng-if="zcode.HtmlEdit==1" class="btn btn-default btn-sm" type="button" ng-click="submitZcodeItem(zcode,$index)"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> @("confirm".KeyToWord())</button>
+                                                <button class="btn btn-default btn-sm" type="button" ng-click="removeZcodeItem(zcode)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> @("delete".KeyToWord())</button>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td>
                                             <div class="form-control-static">
-                                                <input type="radio" id="ZcodeItem_{{$index+1}}" checked /><label for="ZcodeItem_{{$index+1}}">真知码</label>
+                                                <input type="radio" id="ZcodeItem_{{$index+1}}" checked /><label for="ZcodeItem_{{$index+1}}">@("zcode".KeyToWord())</label>
                                             </div>
                                         </td>
                                         <td>
@@ -1582,7 +1564,7 @@
                                                    class="form-control"
                                                    maxlength="16"
                                                    submit-btn-id="applicationSubmit"
-                                                   placeholder="首码"
+                                                   placeholder="@("head_code".KeyToWord())"
                                                    ng-blur="zcodeBlurStart($event)"
                                                    ng-keyup="myKeyupStart($event,$index)"
                                                    name="zCodeStart{{$index}}" />
@@ -1596,7 +1578,7 @@
                                                    class="form-control"
                                                    maxlength="16"
                                                    submit-btn-id="applicationSubmit"
-                                                   placeholder="尾码"
+                                                   placeholder="@("tail_code".KeyToWord())"
                                                    ng-blur="zcodeBlurEnd($event)"
                                                    ng-keyup="myKeyupEnd($event,item,$index)"
                                                    name="zCodeEnd{{$index}}" />
@@ -1611,22 +1593,22 @@
                             <!--end真知码-->
                         </div>
                         <div class="">
-                            <button class="btn btn-default" type="button" ng-click="additem()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加商品</button>
+                            <button class="btn btn-default" type="button" ng-click="additem()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> @("add_product".KeyToWord())</button>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">运输方式<span>&nbsp;&nbsp;</span></label>
+                    <label class="col-sm-2 control-label">@("type_of_shipping".KeyToWord())<span>&nbsp;&nbsp;</span></label>
                     <div class="col-sm-10">
                         <div class="radio">
-                            <label><input type="radio" ng-model="model.Application.ShippingMethod" value="1" />空运</label>
-                            <label><input type="radio" ng-model="model.Application.ShippingMethod" value="2" />海运</label>
-                            <label><input type="radio" ng-model="model.Application.ShippingMethod" value="3" />陆运</label>
+                            <label><input type="radio" ng-model="model.Application.ShippingMethod" value="1" />@("air_transport".KeyToWord())</label>
+                            <label><input type="radio" ng-model="model.Application.ShippingMethod" value="2" />@("ocean_shipping".KeyToWord())</label>
+                            <label><input type="radio" ng-model="model.Application.ShippingMethod" value="3" />@("land_transportation".KeyToWord())</label>
                         </div>
                     </div>
                 </div>
                 <div class="form-group" ng-show="model.Application.ShippingMethod == 2">
-                    <label class="col-sm-2 control-label">船舶资料<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label class="col-sm-2 control-label">@("ship_information".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
                     <div class="col-sm-8">
                         <div ng-repeat="item in model.Application.ContainerInfos | filter:listFilter">
                             <table class="table table-striped goodsItems">
@@ -1638,90 +1620,90 @@
                                 </colgroup>
                                 <tr>
                                     <th>
-                                        <p class="form-control-static">装箱信息 {{$index+1}}</p>
+                                        <p class="form-control-static">@("packing_information".KeyToWord()) {{$index+1}}</p>
                                     </th>
                                     <td colspan="3">
-                                        <button class="btn btn-default" type="button" ng-click="removeContainerInfo(item)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> 删除</button>
+                                        <button class="btn btn-default" type="button" ng-click="removeContainerInfo(item)"><span class="glyphicon glyphicon-minus-sign" aria-hidden="true"></span> @("delete".KeyToWord())</button>
                                     </td>
                                 </tr>
                                 <tr>
                                     <th>
-                                        <p class="form-control-static">装箱号<span class="input-require-color">&nbsp;&lowast;</span></p>
+                                        <p class="form-control-static">@("packing_number".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></p>
                                     </th>
                                     <td>
                                         <p class="form-control-static" ng-if="item.HandlerType==0" ng-model="item.ContainerNumber">{{item.ContainerNumber}}</p>
-                                        <input type="text" ng-if="item.HandlerType==1" ng-model="item.ContainerNumber" class="form-control" placeholder="装箱号" />
+                                        <input type="text" ng-if="item.HandlerType==1" ng-model="item.ContainerNumber" class="form-control" placeholder="@("packing_number".KeyToWord())" />
                                     </td>
                                     <th>
-                                        <p class="form-control-static">铅封号<span class="input-require-color">&nbsp;&lowast;</span></p>
+                                        <p class="form-control-static">@("seal_no".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></p>
                                     </th>
                                     <td>
                                         <p class="form-control-static" ng-if="item.HandlerType==0" ng-model="item.SealNumber">{{item.SealNumber}}</p>
-                                        <input type="text" ng-if="item.HandlerType==1" ng-model="item.SealNumber" class="form-control" placeholder="铅封号" />
+                                        <input type="text" ng-if="item.HandlerType==1" ng-model="item.SealNumber" class="form-control" placeholder="@("seal_no".KeyToWord())" />
                                     </td>
                                 </tr>
                             </table>
                         </div>
-                        <button class="btn btn-default" type="button" ng-click="addContainerInfo()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加装箱信息</button>
+                        <button class="btn btn-default" type="button" ng-click="addContainerInfo()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> @("add_packing_information".KeyToWord())</button>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        提单号<span>&nbsp;&nbsp;</span>
+                        @("bill_of_lading_no".KeyToWord())<span>&nbsp;&nbsp;</span>
                     </label>
                     <div class="col-sm-8">
                         <input type="text" 
                                ng-model="model.Application.BillNo" 
                                class="form-control" 
-                               placeholder="提单号" />
+                               placeholder="@("bill_of_lading_no".KeyToWord())" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        副提单号<span>&nbsp;&nbsp;</span>
+                        @("second_bill_of_lading_no".KeyToWord())<span>&nbsp;&nbsp;</span>
                     </label>
                     <div class="col-sm-8">
-                        <input type="text" ng-model="model.Application.OtherBillNo" class="form-control" placeholder="副提单号" />
+                        <input type="text" ng-model="model.Application.OtherBillNo" class="form-control" placeholder="@("second_bill_of_lading_no".KeyToWord())" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        <p ng-if="model.Application.ShippingMethod == 1">航班号<span>&nbsp;&nbsp;</span></p>
-                        <p ng-if="model.Application.ShippingMethod == 2">船舶号<span>&nbsp;&nbsp;</span></p>
-                        <p ng-if="model.Application.ShippingMethod == 3">车牌号<span>&nbsp;&nbsp;</span></p>
+                        <p ng-if="model.Application.ShippingMethod == 1">@("flight_number".KeyToWord())<span>&nbsp;&nbsp;</span></p>
+                        <p ng-if="model.Application.ShippingMethod == 2">@("ship_number".KeyToWord())<span>&nbsp;&nbsp;</span></p>
+                        <p ng-if="model.Application.ShippingMethod == 3">@("license_plate_number".KeyToWord())<span>&nbsp;&nbsp;</span></p>
                     </label>
                     <div class="col-sm-8">
                         <input type="text" 
                                ng-if="model.Application.ShippingMethod == 1" 
                                ng-model="model.Application.Vesselcn" 
                                class="form-control" 
-                               placeholder="航班号" />
+                               placeholder="@("flight_number".KeyToWord())" />
                         <input type="text" 
                                ng-if="model.Application.ShippingMethod == 2" 
                                ng-model="model.Application.Vesselcn" 
                                class="form-control" 
-                               placeholder="船舶号" />
+                               placeholder="@("ship_number".KeyToWord())" />
                         <input type="text" 
                                ng-if="model.Application.ShippingMethod == 3" 
                                ng-model="model.Application.Vesselcn" 
                                class="form-control" 
-                               placeholder="车牌号" />
+                               placeholder="@("license_plate_number".KeyToWord())" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">出发日期<span>&nbsp;&nbsp;</span></label>
+                    <label class="col-sm-2 control-label">@("departure_date".KeyToWord())<span>&nbsp;&nbsp;</span></label>
                     <div class="col-sm-8">
-                        <input type="text" ng-model="model.Application.Voyage" readonly class="form-control datetimepicker batchNo-input" placeholder="出发日期" />
+                        <input type="text" ng-model="model.Application.Voyage" readonly class="form-control datetimepicker batchNo-input" placeholder="@("departure_date".KeyToWord())" />
                     </div>
                 </div>
                 <div class="form-group" ng-show="model.Application.ShippingMethod != 2">
-                    <label class="col-sm-2 control-label">运输总数量<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label class="col-sm-2 control-label">@("total_transport_volume".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
                     <div class="col-sm-6">
                         <input type="tel" 
                                ng-model="model.Application.TotalUnits" 
                                class="form-control" 
                                min="0" 
-                               placeholder="运输总数量"
+                               placeholder="@("total_transport_volume".KeyToWord())"
                                 />
                         <!--海运没有运输总数量，添加提示会有bug，这里去掉验证提示-->
                         <!--submit-btn-id="applicationSubmit" ucc-pattern="^\+?[1-9][0-9]*$" ucc-pattern-message="请填写正确的运输总数量！" required-->
@@ -1731,16 +1713,16 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">运输总重量<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label class="col-sm-2 control-label">@("total_weight_of_transport".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-6">
                         <input type="tel" 
                                ng-model="model.Application.TotalWeight" 
                                class="form-control" 
                                min="0" 
-                               placeholder="运输总重量"
+                               placeholder="@("total_weight_of_transport".KeyToWord())"
                                ucc-pattern="^(([0-9]+\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\.[0-9]+)|([0-9]*[1-9][0-9]*))$"
-                               ucc-pattern-message="请填写正确的运输总重量！"
+                               ucc-pattern-message="@("wrong_total_weight_of_transport".KeyToWord())！"
                                submit-btn-id="applicationSubmit"
                                required />
                     </div>
@@ -1749,90 +1731,90 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">计划发货日期<span>&nbsp;&nbsp;</span></label>
+                    <label class="col-sm-2 control-label">@("planned_delivery_date".KeyToWord())<span>&nbsp;&nbsp;</span></label>
                     <div class="col-sm-8">
-                        <input type="text" ng-model="model.Application.ShippingDate" readonly class="form-control datetimepicker batchNo-input" placeholder="计划发货日期" />
+                        <input type="text" ng-model="model.Application.ShippingDate" readonly class="form-control datetimepicker batchNo-input" placeholder="@("planned_delivery_date".KeyToWord())" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">预约检查日期<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label class="col-sm-2 control-label">@("date_of_appointment".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-8">
-                        <input type="text" ng-model="model.Application.InspectionDate" readonly class="form-control datetimepicker batchNo-input" placeholder="预约检查日期 " />
+                        <input type="text" ng-model="model.Application.InspectionDate" readonly class="form-control datetimepicker batchNo-input" placeholder="@("date_of_appointment".KeyToWord()) " />
                     </div>
                 </div>
                 <div class="form-group">
 
-                    <label class="col-sm-2 control-label">检验地点<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label class="col-sm-2 control-label">@("inspection_site".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-8">
                         <input type="text" 
                                ng-model="model.Application.InspectionAddr" 
                                class="form-control" 
-                               placeholder="检验地点"
+                               placeholder="@("inspection_site".KeyToWord())"
                                required
-                               ucc-require="检验地点不能为空"
+                               ucc-require="@("inspection_site_can_not_be_empty".KeyToWord())"
                                submit-btn-id="applicationSubmit" />
                     </div>
                 </div>
                 <div class="form-group">
 
-                    <label class="col-sm-2 control-label">联系人<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label class="col-sm-2 control-label">@("contacts".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-8">
                         <input type="text" 
                                ng-model="model.Application.Inspector" 
                                class="form-control" 
-                               placeholder="联系人" 
+                               placeholder="@("contacts".KeyToWord())" 
                                maxlength="100"
                                required
                                ucc-max-length="100"
-                               ucc-require="联系人不能为空"
+                               ucc-require="@("contact_cannot_be_empty".KeyToWord())"
                                submit-btn-id="applicationSubmit" />
                     </div>
                 </div>
                 <div class="form-group">
 
-                    <label class="col-sm-2 control-label">联系人电话<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label class="col-sm-2 control-label">@("contact_phone".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-8">
                         <input type="text" 
                                ng-model="model.Application.InspectorTel" 
                                class="form-control" 
-                               placeholder="联系人电话"
+                               placeholder="@("contact_phone".KeyToWord())"
                                required
-                               ucc-require="联系人电话不能为空"
+                               ucc-require="@("contact_phone_can_not_be_empty".KeyToWord())"
                                submit-btn-id="applicationSubmit" />
                     </div>
                 </div>
                 <div class="form-group">
 
-                    <label class="col-sm-2 control-label">发货港口<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label class="col-sm-2 control-label">@("port_of_shipment".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-8">
                         <select ajax-select ajax-url="ports" ng-model="model.Application.LoadingPort" class="form-control selectLoadingPort" style="width: 100%">
-                            <option value="">&lt; - 请选择港口 - &gt;</option>
+                            <option value="">&lt; - @("please_select_a_port".KeyToWord()) - &gt;</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
 
-                    <label class="col-sm-2 control-label">目的港口<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label class="col-sm-2 control-label">@("port_of_destination".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
 
                     <div class="col-sm-8">
                         <select ajax-select ajax-url="ports" ng-model="model.Application.DestPort" class="form-control selectDestPorts" style="width: 100%">
-                            <option value="">&lt; - 其他港口 - &gt;</option>
+                            <option value="">&lt; - @("other_ports".KeyToWord())其他港口 - &gt;</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-8">
                         <button class="btn btn-default" type="submit" id="applicationSubmit" ng-disabled="submitApp">
-                            <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交
+                            <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> @("submit".KeyToWord())
                         </button>
 
                         <button ng-show="isNewApp" type="button" ng-disabled="isSaveingCache" class="btn btn-info" ng-click="SaveAppCache()">
-                            <span class="glyphicon glyphicon-save" aria-hidden="true"></span> 暂存
+                            <span class="glyphicon glyphicon-save" aria-hidden="true"></span> @("temporary_storage".KeyToWord())
                         </button>
                     </div>
                 </div>
@@ -1848,7 +1830,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <h5 class="modal-title" id="gridSystemModalLabel">用户登录</h5>
+                        <h5 class="modal-title" id="gridSystemModalLabel">@("user_login".KeyToWord())</h5>
                     </div>
                     <div class="modal-body">
                         <div class="form-group has-error" ng-show="!login.result">
@@ -1856,26 +1838,26 @@
                         </div>
                         <div class="form-group" ng-class="{ 'has-error' : (appform.email.$invalid && appform.email.$dirty) || user.email=='' }">
 
-                            <label class="col-sm-2 control-label">邮箱<span class="input-require-color">&nbsp;&lowast;</span>: </label>
+                            <label class="col-sm-2 control-label">@("email".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span>: </label>
 
                             <div class="col-sm-8">
                                 <input name="email" type="email" class="form-control" required ng-model="user.email" />
-                                <small ng-show="appform.email.$invalid" class="help-block">请填写正确的邮箱</small>
+                                <small ng-show="appform.email.$invalid" class="help-block">@("not_correct_email_msg".KeyToWord())</small>
                             </div>
                         </div>
                         <div class="form-group" ng-class="{ 'has-error' : (appform.password.$error.required && !appform.password.$pristine) || user.password=='' }">
 
-                            <label class="col-sm-2 control-label">密码<span class="input-require-color">&nbsp;&lowast;</span>: </label>
+                            <label class="col-sm-2 control-label">@("password".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span>: </label>
 
                             <div class="col-sm-8">
                                 <input name="password" type="password" class="form-control" required ng-model="user.password" />
-                                <small ng-show="appform.password.$error.required" class="help-block">请输入您的密码</small>
+                                <small ng-show="appform.password.$error.required" class="help-block">@("please_enter_your_password".KeyToWord())</small>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="button" class="btn btn-primary" ng-click="submitLoginForm()"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 登录</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">@("close".KeyToWord())</button>
+                        <button type="button" class="btn btn-primary" ng-click="submitLoginForm()"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> @("login".KeyToWord())</button>
                     </div>
                 </div><!-- /.modal-content -->
             </form>
@@ -1886,15 +1868,15 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">商品列表</h5>
+                    <h5 class="modal-title">@("list_of_goods".KeyToWord())</h5>
                 </div>
                 <div class="modal-body giqci-modal-dialog">
                     <ul class="nav nav-tabs">
                         <li class="active">
-                            <a href="#ciqProduct" data-toggle="tab">备案商品</a>
+                            <a href="#ciqProduct" data-toggle="tab">@("record_commodity".KeyToWord())</a>
                         </li>
                         <li>
-                            <a href="#custProduct" data-toggle="tab">非备案商品</a>
+                            <a href="#custProduct" data-toggle="tab">@("customer_goods".KeyToWord())</a>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -1911,12 +1893,12 @@
                                     <thead>
                                         <tr>
                                             <th>
-                                                <span style="color: green">商品备案号</span>
+                                                <span style="color: green">@("commodity_record_number".KeyToWord())</span>
                                             </th>
-                                            <th>名称(中文)</th>
-                                            <th>名称(英文)</th>
-                                            <th>规格</th>
-                                            <th>操作</th>
+                                            <th>@("name".KeyToWord())(@("chinese".KeyToWord()))</th>
+                                            <th>@("name".KeyToWord())(@("english".KeyToWord()))</th>
+                                            <th>@("spec".KeyToWord())</th>
+                                            <th>@("operation".KeyToWord())</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -1927,7 +1909,7 @@
                                             <td class="td-ellipsis" title="{{Product.Spec}}">{{Product.Spec}}</td>
                                             <td>
                                                 <div class="btn-group" role="group">
-                                                    <button type="button" class="btn btn-danger btn-sm" ng-click="removeMerchantProductCiq(Product.CiqCode,$index)">删除</button>
+                                                    <button type="button" class="btn btn-danger btn-sm" ng-click="removeMerchantProductCiq(Product.CiqCode,$index)">@("delete".KeyToWord())</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -1948,12 +1930,12 @@
                                     <thead>
                                         <tr>
                                             <th>
-                                                <span style="color: orangered">自定义标识</span>
+                                                <span style="color: orangered">@("customizes_identity".KeyToWord())</span>
                                             </th>
-                                            <th>名称(中文)</th>
-                                            <th>名称(英文)</th>
-                                            <th>规格</th>
-                                            <th>操作</th>
+                                            <th>@("name".KeyToWord())(@("chinese".KeyToWord()))</th>
+                                            <th>@("name".KeyToWord())(@("english".KeyToWord()))</th>
+                                            <th>@("spec".KeyToWord())</th>
+                                            <th>@("operation".KeyToWord())</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -1964,9 +1946,9 @@
                                             <td class="td-ellipsis" title="{{Product.Spec}}">{{Product.Spec}}</td>
                                             <td>
                                                 <div class="btn-group pull-right" role="group">
-                                                    <button ng-if="!Product.IsApproved" class="btn btn-default btn-sm" ng-click="editMerchantProduct(Product)">编辑</button>
-                                                    <button type="button" class="btn btn-primary btn-sm" ng-click="changeMerchantProduct($index)">转为备案商品</button>
-                                                    <button type="button" class="btn btn-danger btn-sm" ng-click="removeMerchantProductId(Product.Id,$index)">删除</button>
+                                                    <button ng-if="!Product.IsApproved" class="btn btn-default btn-sm" ng-click="editMerchantProduct(Product)">@("edit".KeyToWord())</button>
+                                                    <button type="button" class="btn btn-primary btn-sm" ng-click="changeMerchantProduct($index)">@("transferred_to_the_record_commodity".KeyToWord())</button>
+                                                    <button type="button" class="btn btn-danger btn-sm" ng-click="removeMerchantProductId(Product.Id,$index)">@("delete".KeyToWord())</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -1977,9 +1959,9 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" ng-click="addGoodsProduct()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加备案商品</button>
-                    <button type="button" class="btn btn-default" ng-click="addCustomProduct()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加非备案商品</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-default" ng-click="addGoodsProduct()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> @("add_record_merchandise".KeyToWord())</button>
+                    <button type="button" class="btn btn-default" ng-click="addCustomProduct()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> @("add_customer_goods".KeyToWord())</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">@("close".KeyToWord())</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -1992,7 +1974,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">添加备案商品</h5>
+                    <h5 class="modal-title">@("add_record_merchandise".KeyToWord())</h5>
                 </div>
                 <div class="modal-body">
                     @*<div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
@@ -2001,24 +1983,24 @@
                     </div>*@
                     <form name="addGoodForm" class="form-horizontal" novalidate>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">商品备案号</label>
+                            <label class="col-sm-2 control-label">@("commodity_record_number".KeyToWord())</label>
                             <div class="col-sm-8">
                                 <div class="input-group">
                                     <input type="text" 
-                                           placeholder="请输入完整的商品备案号" 
+                                           placeholder="@("please_enter_a_complete_commodity_record_number".KeyToWord())" 
                                            ng-model="DialogProductCiqCode" 
                                            class="form-control"
                                            required
                                            ucc-pattern="^((\d{10})|(ICIP\d{14}))$"
                                            ucc-tip-direction="3" 
                                            submit-btn-id="searchButtonApp"
-                                           ucc-pattern-message="正确的备案号格式为[ICIP+14个数字]或[10个数字]！" />
+                                           ucc-pattern-message="@("commodity_record_number_prompt_msg".KeyToWord())！" />
                                     <span class="input-group-btn">
                                         <button class="btn btn-default" 
                                                 id="searchButtonApp" 
                                                 ng-click="getDialogProductList(addGoodForm.$valid)"
                                                 ng-disabled="alreadySearchApp">
-                                            <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 搜索
+                                            <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> @("search".KeyToWord())
                                         </button>
                                     </span>
                                 </div>
@@ -2035,11 +2017,11 @@
                                 </colgroup>
                                 <thead>
                                     <tr>
-                                        <th>商品备案号</th>
-                                        <th>名称(中文)</th>
-                                        <th>名称(英文)</th>
-                                        <th>规格</th>
-                                        <th>操作</th>
+                                        <th>@("commodity_record_number".KeyToWord())</th>
+                                        <th>@("name".KeyToWord())(@("chinese".KeyToWord()))</th>
+                                        <th>@("name".KeyToWord())(@("english".KeyToWord()))</th>
+                                        <th>@("spec".KeyToWord())</th>
+                                        <th>@("operation".KeyToWord())</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -2050,7 +2032,7 @@
                                         <td class="td-ellipsis" title="{{dialogProductList.Spec}}">{{dialogProductList.Spec}}</td>
                                         <td>
                                             <div class="btn-group" role="group">
-                                                <button type="button" class="btn btn-primary btn-sm" ng-click="addDialogGoodsProduct()">添加</button>
+                                                <button type="button" class="btn btn-primary btn-sm" ng-click="addDialogGoodsProduct()">@("add".KeyToWord())</button>
                                             </div>
                                         </td>
                                     </tr>
@@ -2060,7 +2042,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" id="searchButtonApp" ng-click="showProductList()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> 返回</button>
+                    <button type="button" class="btn btn-default" id="searchButtonApp" ng-click="showProductList()"><span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> @("go_back".KeyToWord())</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -2070,7 +2052,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">常用商户管理</h5>
+                    <h5 class="modal-title">@("common_business_management".KeyToWord())</h5>
                 </div>
                 <div class="modal-body giqci-modal-dialog">
                     <table class="table table-striped table-layout-fixed">
@@ -2083,11 +2065,11 @@
                         </colgroup>
                         <thead>
                             <tr>
-                                <th>全称</th>
-                                <th>地址</th>
-                                <th>联系人</th>
-                                <th>联系电话</th>
-                                <th>操作</th>
+                                <th>@("full_name".KeyToWord())</th>
+                                <th>@("address".KeyToWord())</th>
+                                <th>@("contacts".KeyToWord())</th>
+                                <th>@("contact_number".KeyToWord())</th>
+                                <th>@("operation".KeyToWord())</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -2098,8 +2080,8 @@
                                 <td class="td-ellipsis" title="{{merchant.UserPhone}}">{{merchant.UserPhone}}</td>
                                 <td>
                                     <div class="btn-group" role="group">
-                                        <button type="button" class="btn btn-primary btn-sm" ng-click="editMerchant(merchant.Id)">编辑</button>
-                                        <button type="button" class="btn btn-danger btn-sm" ng-click="removeMerchant(merchant)">删除</button>
+                                        <button type="button" class="btn btn-primary btn-sm" ng-click="editMerchant(merchant.Id)">@("edit".KeyToWord())</button>
+                                        <button type="button" class="btn btn-danger btn-sm" ng-click="removeMerchant(merchant)">@("delete".KeyToWord())</button>
                                     </div>
                                 </td>
                             </tr>
@@ -2107,8 +2089,8 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" ng-click="addMerchant()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> 添加常用商户</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-default" ng-click="addMerchant()"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> @("add_common_merchant_information".KeyToWord())</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">@("close".KeyToWord())</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -2118,7 +2100,7 @@
         <div class="modal-dialog modal-lg">
             <form class="modal-content" name="merchantForm" ng-submit="submitAddMerchant(merchantForm.$valid)" novalidate>
                 <div class="modal-header">
-                    <h5 class="modal-title merchant-add-title">添加常用商户信息</h5>
+                    <h5 class="modal-title merchant-add-title">@("add_common_merchant_information".KeyToWord())</h5>
                 </div>
                 <div class="modal-body">
                     <div class="form-horizontal">
@@ -2127,28 +2109,28 @@
                                 <span ng-bind="alert.msg"></span>
                             </div>*@
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">全称<span class="input-require-color">&nbsp;&lowast;</span></label>
+                            <label class="col-sm-2 control-label">@("full_name".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
                             <div class="col-sm-8">
                                 <input type="text" ng-model="dialogModelMerchant.UserName" class="form-control"
                                        ucc-max-length="100" ucc-min-length="1" submit-btn-id="merchantSubmit" required />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">地址<span class="input-require-color">&nbsp;&lowast;</span></label>
+                            <label class="col-sm-2 control-label">@("address".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
                             <div class="col-sm-8">
                                 <input type="text" ng-model="dialogModelMerchant.UserAddress" class="form-control"
                                        ucc-max-length="400" ucc-min-length="1" submit-btn-id="merchantSubmit" required />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">联系人<span class="input-require-color">&nbsp;&lowast;</span></label>
+                            <label class="col-sm-2 control-label">@("contacts".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
                             <div class="col-sm-8">
                                 <input type="text" ng-model="dialogModelMerchant.UserContact" class="form-control"
                                        ucc-max-legth="100" ucc-min-length="1" submit-btn-id="merchantSubmit" required />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">联系电话<span class="input-require-color">&nbsp;&lowast;</span></label>
+                            <label class="col-sm-2 control-label">@("contact_number".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
                             <div class="col-sm-8">
                                 <input type="text" ng-model="dialogModelMerchant.UserPhone" class="form-control"
                                        ucc-max-length="100" ucc-min-length="1" submit-btn-id="merchantSubmit" required />
@@ -2163,9 +2145,9 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-default" type="submit" id="merchantSubmit" ng-disabled="MerchantHasSaved">
-                        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 提交保存
+                        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> @("submit".KeyToWord())
                     </button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">@("close".KeyToWord())</button>
                 </div>
             </form><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->

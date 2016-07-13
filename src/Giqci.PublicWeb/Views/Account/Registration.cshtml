@@ -1,11 +1,12 @@
-﻿@model Giqci.PublicWeb.Models.Account.RegistrationViewModel
+﻿@using Giqci.PublicWeb.Extensions
+@model Giqci.PublicWeb.Models.Account.RegistrationViewModel
 
 @{
-    ViewBag.Title = "商家注册";
+    ViewBag.Title = "business_registration".KeyToWord();
 }
 <div class="panel panel-default" ng-controller="RegController">
     <div class="panel-heading">
-        <h1 class="panel-title">商户注册</h1>
+        <h1 class="panel-title">@("business_registration".KeyToWord())</h1>
     </div>
     <div class="panel-body">
         <div role="alert" class="alert alert-dismissible alert-{{alert.type}}" ng-repeat="alert in alerts">
@@ -17,17 +18,17 @@
                 <div class="form-group">
                     <div class="col-sm-offset-1 col-sm-10">
                         <div class="termblock">
-                            <h2><center>对供货企业用户告示</center></h2>
-                            <p>为防止有害废物转运到中国，中国政府规定对所有的进口废物原料实行装运前检验。此装运前检验电子管理系统完全是简历在国家质检总局对进口物料检验管理相关法规基础上。</p>
-                            <p>只有获得国家质检总局注册的供货企业才能申请装运前检验。请供货企业严格遵守申请注册时所作的承诺。</p>
-                            <p>为便于装运前检验公司向你提供优良服务，申请装运前检验提供的信息应可能准确。</p>
+                            <h2><center>@("user_notices_to_suppliers".KeyToWord())</center></h2>
+                            <p>@("user_notices_to_suppliers_msg1".KeyToWord())</p>
+                            <p>@("user_notices_to_suppliers_msg2".KeyToWord())</p>
+                            <p>@("user_notices_to_suppliers_msg3".KeyToWord())</p>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-5 col-sm-4">
                         <button class="btn btn-default" ng-click="accept()">
-                            <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> 确认
+                            <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> @("confirm".KeyToWord())
                         </button>
                     </div>
                 </div>
@@ -36,27 +37,27 @@
         <div id="reg" ng-show="regshow">
             <form name="appform" class="form-horizontal" method="POST" ng-submit="submitForm(appform.$valid,user.password != user.confirm_password)" novalidate>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">邮箱 <span style="color: red;">*</span> </label>
+                    <label class="col-sm-2 control-label">@("email".KeyToWord()) <span style="color: red;">*</span> </label>
                     <div class="col-sm-8">
                         <input name="email" 
                                type="text" 
                                class="form-control" 
                                ng-model="user.email" 
                                required 
-                               ucc-require="邮箱不能为空" 
+                               ucc-require="@("email_can_not_be_empty".KeyToWord())" 
                                submit-btn-id="registerSubmit"
                                ucc-email/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">密码 <span style="color: red;">*</span> </label>
+                    <label class="col-sm-2 control-label">@("password".KeyToWord()) <span style="color: red;">*</span> </label>
                     <div class="col-sm-8">
                         <input name="password" 
                                type="password" 
                                class="form-control" 
                                ng-model="user.password" 
                                required
-                               placeholder="密码长度为6-20个字符"
+                               placeholder="@("password_length_msg".KeyToWord())"
                                ucc-max-length="20" 
                                maxlength="20"
                                ucc-min-length="6" 
@@ -64,7 +65,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">确认密码 <span style="color: red;">*</span> </label>
+                    <label class="col-sm-2 control-label">@("confirm_password".KeyToWord()) <span style="color: red;">*</span> </label>
                     <div class="col-sm-8">
                         <input name="confirm_password" 
                                type="password" 
@@ -74,53 +75,53 @@
                                maxlength="20"
                                submit-btn-id="registerSubmit"
                                ucc-validate-func="validateFun(user.password,user.confirm_password)"
-                               placeholder="请再次输入密码" />
+                               placeholder="@("confirm_password".KeyToWord())" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">公司名 <span style="color: red;">*</span> </label>
+                    <label class="col-sm-2 control-label">@("company_name".KeyToWord()) <span style="color: red;">*</span> </label>
                     <div class="col-sm-8">
                         <input name="name" 
                                type="text" 
                                class="form-control" 
                                ng-model="user.name" 
-                               ucc-require="公司名不能为空"
+                               ucc-require="@("company_name_cannot_be_empty".KeyToWord())"
                                submit-btn-id="registerSubmit"
                                required />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">公司地址 <span style="color: red;">*</span> </label>
+                    <label class="col-sm-2 control-label">@("company_address".KeyToWord()) <span style="color: red;">*</span> </label>
                     <div class="col-sm-8">
                         <input name="address" 
                                type="text" 
                                class="form-control" 
                                ng-model="user.address" 
-                               ucc-require="公司地址不能为空"
+                               ucc-require="@("company_address_can_not_be_empty".KeyToWord())"
                                submit-btn-id="registerSubmit"
                                required />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">联系人 <span style="color: red;">*</span> </label>
+                    <label class="col-sm-2 control-label">@("contacts".KeyToWord()) <span style="color: red;">*</span> </label>
                     <div class="col-sm-8">
                         <input name="contact" 
                                type="text" 
                                class="form-control" 
                                ng-model="user.contact" 
-                               ucc-require="联系人不能为空"
+                               ucc-require="@("contact_cannot_be_empty".KeyToWord())"
                                submit-btn-id="registerSubmit"
                                required />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">电话 <span style="color: red;">*</span> </label>
+                    <label class="col-sm-2 control-label">@("tel".KeyToWord()) <span style="color: red;">*</span> </label>
                     <div class="col-sm-8">
                         <input name="phone" 
                                type="text" 
                                class="form-control" 
                                ng-model="user.phone"
-                               ucc-require="电话不能为空" 
+                               ucc-require="@("tel_can_not_be_empty".KeyToWord())" 
                                submit-btn-id="registerSubmit"
                                required />
                     </div>

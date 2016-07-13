@@ -15,7 +15,7 @@ app.controller("LoginController", [
         $scope.submitForm = function (isValid) {
             if (isValid) {
                 $scope.enableDisableButton = true;
-                $scope.submitButton = '正在提交...';
+                $scope.submitButton = $giqci.KeyToWord("on_submitting"); 
                 $scope.formData = {
                     email: $scope.user.email,
                     password: $scope.user.password
@@ -24,9 +24,9 @@ app.controller("LoginController", [
                     if (response.data.result) {
                         window.location.href = $giqci.getLanUrl("/forms/app");
                     } else {
-                        alertService.add('danger', response.data.message || "未知错误");
+                        alertService.add('danger', response.data.message || $giqci.KeyToWord("unknown_error"));
                         $scope.enableDisableButton = false;
-                        $scope.submitButton = ' 登录 ';
+                        $scope.submitButton =  $giqci.KeyToWord("login");
                     }
                 }, $scope);
             }
@@ -38,22 +38,22 @@ app.controller("LoginController", [
 /* account forgot */
 app.controller("ForgotController", [
     '$http', '$scope', '$location', 'alertService', function ($http, $scope, $location, alertService) {
-        $scope.submitButton = ' 提交 ';
+        $scope.submitButton =  $giqci.KeyToWord("submit");
         $scope.submitForm = function (isValid) {
             if (isValid) {
                 $scope.enableDisableButton = true;
-                $scope.submitButton = '正在提交...';
+                $scope.submitButton = $giqci.KeyToWord("on_submitting");
                 $scope.formData = {
                     email: $scope.user.email
                 };
                 $giqci.post('/api/account/forgotpassword', $scope.formData).then(function (response) {
                     if (response.data.result) {
-                        alertService.add('success', "您的密码已经重置，并发往您的注册邮箱，请检查。");
+                        alertService.add('success', $giqci.KeyToWord("reset_pwd_msg") );
                     } else {
-                        alertService.add('danger', response.data.message || "未知错误");
+                        alertService.add('danger', response.data.message || $giqci.KeyToWord("unknown_error"));
                     }
                     $scope.enableDisableButton = false;
-                    $scope.submitButton = ' 提交 ';
+                    $scope.submitButton =$giqci.KeyToWord("submit") ;
                 }, $scope);
             }
         };
@@ -67,7 +67,7 @@ app.controller("RegController", [
         //$scope.acceptshow = true; 暂时不显示
         $scope.regshow = true;
 
-        $scope.submitButton = ' 提交 ';
+        $scope.submitButton = $giqci.KeyToWord("submit");
         $scope.acceptshow = false;
         $scope.regshow = true;
         $scope.accept = function () {
@@ -77,9 +77,9 @@ app.controller("RegController", [
 
         $scope.validateFun = function (str1, str2) {
             if (str1 == undefined || str1 == "") {
-                return "请先输入密码，再输入确认密码";
+                return  $giqci.KeyToWord("pwd_did_not_write_msg") ;
             } else if (str1 != str2) {
-                return "两次密码输入不一致";
+                return $giqci.KeyToWord("confirm_pwd_does_not_consistent");
             } else {
                 //验证成功返回0 或者 null 或者 false
                 return 0;
@@ -89,7 +89,7 @@ app.controller("RegController", [
         $scope.submitForm = function (isValid, PasswordValid) {
             if (isValid && !PasswordValid) {
                 $scope.enableDisableButton = true;
-                $scope.submitButton = '正在提交...';
+                $scope.submitButton = $giqci.KeyToWord("on_submitting");
                 $scope.formData = {
                     email: $scope.user.email,
                     password: $scope.user.password,
@@ -100,13 +100,13 @@ app.controller("RegController", [
                 };
                 $giqci.post('/api/account/reg', $scope.formData).then(function (response) {
                     if (!response.data.result) {
-                        alertService.add('danger', response.data.message || "未知错误");
+                        alertService.add('danger', response.data.message || $giqci.KeyToWord("unknown_error"));
                     } else {
-                        alertService.add('success', "注册成功，请检查邮件并认证。");
+                        alertService.add('success', $giqci.KeyToWord("register_success_msg"));
                         $scope.regshow = false;
                     }
                     $scope.enableDisableButton = false;
-                    $scope.submitButton = ' 提交 ';
+                    $scope.submitButton = $giqci.KeyToWord("submit");
                 }, $scope);
             }
         };
@@ -116,31 +116,31 @@ app.controller("RegController", [
 /* account changepassword */
 app.controller("ChanagePasswordController", [
     '$http', '$scope', '$location', 'alertService', function ($http, $scope, $location, alertService) {
-        $scope.submitButton = ' 更改密码 ';
+        $scope.submitButton = $giqci.KeyToWord("change_password");
         $scope.submitForm = function (isValid, checkPassword) {
             if (isValid && checkPassword) {
                 $scope.enableDisableButton = true;
-                $scope.submitButton = '正在提交...';
+                $scope.submitButton =$giqci.KeyToWord("on_submitting") ;
                 $scope.formData = {
                     oldpassword: $scope.user.oldpassword,
                     newpassword: $scope.user.password
                 };
                 $giqci.post('/api/account/chanagepassword', $scope.formData).then(function (response) {
                     if (response.data.result) {
-                        layer.msg('密码修改成功', { icon: 6 });
+                        layer.msg($giqci.KeyToWord("password_modification_success_msg"), { icon: 6 });
                     } else {
-                        layer.alert(response.data.message || "密码不匹配", function (index) {
+                        layer.alert(response.data.message || $giqci.KeyToWord("passwords_do_not_match"), function (index) {
                             layer.close(index);
                         });
                     }
                     $scope.enableDisableButton = false;
-                    $scope.submitButton = ' 更改密码 ';
+                    $scope.submitButton =$giqci.KeyToWord("change_password") ;
                 }, $scope);
             }
         };
         $scope.validateFun = function (str1, str2) {
             if (str1 != str2) {
-                return "两次密码输入不一致";
+                return $giqci.KeyToWord("confirm_pwd_does_not_consistent");
             } else {
                 //验证成功返回0 或者 null 或者 false
                 return 0;
@@ -258,7 +258,7 @@ app.controller('GoodsListController', [
         };
         $scope.list($scope.postData);
         $scope.remove = function (ciqCode, index) {
-            layer.confirm("您确定要删除该商品吗?", function (l) {
+            layer.confirm($giqci.KeyToWord("delete_product_msg"), function (l) {
                 $scope.merchantProductList.splice(index, 1);
                 $giqci.post('/api/goods/delete', { ciqCode: ciqCode }).then(function (response) {
                     if (response.data.result) {
@@ -286,7 +286,7 @@ app.controller('GoodsListController', [
         }
         $scope.list2($scope.postData);
         $scope.remove2 = function (id, index) {
-            layer.confirm("您确定要删除该商品吗?", function (l) {
+            layer.confirm($giqci.KeyToWord("delete_product_msg"), function (l) {
                 $giqci.post('/api/goods/deletecustomproduct', { id: id }).then(function (response) {
                     $scope.customProductList.splice(index, 1);
                 }, $scope);
@@ -295,14 +295,14 @@ app.controller('GoodsListController', [
         }
         $scope.editMerchantProduct = function (index) {
             $scope.CustomDialogModel = CallByValue($scope.customProductList[index]);
-            $(".form-add-custom-product-title").html("编辑非备案商品");
+            $(".form-add-custom-product-title").html($giqci.KeyToWord("edit_custom_product"));
             $("#CustomDialogModelHsCode").next().find("span.select2-selection__rendered").html("");
             $("#form-add-custom-product").modal("show");
             $("#form-product").modal("hide");
         };
         $scope.lookMerchantProduct = function (index) {
             $scope.CustomDialogModel = CallByValue($scope.customProductList[index]);
-            $(".form-look-custom-product-title").html("查看非备案商品");
+            $(".form-look-custom-product-title").html($giqci.KeyToWord("view_custom_product"));
             $("#CustomDialogModelHsCode").next().find("span.select2-selection__rendered").html("");
             $("#form-look-custom-product").modal("show");
             $("#form-product").modal("hide");
@@ -327,10 +327,10 @@ app.controller('GoodsListController', [
                 $giqci.post('/api/goods/addcustomproduct', $scope.CustomDialogModel).success(function (response) {
                     if (response.flag) {
                         $("#form-add-custom-product").modal("hide");
-                        layer.msg('提交成功', { icon: 6 }, function () { $scope.list2($scope.postData); });
+                        layer.msg($giqci.KeyToWord("submit_successfully"), { icon: 6 }, function () { $scope.list2($scope.postData); });
                         layer.close();
                     } else {
-                        layer.alert(response.msg || "未知错误", function (index) {
+                        layer.alert(response.msg ||$giqci.KeyToWord("unknown_error"), function (index) {
                             layer.close(index);
                         });
                     }
@@ -349,7 +349,7 @@ app.controller('GoodsListController', [
         };
         $scope.loadCountries();
         $scope.showProductList = function () {
-            $(".form-add-custom-product-title").html("商品列表");
+            $(".form-add-custom-product-title").html($giqci.KeyToWord("list_of_goods"));
             $("#form-product").modal("show");
             $("#form-add-custom-product").modal("hide");
             $("#form-look-custom-product").modal("hide");
@@ -374,7 +374,7 @@ app.controller('GoodsListController', [
                 .success(function (data) {
                     if (data.result == null) {
                         $scope.Product = null;
-                        layer.alert("该备案号不存在", function (index) {
+                        layer.alert($giqci.KeyToWord("the_record_number_does_not_exist"), function (index) {
                             layer.close(index);
                         });
                     } else {
@@ -400,7 +400,7 @@ app.controller('GoodsListController', [
         $scope.submitChangeProduct = function (_customProductId, _ciqCode) {
             angular.element(_form_submitAddCustomProduct).attr("disabled", true);
             if (false === $scope.isSearch || _customProductId == null || _ciqCode == null) {
-                layer.alert("请搜索并获取备案商品信息", function (index) {
+                layer.alert($giqci.KeyToWord("search_record_commodity_msg"), function (index) {
                     layer.close(index);
                     angular.element(_form_submitAddCustomProduct).attr("disabled", false);
                 });
@@ -411,7 +411,7 @@ app.controller('GoodsListController', [
             ).success(function (response) {
                 $scope.isSearch = false;
                 if (response.flag) {
-                    layer.msg("数据已经转换成功", { icon: 6 }, function () {
+                    layer.msg($giqci.KeyToWord("convert_success_msg"), { icon: 6 }, function () {
                         $scope.list($scope.postData);
                         $scope.list2($scope.postData);
                         angular.element(_form_submitAddCustomProduct).attr("disabled", false);
@@ -447,7 +447,7 @@ app.controller("GoodsAddController", [
                 }).success(function (data) {
                     if (data.result == null) {
                         $scope.Product = null;
-                        layer.alert("该备案号不存在", function (index) {
+                        layer.alert($giqci.KeyToWord("the_record_number_does_not_exist"), function (index) {
                             layer.close(index);
                         });
                         $("#inputCiqCode").focus();
@@ -462,14 +462,14 @@ app.controller("GoodsAddController", [
         }
         $scope.addProductMsg = null;
         $scope.addproduct = function () {
-            layer.confirm('是否添加该商品为常用商品', function (l) {
+            layer.confirm($giqci.KeyToWord("add_product_msg"), function (l) {
                 if ($scope.Product != null) {
                     $giqci.post('/api/goods/addproduct',
                          { ciqCode: $scope.Product.CiqCode }).success(function (data) {
                              if (data.result) {
-                                 layer.msg("添加成功", { icon: 6 });
+                                 layer.msg($giqci.KeyToWord("added_successfully"), { icon: 6 });
                              } else {
-                                 layer.alert(data.msg || "未知错误", function (index) {
+                                 layer.alert(data.msg || $giqci.KeyToWord("unknown_error"), function (index) {
                                      layer.close(index);
                                  });
                              }
@@ -540,7 +540,7 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
         $scope.alreadySubmit = true;
         $giqci.post(url, { userProfile: $scope.dialogModelMerchant }).success(function (data) {
             if (data.flag) {
-                layer.msg("提交成功", { icon: 6 }, function () {
+                layer.msg($giqci.KeyToWord("submit_successfully"), { icon: 6 }, function () {
                     $scope.alreadySubmit = false;
                     $scope.loadMerchant();
                     $("#merchant-add").modal("hide");
@@ -551,7 +551,7 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
                 for (var i = data.errorMsg.length; i > 0 ; i--) {
                     _errormsg += data.errorMsg[i - 1] + "\r\n";
                 }
-                layer.alert(data.errorMsg[0] || "未知错误", function (index) {
+                layer.alert(data.errorMsg[0] || $giqci.KeyToWord("unknown_error"), function (index) {
                     layer.close(index);
                 });
             }
@@ -572,11 +572,11 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
     };
 
     $scope.remove = function (_object) {
-        layer.confirm("是否删除该常用商户", function (l) {
+        layer.confirm($giqci.KeyToWord("delete_common_merchant_msg"), function (l) {
             $giqci.post(
               '/api/UserProfile/RemoveProfile', { ProfileId: _object.Id }).success(function (data) {
                   if (data.flag) {
-                      layer.msg("删除成功", { icon: 6, time: 1000 }, function () {
+                      layer.msg($giqci.KeyToWord("delete_success"), { icon: 6, time: 1000 }, function () {
                           $scope.loadMerchant();
                           $("#merchant-add").modal("hide");
                       });
@@ -585,7 +585,7 @@ app.controller("MerchantListController", ['$http', '$scope', '$log', '$location'
                       for (var i = data.errorMsg.length; i > 0 ; i--) {
                           _errormsg += data.errorMsg[i - 1] + "\r\n";
                       }
-                      layer.alert(data.errorMsg[0] || "未知错误", function (index) {
+                      layer.alert(data.errorMsg[0] ||$giqci.KeyToWord("unknown_error") , function (index) {
                           layer.close(index);
                       });
                   }
@@ -641,10 +641,10 @@ app.controller("ZcodeApplyListController", [
             if (isValid) {
                 $scope.alreadySubmit = true;
                 if ($scope.Count * 1 > 0) {
-                    layer.confirm("确定申请" + $scope.Count + "个真知码? 提交后不可更改", function (l) {
+                    layer.confirm($giqci.KeyToWord("confirm_apply") + $scope.Count  +$giqci.KeyToWord("confirm_apply_msg_tail") , function (l) {
                         $giqci.post('/api/forms/addzcodeapply', { ZcodeType: $scope.ZcodeType, Count: $scope.Count }).success(function (data) {
                             if (data.flag) {
-                                layer.msg("申请成功", { icon: 6, time: 1000 }, function () {
+                                layer.msg($giqci.KeyToWord("apply_success"), { icon: 6, time: 1000 }, function () {
                                     window.location.href =  $giqci.getLanUrl("/forms/zcodeapplylist");
                                 });
                             }
@@ -653,7 +653,7 @@ app.controller("ZcodeApplyListController", [
                     });
                 } else {
                     $scope.alreadySubmit = false;
-                    layer.alert("真知码数量必须大于0");
+                    layer.alert($giqci.KeyToWord("zcode_must_be_a_positive_integer_number"));
                 }
             } else {
                 $scope.alreadySubmit = false;

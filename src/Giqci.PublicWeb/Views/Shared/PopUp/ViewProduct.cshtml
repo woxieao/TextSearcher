@@ -1,61 +1,62 @@
-﻿<div class="modal" role="dialog" data-backdrop="static" data-keyboard="false" id="form-look-custom-product">
+﻿@using Giqci.PublicWeb.Extensions
+<div class="modal" role="dialog" data-backdrop="static" data-keyboard="false" id="form-look-custom-product">
     <div class="modal-dialog modal-lg">
         <form id="editProduct-form" class="modal-content" name="editProductForm" method="POST">
             <div class="modal-header">
-                <h5 class="modal-title form-look-custom-product-title">添加非备案商品</h5>
+                <h5 class="modal-title form-look-custom-product-title">@("add_customer_goods".KeyToWord())</h5>
             </div>
             <div class="modal-body">
                 <div class="form-horizontal">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">自定义标识</label>
+                        <label class="col-sm-2 control-label">@("customizes_identity".KeyToWord())</label>
                         <div class="col-sm-8">
                             <span class="col-sm-6 form-control-static">{{CustomDialogModel.Code}}</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">名称(英文) <span style="color: red;">*</span></label>
+                        <label class="col-sm-2 control-label">@("name".KeyToWord())(@("english".KeyToWord())) <span style="color: red;">*</span></label>
                         <div class="col-sm-8">
                             <span class="col-sm-6 form-control-static">{{CustomDialogModel.DescriptionEn}}</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">名称(中文) <span style="color: red;">*</span></label>
+                        <label class="col-sm-2 control-label">@("name".KeyToWord())(@("chinese".KeyToWord())) <span style="color: red;">*</span></label>
                         <div class="col-sm-8">
                             <span class="col-sm-6 form-control-static">{{CustomDialogModel.Description}}</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">品牌 <span style="color: red;">*</span></label>
+                        <label class="col-sm-2 control-label">@("brand".KeyToWord()) <span style="color: red;">*</span></label>
                         <div class="col-sm-8">
                             <span class="col-sm-6 form-control-static">{{CustomDialogModel.Brand}}</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">HS编码 <span style="color: red;">*</span></label>
+                        <label class="col-sm-2 control-label">@("hs_code".KeyToWord()) <span style="color: red;">*</span></label>
                         <div class="col-sm-8">
                             <span class="col-sm-6 form-control-static"><span ajax-label ajax-url="commonhscodes" ng-model="CustomDialogModel.HsCode">{{CustomDialogModel.HsCode}}</span></span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">包装 <span style="color: red;">*</span></label>
+                        <label class="col-sm-2 control-label">@("package".KeyToWord()) <span style="color: red;">*</span></label>
                         <div class="col-sm-8">
                             <span class="col-sm-6 form-control-static">{{CustomDialogModel.Package}}</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">规格 <span style="color: red;">*</span></label>
+                        <label class="col-sm-2 control-label">@("spec".KeyToWord()) <span style="color: red;">*</span></label>
                         <div class="col-sm-8">
                             <span class="col-sm-6 form-control-static">{{CustomDialogModel.Spec}}</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">制造商 <span style="color: red;">*</span></label>
+                        <label class="col-sm-2 control-label">@("manufacturer".KeyToWord()) <span style="color: red;">*</span></label>
                         <div class="col-sm-8">
                             <span class="col-sm-6 form-control-static">{{CustomDialogModel.Manufacturer}}</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">原产国 <span style="color: red;">*</span></label>
+                        <label class="col-sm-2 control-label">@("country_of_origin".KeyToWord()) <span style="color: red;">*</span></label>
                         <div class="col-sm-8">
                             <span class="col-sm-6 form-control-static"><span ajax-label ajax-url="countries" ng-model="CustomDialogModel.ManufacturerCountry">{{CustomDialogModel.ManufacturerCountry}}</span></span>
                         </div>
@@ -63,7 +64,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" ng-click="showProductList()">关闭</button>
+                <button type="button" class="btn btn-primary" ng-click="showProductList()">@("close".KeyToWord())</button>
             </div>
         </form>
         <!-- /.modal-content -->
