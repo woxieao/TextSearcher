@@ -36,13 +36,13 @@
 <body>
     <div class="alert alert-warning alert-dismissible" role="alert" id="browser-tip" style="display:none;">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <strong>@("".KeyToWord())警告!</strong> @("".KeyToWord())为了得到我们网站最好的体验效果，我们建议您升级至最新版本的Internet Explorer或选择其他web浏览器，当前最流行的web浏览器如下：Google Chrome，Firefox，Opera，Safari等。
+        <strong>@("warning".KeyToWord())!</strong> @("warning_msg".KeyToWord())
     </div>
     @Html.Partial("_Header")
     @Html.Partial("_TopNav")
     <div id="loading-content">
         <img src="~/Global/images/loading.gif" />
-        @("".KeyToWord())请稍后...
+        @("please_wait".KeyToWord())...
     </div>
     <div class="container body-content">
         <div class="row" id="body-content" style="display: none;">
@@ -57,7 +57,7 @@
                                 @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>*@
-                                <h5 class="modal-title" id="gridSystemModalLabel">@("".KeyToWord())登录状态已失效</h5>
+                                <h5 class="modal-title" id="gridSystemModalLabel">@("login_status_is_invalid".KeyToWord())</h5>
                             </div>
                             <div class="modal-body">
                                 <div class="form-group has-error" ng-show="!login.result">
@@ -65,26 +65,26 @@
                                 </div>
                                 <div class="form-group" ng-class="{ 'has-error' : (appform.email.$invalid && appform.email.$dirty) || user.email=='' }">
 
-                                    <label class="col-sm-2 control-label">@("".KeyToWord())邮箱 <span style="color: red;">*</span>: </label>
+                                    <label class="col-sm-2 control-label">@("email".KeyToWord()) <span style="color: red;">*</span>: </label>
 
                                     <div class="col-sm-8">
                                         <input name="email" type="email" class="form-control" required ng-model="user.email" />
-                                        <small ng-show="appform.email.$invalid" class="help-block">@("".KeyToWord())请填写正确的邮箱</small>
+                                        <small ng-show="appform.email.$invalid" class="help-block">@("not_correct_email_msg".KeyToWord())</small>
                                     </div>
                                 </div>
                                 <div class="form-group" ng-class="{ 'has-error' : (appform.password.$error.required && !appform.password.$pristine) || user.password=='' }">
 
-                                    <label class="col-sm-2 control-label">@("".KeyToWord())密码 <span style="color: red;">*</span>: </label>
+                                    <label class="col-sm-2 control-label">@("password".KeyToWord()) <span style="color: red;">*</span>: </label>
 
                                     <div class="col-sm-8">
                                         <input name="password" type="password" class="form-control" required ng-model="user.password" />
-                                        <small ng-show="appform.password.$error.required" class="help-block">@("".KeyToWord())请输入您的密码</small>
+                                        <small ng-show="appform.password.$error.required" class="help-block">@("please_enter_your_password".KeyToWord())</small>
                                     </div>
                                 </div>
                             </div>
                             <div class="modal-footer">
                                 @*<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>*@
-                                <button type="button" ng-disabled="Logining" class="btn btn-primary" ng-click="ModalLogin()"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> @("".KeyToWord())登录</button>
+                                <button type="button" ng-disabled="Logining" class="btn btn-primary" ng-click="ModalLogin()"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> @("login".KeyToWord())</button>
                             </div>
                         </div><!-- /.modal-content -->
                     </form>

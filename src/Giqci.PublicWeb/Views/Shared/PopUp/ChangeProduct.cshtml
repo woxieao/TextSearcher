@@ -6,7 +6,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h5 class="modal-title form-add-custom-product-title">@("".KeyToWord())转为备案商品</h5>
+                <h5 class="modal-title form-add-custom-product-title">@("transferred_to_the_record_commodity".KeyToWord())</h5>
             </div>
             <div class="modal-body">
                 <form name="changProductForm" class="form-horizontal"  novalidate>
@@ -15,20 +15,20 @@
                         <span ng-bind="alert.msg"></span>
                     </div>*@
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">@("".KeyToWord())商品备案号</label>
+                        <label class="col-sm-2 control-label">@("commodity_record_number".KeyToWord())</label>
                         <div class="col-sm-8">
                             <div class="input-group">
                                 <input type="text" 
-                                       placeholder="@("".KeyToWord())请输入完整的商品备案号" 
+                                       placeholder="@("please_enter_a_complete_commodity_record_number".KeyToWord())" 
                                        ng-model="CiqCode" 
                                        class="form-control"
                                        ucc-pattern="^((\d{10})|(ICIP\d{14}))$"
                                        ucc-tip-direction="3" 
                                        submit-btn-id="changeSearchButton"
-                                       ucc-pattern-message="@("".KeyToWord())正确的备案号格式为[ICIP+14个数字]或[10个数字]！"/>
+                                       ucc-pattern-message="@("commodity_record_number_prompt_msg".KeyToWord())！"/>
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" id="changeSearchButton" type="submit" ng-click="getproductlist(changProductForm.$valid)" ng-disabled="changeProductSubmitApp">
-                                        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> @("".KeyToWord())搜索
+                                        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> @("search".KeyToWord())
                                     </button>
                                 </span>
                             </div>
@@ -43,48 +43,48 @@
                             </colgroup>
                             <tr>
                                 <th></th>
-                                <th>@("".KeyToWord())我的商品信息</th>
-                                <th>@("".KeyToWord())国检商品信息</th>
+                                <th>@("my_product_information".KeyToWord())</th>
+                                <th>@("national_inspection_commodity_information".KeyToWord())</th>
                             </tr>
                             <tr>
-                                <th>@("".KeyToWord())商品备案号</th>
+                                <th>@("commodity_record_number".KeyToWord())</th>
                                 <td>{{ChangeProductDialogModel.Code}}</td>
                                 <td>{{Product.CiqCode}}</td>
                             </tr>
                             <tr>
-                                <th>@("".KeyToWord())HS编码</th>
+                                <th>@("hs_code".KeyToWord())</th>
                                 <td>{{ChangeProductDialogModel.HsCode}}</td>
                                 <td>{{Product.HsCode}}</td>
                             </tr>
                             <tr>
-                                <th>@("".KeyToWord())名称(中文)</th>
+                                <th>@("name".KeyToWord())(@("chinese".KeyToWord()))</th>
                                 <td>{{ChangeProductDialogModel.Description}}</td>
                                 <td>{{Product.Description}}</td>
                             </tr>
                             <tr>
-                                <th>@("".KeyToWord())名称(英文)</th>
+                                <th>@("name".KeyToWord())(@("english".KeyToWord()))</th>
                                 <td>{{ChangeProductDialogModel.DescriptionEn}}</td>
                                 <td>{{Product.DescriptionEn}}</td>
                             </tr>
                             <tr>
-                                <th>@("".KeyToWord())规格</th>
+                                <th>@("spec".KeyToWord())</th>
                                 <td>{{ChangeProductDialogModel.Spec}}</td>
                                 <td>{{Product.Spec}}</td>
                             </tr>
                             <tr>
-                                <th>@("".KeyToWord())品牌</th>
+                                <th>@("brand".KeyToWord())</th>
                                 <td>{{ChangeProductDialogModel.Brand}}</td>
                                 <td>{{Product.Brand}}</td>
                             </tr>
                             <tr>
-                                <th>@("".KeyToWord())原产国</th>
+                                <th>@("country_of_origin".KeyToWord())</th>
                                 <td>
                                     <p ajax-label ajax-url="countries" ng-model="ChangeProductDialogModel.ManufacturerCountry">{{ChangeProductDialogModel.ManufacturerCountry}}</p></td>
                                 <td>
                                     <p ajax-label ajax-url="countries" ng-model="Product.ManufacturerCountry">{{Product.ManufacturerCountry}}</p></td>
                             </tr>
                             <tr>
-                                <th>@("".KeyToWord())制造商</th>
+                                <th>@("manufacturer".KeyToWord())</th>
                                 <td>{{ChangeProductDialogModel.Manufacturer}}</td>
                                 <td>{{Product.Manufacturer}}</td>
                             </tr>
@@ -93,8 +93,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <b style="color:red">@("".KeyToWord())请仔细核对信息，一旦转换无法修改。</b>
-                <button id="submitAddCustomProduct" class="btn btn-primary" ng-click="submitChangeProduct(ChangeProductDialogModel.Id,Product.CiqCode);"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> @("".KeyToWord())转换</button>
+                <b style="color:red">@("change_product_info_submit_msg".KeyToWord())</b>
+                <button id="submitAddCustomProduct" class="btn btn-primary" ng-click="submitChangeProduct(ChangeProductDialogModel.Id,Product.CiqCode);"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> @("convert".KeyToWord())</button>
             </div>
         </div>
         <!-- /.modal-content -->

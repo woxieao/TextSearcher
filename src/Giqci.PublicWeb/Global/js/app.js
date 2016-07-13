@@ -10,7 +10,7 @@ var app = angular.module("giqci", ['giqciService', 'ngTipValidate']);
 /* account login */
 app.controller("LoginController", [
     '$http', '$scope', '$location', 'alertService', function ($http, $scope, $location, alertService) {
-        $scope.submitButton = $giqci.KeyToWord('login_btn');
+        $scope.submitButton = $giqci.KeyToWord('login');
    
         $scope.submitForm = function (isValid) {
             if (isValid) {

@@ -1,37 +1,37 @@
 ﻿@using Giqci.PublicWeb.Extensions
 @{
-    //ViewBag.Title =@("".KeyToWord()) "添加备案商品";
-    ViewBag.Title = "添加备案商品";
+    ViewBag.Title ="add_record_merchandise".KeyToWord();
+   
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div ng-controller="GoodsAddController">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">
-                @("".KeyToWord())添加备案商品
+                @("add_record_merchandise".KeyToWord())
                 <span class="pull-right">
-                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<a href="@LanCore.GetLanTypeUrl()/goods/list">返回列表</a>
+                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<a href="@LanCore.GetLanTypeUrl()/goods/list">@("return_to_list".KeyToWord())</a>
                 </span>
             </h3>
         </div>
         <div class="panel-body">
             <form name="productForm" class="form-horizontal" ng-submit="getproductlist(productForm.$valid)" novalidate>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())商品备案号</label>
+                    <label class="col-sm-2 control-label">@("commodity_record_number".KeyToWord())</label>
                     <div class="col-sm-8">
                         <div class="form-inline">
                             <input type="text"
-                                   placeholder="@("".KeyToWord())请输入完整的商品备案号"
+                                   placeholder="@("please_enter_a_complete_commodity_record_number".KeyToWord())"
                                    ng-model="CiqCode"
                                    reuqired
                                    class="form-control goodAdd-search-bar"
                                    ucc-pattern="^((\d{10})|(ICIP\d{14}))$"
                                    ucc-tip-direction="3"
                                    submit-btn-id="searchButton"
-                                   ucc-pattern-message="@("".KeyToWord())正确的备案号格式为[ICIP+14个数字]或[10个数字]！" />
+                                   ucc-pattern-message="@("commodity_record_number_prompt_msg".KeyToWord())！" />
                             <span>
                                 <button class="btn btn-default" type="submit" id="searchButton" ng-disabled="alreadySubmit">
-                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> @("".KeyToWord())搜索
+                                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span> @("search".KeyToWord())
                                 </button>
                             </span>
                         </div>
@@ -54,16 +54,16 @@
                         </colgroup>
                         <thead>
                             <tr>
-                                <th>@("".KeyToWord())商品备案号</th>
-                                <th>@("".KeyToWord())HS编码</th>
-                                <th>@("".KeyToWord())名称(中文)</th>
-                                <th>@("".KeyToWord())名称(英文)</th>
-                                <th>@("".KeyToWord())规格</th>
-                                <th>@("".KeyToWord())品牌</th>
-                                <th>@("".KeyToWord())原产国</th>
+                                <th>@("commodity_record_number".KeyToWord())</th>
+                                <th>@("hs_code".KeyToWord())</th>
+                                <th>@("name".KeyToWord())(@("chinese".KeyToWord()))</th>
+                                <th>@("name".KeyToWord())(@("english".KeyToWord()))</th>
+                                <th>@("spec".KeyToWord())</th>
+                                <th>@("brand".KeyToWord())</th>
+                                <th>@("country_of_origin".KeyToWord())</th>
                                 @*<th>包装</th>*@
-                                <th>@("".KeyToWord())制造商</th>
-                                <th>@("".KeyToWord())操作</th>
+                                <th>@("manufacturer".KeyToWord())</th>
+                                <th>@("operation".KeyToWord())</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -81,7 +81,7 @@
                                 <td class="td-ellipsis" title="{{Product.Manufacturer}}">{{Product.Manufacturer}}</td>
                                 <td>
                                     <div class="btn-group" role="group">
-                                        <button type="button" class="btn btn-primary btn-sm" ng-click="addproduct()">@("".KeyToWord())添加</button>
+                                        <button type="button" class="btn btn-primary btn-sm" ng-click="addproduct()">@("add".KeyToWord())</button>
                                     </div>
                                 </td>
                             </tr>

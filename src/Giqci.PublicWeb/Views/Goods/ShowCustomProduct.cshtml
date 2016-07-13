@@ -1,6 +1,5 @@
 ﻿@{
-    //ViewBag.Title = @("".KeyToWord())"添加非备案商品";
-    ViewBag.Title = "添加非备案商品";
+    ViewBag.Title = "add_customer_goods".KeyToWord();
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @using Giqci.PublicWeb.Extensions
@@ -69,76 +68,76 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">
-                @("".KeyToWord())添加非备案商品
+                @("add_customer_goods".KeyToWord())
                 <span class="pull-right">
-                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<a href="@LanCore.GetLanTypeUrl()/goods/list">返回列表</a>
+                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>&nbsp;<a href="@LanCore.GetLanTypeUrl()/goods/list">@("return_to_list".KeyToWord())</a>
                 </span>
             </h3>
         </div>
         <div class="panel-body">
             <form name="appform" class="form-horizontal" method="POST" ng-submit="submitForm(appform.$valid)" novalidate>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())自定义标识<span>&nbsp;&nbsp;</span></label>
+                    <label class="col-sm-2 control-label">@("customizes_identity".KeyToWord())<span>&nbsp;&nbsp;</span></label>
                     <div class="col-sm-8">
                         <input type="text" ng-model="model.Code" maxlength="50" class="form-control" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())名称(英文)<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label class="col-sm-2 control-label">@("name".KeyToWord())(@("english".KeyToWord()))<span class="input-require-color">&nbsp;&lowast;</span></label>
                     <div class="col-sm-8">
                         <input type="text" ng-model="model.DescriptionEn" class="form-control"
-                               ucc-require="@("".KeyToWord())名称不能为空" submit-btn-id="showProduct" />
+                               ucc-require="@("name_cannot_be_empty".KeyToWord())" submit-btn-id="showProduct" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())名称(中文)<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label class="col-sm-2 control-label">@("name".KeyToWord())(@("chinese".KeyToWord()))<span class="input-require-color">&nbsp;&lowast;</span></label>
                     <div class="col-sm-8">
                         <input type="text" ng-model="model.Description" class="form-control"
-                               ucc-require="@("".KeyToWord())名称不能为空" submit-btn-id="showProduct" />
+                               ucc-require="@("name_cannot_be_empty".KeyToWord())" submit-btn-id="showProduct" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())品牌<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label class="col-sm-2 control-label">@("brand".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
                     <div class="col-sm-8">
                         <input type="text" ng-model="model.Brand" class="form-control"
-                               ucc-require="@("".KeyToWord())品牌不能为空" submit-btn-id="showProduct" />
+                               ucc-require="@("brand_can_not_be_empty".KeyToWord())" submit-btn-id="showProduct" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())HS编码<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label class="col-sm-2 control-label">@("hs_code".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
                     <div class="col-sm-8">
                         <select id="commonhscodes" ajax-select ajax-url="commonhscodes"
                                 ng-model="model.HsCode" class="form-control"></select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())包装<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label class="col-sm-2 control-label">@("package".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
                     <div class="col-sm-8">
                         <select ng-model="model.Package" class="form-control half-form-control"
-                                ucc-require="请选择包装类型" submit-btn-id="showProduct">
-                            <option value="罐装">@("".KeyToWord())罐装</option>
-                            <option value="瓶装">@("".KeyToWord())瓶装</option>
-                            <option value="袋装">@("".KeyToWord())袋装</option>
-                            <option value="盒装">@("".KeyToWord())盒装</option>
+                                ucc-require="@("please_select_the_type_of_packaging".KeyToWord())" submit-btn-id="showProduct">
+                            <option value="罐装">@("canned".KeyToWord())</option>
+                            <option value="瓶装">@("bottled".KeyToWord())</option>
+                            <option value="袋装">@("bag".KeyToWord())</option>
+                            <option value="盒装">@("box".KeyToWord())</option>
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())规格<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label class="col-sm-2 control-label">@("spec".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" ng-model="model.Spec"
-                               ucc-require="@("".KeyToWord())规格不能为空" submit-btn-id="showProduct" />
+                               ucc-require="@("spec_can_not_be_empty".KeyToWord())" submit-btn-id="showProduct" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())制造商<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label class="col-sm-2 control-label">@("manufacturer".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
                     <div class="col-sm-8">
                         <input type="text" class="form-control" ng-model="model.Manufacturer"
-                               ucc-require="@("".KeyToWord())制造商不能为空" submit-btn-id="showProduct" />
+                               ucc-require="@("manufacturers_can_not_be_empty".KeyToWord())" submit-btn-id="showProduct" />
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())原产国<span class="input-require-color">&nbsp;&lowast;</span></label>
+                    <label class="col-sm-2 control-label">@("country_of_origin".KeyToWord())<span class="input-require-color">&nbsp;&lowast;</span></label>
                     <div class="col-sm-8">
                         <select ajax-country ajax-url="countries" id="ManufacturerCountry"
                                 ng-model="model.ManufacturerCountry" class="form-control" style="width: 100%"></select>
@@ -148,7 +147,7 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                         <button class="btn btn-default" id="showProduct" type="submit" ng-disabled="alreadySubmit">
-                            <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> @("".KeyToWord())提交
+                            <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> @("submit".KeyToWord())
                         </button>
                     </div>
                 </div>
