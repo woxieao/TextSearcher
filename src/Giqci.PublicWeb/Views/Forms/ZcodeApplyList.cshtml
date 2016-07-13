@@ -1,7 +1,7 @@
 ﻿@using Giqci.PublicWeb.Extensions
 @{
-    //ViewBag.Title = @("".KeyToWord())"真知码申请历史";
-    ViewBag.Title = "真知码申请历史";
+    ViewBag.Title = "zcode_application_list".KeyToWord();
+
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div ng-controller="ZcodeApplyListController">
@@ -19,7 +19,7 @@
                 <tr>
                     <th colspan="6">
                         <div class="panel-heading">
-                            <h3 class="panel-title">@("".KeyToWord())添加真知码申请</h3>
+                            <h3 class="panel-title">@("add_zcode_application".KeyToWord())</h3>
                         </div>
                     </th>
                 </tr>
@@ -27,33 +27,33 @@
             <tr>
                 <td></td>
                 <td>
-                    <label class="control-label form-control-static">@("".KeyToWord())发码类型</label>
+                    <label class="control-label form-control-static">@("zcode_type".KeyToWord())</label>
                 </td>
                 <td>
                     <div class="col-sm-12 form-control-static">
-                        <input type="radio" name="ZcodeType" ng-model="ZcodeType" value="0" id="ZcodeType_0" /><label style="font-weight: normal;" for="ZcodeType_0">@("".KeyToWord())实体码</label>
-                        <input type="radio" name="ZcodeType" ng-model="ZcodeType" value="1" id="ZcodeType_1" /><label style="font-weight: normal;" for="ZcodeType_1">@("".KeyToWord())电子码</label>
+                        <input type="radio" name="ZcodeType" ng-model="ZcodeType" value="0" id="ZcodeType_0" /><label style="font-weight: normal;" for="ZcodeType_0">@("entity_code".KeyToWord())</label>
+                        <input type="radio" name="ZcodeType" ng-model="ZcodeType" value="1" id="ZcodeType_1" /><label style="font-weight: normal;" for="ZcodeType_1">@("electronic_code".KeyToWord())</label>
                     </div>
                 </td>
 
                 <td>
-                    <label class="control-label form-control-static">@("".KeyToWord())数量</label>
+                    <label class="control-label form-control-static">@("quantity".KeyToWord())</label>
                 </td>
                 <td>
-                    <input type="text" 
-                           class="form-control" 
-                           placeholder="@("".KeyToWord())请输入大于0的整数"
-                           ucc-max-length="7" 
+                    <input type="text"
+                           class="form-control"
+                           placeholder="@("please_enter_a_positive_integer".KeyToWord())"
+                           ucc-max-length="7"
                            ucc-tip-direction="1"
                            ucc-pattern="^\+?[1-9][0-9]*$"
-                           ucc-pattern-message="@("".KeyToWord())数量填写有误！"
+                           ucc-pattern-message="@("wrong_number".KeyToWord())！"
                            required
-                           submit-btn-id="zcodeSubmit" 
+                           submit-btn-id="zcodeSubmit"
                            ng-model="Count" />
                 </td>
                 <td>
                     <button class="btn btn-success" id="zcodeSubmit">
-                        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> @("".KeyToWord())提交
+                        <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> @("submit".KeyToWord())
                     </button>
                 </td>
             </tr>
@@ -61,7 +61,7 @@
     </form>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">@("".KeyToWord())真知码申请历史</h3>
+            <h3 class="panel-title">@("zcode_application_list".KeyToWord())</h3>
         </div>
         <div class="panel-body">
             <table class="table custom-table custom-table-striped custom-table-hover table-layout-fixed">
@@ -77,16 +77,16 @@
                             <div class="formList-group-bar">
                                 <form class="form-inline">
                                     <div class="form-group">
-                                        @("".KeyToWord())状态: <select ng-model="handleStatus" class="form-control">
-                                            <option value=null>-- @("".KeyToWord())全部 --</option>
-                                            <option value="Submited">@("".KeyToWord())已提交</option>
-                                            <option value="Issued">@("".KeyToWord())已下发</option>
-                                            <option value="Removed">@("".KeyToWord())已删除</option>
+                                        @("status".KeyToWord()): <select ng-model="handleStatus" class="form-control">
+                                            <option value=null>-- @("whole".KeyToWord()) --</option>
+                                            <option value="Submited">@("has_been_submitted".KeyToWord())</option>
+                                            <option value="Issued">@("has_been_issued".KeyToWord())</option>
+                                            <option value="Removed">@("has_been_deleted".KeyToWord())</option>
                                         </select>
                                         From: <input ng-model="startTime" readonly type="text" class="form-control datetimepicker batchNo-input">
                                         To: <input ng-model="endTime" readonly type="text" class="form-control datetimepicker batchNo-input">
                                         <button type="button" class="btn btn-default" ng-click="Paging.FirstPage({handleStatus:handleStatus,startTime:startTime,endTime:endTime})">
-                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> @("".KeyToWord())搜索
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> @("search".KeyToWord())
                                         </button>
                                     </div>
                                 </form>
@@ -94,10 +94,10 @@
                         </th>
                     </tr>
                     <tr>
-                        <th>@("".KeyToWord())真知码类型</th>
-                        <th>@("".KeyToWord())真知码数量</th>
-                        <th>@("".KeyToWord())申请时间</th>
-                        <th>@("".KeyToWord())状态</th>
+                        <th>@("zcode_type".KeyToWord())</th>
+                        <th>@("quantity".KeyToWord())</th>
+                        <th>@("application_time".KeyToWord())</th>
+                        <th>@("status".KeyToWord())</th>
                     </tr>
                 </thead>
                 <tr ng-repeat="zcodeApply in ZcodeApplyList">
@@ -105,9 +105,9 @@
                     <td class="td-ellipsis">{{zcodeApply.Count}}</td>
                     <td>{{zcodeApply.ApplyTime| date:'yyyy/MM/dd HH:mm'}}</td>
                     <td>
-                        <span ng-if="zcodeApply.HandleStatus=='Submited'">@("".KeyToWord())已提交</span>
-                        <span ng-if="zcodeApply.HandleStatus=='Issued'">@("".KeyToWord())已下发</span>
-                        <span ng-if="zcodeApply.HandleStatus=='Removed'">@("".KeyToWord())已删除</span>
+                        <span ng-if="zcodeApply.HandleStatus=='Submited'">@("has_been_submitted".KeyToWord())</span>
+                        <span ng-if="zcodeApply.HandleStatus=='Issued'">@("has_been_issued".KeyToWord())</span>
+                        <span ng-if="zcodeApply.HandleStatus=='Removed'">@("has_been_deleted".KeyToWord())</span>
                     </td>
                 </tr>
                 <tfoot>
@@ -116,16 +116,16 @@
                             <div class="page-list">
                                 <ul class="pagination">
                                     <li ng-click="Paging.FirstPage()">
-                                        <span>@("".KeyToWord())首页</span>
+                                        <span>@("first_page".KeyToWord())</span>
                                     </li>
                                     <li ng-class="{disabled:!Paging.CanPrev}" ng-click="Paging.PrevPage()">
-                                        <span>@("".KeyToWord())上一页</span>
+                                        <span>@("previous_page".KeyToWord())</span>
                                     </li>
                                     <li class="disabled">
-                                        <span>@("".KeyToWord())第{{Paging.pageIndex}}@("".KeyToWord())页</span>
+                                        <span>{{Paging.pageIndex}}</span>
                                     </li>
                                     <li ng-class="{disabled:!Paging.CanNext}" ng-click="Paging.NextPage()">
-                                        <span>@("".KeyToWord())下一页</span>
+                                        <span>@("next_page".KeyToWord())</span>
                                     </li>
                                 </ul>
                             </div>

@@ -8,23 +8,23 @@
 @model Giqci.Chapi.Models.App.Application
 <div class="row" ng-controller="ViewAppController">
     <div class="col-md-12" id="print">
-        <h1>@("".KeyToWord())查看 - {{model.Application.Key}}</h1>
+        <h1>@("view".KeyToWord()) - {{model.Application.Key}}</h1>
         <div class="form-horizontal">
             <div class="form-horizontal">
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())申请号</label>
+                    <label class="col-sm-2 control-label">@("application_number".KeyToWord())</label>
                     <span class="col-sm-2 form-control-static">{{model.Application.Key}}</span>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())证书类别</label>
+                    <label class="col-sm-2 control-label">@("certificate_category".KeyToWord())</label>
                     <p class="form-control-static col-sm-10">
-                        <span ng-if="model.Application.C101">@("".KeyToWord())溯源证书</span>
-                        <span ng-if="model.Application.C102">@("".KeyToWord())品质证书</span>
-                        <span ng-if="model.Application.C103">@("".KeyToWord())标签证书</span>
+                        <span ng-if="model.Application.C101">@("c101_cert".KeyToWord())</span>
+                        <span ng-if="model.Application.C102">@("c102_cert".KeyToWord())</span>
+                        <span ng-if="model.Application.C103">@("c103_cert".KeyToWord())</span>
                     </p>
                 </div>
                 <div class="form-group" ng-if="false">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())样张列表</label>
+                    <label class="col-sm-2 control-label">@("sample_list".KeyToWord())</label>
                     <div class="col-sm-10">
                         <div ng-repeat="item in model.Application.ExampleCertList">
                             <table class="table table-striped">
@@ -33,9 +33,9 @@
                                     <col width="100" />
                                 </colgroup>
                                 <tr>
-                                    <th>@("".KeyToWord())样张{{$index+1}}</th>
+                                    <th>@("sample".KeyToWord()){{$index+1}}</th>
                                     <td>
-                                        <a href="@LanCore.GetLanTypeUrl()/file/viewfile?fileFullPath={{item.CertFilePath}}" target="_blank">查看文件</a>
+                                        <a href="@LanCore.GetLanTypeUrl()/file/viewfile?fileFullPath={{item.CertFilePath}}" target="_blank">@("view_file".KeyToWord())</a>
                                     </td>
                                 </tr>
                             </table>
@@ -43,52 +43,52 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())商业目的</label>
+                    <label class="col-sm-2 control-label">@("business_purpose".KeyToWord())</label>
                     <span class="col-sm-2 form-control-static">{{model.Application.TradeType == 4?"一般贸易":"电商贸易"}}</span>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())创建日期</label>
+                    <label class="col-sm-2 control-label">@("create_date".KeyToWord())</label>
                     <span class="col-sm-2 form-control-static">{{model.Application.CreateDate | date:'yyyy/MM/dd'}}</span>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())当前状态</label>
+                    <label class="col-sm-2 control-label">@("status".KeyToWord())</label>
                     <span class="col-sm-2 form-control-static">{{StatusDescription}}</span>
                 </div>
                 <div class="form-group" ng-if="model.Application.DeclineReason">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())驳回理由</label>
+                    <label class="col-sm-2 control-label">@("reason_for_rejection".KeyToWord())</label>
                     <span class="col-sm-2 form-control-static">{{model.Application.DeclineReason}}</span>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())申请人</label>
+                    <label class="col-sm-2 control-label">@("applicant".KeyToWord())</label>
                     <div class="col-sm-8">
-                        <p class="form-control-static">@("".KeyToWord())全称: {{model.Application.Applicant}}</p>
-                        <p class="form-control-static">@("".KeyToWord())地址: {{model.Application.ApplicantAddr}}</p>
-                        <p class="form-control-static">@("".KeyToWord())联系人: {{model.Application.ApplicantContact}}</p>
-                        <p class="form-control-static">@("".KeyToWord())联系电话: {{model.Application.ApplicantPhone}}</p>
-                        <p class="form-control-static">@("".KeyToWord())邮箱:{{model.Application.ApplicantEmail}}</p>
+                        <p class="form-control-static">@("full_name".KeyToWord()): {{model.Application.Applicant}}</p>
+                        <p class="form-control-static">@("address".KeyToWord()): {{model.Application.ApplicantAddr}}</p>
+                        <p class="form-control-static">@("contacts".KeyToWord()): {{model.Application.ApplicantContact}}</p>
+                        <p class="form-control-static">@("contact_number".KeyToWord()): {{model.Application.ApplicantPhone}}</p>
+                        <p class="form-control-static">@("email".KeyToWord()):{{model.Application.ApplicantEmail}}</p>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())出口商</label>
+                    <label class="col-sm-2 control-label">@("exporter".KeyToWord())</label>
                     <div class="col-sm-8">
-                        <p class="form-control-static">@("".KeyToWord())全称: {{model.Application.Exporter}}</p>
-                        <p class="form-control-static">@("".KeyToWord())地址: {{model.Application.ExporterAddr}}</p>
-                        <p class="form-control-static">@("".KeyToWord())联系人: {{model.Application.ExporterContact}}</p>
-                        <p class="form-control-static">@("".KeyToWord())联系电话: {{model.Application.ExporterPhone}}</p>
+                        <p class="form-control-static">@("full_name".KeyToWord()): {{model.Application.Exporter}}</p>
+                        <p class="form-control-static">@("address".KeyToWord()): {{model.Application.ExporterAddr}}</p>
+                        <p class="form-control-static">@("contacts".KeyToWord()): {{model.Application.ExporterContact}}</p>
+                        <p class="form-control-static">@("contact_number".KeyToWord()): {{model.Application.ExporterPhone}}</p>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label ng-if="model.Application.TradeType==4" class="col-sm-2 control-label">@("".KeyToWord())进口商</label>
-                    <label ng-if="model.Application.TradeType==1" class="col-sm-2 control-label">@("".KeyToWord())代理进口商</label>
+                    <label ng-if="model.Application.TradeType==4" class="col-sm-2 control-label">@("importer".KeyToWord())</label>
+                    <label ng-if="model.Application.TradeType==1" class="col-sm-2 control-label">@("agent_importer".KeyToWord())</label>
                     <div class="col-sm-8">
-                        <p class="form-control-static">@("".KeyToWord())全称:{{model.Application.Importer}}</p>
-                        <p class="form-control-static">@("".KeyToWord())地址: {{model.Application.ImporterAddr}}</p>
-                        <p class="form-control-static">@("".KeyToWord())联系人: {{model.Application.ImporterContact}}</p>
-                        <p class="form-control-static">@("".KeyToWord())联系电话: {{model.Application.ImporterPhone}}</p>
+                        <p class="form-control-static">@("full_name".KeyToWord()):{{model.Application.Importer}}</p>
+                        <p class="form-control-static">@("address".KeyToWord()): {{model.Application.ImporterAddr}}</p>
+                        <p class="form-control-static">@("contacts".KeyToWord()): {{model.Application.ImporterContact}}</p>
+                        <p class="form-control-static">@("contact_number".KeyToWord()): {{model.Application.ImporterPhone}}</p>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())商品资料</label>
+                    <label class="col-sm-2 control-label">@("commodity_information".KeyToWord())</label>
                     <div class="col-sm-8">
                         <div ng-repeat="item in model.Application.ApplicationProducts" class="application-product-area">
                             <table class="table table-hover application-table-margin">
@@ -100,7 +100,7 @@
                                 </colgroup>
                                 <tr class="application-table-head">
                                     <th>
-                                        <p class="form-control-static">@("".KeyToWord())商品 {{$index+1}}</p>
+                                        <p class="form-control-static">@("goods".KeyToWord()) {{$index+1}}</p>
                                     </th>
                                     <td></td>
                                     <th></th>
@@ -108,7 +108,7 @@
                                 </tr>
                                 <tr>
                                     <th>
-                                        <p class="form-control-static">@("".KeyToWord())常用商品</p>
+                                        <p class="form-control-static">@("common_goods".KeyToWord())</p>
                                     </th>
                                     <td colspan="3">
                                         <p class="form-control-static">{{item.CiqCode}}</p>
@@ -116,13 +116,13 @@
                                 </tr>
                                 <tr>
                                     <th>
-                                        <p class="form-control-static">@("".KeyToWord())名称(英文)</p>
+                                        <p class="form-control-static">@("name".KeyToWord())(@("english".KeyToWord()))</p>
                                     </th>
                                     <td>
                                         <p class="form-control-static">{{item.DescriptionEn}}</p>
                                     </td>
                                     <th>
-                                        <p class="form-control-static">@("".KeyToWord())名称(中文)</p>
+                                        <p class="form-control-static">@("name".KeyToWord())(@("chinese".KeyToWord()))</p>
                                     </th>
                                     <td>
                                         <p class="form-control-static">{{item.Description}}</p>
@@ -130,13 +130,13 @@
                                 </tr>
                                 <tr>
                                     <th>
-                                        <p class="form-control-static">@("".KeyToWord())品牌</p>
+                                        <p class="form-control-static">@("brand".KeyToWord())</p>
                                     </th>
                                     <td>
                                         <p class="form-control-static">{{item.Brand}}</p>
                                     </td>
                                     <th>
-                                        <p class="form-control-static">@("".KeyToWord())包装</p>
+                                        <p class="form-control-static">@("package".KeyToWord())</p>
                                     </th>
                                     <td>
                                         <p class="form-control-static">{{item.Package}}</p>
@@ -144,13 +144,13 @@
                                 </tr>
                                 <tr>
                                     <th>
-                                        <p class="form-control-static">@("".KeyToWord())规格</p>
+                                        <p class="form-control-static">@("spec".KeyToWord())</p>
                                     </th>
                                     <td>
                                         <p class="form-control-static">{{item.Spec}}</p>
                                     </td>
                                     <th>
-                                        <p class="form-control-static">@("".KeyToWord())原产国</p>
+                                        <p class="form-control-static">@("country_of_origin".KeyToWord())</p>
                                     </th>
                                     <td>
                                         <p class="form-control-static" ajax-label ajax-url="countries" ng-model="item.ManufacturerCountry">{{item.ManufacturerCountry}}</p>
@@ -158,13 +158,13 @@
                                 </tr>
                                 <tr>
                                     <th>
-                                        <p class="form-control-static">@("".KeyToWord())HS编码</p>
+                                        <p class="form-control-static">@("hs_code".KeyToWord())</p>
                                     </th>
                                     <td>
                                         <p class="form-control-static" ng-model="item.HSCode">{{item.HSCode}}</p>
                                     </td>
                                     <th>
-                                        <p class="form-control-static">@("".KeyToWord())制造商</p>
+                                        <p class="form-control-static">@("manufacturer".KeyToWord())</p>
                                     </th>
                                     <td>
                                         <p ng-model="item.Manufacturer" class="form-control-static">{{item.Manufacturer}}</p>
@@ -172,7 +172,7 @@
                                 </tr>
                                 <tr>
                                     <th>
-                                        <p class="form-control-static">@("".KeyToWord())数量</p>
+                                        <p class="form-control-static">@("quantity".KeyToWord())</p>
                                     </th>
                                     <td>
                                         <p class="form-control-static" ng-model="item.Quantity">{{item.Quantity}}</p>
@@ -182,13 +182,13 @@
                                 </tr>
                                 <tr ng-if="model.Application.C102">
                                     <th>
-                                        <p class="form-control-static">@("".KeyToWord())品质检验</p>
+                                        <p class="form-control-static">@("quality_restriction".KeyToWord())</p>
                                     </th>
                                     <td>
                                         <p class="form-control-static">{{item.C102?'是':'否'}}</p>
                                     </td>
                                     <th>
-                                        <p class="form-control-static" ng-if="item.C102">@("".KeyToWord())检测项目</p>
+                                        <p class="form-control-static" ng-if="item.C102">@("test_item".KeyToWord())</p>
                                     </th>
                                     <td>
                                         <p class="form-control-static" ng-if="item.C102">{{item.C102Comment}}</p>
@@ -204,7 +204,7 @@
                                     </colgroup>
                                     <tr ng-repeat="batch in item.ProductItemList">
                                         <th>
-                                            <p class="form-control-static">@("".KeyToWord())批次号/保质期</p>
+                                            <p class="form-control-static">@("batch_number_or_shelf_life".KeyToWord())</p>
                                         </th>
                                         <td>
                                             <p class="form-control-static">{{batch.BatchNo}}</p>
@@ -221,13 +221,13 @@
                                     <col width="310" />
                                 </colgroup>
                                 <tr>
-                                    <th><p class="form-control-static">@("".KeyToWord())真知码</p></th>
-                                    <th><p class="form-control-static">@("".KeyToWord())首码</p></th>
-                                    <th><p class="form-control-static">@("".KeyToWord())尾码</p></th>
+                                    <th><p class="form-control-static">@("zcode".KeyToWord())</p></th>
+                                    <th><p class="form-control-static">@("head_code".KeyToWord())</p></th>
+                                    <th><p class="form-control-static">@("tail_code".KeyToWord())</p></th>
                                 </tr>
                                 <tr ng-repeat="zcode in item.ApplicationZCodes">
                                     <td>
-                                        <p class="form-control-static">@("".KeyToWord())真知码{{$index+1}}</p>
+                                        <p class="form-control-static">@("zcode".KeyToWord()){{$index+1}}</p>
                                     </td>
                                     <td>
                                         <p class="form-control-static">{{zcode.ZCodeStart}}</p>
@@ -242,13 +242,13 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())运输方式</label>
-                    <span class="col-sm-8 form-control-static" ng-if="model.Application.ShippingMethod==1">@("".KeyToWord())空运</span>
-                    <span class="col-sm-8 form-control-static" ng-if="model.Application.ShippingMethod==2">@("".KeyToWord())海运</span>
-                    <span class="col-sm-8 form-control-static" ng-if="model.Application.ShippingMethod==3">@("".KeyToWord())陆运</span>
+                    <label class="col-sm-2 control-label">@("type_of_shipping".KeyToWord())</label>
+                    <span class="col-sm-8 form-control-static" ng-if="model.Application.ShippingMethod==1">@("air_transport".KeyToWord())</span>
+                    <span class="col-sm-8 form-control-static" ng-if="model.Application.ShippingMethod==2">@("ocean_shipping".KeyToWord())</span>
+                    <span class="col-sm-8 form-control-static" ng-if="model.Application.ShippingMethod==3">@("land_transportation".KeyToWord())</span>
                 </div>
                 <div class="form-group" ng-show="model.Application.ShippingMethod === 2">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())船舶资料</label>
+                    <label class="col-sm-2 control-label">@("ship_information".KeyToWord())</label>
                     <div class="col-sm-8">
                         <div ng-repeat="item in model.Application.ContainerInfos">
                             <table class="table table-striped">
@@ -257,15 +257,15 @@
                                     <col width="100" />
                                 </colgroup>
                                 <tr>
-                                    <th>@("".KeyToWord())装箱信息{{$index+1}}</th>
+                                    <th>@("packing_information".KeyToWord()){{$index+1}}</th>
                                     <td></td>
                                 </tr>
                                 <tr>
-                                    <th>@("".KeyToWord())装箱号</th>
+                                    <th>@("packing_number".KeyToWord())</th>
                                     <td>{{item.ContainerNumber}}</td>
                                 </tr>
                                 <tr>
-                                    <th>@("".KeyToWord())铅封号</th>
+                                    <th>@("seal_no".KeyToWord())</th>
                                     <td>{{item.SealNumber}}</td>
                                 </tr>
                             </table>
@@ -273,59 +273,59 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())提单号</label>
+                    <label class="col-sm-2 control-label">@("bill_of_lading_no".KeyToWord())</label>
                     <span class="col-sm-8 form-control-static">{{model.Application.BillNo}}</span>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())副提单号</label>
+                    <label class="col-sm-2 control-label">@("second_bill_of_lading_no".KeyToWord())</label>
                     <span class="col-sm-8 form-control-static">{{model.Application.OtherBillNo}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">
-                        <p ng-if="model.Application.ShippingMethod == 1">@("".KeyToWord())航班号</p>
-                        <p ng-if="model.Application.ShippingMethod == 2">@("".KeyToWord())船舶号</p>
-                        <p ng-if="model.Application.ShippingMethod == 3">@("".KeyToWord())车牌号</p>
+                        <p ng-if="model.Application.ShippingMethod == 1">@("flight_number".KeyToWord())</p>
+                        <p ng-if="model.Application.ShippingMethod == 2">@("ship_number".KeyToWord())</p>
+                        <p ng-if="model.Application.ShippingMethod == 3">@("license_plate_number".KeyToWord())</p>
                     </label>
                     <span class="col-sm-8 form-control-static">{{model.Application.Vesselcn}}</span>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())出发日期</label>
+                    <label class="col-sm-2 control-label">@("departure_date".KeyToWord())</label>
                     <span class="col-sm-8 form-control-static">{{model.Application.Voyage}}</span>
                 </div>
                 <div class="form-group" ng-if="model.Application.ShippingMethod != 2">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())运输总数量</label>
+                    <label class="col-sm-2 control-label">@("total_transport_volume".KeyToWord())</label>
                     <span class="col-sm-8 form-control-static">{{model.Application.TotalUnits}}Pallet(s)</span>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())运输总重量</label>
+                    <label class="col-sm-2 control-label">@("total_weight_of_transport".KeyToWord())</label>
                     <span class="col-sm-8 form-control-static">{{model.Application.TotalWeight | currency:"":2}}KG</span>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())计划发货日期</label>
+                    <label class="col-sm-2 control-label">@("planned_delivery_date".KeyToWord())</label>
                     <span class="col-sm-8 form-control-static">{{model.Application.ShippingDate | date:'yyyy/MM/dd'}}</span>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())预约检查日期</label>
+                    <label class="col-sm-2 control-label">@("date_of_appointment".KeyToWord())</label>
                     <span class="col-sm-8 form-control-static">{{model.Application.InspectionDate | date:'yyyy/MM/dd'}}</span>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())检验地点</label>
+                    <label class="col-sm-2 control-label">@("inspection_site".KeyToWord())</label>
                     <span class="col-sm-8 form-control-static">{{model.Application.InspectionAddr}}</span>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())联系人</label>
+                    <label class="col-sm-2 control-label">@("contacts".KeyToWord())</label>
                     <span class="col-sm-8 form-control-static">{{model.Application.Inspector}}</span>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())联系人电话</label>
+                    <label class="col-sm-2 control-label">@("contact_phone".KeyToWord())</label>
                     <span class="col-sm-8 form-control-static">{{model.Application.InspectorTel}}</span>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())发货港口</label>
+                    <label class="col-sm-2 control-label">@("port_of_shipment".KeyToWord())</label>
                     <span ajax-label ajax-url="ports" ng-model="model.Application.LoadingPort" class="col-sm-8 form-control-static">{{model.Application.LoadingPort}}</span>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">@("".KeyToWord())目的港口</label>
+                    <label class="col-sm-2 control-label">@("port_of_destination".KeyToWord())</label>
                     <span ajax-label ajax-url="ports" ng-model="model.Application.DestPort" class="col-sm-8 form-control-static">{{model.Application.DestPort}}</span>
                 </div>
                 @{
@@ -334,7 +334,7 @@
                     {
                         <div class="form-horizontal">
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">@("".KeyToWord())证书列表</label>
+                                <label class="col-sm-2 control-label">@("certificate_list".KeyToWord())</label>
                                 <div class="col-sm-10">
                                     @foreach (var item in validCerts)
                                     {
@@ -361,7 +361,7 @@
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <button class="btn btn-default" onclick="print()">
-                    <span class="glyphicon glyphicon-print" aria-hidden="true"></span>@("".KeyToWord())打印
+                    <span class="glyphicon glyphicon-print" aria-hidden="true"></span>@("print".KeyToWord())
                 </button>
             </div>
         </div>

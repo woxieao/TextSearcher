@@ -7,27 +7,27 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">
-                @("".KeyToWord())申请列表
+                @("application_list".KeyToWord())
             </h3>
         </div>
         <div class="panel-body">
             <div class="formList-group-bar" style="margin-bottom: 0px;">
                 <form class="form-inline">
                     <div class="form-group">
-                        <input ng-model="applyNo" placeholder="@("".KeyToWord())申请号" class="form-control" />
-                        @("".KeyToWord())状态: <select ng-model="status" ng-options="s.value as s.name for s in statusValues" class="form-control">
-                            <option value="">-- @("".KeyToWord())全部 --</option>
+                        <input ng-model="applyNo" placeholder="@("application_number".KeyToWord())" class="form-control" />
+                        @("status".KeyToWord()): <select ng-model="status" ng-options="s.value as s.name for s in statusValues" class="form-control">
+                            <option value="">-- @("whole".KeyToWord()) --</option>
                         </select>
                         From: <input ng-model="start" type="text" class="form-control datetimepicker">
                         To: <input ng-model="end" type="text" class="form-control datetimepicker">
                         <button type="button" class="btn btn-default" ng-click="searchApplication()">
-                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> @("".KeyToWord())搜索
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> @("search".KeyToWord())
                         </button>
                     </div>
                 </form>
 
             </div>
-            <div style="padding: 3px; margin-top: 4px; margin-bottom: 4px; color: blue; width: 100%; position: relative;"><small>当前状态为“新申请”的申请号，商户可自行更改编辑；其他状态的申请，编辑请联系GIQCI客服人员。</small></div>
+            <div style="padding: 3px; margin-top: 4px; margin-bottom: 4px; color: blue; width: 100%; position: relative;"><small>@("application_list_prompt".KeyToWord())</small></div>
             <table class="table custom-table custom-table-striped custom-table-hover">
                 <colgroup>
                     <col width='100' />
@@ -41,14 +41,14 @@
                 </colgroup>
                 <thead>
                     <tr>
-                        <th>@("".KeyToWord())申请号</th>
-                        <th>@("".KeyToWord())证书类别</th>
-                        <th>@("".KeyToWord())商业目的</th>
-                        <th>@("".KeyToWord())创建日期</th>
-                        <th>@("".KeyToWord())当前状态</th>
-                        <th>@("".KeyToWord())申请人</th>
-                        <th>@("".KeyToWord())E-Mail</th>
-                        <th>@("".KeyToWord())打印</th>
+                        <th>@("application_number".KeyToWord())</th>
+                        <th>@("certificate_category".KeyToWord())</th>
+                        <th>@("business_purpose".KeyToWord())</th>
+                        <th>@("create_date".KeyToWord())</th>
+                        <th>@("status".KeyToWord())</th>
+                        <th>@("applicant".KeyToWord())</th>
+                        <th>@("email".KeyToWord())</th>
+                        <th>@("print".KeyToWord())</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -57,7 +57,7 @@
                             <a href="@LanCore.GetLanTypeUrl()/forms/app/{{emp.Key}}">{{emp.Key}}</a>
                         </td>
                         <td>
-                            <span ng-show="emp.C101">@("".KeyToWord())溯源证书&nbsp;</span><span ng-show="emp.C102">@("".KeyToWord())品质证书&nbsp;</span><span ng-show="emp.C103">@("".KeyToWord())标签证书&nbsp;</span>
+                            <span ng-show="emp.C101">@("c101_cert".KeyToWord())&nbsp;</span><span ng-show="emp.C102">@("c102_cert".KeyToWord())&nbsp;</span><span ng-show="emp.C103">@("c103_cert".KeyToWord())&nbsp;</span>
                         </td>
                         <td>{{emp.TradeType}}</td>
                         <td>{{emp.CreateDate|date:"yyyy/MM/dd"}}</td>
@@ -66,9 +66,9 @@
                         <td>{{emp.MerchantEmail}}</td>
                         <td>
                             <div class="btn-group">
-                                <a target="_blank" class="btn btn-sm btn-default" href="@LanCore.GetLanTypeUrl()/forms/app/print/{{emp.Key}}"><span class="glyphicon glyphicon-print"></span> @("".KeyToWord())打印</a>
-                                <a ng-if="emp.Status=='新申请'" class="btn btn-sm btn-primary" href="@LanCore.GetLanTypeUrl()/forms/app/{{emp.Key}}">@("".KeyToWord())编辑</a>
-                                <a ng-if="emp.Status!='新申请'" class="btn btn-sm btn-info" href="@LanCore.GetLanTypeUrl()/forms/app/{{emp.Key}}">@("".KeyToWord())查看</a>
+                                <a target="_blank" class="btn btn-sm btn-default" href="@LanCore.GetLanTypeUrl()/forms/app/print/{{emp.Key}}"><span class="glyphicon glyphicon-print"></span> @("print".KeyToWord())</a>
+                                <a ng-if="emp.Status=='新申请'" class="btn btn-sm btn-primary" href="@LanCore.GetLanTypeUrl()/forms/app/{{emp.Key}}">@("edit".KeyToWord())</a>
+                                <a ng-if="emp.Status!='新申请'" class="btn btn-sm btn-info" href="@LanCore.GetLanTypeUrl()/forms/app/{{emp.Key}}">@("view".KeyToWord())</a>
                             </div>
                         </td>
                     </tr>
@@ -77,16 +77,16 @@
             <div class="page-list">
                 <ul class="pagination" ng-show="paginationConf.totalItems > 0">
                     <li ng-class="{disabled: postData.pageIndex == 1}" ng-click="indexPage()">
-                        <span>@("".KeyToWord())首页</span>
+                        <span>@("first_page".KeyToWord())</span>
                     </li>
                     <li ng-class="{disabled: postData.pageIndex == 1}" ng-click="prevPage()">
-                        <span>@("".KeyToWord())上一页</span>
+                        <span>@("previous_page".KeyToWord())</span>
                     </li>
                     <li class="disabled">
-                        <span>@("".KeyToWord())第{{postData.pageIndex}}@("".KeyToWord())页</span>
+                        <span>{{postData.pageIndex}}</span>
                     </li>
                     <li ng-class="{disabled: paginationConf.totalItems < postData.pageSize}" ng-click="nextPage()">
-                        <span>@("".KeyToWord())下一页</span>
+                        <span>@("next page".KeyToWord())</span>
                     </li>
                 </ul>
             </div>

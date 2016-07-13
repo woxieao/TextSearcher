@@ -1,31 +1,31 @@
 ﻿@using Giqci.PublicWeb.Extensions
 @{
-    //ViewBag.Title =@("".KeyToWord()) "商品列表";
-    ViewBag.Title = "商品列表";
+    ViewBag.Title = "list_of_goods".KeyToWord();
+
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div ng-controller="GoodsListController">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title">@("".KeyToWord())商品列表</h3>
+            <h3 class="panel-title">@("list_of_goods".KeyToWord())</h3>
         </div>
         <div class="panel-body">
             <div class="goodList-search-bar">
                 <form class="form-inline">
-                    <a class="btn btn-primary btn-sm" href="@LanCore.GetLanTypeUrl()/goods/add">@("".KeyToWord())添加备案商品</a> &nbsp;&nbsp;<a class="btn btn-primary btn-sm" href="@LanCore.GetLanTypeUrl()/goods/showcustomproduct">添加非备案商品</a>
-                    <input type="text" class="form-control" placeholder="@("".KeyToWord())请输入关键字" ng-model="keyword" />
+                    <a class="btn btn-primary btn-sm" href="@LanCore.GetLanTypeUrl()/goods/add">@("add_record_merchandise".KeyToWord())</a> &nbsp;&nbsp;<a class="btn btn-primary btn-sm" href="@LanCore.GetLanTypeUrl()/goods/showcustomproduct">@("add_goods".KeyToWord())</a>
+                    <input type="text" class="form-control" placeholder="@("please_enter_a_keyword".KeyToWord())" ng-model="keyword" />
                     <button class="btn btn-default" ng-click="search()">
-                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> @("".KeyToWord())搜索
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span> @("search".KeyToWord())
                     </button>
                 </form>
             </div>
             <ul class="nav nav-tabs">
                 <li class="active">
-                    <a href="#ciqProduct" data-toggle="tab">@("".KeyToWord())备案商品</a>
+                    <a href="#ciqProduct" data-toggle="tab">@("record_commodity".KeyToWord())</a>
                 </li>
                 <li>
-                    <a href="#custProduct" data-toggle="tab">@("".KeyToWord())非备案商品</a>
+                    <a href="#custProduct" data-toggle="tab">@("customer_goods".KeyToWord())</a>
                 </li>
             </ul>
             <div class="tab-content">
@@ -46,16 +46,16 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        <span style="color: green">@("".KeyToWord())商品备案号<span style="font-size: 10px; color: red;">(@("".KeyToWord())详情请点击备案号)</span></span>
+                                        <span style="color: green">@("commodity_record_number".KeyToWord())<span style="font-size: 10px; color: red;">(@("commodity_record_number_for_details_msg".KeyToWord()))</span></span>
                                     </th>
-                                    <th>@("".KeyToWord())HS编码</th>
-                                    <th>@("".KeyToWord())名称(中文)</th>
-                                    <th>@("".KeyToWord())名称(英文)</th>
-                                    <th>@("".KeyToWord())规格</th>
-                                    <th>@("".KeyToWord())品牌</th>
-                                    <th>@("".KeyToWord())原产国</th>
-                                    <th>@("".KeyToWord())制造商</th>
-                                    <th>@("".KeyToWord())操作</th>
+                                    <th>@("hs_code".KeyToWord())</th>
+                                    <th>@("name".KeyToWord())(@("chinses".KeyToWord())</th>
+                                    <th>@("name".KeyToWord())(@("english".KeyToWord())</th>
+                                    <th>@("spec".KeyToWord())</th>
+                                    <th>@("brand".KeyToWord())</th>
+                                    <th>@("country_of_origin".KeyToWord())</th>
+                                    <th>@("manufacturer".KeyToWord())</th>
+                                    <th>@("operation".KeyToWord())</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -73,7 +73,7 @@
                                     <td class="td-ellipsis" title="{{Product.Manufacturer}}">{{Product.Manufacturer}}</td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <button type="button" class="btn btn-danger btn-sm" ng-click="remove(Product.CiqCode,$index)">删除</button>
+                                            <button type="button" class="btn btn-danger btn-sm" ng-click="remove(Product.CiqCode,$index)">@("delete".KeyToWord())</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -99,17 +99,17 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        <span style="color: orangered">@("".KeyToWord())自定义标识</span>
+                                        <span style="color: orangered">@("customizes_identity".KeyToWord())</span>
                                     </th>
-                                    <th>@("".KeyToWord())HS编码</th>
-                                    <th>@("".KeyToWord())名称(中文)</th>
-                                    <th>@("".KeyToWord())名称(英文)</th>
-                                    <th>@("".KeyToWord())规格</th>
-                                    <th>@("".KeyToWord())品牌</th>
-                                    <th>@("".KeyToWord())原产国</th>
-                                    <th>@("".KeyToWord())包装</th>
-                                    <th>@("".KeyToWord())制造商</th>
-                                    <th>@("".KeyToWord())操作</th>
+                                    <th>@("hs_code".KeyToWord())</th>
+                                    <th>@("name".KeyToWord())(@("chinses".KeyToWord())</th>
+                                    <th>@("name".KeyToWord())(@("english".KeyToWord())</th>
+                                    <th>@("spec".KeyToWord())</th>
+                                    <th>@("brand".KeyToWord())</th>
+                                    <th>@("country_of_origin".KeyToWord())</th>
+                                    <th>@("package".KeyToWord())</th>
+                                    <th>@("manufacturer".KeyToWord())</th>
+                                    <th>@("operation".KeyToWord())</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -128,10 +128,10 @@
                                     <td class="td-ellipsis" title="{{Product.Manufacturer}}">{{Product.Manufacturer}}</td>
                                     <td>
                                         <div class="btn-group pull-right" role="group">
-                                            <button ng-if="Product.IsApproved" class="btn btn-default btn-sm" ng-click="lookMerchantProduct($index)">@("".KeyToWord())查看</button>
-                                            <button ng-if="!Product.IsApproved" class="btn btn-default btn-sm" ng-click="editMerchantProduct($index)">@("".KeyToWord())编辑</button>
-                                            <button type="button" class="btn btn-primary btn-sm" ng-click="changeProduct($index)">@("".KeyToWord())转为备案商品</button>
-                                            <button type="button" class="btn btn-danger btn-sm" ng-click="remove2(Product.Id,$index)">@("".KeyToWord())删除</button>
+                                            <button ng-if="Product.IsApproved" class="btn btn-default btn-sm" ng-click="lookMerchantProduct($index)">@("view".KeyToWord())</button>
+                                            <button ng-if="!Product.IsApproved" class="btn btn-default btn-sm" ng-click="editMerchantProduct($index)">@("edit".KeyToWord())</button>
+                                            <button type="button" class="btn btn-primary btn-sm" ng-click="changeProduct($index)">@("transferred_to_the_record_commodity".KeyToWord())</button>
+                                            <button type="button" class="btn btn-danger btn-sm" ng-click="remove2(Product.Id,$index)">@("delete".KeyToWord())</button>
                                         </div>
                                     </td>
                                 </tr>
