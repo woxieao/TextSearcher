@@ -9,7 +9,7 @@ app.directive("ajaxSelect", function ($timeout, $http) {
             var url = attrs["ajaxUrl"];
 
             scope.$watch(attrs.ngModel, function (n, o) {
-                $(element).next().find("span.select2-selection__rendered").html('<span class="select2-selection__placeholder">请输入关键词进行搜索</span>');
+                $(element).next().find("span.select2-selection__rendered").html('<span class="select2-selection__placeholder">' + $giqci.KeyToWord("please_enter_the_keyword_search") + '</span>');
                 scope.isLoading = false;
                 if (!scope.isLoading && model.$viewValue) {
                     $giqci.get($giqci.getLanUrl("/api/dict/" + url), { 'code': model.$viewValue }).success(function (data) {
@@ -417,7 +417,7 @@ app.directive("ajaxProduct", function ($timeout, $http) {
             var url = attrs["ajaxUrl"];
             scope.dataList = [];
             scope.$watch("ngModel", function (n, o) {
-                $(element).next().find("span.select2-selection__rendered").html('<span class="select2-selection__placeholder">请输入关键词搜索 / 点击“添加/管理”查看所有商品信息并选择</span>');
+                $(element).next().find("span.select2-selection__rendered").html('<span class="select2-selection__placeholder">' + $giqci.KeyToWord("keywords_search_msg1") + '</span>');
                 if (scope.item.HSCode != null) {
                     var newVal = scope.item.Description;
                     $(element).next().find("span.select2-selection__rendered").html(newVal);
@@ -506,7 +506,7 @@ app.directive("ajaxCountry", function ($timeout, $http) {
             var url = attrs["ajaxUrl"];
 
             scope.$watch(attrs.ngModel, function (n, o) {
-                $(element).next().find("span.select2-selection__rendered").html('<span class="select2-selection__placeholder">请输入关键词进行搜索</span>');
+                $(element).next().find("span.select2-selection__rendered").html('<span class="select2-selection__placeholder">' + $giqci.KeyToWord("please_enter_the_keyword_search") + '</span>');
                 scope.isLoading = false;
                 if (!scope.isLoading && model.$viewValue) {
                     $giqci.get($giqci.getLanUrl("/api/dict/" + url), { 'code': model.$viewValue }).success(function (data) {

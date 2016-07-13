@@ -1,44 +1,45 @@
-﻿<div class="modal" role="dialog" data-backdrop="static" data-keyboard="false" id="form-product-view">
+﻿@using Giqci.PublicWeb.Extensions
+<div class="modal" role="dialog" data-backdrop="static" data-keyboard="false" id="form-product-view">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h5 class="modal-title form-add-custom-product-title">备案商品详情</h5>
+                <h5 class="modal-title form-add-custom-product-title">@("record_commodity_details".KeyToWord())</h5>
             </div>
             <div class="modal-body">
                 <form name="appform" class="form-horizontal" novalidate>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">商品备案号</label>
+                        <label class="col-sm-2 control-label">@("commodity_record_number".KeyToWord())</label>
                         <span class="col-sm-6 form-control-static">{{ProductDialogModel.CiqCode}}</span>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">HS编码</label>
+                        <label class="col-sm-2 control-label">@("hs_code".KeyToWord())</label>
                         <span class="col-sm-6 form-control-static">{{ProductDialogModel.HsCode}}</span>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">名称(英文)</label>
+                        <label class="col-sm-2 control-label">@("name".KeyToWord())(@("english".KeyToWord()))</label>
                         <span class="col-sm-6 form-control-static">{{ProductDialogModel.DescriptionEn}}</span>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">名称(中文)</label>
+                        <label class="col-sm-2 control-label">@("name".KeyToWord())(@("chinese".KeyToWord()))</label>
                         <span class="col-sm-6 form-control-static">{{ProductDialogModel.Description}}</span>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">品牌 </label>
+                        <label class="col-sm-2 control-label">@("brand".KeyToWord()) </label>
                         <span class="col-sm-6 form-control-static">{{ProductDialogModel.Brand}}</span>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">规格 </label>
+                        <label class="col-sm-2 control-label">@("spec".KeyToWord()) </label>
                         <span class="col-sm-6 form-control-static">{{ProductDialogModel.Spec}}</span>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">制造商 </label>
+                        <label class="col-sm-2 control-label">@("manufacturer".KeyToWord()) </label>
                         <span class="col-sm-6 form-control-static">{{ProductDialogModel.Manufacturer}}</span>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">原产国 </label>
+                        <label class="col-sm-2 control-label">@("country_of_origin".KeyToWord()) </label>
                         <span class="col-sm-6 form-control-static"><span ajax-label ajax-url="countries" ng-model="ProductDialogModel.ManufacturerCountry">{{ProductDialogModel.ManufacturerCountry}}</span></span>
                     </div>
 

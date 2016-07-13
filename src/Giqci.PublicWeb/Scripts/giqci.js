@@ -240,7 +240,7 @@ $giqci.post = function (url, data) {
         if (callbackData.callBackUrl !== null) {
             window.location.href = $giqci.getLanUrl(callbackData.callBackUrl);
         }
-        layer.alert($giqci.KeyToWord("提交成功"));
+        layer.alert($giqci.KeyToWord("submit_successfully"));
     }
     var errorCallBackFunc = function () {
         console.log("Send Data To " + url + " Failed");

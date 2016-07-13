@@ -3,7 +3,7 @@
 @model Giqci.Chapi.Models.Customer.Merchant
 
 @{
-    ViewBag.Title = "商家资料";
+    ViewBag.Title = "merchant_information".KeyToWord();
 }
 <div class="panel panel-default" ng-controller="ProfileController">
     <div class="panel-heading">
@@ -64,11 +64,11 @@
         //var app = angular.module("giqci", ['commonAlert']);
         app.controller("ProfileController", ['$http', '$scope', '$location', 'alertService', function ($http, $scope, $location, alertService) {
             $scope.user = ObjDecodeToJson(@HtmlExtensions.RawJson( Model));
-            $scope.submitButton = ' 提交 ';
+            $scope.submitButton =$giqci.KeyToWord("submit") ;
             $scope.submitForm = function (isValid, PasswordValid) {
                 if (isValid) {
                     $scope.enableDisableButton = true;
-                    $scope.submitButton = '正在提交...';
+                    $scope.submitButton =$giqci.KeyToWord("on_submitting");
                     $scope.formData = {
                         username: $scope.user.Username,
                         name: $scope.user.Name,
@@ -82,10 +82,10 @@
                             layer.alert(response.data.message);
                         }else{
                             //alertService.add('success', '资料修改成功');
-                            layer.msg('资料修改成功', { icon: 6 });
+                            layer.msg($giqci.KeyToWord("data_modification_success"), { icon: 6 });
                         }
                         $scope.enableDisableButton = false;
-                        $scope.submitButton = ' 提交 ';
+                        $scope.submitButton = $giqci.KeyToWord("submit");
                     }, $scope);
                 }
             };
