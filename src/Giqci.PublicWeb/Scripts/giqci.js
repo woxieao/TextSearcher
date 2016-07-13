@@ -316,7 +316,6 @@ $giqci.getLanUrl = function (url) {
         return lan;
     }
 }
-
 $giqci.getLanType = function () {
     return window.location.pathname.split('/')[1].toLocaleLowerCase();
 }
@@ -324,12 +323,16 @@ $giqci.getLanType = function () {
 $giqci.KeyToWord = function (keyName) {
     var lanType = $giqci.getLanType();
     var key = LanguageData[keyName];
-    switch (lanType) {
-        case "cn":
-            return key === undefined || key === null ? keyName.replace(/_/g, " ") : key.CnName;
-        case "en":
-            return key === undefined || key === null ? keyName.replace(/_/g, " ") : key.EnName;
-        default:
-            return "UnknownLanguageType";
+    if (key == null) {
+        return keyName.replace(/_/g, " ");
+    } else {
+        switch (lanType) {
+            case "cn":
+                return key.CnName == null ? keyName.replace(/_/g, " ") : key.CnName;
+            case "en":
+                return key.EnName == null ? keyName.replace(/_/g, " ") : key.EnName;
+            default:
+                return "UnknownLanguageType";
+        }
     }
 }
