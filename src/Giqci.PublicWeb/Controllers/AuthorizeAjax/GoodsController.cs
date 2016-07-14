@@ -23,7 +23,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
     public class GoodsController : AjaxController
     {
         private readonly IMerchantProductApiProxy _merchantRepository;
-        private readonly IProductApiProxy _productApiProxy;
+        //private readonly IProductApiProxy _productApiProxy;
         private readonly IAuthService _auth;
         private readonly IDictService _dict;
         private readonly IMerchantApplicationApiProxy _repo;
@@ -32,7 +32,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             IAuthService auth, IDictService dict, IMerchantApplicationApiProxy repo)
         {
             _merchantRepository = merchantRepository;
-            _productApiProxy = productApiProxy;
+           // _productApiProxy = productApiProxy;
             _auth = auth;
             _dict = dict;
             _repo = repo;
@@ -266,7 +266,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             var convertCount = 0;
             try
             {
-                var ciqProduct = _productApiProxy.GetProduct(ciqCode);
+                var ciqProduct = _merchantRepository.GetProduct(ciqCode);
                 if (ciqProduct == null)
                 {
                     throw new Exception("the_record_number_does_not_exist".KeyToWord());
@@ -285,7 +285,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                                 DescriptionEn = enName,
                             }
                         };
-                    _productApiProxy.UpdateCiqProductInfo(productList);
+                    //_merchantRepository.UpdateCiqProductInfo(productList);
                 }
                 string tempMsg;
                 convertCount = _repo.ConvertCustomProduct(_auth.GetAuth().MerchantId, customProductId, ciqCode);

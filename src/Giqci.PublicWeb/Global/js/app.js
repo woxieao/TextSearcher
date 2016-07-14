@@ -465,7 +465,7 @@ app.controller("GoodsAddController", [
             layer.confirm($giqci.KeyToWord("add_product_msg"), function (l) {
                 if ($scope.Product != null) {
                     $giqci.post('/api/goods/addproduct',
-                         { ciqCode: $scope.Product.CiqCode }).success(function (data) {
+                         { key: $scope.Product.Key }).success(function (data) {
                              if (data.result) {
                                  layer.msg($giqci.KeyToWord("added_successfully"), { icon: 6 });
                              } else {
