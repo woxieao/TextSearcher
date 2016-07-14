@@ -32,7 +32,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             IAuthService auth, IDictService dict, IMerchantApplicationApiProxy repo)
         {
             _merchantRepository = merchantRepository;
-           // _productApiProxy = productApiProxy;
+            // _productApiProxy = productApiProxy;
             _auth = auth;
             _dict = dict;
             _repo = repo;
@@ -44,7 +44,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         {
             //预留分页条件
             pageSize = 10000;
-            var productList = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId,keywords, pageIndex, pageSize,true);
+            var productList = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, keywords, pageIndex, pageSize, true);
             return new AjaxResult(new { result = productList });
         }
 
@@ -167,7 +167,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         [HttpPost]
         public ActionResult MerchantGetCustomProductList(string keywords = "")
         {
-            var result = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, keywords,1,9999,false);
+            var result = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, keywords, 1, 9999, false);
             return new AjaxResult(new { result = result });
         }
 
@@ -193,10 +193,10 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                 }
             }
             var allProduct = new List<CommonProduct>();
-            
+
             var ciqProductList = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, keyWords, 1,
                 string.IsNullOrEmpty(keyWords) ? 10 : 10000, true);
-            var customProductList = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, string.Empty,1,9999,false);
+            var customProductList = _merchantRepository.GetProducts(_auth.GetAuth().MerchantId, string.Empty, 1, 9999, false);
             var ran = new Random();
 
             foreach (var product in ciqProductList)
@@ -257,9 +257,9 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
 
 
 
-        [Route("goods/convertproduct/{customProductId}/{ciqCode}")]
+        [Route("goods/convertproduct/{key}/{ciqCode}")]
         [HttpPost]
-        public ActionResult ConvertProduct(int customProductId, string ciqCode, string enName = "")
+        public ActionResult ConvertProduct(string key, string ciqCode, string enName = "")
         {
             var flag = true;
             var msg = "success";
@@ -285,12 +285,13 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                                 DescriptionEn = enName,
                             }
                         };
-                    //_merchantRepository.UpdateCiqProductInfo(productList);
+                    _merchantRepository.UpdateCiqProductInfo(productList);
                 }
+                int customerproductid = _merchantRepository.GetCustomerProduct(_auth.GetAuth().MerchantId, key).Id;
                 string tempMsg;
-                convertCount = _repo.ConvertCustomProduct(_auth.GetAuth().MerchantId, customProductId, ciqCode);
-                _merchantRepository.AddProduct(_auth.GetAuth().MerchantId, ciqCode, out tempMsg);
-                _merchantRepository.RemoveProduct(_auth.GetAuth().MerchantId, "");
+                convertCount = _repo.ConvertCustomProduct(_auth.GetAuth().MerchantId, customerproductid, ciqCode);
+                _merchantRepository.ConvertProduct(_auth.GetAuth().MerchantId, ciqCode, key, out tempMsg);
+                //_merchantRepository.RemoveProduct(_auth.GetAuth().MerchantId, "");
             }
             catch (Exception ex)
             {

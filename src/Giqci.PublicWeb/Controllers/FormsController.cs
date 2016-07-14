@@ -29,7 +29,7 @@ namespace Giqci.PublicWeb.Controllers
 
         public FormsController(IDictService cache,
             IMerchantApiProxy merchantRepo, IMerchantApplicationApiProxy appRepo, IProductApiProxy prodApi,
-            IAuthService auth, IDataChecker dataChecker, ICertificateApiProxy certRepo)
+            IAuthService auth, ICertificateApiProxy certRepo)
         {
             _merchantRepo = merchantRepo;
             _cache = cache;

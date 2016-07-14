@@ -48,7 +48,7 @@
                             </tr>
                             <tr>
                                 <th>@("commodity_record_number".KeyToWord())</th>
-                                <td>{{ChangeProductDialogModel.Code}}</td>
+                                <td>{{ChangeProductDialogModel.Key}}</td>
                                 <td>{{Product.CiqCode}}</td>
                             </tr>
                             <tr>
@@ -94,7 +94,7 @@
             </div>
             <div class="modal-footer">
                 <b style="color:red">@("change_product_info_submit_msg".KeyToWord())</b>
-                <button id="submitAddCustomProduct" class="btn btn-primary" ng-click="submitChangeProduct(ChangeProductDialogModel.Id,Product.CiqCode);"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> @("convert".KeyToWord())</button>
+                <button id="submitAddCustomProduct" class="btn btn-primary" ng-click="submitChangeProduct(ChangeProductDialogModel.Key,Product.CiqCode);"><span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> @("convert".KeyToWord())</button>
             </div>
         </div>
         <!-- /.modal-content -->

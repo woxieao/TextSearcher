@@ -1940,7 +1940,7 @@
                                     </thead>
                                     <tbody>
                                         <tr ng-repeat="Product in customProductList">
-                                            <td class="td-ellipsis" style="color: orangered" title="{{Product.Code}}">{{Product.Code}}</td>
+                                            <td class="td-ellipsis" style="color: orangered" title="{{Product.Key}}">{{Product.Key}}</td>
                                             <td class="td-ellipsis" title="{{Product.Description}}">{{Product.Description}}</td>
                                             <td class="td-ellipsis" title="{{Product.DescriptionEn}}">{{Product.DescriptionEn}}</td>
                                             <td class="td-ellipsis" title="{{Product.Spec}}">{{Product.Spec}}</td>
@@ -1948,7 +1948,7 @@
                                                 <div class="btn-group pull-right" role="group">
                                                     <button ng-if="!Product.IsApproved" class="btn btn-default btn-sm" ng-click="editMerchantProduct(Product)">@("edit".KeyToWord())</button>
                                                     <button type="button" class="btn btn-primary btn-sm" ng-click="changeMerchantProduct($index)">@("transferred_to_the_record_commodity".KeyToWord())</button>
-                                                    <button type="button" class="btn btn-danger btn-sm" ng-click="removeMerchantProductId(Product.Id,$index)">@("delete".KeyToWord())</button>
+                                                    <button type="button" class="btn btn-danger btn-sm" ng-click="removeMerchantProductId(Product.Key,$index)">@("delete".KeyToWord())</button>
                                                 </div>
                                             </td>
                                         </tr>
