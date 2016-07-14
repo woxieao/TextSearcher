@@ -114,7 +114,7 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="Product in customProductList">
-                                    <td class="td-ellipsis" style="color: orangered" title="{{Product.Code}}">{{Product.Code}}</td>
+                                    <td class="td-ellipsis" style="color: orangered" title="{{Product.Key}}">{{Product.Key}}</td>
                                     <td class="td-ellipsis" title="{{Product.HsCode}}">{{Product.HsCode}}</td>
                                     <td class="td-ellipsis" title="{{Product.Description}}">{{Product.Description}}</td>
                                     <td class="td-ellipsis" title="{{Product.DescriptionEn}}">{{Product.DescriptionEn}}</td>
@@ -122,7 +122,7 @@
                                     <td class="td-ellipsis" title="{{Product.Brand}}">{{Product.Brand}}</td>
                                     <td>
                                         @*<span ajax-label ajax-url="countries" ng-model="Product.ManufacturerCountry">{{Product.ManufacturerCountry}}</span>*@
-                                        {{Product.ManufacturerCountryName}}
+                                        {{Product.ManufacturerCountryCnName}}
                                     </td>
                                     <td>{{Product.Package}}</td>
                                     <td class="td-ellipsis" title="{{Product.Manufacturer}}">{{Product.Manufacturer}}</td>
