@@ -31,7 +31,7 @@ namespace Giqci.PublicWeb.Controllers.Api
         [Route("account/reg")]
         [HttpPost]
 
-        public ActionResult Register(Merchant input, string Password)
+        public ActionResult Register(string languageType, Merchant input, string Password)
         {
             bool result;
             string message;
@@ -50,7 +50,7 @@ namespace Giqci.PublicWeb.Controllers.Api
                     };
                     var m = new SmartMail(msg);
                     m.AddParameter("ActiveUrl",
-                        string.Format(@"{0}account/active?code={1}&email={2}", Config.Common.Host, authCode,
+                        string.Format(@"{0}/{1}/account/active?code={2}&email={3}", Config.Common.Host, languageType, authCode,
                             input.Email));
                     m.To.Add(input.Email);
                     m.SendEmail();
