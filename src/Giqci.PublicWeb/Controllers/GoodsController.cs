@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Security;
 using Giqci.Chapi.Models.Customer;
+using Giqci.Chapi.Models.Product;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Extensions;
 using Giqci.PublicWeb.Services;
@@ -46,14 +47,14 @@ namespace Giqci.PublicWeb.Controllers
 
         [Route("goods/showcustomproduct")]
         [HttpGet]
-        public ActionResult ShowCustomProduct(int id = 0)
+        public ActionResult ShowCustomProduct(string key="")
         {
             var merchant = _auth.GetAuth();
-            var product = id == 0
-                  ? new CustomerProduct()
-                  : _merchantRepository.GetCustomerProduct(merchant.MerchantId, id);
+            var product = string.IsNullOrEmpty(key)
+                  ? new QProduct()
+                  : _merchantRepository.GetCustomerProduct(merchant.MerchantId, key);
             //防止编辑已批准的商品
-            product = product.IsApproved ? new CustomerProduct() : product;
+            product = product.IsApproved ? new QProduct() : product;
             return View(product);
         }
     }

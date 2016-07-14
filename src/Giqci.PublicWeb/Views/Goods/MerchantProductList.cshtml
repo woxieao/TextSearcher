@@ -73,7 +73,7 @@
                                     <td class="td-ellipsis" title="{{Product.Manufacturer}}">{{Product.Manufacturer}}</td>
                                     <td>
                                         <div class="btn-group" role="group">
-                                            <button type="button" class="btn btn-danger btn-sm" ng-click="remove(Product.CiqCode,$index)">@("delete".KeyToWord())</button>
+                                            <button type="button" class="btn btn-danger btn-sm" ng-click="remove(Product.Key,$index)">@("delete".KeyToWord())</button>
                                         </div>
                                     </td>
                                 </tr>
@@ -131,7 +131,7 @@
                                             <button ng-if="Product.IsApproved" class="btn btn-default btn-sm" ng-click="lookMerchantProduct($index)">@("view".KeyToWord())</button>
                                             <button ng-if="!Product.IsApproved" class="btn btn-default btn-sm" ng-click="editMerchantProduct($index)">@("edit".KeyToWord())</button>
                                             <button type="button" class="btn btn-primary btn-sm" ng-click="changeProduct($index)">@("transferred_to_the_record_commodity".KeyToWord())</button>
-                                            <button type="button" class="btn btn-danger btn-sm" ng-click="remove2(Product.Id,$index)">@("delete".KeyToWord())</button>
+                                            <button type="button" class="btn btn-danger btn-sm" ng-click="remove2(Product.Key,$index)">@("delete".KeyToWord())</button>
                                         </div>
                                     </td>
                                 </tr>
