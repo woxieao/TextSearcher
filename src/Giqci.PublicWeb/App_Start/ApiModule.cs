@@ -194,9 +194,7 @@ namespace Giqci.PublicWeb
                     })
                 .InstancePerDependency();
             builder.RegisterType<AuthService>().As<IAuthService>().InstancePerDependency();
-            builder.RegisterType<DataChecker>()
-                .As<IDataChecker>()
-                .InstancePerDependency();
+           
 
 
             builder.RegisterType<ApplicationCacheApiProxy>()

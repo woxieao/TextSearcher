@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
 using System.Web.Security;
+using Giqci.Chapi.Enums.Dict;
 using Giqci.Chapi.Models.App;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Extensions;
@@ -20,11 +22,13 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
     {
         private readonly IAuthService _auth;
         private readonly IUserProfileApiProxy _userProfileApiProxy;
+        private readonly IDictService _dict;
 
-        public UserProfileController(IAuthService auth, IUserProfileApiProxy userProfileApiProxy)
+        public UserProfileController(IAuthService auth, IDictService dict, IUserProfileApiProxy userProfileApiProxy)
         {
             _auth = auth;
             _userProfileApiProxy = userProfileApiProxy;
+            _dict = dict;
         }
 
         [Route("GetProfileList")]
@@ -37,12 +41,12 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
 
         [Route("AddProfile")]
         [HttpPost]
-        public ActionResult AddProfile(UserProfile userProfile)
+        public ActionResult AddProfile(UserProfile userProfile, string languageType)
         {
             var errorMsg = new List<string>();
             try
             {
-                errorMsg = new UserProfileValidation().Validate(userProfile).Errors.Select(i => i.ErrorMessage).ToList();
+                errorMsg = new UserProfileValidation(_dict, (LanguageType)Enum.Parse(typeof(LanguageType), languageType)).Validate(userProfile).Errors.Select(i => i.ErrorMessage).ToList();
                 if (!errorMsg.Any())
                     _userProfileApiProxy.Add(_auth.GetAuth().MerchantId, userProfile);
             }
@@ -55,12 +59,12 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
 
         [Route("UpdateProfile")]
         [HttpPost]
-        public ActionResult UpdateProfile(UserProfile userProfile)
+        public ActionResult UpdateProfile(UserProfile userProfile, string languageType)
         {
             var errorMsg = new List<string>();
             try
             {
-                errorMsg = new UserProfileValidation().Validate(userProfile).Errors.Select(i => i.ErrorMessage).ToList();
+                errorMsg = new UserProfileValidation(_dict, (LanguageType)Enum.Parse(typeof(LanguageType), languageType)).Validate(userProfile).Errors.Select(i => i.ErrorMessage).ToList();
                 if (!errorMsg.Any())
                     _userProfileApiProxy.Update(_auth.GetAuth().MerchantId, userProfile);
             }

@@ -10,6 +10,7 @@ using Giqci.ApiProxy.App;
 using Giqci.ApiProxy.Cust;
 using Giqci.ApiProxy.Dict;
 using Giqci.Chapi.Enums.App;
+using Giqci.Chapi.Enums.Dict;
 using Giqci.Chapi.Models.App;
 using Giqci.Chapi.Models.Customer;
 using Giqci.Interfaces;
@@ -18,6 +19,7 @@ using Giqci.PublicWeb.Extensions;
 using Giqci.PublicWeb.Models;
 using Giqci.PublicWeb.Models.Ajax;
 using Giqci.PublicWeb.Services;
+using Giqci.Validations;
 using Ktech.Api;
 using Ktech.Extensions;
 using Ktech.Mvc.ActionResults;
@@ -36,15 +38,16 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         private readonly IDictService _cache;
         private readonly IMerchantApplicationApiProxy _appRepo;
         private readonly IProductApiProxy _prodApi;
-        private readonly IDataChecker _dataChecker;
+        private readonly DataChecker _dataChecker;
         private readonly IMerchantApiProxy _merchantRepo;
         private readonly IZcodeApplyLogApiProxy _zCodeApiProxy;
+       
 
         public FormsController(IAuthService auth, IApplicationViewModelApiProxy appView,
             IApplicationCacheApiProxy applicationCacheApiProxy,
             IFileApiProxy fileApiProxy, IDictService cache,
             IMerchantApplicationApiProxy appRepo, IProductApiProxy prodApi,
-            IDataChecker dataChecker, IMerchantApiProxy merchantRepo, IZcodeApplyLogApiProxy zCodeApiProxy)
+             IMerchantApiProxy merchantRepo, IZcodeApplyLogApiProxy zCodeApiProxy)
         {
             _auth = auth;
             _appView = appView;
@@ -53,9 +56,10 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             _cache = cache;
             _appRepo = appRepo;
             _prodApi = prodApi;
-            _dataChecker = dataChecker;
+            _dataChecker = new DataChecker();
             _merchantRepo = merchantRepo;
             _zCodeApiProxy = zCodeApiProxy;
+           
         }
 
         [Route("forms/list")]
@@ -129,7 +133,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
 
         [Route("forms/app")]
         [HttpPost]
-        public ActionResult SubmitApplication(Application model)
+        public ActionResult SubmitApplication(Application model,string languageType)
         {
             var appkey = model.Key;
             var isNew = string.IsNullOrEmpty(appkey);
@@ -139,7 +143,8 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                 var port = _cache.GetPort(model.DestPort);
                 isRequireCiqCode = port.RequireCiqCode;
             }
-            var errors = _dataChecker.ApplicationHasErrors(model, false, isRequireCiqCode, _cache);
+            
+            var errors = DataChecker.ApplicationHasErrors(model,  isRequireCiqCode, _cache,(LanguageType)Enum.Parse(typeof(LanguageType), languageType));
             var productList = model.ApplicationProducts;
             if (productList != null)
             {
