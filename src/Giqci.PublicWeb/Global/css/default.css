@@ -734,7 +734,7 @@ ul,li,ol{
 /*表单必填项星号*/
 .input-require-color{color:red;}
 /*报验申请input组合框前缀*/
-.custom-input-group{min-width:6em !important;}
+.custom-input-group{min-width:8em !important;}
 /*报验申请商品下拉搜索框*/
 .application-custom-select .select2-container--bootstrap .select2-selection--single .select2-selection__rendered{white-space: nowrap;text-overflow: ellipsis;overflow: hidden;max-width: 329px;}
 .application-custom-select .select2-container--bootstrap{width:auto !important;}
