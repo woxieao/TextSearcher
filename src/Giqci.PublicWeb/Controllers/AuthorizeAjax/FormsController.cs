@@ -37,15 +37,16 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         private readonly IFileApiProxy _fileApiProxy;
         private readonly IDictService _cache;
         private readonly IMerchantApplicationApiProxy _appRepo;
-        private readonly IProductApiProxy _prodApi;
+        //private readonly IProductApiProxy _prodApi;
         private readonly IMerchantApiProxy _merchantRepo;
         private readonly IZcodeApplyLogApiProxy _zCodeApiProxy;
+        private readonly IMerchantProductApiProxy _merchantProduct;
 
 
         public FormsController(IAuthService auth, IApplicationViewModelApiProxy appView,
             IApplicationCacheApiProxy applicationCacheApiProxy,
             IFileApiProxy fileApiProxy, IDictService cache,
-            IMerchantApplicationApiProxy appRepo, IProductApiProxy prodApi,
+            IMerchantApplicationApiProxy appRepo, IMerchantProductApiProxy merchantProduct,
              IMerchantApiProxy merchantRepo, IZcodeApplyLogApiProxy zCodeApiProxy)
         {
             _auth = auth;
@@ -54,7 +55,8 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             _fileApiProxy = fileApiProxy;
             _cache = cache;
             _appRepo = appRepo;
-            _prodApi = prodApi;
+            //_prodApi = prodApi;
+            _merchantProduct = merchantProduct;
             _merchantRepo = merchantRepo;
             _zCodeApiProxy = zCodeApiProxy;
 
@@ -188,7 +190,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             var merchantId = merchant.Id;
             if (!errors.Any())
             {
-                _prodApi.UpdateCiqProductInfo(model.ApplicationProducts);
+                _merchantProduct.UpdateCiqProductInfo(model.ApplicationProducts);
                 GetTotalUnits(ref model);
                 if (isNew)
                 {
