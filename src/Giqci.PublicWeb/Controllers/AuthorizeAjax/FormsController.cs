@@ -38,10 +38,9 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
         private readonly IDictService _cache;
         private readonly IMerchantApplicationApiProxy _appRepo;
         private readonly IProductApiProxy _prodApi;
-        private readonly DataChecker _dataChecker;
         private readonly IMerchantApiProxy _merchantRepo;
         private readonly IZcodeApplyLogApiProxy _zCodeApiProxy;
-       
+
 
         public FormsController(IAuthService auth, IApplicationViewModelApiProxy appView,
             IApplicationCacheApiProxy applicationCacheApiProxy,
@@ -56,10 +55,9 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             _cache = cache;
             _appRepo = appRepo;
             _prodApi = prodApi;
-            _dataChecker = new DataChecker();
             _merchantRepo = merchantRepo;
             _zCodeApiProxy = zCodeApiProxy;
-           
+
         }
 
         [Route("forms/list")]
@@ -133,7 +131,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
 
         [Route("forms/app")]
         [HttpPost]
-        public ActionResult SubmitApplication(Application model,string languageType)
+        public ActionResult SubmitApplication(Application model)
         {
             var appkey = model.Key;
             var isNew = string.IsNullOrEmpty(appkey);
@@ -143,8 +141,8 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
                 var port = _cache.GetPort(model.DestPort);
                 isRequireCiqCode = port.RequireCiqCode;
             }
-            
-            var errors = DataChecker.ApplicationHasErrors(model,  isRequireCiqCode, _cache,(LanguageType)Enum.Parse(typeof(LanguageType), languageType));
+
+            var errors = DataChecker.ApplicationHasErrors(model, isRequireCiqCode, _cache, LanCore.GetCurrentLanType());
             var productList = model.ApplicationProducts;
             if (productList != null)
             {
