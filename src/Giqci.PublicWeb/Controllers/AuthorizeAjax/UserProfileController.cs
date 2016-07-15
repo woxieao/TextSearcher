@@ -46,7 +46,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             var errorMsg = new List<string>();
             try
             {
-                errorMsg = new UserProfileValidation(_dict, (LanguageType)Enum.Parse(typeof(LanguageType), languageType)).Validate(userProfile).Errors.Select(i => i.ErrorMessage).ToList();
+                errorMsg = new UserProfileValidation(_dict, LanCore.GetCurrentLanType()).Validate(userProfile).Errors.Select(i => i.ErrorMessage).ToList();
                 if (!errorMsg.Any())
                     _userProfileApiProxy.Add(_auth.GetAuth().MerchantId, userProfile);
             }
@@ -64,7 +64,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             var errorMsg = new List<string>();
             try
             {
-                errorMsg = new UserProfileValidation(_dict, (LanguageType)Enum.Parse(typeof(LanguageType), languageType)).Validate(userProfile).Errors.Select(i => i.ErrorMessage).ToList();
+                errorMsg = new UserProfileValidation(_dict, LanCore.GetCurrentLanType()).Validate(userProfile).Errors.Select(i => i.ErrorMessage).ToList();
                 if (!errorMsg.Any())
                     _userProfileApiProxy.Update(_auth.GetAuth().MerchantId, userProfile);
             }
