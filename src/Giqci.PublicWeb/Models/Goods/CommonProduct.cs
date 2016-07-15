@@ -12,5 +12,7 @@ namespace Giqci.PublicWeb.Models.Goods
         public DateTime CreateTime { get; set; }
 
         public int? CustomProductId { get; set; }
+
+        public string ProductKey { get; set; }
     }
 }
