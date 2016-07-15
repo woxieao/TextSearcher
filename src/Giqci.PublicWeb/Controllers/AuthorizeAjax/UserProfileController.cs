@@ -41,7 +41,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
 
         [Route("AddProfile")]
         [HttpPost]
-        public ActionResult AddProfile(UserProfile userProfile, string languageType)
+        public ActionResult AddProfile(UserProfile userProfile)
         {
             var errorMsg = new List<string>();
             try
@@ -59,7 +59,7 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
 
         [Route("UpdateProfile")]
         [HttpPost]
-        public ActionResult UpdateProfile(UserProfile userProfile, string languageType)
+        public ActionResult UpdateProfile(UserProfile userProfile)
         {
             var errorMsg = new List<string>();
             try
