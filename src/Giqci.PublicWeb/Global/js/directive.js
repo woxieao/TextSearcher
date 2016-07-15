@@ -460,6 +460,7 @@ app.directive("ajaxProduct", function ($timeout, $http) {
                             o.CustomProductId = v.CustomProductId;
                             o.Spec = v.Spec;
                             o.Package = v.Package;
+                            o.ProductKey = v.ProductKey;
                             results.push(o);
                             scope.dataList.push(o);
                         });

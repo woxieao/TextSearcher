@@ -33,6 +33,7 @@
                         ManufacturerCountry: "",
                         Package: "",
                         Quantity: 0,
+                        ProductKey:"",
                         ApplicationZCodes: [],
                         ProductItemList: [],
                         addItemByBatchNo: [
@@ -184,6 +185,7 @@
                         _object.Manufacturer = _selected.Manufacturer;
                         _object.ManufacturerCountry = _selected.ManufacturerCountry;
                         _object.Package = _selected.Package;
+                        _object.ProductKey = _selected.ProductKey;
                         _object.ProductItemList = [];
                         _object.ApplicationZCodes = [];
                         _object.CustomProductId = _selected.CustomProductId;
@@ -200,6 +202,7 @@
                         _object.ProductItemList = [];
                         _object.ApplicationZCodes = [];
                         _object.CustomProductId = 0;
+                        _object.ProductKey = "";
                         _object.isEditInputDefault = true;
                     }
                     _object.Selected = _selected;
@@ -422,7 +425,8 @@
                             Brand: product.Brand,
                             Manufacturer: product.Manufacturer,
                             ManufacturerCountry: product.ManufacturerCountry,
-                            Package: product.Package
+                            Package: product.Package,
+                            ProductKey:product.ProductKey
                         });
                     }, $scope);
                 }
@@ -812,7 +816,7 @@
                     layer.confirm($giqci.KeyToWord("add_product_msg"), function (l) {
                         if ($scope.dialogProductList != null) {
                             $giqci.post('/api/goods/addproduct',
-                            { ciqCode: $scope.dialogProductList.CiqCode }).success(function (data) {
+                            { key: $scope.dialogProductList.Key }).success(function (data) {
                                 if (data.result) {
                                     $scope.getGoodsList();
                                     layer.msg($giqci.KeyToWord("added_successfully"), { icon: 6 }, function () { $scope.showProductList(); });
