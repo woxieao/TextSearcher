@@ -45,7 +45,7 @@ namespace Giqci.PublicWeb.Extensions
             LanguageType languageType;
             try
             {
-                var lanTypeStr = LanCore.GetLanType();
+                var lanTypeStr = LanCore.GetCurrentLanTypeStr();
                 Enum.TryParse(lanTypeStr, true, out languageType);
             }
             catch
@@ -58,14 +58,20 @@ namespace Giqci.PublicWeb.Extensions
 
     public class LanCore
     {
-        public static string GetLanType()
+        public static string GetCurrentLanTypeStr()
         {
             var lanType = HttpContext.Current.Request.RawUrl.Split('/')[1];
             return lanType;
         }
+        public static LanguageType GetCurrentLanType()
+        {
+            LanguageType languageType;
+            Enum.TryParse(GetCurrentLanTypeStr(), true, out languageType);
+            return languageType;
+        }
         public static string GetLanTypeUrl()
         {
-            return string.Format("/{0}/", GetLanType());
+            return string.Format("/{0}/", GetCurrentLanTypeStr());
         }
     }
 }

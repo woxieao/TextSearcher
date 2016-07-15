@@ -17,7 +17,7 @@ namespace Giqci.PublicWeb.Extensions
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
-            filterContext.RequestContext.HttpContext.Response.Redirect("/" + LanCore.GetLanType() + "/account/login");
+            filterContext.RequestContext.HttpContext.Response.Redirect("/" + LanCore.GetCurrentLanTypeStr() + "/account/login");
             return;
         }
     }
