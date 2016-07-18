@@ -36,7 +36,7 @@ namespace Giqci.PublicWeb.Controllers.Api
             string message;
             try
             {
-                var reg = new Regex("^[a-z0-9A-Z]+$");
+                var reg = new Regex("^[a-z0-9A-Z]{6,20}$");
                 if (!reg.IsMatch(password))
                 {
                     throw new AjaxException("password_can_only_be_numbers_or_lett".KeyToWord());
