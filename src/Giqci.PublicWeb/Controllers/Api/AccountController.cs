@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Net;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 using Giqci.Chapi.Models.Customer;
 using Giqci.Interfaces;
@@ -10,7 +10,6 @@ using Giqci.PublicWeb.Models.Account;
 using Giqci.PublicWeb.Models.Ajax;
 using Giqci.PublicWeb.Services;
 using Ktech.Core.Mail;
-using Ktech.Mvc.ActionResults;
 
 namespace Giqci.PublicWeb.Controllers.Api
 {
@@ -31,14 +30,19 @@ namespace Giqci.PublicWeb.Controllers.Api
         [Route("account/reg")]
         [HttpPost]
 
-        public ActionResult Register(string languageType, Merchant input, string Password)
+        public ActionResult Register(string languageType, Merchant input, string password)
         {
             bool result;
             string message;
             try
             {
+                var reg = new Regex("^[a-z0-9A-Z]+$");
+                if (!reg.IsMatch(password))
+                {
+                    throw new AjaxException("password_can_only_be_numbers_or_lett".KeyToWord());
+                }
                 Guid authCode;
-                result = _repo.Register(input, Password, out authCode, out message);
+                result = _repo.Register(input, password, out authCode, out message);
                 if (result)
                 {
                     var msg = new SendEmailTemplate
