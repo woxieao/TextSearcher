@@ -75,37 +75,37 @@
         </colgroup>
         <tbody>
             <tr>
-                <td>申请号:</td>
+                <td>@("application_number".KeyToWord()):</td>
                 <td colspan="3">{{model.Application.Key}}</td>
             </tr>
             <tr>
-                <td>证书类别:</td>
+                <td>@("certificate_category".KeyToWord()):</td>
                 <td colspan="3">
-                    <span ng-if="model.Application.C101">溯源证书</span>
-                    <span ng-if="model.Application.C102">品质证书</span>
-                    <span ng-if="model.Application.C103">标签证书</span>
+                    <span ng-if="model.Application.C101">@("c101_cert".KeyToWord())</span>
+                    <span ng-if="model.Application.C102">@("c102_cert".KeyToWord())</span>
+                    <span ng-if="model.Application.C103">@("c103_cert".KeyToWord())</span>
                 </td>
             </tr>
             <tr>
-                <td>商业目的:</td>
+                <td>@("business_purpose".KeyToWord()):</td>
                 <td colspan="3">
                     {{model.Application.TradeType == 4?"一般贸易":"电商贸易"}}
                 </td>
             </tr>
             <tr>
-                <td>创建日期:</td>
+                <td>@("create_date".KeyToWord()):</td>
                 <td colspan="3">
                     {{model.Application.CreateDate | date:'yyyy/MM/dd'}}
                 </td>
             </tr>
             <tr>
-                <td>当前状态:</td>
+                <td>@("current_status".KeyToWord()):</td>
                 <td colspan="3">
                     {{StatusDescription}}
                 </td>
             </tr>
             <tr>
-                <td valign="top">申请人:</td>
+                <td valign="top">@("applicant".KeyToWord()):</td>
                 <td colspan="3">
                     <table style="width: 100%;" class="gridnone">
                         <colgroup>
@@ -115,26 +115,26 @@
                             <col width="35%" />
                         </colgroup>
                         <tr>
-                            <td>全称:</td>
+                            <td>@("full_name".KeyToWord()):</td>
                             <td>{{model.Application.Applicant}}</td>
                             <td></td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td>地址:</td>
+                            <td>@("address".KeyToWord()):</td>
                             <td>{{model.Application.ApplicantAddr}}</td>
                         </tr>
                         <tr>
-                            <td>联系人: </td>
+                            <td>@("contacts".KeyToWord()): </td>
                             <td>{{model.Application.ApplicantContact}}</td>
                         </tr>
                         <tr>
-                            <td>联系电话: </td>
+                            <td>@("contact_number".KeyToWord()): </td>
                             <td>{{model.Application.ApplicantPhone}}</td>
                         </tr>
                         <tr>
                             <td>
-                                邮箱:
+                                @("email".KeyToWord()):
                             </td>
                             <td>
                                 {{model.Application.ApplicantEmail}}
@@ -144,7 +144,7 @@
                 </td>
             </tr>
             <tr>
-                <td valign="top">出口商:</td>
+                <td valign="top">@("exporter".KeyToWord()):</td>
                 <td colspan="3">
                     <table style="width: 100%;" class="gridnone">
                         <colgroup>
@@ -154,28 +154,28 @@
                             <col width="35%" />
                         </colgroup>
                         <tr>
-                            <td>全称:</td>
+                            <td>@("full_name".KeyToWord()):</td>
                             <td>{{model.Application.Exporter}}</td>
                             <td></td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td>地址:</td>
+                            <td>@("address".KeyToWord()):</td>
                             <td>{{model.Application.ExporterAddr}}</td>
                         </tr>
                         <tr>
-                            <td>联系人: </td>
+                            <td>@("contacts".KeyToWord()): </td>
                             <td>{{model.Application.ExporterContact}}</td>
                         </tr>
                         <tr>
-                            <td>联系电话: </td>
+                            <td>@("contact_number".KeyToWord()): </td>
                             <td>{{model.Application.ExporterPhone}}</td>
                         </tr>
                     </table>
                 </td>
             </tr>
             <tr ng-if="model.Application.TradeType==4">
-                <td valign="top">进口商:</td>
+                <td valign="top">@("importer".KeyToWord()):</td>
                 <td colspan="3">
                     <table style="width: 100%;" class="gridnone">
                         <colgroup>
@@ -185,28 +185,28 @@
                             <col width="35%" />
                         </colgroup>
                         <tr>
-                            <td>全称:</td>
+                            <td>@("full_name".KeyToWord()):</td>
                             <td>{{model.Application.Importer}}</td>
                             <td></td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td>地址:</td>
+                            <td>@("address".KeyToWord()):</td>
                             <td>{{model.Application.ImporterAddr}}</td>
                         </tr>
                         <tr>
-                            <td>联系人: </td>
+                            <td>@("contacts".KeyToWord()): </td>
                             <td>{{model.Application.ImporterContact}}</td>
                         </tr>
                         <tr>
-                            <td>联系电话: </td>
+                            <td>@("contact_number".KeyToWord()): </td>
                             <td>{{model.Application.ImporterPhone}}</td>
                         </tr>
                     </table>
                 </td>
             </tr>
             <tr ng-if="model.Application.TradeType==1">
-                <td valign="top">代理进口商:</td>
+                <td valign="top">@("agent_importer".KeyToWord()):</td>
                 <td colspan="3">
                     <table style="width: 100%;" class="gridnone">
                         <colgroup>
@@ -216,28 +216,28 @@
                             <col width="35%" />
                         </colgroup>
                         <tr>
-                            <td>全称:</td>
+                            <td>@("full_name".KeyToWord()):</td>
                             <td>{{model.Application.Importer}}</td>
                             <td></td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td>地址:</td>
+                            <td>@("address".KeyToWord()):</td>
                             <td>{{model.Application.ImporterAddr}}</td>
                         </tr>
                         <tr>
-                            <td>联系人: </td>
+                            <td>@("contacts".KeyToWord()): </td>
                             <td>{{model.Application.ImporterContact}}</td>
                         </tr>
                         <tr>
-                            <td>联系电话: </td>
+                            <td>@("contact_number".KeyToWord()): </td>
                             <td>{{model.Application.ImporterPhone}}</td>
                         </tr>
                     </table>
                 </td>
             </tr>
             <tr>
-                <td valign="top">商品资料</td>
+                <td valign="top">@("commodity_information".KeyToWord())</td>
                 <td colspan="3">
                     <div ng-repeat="item in model.Application.ApplicationProducts">
                         <table style="width: 100%;" class="gridnone">
@@ -249,13 +249,13 @@
                             </colgroup>
                             <tr>
                                 <td>
-                                    商品 {{$index+1}}
+                                   @("goods".KeyToWord()) {{$index+1}}
                                 </td>
                                 <td colspan="3"></td>
                             </tr>
                             <tr>
                                 <td>
-                                    常用商品
+                                    @("common_goods".KeyToWord())
                                 </td>
                                 <td colspan="3">
                                     {{item.CiqCode}}
@@ -263,13 +263,13 @@
                             </tr>
                             <tr>
                                 <td>
-                                    名称(英文)
+                                    @("name".KeyToWord())(@("english".KeyToWord()))
                                 </td>
                                 <td>
                                     {{item.DescriptionEn}}
                                 </td>
                                 <td>
-                                    名称(中文)
+                                    @("name".KeyToWord())(@("chinese".KeyToWord()))
                                 </td>
                                 <td>
                                     {{item.Description}}
@@ -277,13 +277,13 @@
                             </tr>
                             <tr>
                                 <td>
-                                    品牌
+                                    @("brand".KeyToWord())
                                 </td>
                                 <td>
                                     {{item.Brand}}
                                 </td>
                                 <td>
-                                    包装
+                                    @("package".KeyToWord())
                                 </td>
                                 <td>
                                     {{item.Package}}
@@ -291,13 +291,13 @@
                             </tr>
                             <tr>
                                 <td>
-                                    规格
+                                    @("spec".KeyToWord())
                                 </td>
                                 <td>
                                     {{item.Spec}}
                                 </td>
                                 <td>
-                                    原产国
+                                    @("country_of_origin".KeyToWord())
                                 </td>
                                 <td>
                                     <span ajax-label ajax-url="countries" ng-model="item.ManufacturerCountry">{{item.ManufacturerCountry}}</span>
@@ -305,13 +305,13 @@
                             </tr>
                             <tr>
                                 <td>
-                                    HS编码
+                                    @("hs_code".KeyToWord())
                                 </td>
                                 <td>
                                     {{item.HSCode}}
                                 </td>
                                 <td>
-                                    制造商
+                                    @("manufacturer".KeyToWord())
                                 </td>
                                 <td>
                                     {{item.Manufacturer}}
@@ -319,7 +319,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    数量
+                                    @("quantity".KeyToWord())
                                 </td>
                                 <td>
                                     {{item.Quantity}}
@@ -329,13 +329,13 @@
                             </tr>
                             <tr ng-if="model.Application.C102">
                                 <td>
-                                    品质检验
+                                    @("quality_restriction".KeyToWord())
                                 </td>
                                 <td>
                                     {{item.C102?'是':'否'}}
                                 </td>
                                 <td>
-                                    <span ng-if="item.C102">检测项目</span>
+                                    <span ng-if="item.C102">@("test_item".KeyToWord())</span>
                                 </td>
                                 <td>
                                     <span ng-if="item.C102">{{item.C102Comment}}</span>
@@ -351,7 +351,7 @@
                                 </colgroup>
                                 <tr>
                                     <td>
-                                        批次号/保质期
+                                        @("batch_number_or_shelf_life".KeyToWord())
                                     </td>
                                     <td>
                                         {{batch.BatchNo}}
@@ -374,13 +374,13 @@
                             </colgroup>
                             <tr ng-repeat="zcode in item.ApplicationZCodes">
                                 <td>
-                                    首码
+                                    @("head_code".KeyToWord())
                                 </td>
                                 <td>
                                     {{zcode.ZCodeStart}}
                                 </td>
                                 <td>
-                                    尾码
+                                    @("tail_code".KeyToWord())
                                 </td>
                                 <td>
                                     {{zcode.ZCodeEnd}}
@@ -392,16 +392,16 @@
                 </td>
             </tr>
             <tr>
-                <td>运输方式</td>
+                <td>@("type_of_shipping".KeyToWord())</td>
                 <td colspan="3">
-                    <span ng-if="model.Application.ShippingMethod==1">空运</span>
-                    <span ng-if="model.Application.ShippingMethod==2">海运</span>
-                    <span ng-if="model.Application.ShippingMethod==3">陆运</span>
+                    <span ng-if="model.Application.ShippingMethod==1">@("air_transport".KeyToWord())</span>
+                    <span ng-if="model.Application.ShippingMethod==2">@("ocean_shipping".KeyToWord())</span>
+                    <span ng-if="model.Application.ShippingMethod==3">@("land_transportation".KeyToWord())</span>
                 </td>
             </tr>
             <tr ng-if="model.Application.ShippingMethod === 2">
                 <td valign="top">
-                    船舶资料
+                    @("ship_information".KeyToWord())
                 </td>
                 <td colspan="3">
                     <div ng-repeat="item in model.Application.ContainerInfos">
@@ -413,13 +413,13 @@
                                 <col width="35%" />
                             </colgroup>
                             <tr>
-                                <td>装箱信息{{$index+1}}</td>
+                                <td>@("packing_information".KeyToWord()){{$index+1}}</td>
                                 <td colspan="3"></td>
                             </tr>
                             <tr>
-                                <td>装箱号</td>
+                                <td>@("packing_number".KeyToWord())</td>
                                 <td>{{item.ContainerNumber}}</td>
-                                <td>铅封号</td>
+                                <td>@("seal_no".KeyToWord())</td>
                                 <td>{{item.SealNumber}}</td>
                             </tr>
                         </table>
@@ -428,7 +428,7 @@
             </tr>
             <tr>
                 <td>
-                    提单号
+                    @("bill_of_lading_no".KeyToWord())
                 </td>
                 <td colspan="3">
                     {{model.Application.BillNo}}
@@ -436,7 +436,7 @@
             </tr>
             <tr>
                 <td>
-                    副提单号
+                    @("second_bill_of_lading_no".KeyToWord())
                 </td>
                 <td colspan="3">
                     {{model.Application.OtherBillNo}}
@@ -444,9 +444,9 @@
             </tr>
             <tr>
                 <td>
-                    <span ng-if="model.Application.ShippingMethod == 1">航班号</span>
-                    <span ng-if="model.Application.ShippingMethod == 2">船舶号</span>
-                    <span ng-if="model.Application.ShippingMethod == 3">车牌号</span>
+                    <span ng-if="model.Application.ShippingMethod == 1">@("flight_number".KeyToWord())</span>
+                    <span ng-if="model.Application.ShippingMethod == 2">@("ship_number".KeyToWord())</span>
+                    <span ng-if="model.Application.ShippingMethod == 3">@("license_plate_number".KeyToWord())</span>
                 </td>
                 <td colspan="3">
                     {{model.Application.Vesselcn}}
@@ -454,49 +454,49 @@
             </tr>
             <tr>
                 <td>
-                    出发日期
+                    @("departure_date".KeyToWord())
                 </td>
                 <td colspan="3">
                     {{model.Application.Voyage}}
                 </td>
             </tr>
             <tr ng-if="model.Application.ShippingMethod != 2">
-                <td>运输总数量</td>
+                <td>@("total_transport_volume".KeyToWord())</td>
                 <td colspan="3">{{model.Application.TotalUnits}}Pallet(s)</td>
             </tr>
             <tr>
-                <td>运输总重量</td>
+                <td>@("total_weight_of_transport".KeyToWord())</td>
                 <td colspan="3">{{model.Application.TotalWeight | currency:"":2}}KG</td>
             </tr>
             <tr>
-                <td>计划发货日期</td>
+                <td>@("planned_delivery_date".KeyToWord())</td>
                 <td colspan="3">{{model.Application.ShippingDate | date:'yyyy/MM/dd'}}</td>
             </tr>
 
             <tr>
-                <td>预约检查日期</td>
+                <td>@("date_of_appointment".KeyToWord())</td>
                 <td colspan="3">{{model.Application.InspectionDate | date:'yyyy/MM/dd'}}</td>
             </tr>
             <tr>
-                <td>检验地点</td>
+                <td>@("inspection_site".KeyToWord())</td>
                 <td colspan="3">{{model.Application.InspectionAddr}}</td>
             </tr>
             <tr>
-                <td>联系人</td>
+                <td>@("contacts".KeyToWord())</td>
                 <td colspan="3">{{model.Application.Inspector}}</td>
             </tr>
             <tr>
-                <td>联系人电话</td>
+                <td>@("contact_phone".KeyToWord())</td>
                 <td colspan="3">{{model.Application.InspectorTel}}</td>
             </tr>
             <tr>
-                <td>发货港口</td>
+                <td>@("port_of_shipment".KeyToWord())</td>
                 <td colspan="3">
                     <span ajax-label ajax-url="ports" ng-model="model.Application.LoadingPort">{{model.Application.LoadingPort}}</span>
                 </td>
             </tr>
             <tr>
-                <td>目的港口</td>
+                <td>@("port_of_destination".KeyToWord())</td>
                 <td colspan="3">
                     <span ajax-label ajax-url="ports" ng-model="model.Application.DestPort">{{model.Application.DestPort}}</span>
                 </td>
