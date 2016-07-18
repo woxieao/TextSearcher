@@ -1,12 +1,13 @@
 ﻿@using Giqci.PublicWeb.Extensions
 @using Giqci.PublicWeb.Models
+@using Giqci.PublicWeb.Extensions
 <!DOCTYPE html>
 <html ng-app="giqci">
 <head>
     <script type="text/javascript">
         var LanguageData = @("".GetAllWords());
     </script>
-    <meta charset="utf-8" />
+     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Title | GIQCI - Global Independent QC and Inspection</title>
     <link rel="shortcut icon" href="http://www.giqci.com.au/favicon.png" />
@@ -15,6 +16,7 @@
     @*<link rel="stylesheet" id="ls-google-fonts-css" href='http://fonts.useso.com/css?family=Lato:100,300,regular,700,900%7COpen+Sans:300%7CIndie+Flower:regular%7COswald:300,regular,700&#038;subset=latin%2Clatin-ext' type='text/css' media='all' />
         <link rel="stylesheet" id="redux-google-fonts-css" href='http://fonts.useso.com/css?family=Raleway%3A400&#038;subset=latin&#038;ver=1432745489' type='text/css' media='all' />*@
     <script src="~/Global/js/jquery-2.1.4.min.js"></script>
+    <script src="~/Global/layer-v2.3/layer/@LanCore.GetCurrentLanTypeStr()/layer.js"></script>
     <script src="~/Scripts/giqci.js?@Config.Common.CurrentToken"></script>
     <script src="~/Global/js/angular-1.4.7.min.js"></script>
     <link href="~/Global/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
@@ -22,10 +24,9 @@
     <link href="~/Global/css/select2/select2-bootstrap.css" rel="stylesheet" />
     <script src="~/Global/js/bootstrap-datetimepicker.min.js"></script>
     <script src="~/Global/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
-    <script src="~/Global/js/select2/select2.min.js"></script>
-    <script src="~/Global/js/locales/select2.zh-CN.js"></script>
+    <script src="~/Global/js/select2/@LanCore.GetCurrentLanTypeStr()/select2.js"></script>
+    <script src="~/Global/js/select2/@LanCore.GetCurrentLanTypeStr()/select2.zh-CN.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Global/layer-v2.3/layer/layer.js"></script>
     <script src="~/Global/js/ng-tip-validate.js"></script>
     <script src="~/Global/js/service.js?@Config.Common.CurrentToken"></script>
     <script src="~/Global/js/app.js?@Config.Common.CurrentToken"></script>

@@ -85,9 +85,25 @@
                     $scope.appshow = false;
                     $("#accept-form").hide();
                 };
+
+                var application_language = $giqci.getLanType();
+                var lanType = '';
+                switch (application_language) {
+                    case 'cn': {
+                        lanType = 'zh-CN';
+                        break;
+                    }
+                    case 'en': {
+                        lanType = ''
+                        break;
+                    }
+                    default:
+                        lanType = 'zh-CN';
+                        break;
+                }
                 $(function () {
-                    $('.datetimepicker').datetimepicker({
-                        language: 'zh-CN',
+                  $('.datetimepicker').datetimepicker({
+                        language: lanType,
                         format: 'yyyy/mm/dd',
                         autoclose: true,
                         minView: "month",
