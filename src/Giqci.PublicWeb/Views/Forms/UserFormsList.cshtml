@@ -59,9 +59,9 @@
                         <td>
                             <span ng-show="emp.C101">@("c101_cert".KeyToWord())&nbsp;</span><span ng-show="emp.C102">@("c102_cert".KeyToWord())&nbsp;</span><span ng-show="emp.C103">@("c103_cert".KeyToWord())&nbsp;</span>
                         </td>
-                        <td>{{emp.TradeType}}</td>
+                        <td>{{emp.TradeType|trade_type_language}}</td>
                         <td>{{emp.CreateDate|date:"yyyy/MM/dd"}}</td>
-                        <td ng-class="{'已接受申请':'custom-text-green','新申请':'custom-text-blue','编辑结束':'custom-text-purple','申请结束':'custom-text-yellow','申请驳回':'custom-text-red'}[emp.Status]">{{emp.Status}}</td>
+                        <td ng-class="{'已接受申请':'custom-text-green','新申请':'custom-text-blue','编辑结束':'custom-text-purple','申请结束':'custom-text-yellow','申请驳回':'custom-text-red'}[emp.Status]">{{emp.Status| application_status_language}}</td>
                         <td>{{emp.Applicant}}</td>
                         <td>{{emp.MerchantEmail}}</td>
                         <td>
@@ -75,7 +75,7 @@
                 </tbody>
             </table>
             <div class="page-list">
-                <ul class="pagination" ng-show="paginationConf.totalItems > 0">
+                <ul class="pagination" ng-show="paginationConf.totalItems >= 0">
                     <li ng-class="{disabled: postData.pageIndex == 1}" ng-click="indexPage()">
                         <span>@("first_page".KeyToWord())</span>
                     </li>

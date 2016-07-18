@@ -44,7 +44,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">@("business_purpose".KeyToWord())</label>
-                    <span class="col-sm-2 form-control-static">{{model.Application.TradeType == 4?"一般贸易":"电商贸易"}}</span>
+                    <span class="col-sm-2 form-control-static">{{model.Application.TradeType == 4?"一般贸易":"电商贸易" |trade_type_language}}</span>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">@("create_date".KeyToWord())</label>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">@("status".KeyToWord())</label>
-                    <span class="col-sm-2 form-control-static">{{StatusDescription}}</span>
+                    <span class="col-sm-2 form-control-static">{{StatusDescription | application_status_language}}</span>
                 </div>
                 <div class="form-group" ng-if="model.Application.DeclineReason">
                     <label class="col-sm-2 control-label">@("reason_for_rejection".KeyToWord())</label>
@@ -185,7 +185,7 @@
                                         <p class="form-control-static">@("quality_restriction".KeyToWord())</p>
                                     </th>
                                     <td>
-                                        <p class="form-control-static">{{item.C102?'是':'否'}}</p>
+                                        <p class="form-control-static">{{item.C102?'是':'否' | TorF_language}}</p>
                                     </td>
                                     <th>
                                         <p class="form-control-static" ng-if="item.C102">@("test_item".KeyToWord())</p>
@@ -375,6 +375,7 @@
             '$scope', function ($scope) {
                 $scope.model = {};
                 $scope.model.Application = ObjDecodeToJson(@HtmlExtensions.RawJson(Model));
+                console.log($scope.model);
                 $scope.StatusDescription = "@Model.Status.ToDescription()";
                 $scope.ShippingMethodDescription = "@Model.ShippingMethod.ToDescription()";
                 $scope.IsPrint = "@ViewBag.IsPrint" == "True";

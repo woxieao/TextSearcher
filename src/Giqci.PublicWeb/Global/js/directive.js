@@ -16,11 +16,19 @@ app.directive("ajaxSelect", function ($timeout, $http) {
                         if (data.items.length >= 1) {
                             var newVal = '';
                             if (1 === data.items.length) {
-                                newVal = (url === "commonhscodes") ? data.items[0].Code + '-' + data.items[0].Name : data.items[0].Code + '-' + data.items[0].CnName;
+                                if (window.location.pathname.split('/')[1].toLocaleLowerCase() === 'en') {
+                                    newVal = (url === "commonhscodes") ? data.items[0].Code + '-' + data.items[0].Name : data.items[0].Code + '-' + data.items[0].EnName;
+                                } else {
+                                    newVal = (url === "commonhscodes") ? data.items[0].Code + '-' + data.items[0].Name : data.items[0].Code + '-' + data.items[0].CnName;
+                                }
                             } else {
                                 $.each(data.items, function (i, v) {
                                     if (v.Code == model.$viewValue) {
-                                        newVal = (url === "commonhscodes") ? v.Code + '-' + v.Name : v.Code + '-' + v.CnName;
+                                        if (window.location.pathname.split('/')[1].toLocaleLowerCase() === 'en') {
+                                            newVal = (url === "commonhscodes") ? v.Code + '-' + v.Name : v.Code + '-' + v.EnName;
+                                        } else {
+                                            newVal = (url === "commonhscodes") ? v.Code + '-' + v.Name : v.Code + '-' + v.CnName;
+                                        }
                                     }
                                 });
                             }
@@ -50,7 +58,11 @@ app.directive("ajaxSelect", function ($timeout, $http) {
                         $.each(data.items, function (i, v) {
                             var o = {};
                             o.id = v.Code;
-                            o.name = (url === "commonhscodes") ? v.Code + '-' + v.Name : v.Code + '-' + v.CnName;
+                            if (window.location.pathname.split('/')[1].toLocaleLowerCase() === 'en') {
+                                o.name = (url === "commonhscodes") ? v.Code + '-' + v.Name : v.Code + '-' + v.EnName;
+                            } else {
+                                o.name = (url === "commonhscodes") ? v.Code + '-' + v.Name : v.Code + '-' + v.CnName;
+                            }
                             results.push(o);
                         });
                         return {
@@ -89,7 +101,12 @@ app.directive("ajaxLabel", function ($timeout, $http) {
                     $giqci.get("/api/dict/" + url,
                        { 'code': model.$viewValue }).success(function (data) {
                            if (data.items.length > 0) {
-                               var newVal = (url === "commonhscodes") ? data.items[0].Name : data.items[0].CnName;
+                               var newVal='';
+                               if (window.location.pathname.split('/')[1].toLocaleLowerCase() === 'en') {
+                                   newVal = (url === "commonhscodes") ? data.items[0].Name : data.items[0].EnName;
+                               } else {
+                                   newVal = (url === "commonhscodes") ? data.items[0].Name : data.items[0].CnName;
+                               }
                                $(element).html(newVal);
                                scope.isLoading = true;
                            }
@@ -514,11 +531,20 @@ app.directive("ajaxCountry", function ($timeout, $http) {
                         if (data.items.length >= 1) {
                             var newVal = '';
                             if (1 === data.items.length) {
-                                newVal = data.items[0].CnName;
+                                if (window.location.pathname.split('/')[1].toLocaleLowerCase() === 'en') {
+                                    newVal = data.items[0].EnName;
+                                } else {
+                                    newVal = data.items[0].CnName;
+                                }
                             } else {
                                 $.each(data.items, function (i, v) {
                                     if (v.Code == model.$viewValue) {
-                                        newVal = v.CnName;
+                                        if (window.location.pathname.split('/')[1].toLocaleLowerCase() === 'en') {
+                                            newVal = v.EnName;
+                                        } else {
+                                            newVal = v.CnName;
+                                        }
+                                       
                                     }
                                 });
                             }
@@ -547,7 +573,11 @@ app.directive("ajaxCountry", function ($timeout, $http) {
                         $.each(data.items, function (i, v) {
                             var o = {};
                             o.id = v.Code;
-                            o.name = v.CnName;
+                            if (window.location.pathname.split('/')[1].toLocaleLowerCase() === 'en') {
+                                o.name = v.EnName;
+                            } else {
+                                o.name = v.CnName;
+                            }
                             results.push(o);
                         });
                         return {
