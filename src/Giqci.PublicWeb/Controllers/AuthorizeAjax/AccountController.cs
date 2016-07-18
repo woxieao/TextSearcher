@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Net;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
-using System.Web.Security;
 using Giqci.Chapi.Models.Customer;
 using Giqci.Interfaces;
 using Giqci.PublicWeb.Extensions;
-using Giqci.PublicWeb.Helpers;
-using Giqci.PublicWeb.Models;
 using Giqci.PublicWeb.Models.Account;
 using Giqci.PublicWeb.Models.Ajax;
 using Giqci.PublicWeb.Services;
-using Ktech.Core.Mail;
-using Ktech.Mvc.ActionResults;
 
 namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
 {
@@ -56,7 +51,11 @@ namespace Giqci.PublicWeb.Controllers.AuthorizeAjax
             string message = "";
             try
             {
-
+                var reg = new Regex("^[a-z0-9A-Z]{6,20}$");
+                if (!reg.IsMatch(model.NewPassword))
+                {
+                    throw new AjaxException("password_can_only_be_numbers_or_lett".KeyToWord());
+                }
                 result = _repo.ChangePassword(_auth.GetAuth().MerchantId, model.OldPassword, model.NewPassword);
             }
             catch (Exception ex)
