@@ -1,17 +1,17 @@
 ﻿'use strict';
 app.filter('zcode_language', function () {
     return function (data) {
-        var result = '';
+        var result ;
         if ($giqci.getLanType() === 'en') {
             switch (data) {
                 case '实体码':
-                    result = 'Entity code';
+                    result = $giqci.KeyToWord('entity_code');
                     break;
                 case '电子码':
-                    result = 'Electricity code';
+                    result = $giqci.KeyToWord('electronic_code');
                     break;
                 default:
-                    result = 'Entity code';
+                    result = '';
                     break;
             }
             return result;
@@ -28,13 +28,13 @@ app.filter('trade_type_language', function () {
         if ($giqci.getLanType() === 'en') {
             switch (data) {
                 case '一般贸易':
-                    result = 'General trade';
+                    result = $giqci.KeyToWord('general_trade');
                     break;
                 case '电商贸易':
-                    result = 'E-commerce trade';
+                    result = $giqci.KeyToWord('electricity_trade');
                     break;
                 default:
-                    result = 'General trade';
+                    result = '';
                     break;
             }
             return result;
@@ -57,7 +57,7 @@ app.filter('TorF_language', function () {
                     result = 'No';
                     break;
                 default:
-                    result = 'Yes';
+                    result = '';
                     break;
             }
             return result;
@@ -74,22 +74,22 @@ app.filter('application_status_language', function () {
             if ($giqci.getLanType() === 'en') {
                 switch (data) {
                     case '已接受申请':
-                        result = 'Application accepted';
+                        result = $giqci.KeyToWord('application_accepted');
                         break;
                     case '新申请':
-                        result = 'New application';
+                        result =  $giqci.KeyToWord('new_application');
                         break;
                     case '编辑结束':
-                        result = 'Edit end';
+                        result =  $giqci.KeyToWord('edit_finish');
                         break;
                     case '申请结束':
-                        result = 'End application';
+                        result =  $giqci.KeyToWord('application_finish');
                         break;
                     case '申请驳回':
-                        result = 'Application dismissed';
+                        result = $giqci.KeyToWord('application_dismissed');
                         break;
                     default:
-                        result = 'Application accepted';
+                        result = '';
                         break;
                 }
                 return result;
