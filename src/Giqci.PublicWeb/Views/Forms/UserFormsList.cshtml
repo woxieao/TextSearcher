@@ -15,8 +15,13 @@
                 <form class="form-inline">
                     <div class="form-group">
                         <input ng-model="applyNo" placeholder="@("application_number".KeyToWord())" class="form-control" />
-                        @("status".KeyToWord()): <select ng-model="status" ng-options="s.value as s.name for s in statusValues" class="form-control">
-                            <option value="">-- @("whole".KeyToWord()) --</option>
+                        @("status".KeyToWord()): <select ng-model="status" class="form-control">
+                            <option value="New"> @("new_application".KeyToWord())</option>
+                            <option value="Accepted"> @("application_accepted".KeyToWord())</option>
+                            <option value="Finished"> @("edit_finish".KeyToWord())</option>
+                            <option value="TestCompleted"> @("test_end".KeyToWord())</option>
+                            <option value="Completed"> @("application_finish".KeyToWord())</option>
+                            <option value="Declined"> @("application_dismissed".KeyToWord())</option>
                         </select>
                         From: <input ng-model="start" type="text" class="form-control datetimepicker">
                         To: <input ng-model="end" type="text" class="form-control datetimepicker">

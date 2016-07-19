@@ -88,6 +88,9 @@ app.filter('application_status_language', function () {
                     case '申请驳回':
                         result = $giqci.KeyToWord('application_dismissed');
                         break;
+                    case '测试完毕':
+                        result = $giqci.KeyToWord('test_end');
+                        break;
                     default:
                         result = '';
                         break;
