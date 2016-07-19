@@ -54,7 +54,7 @@
                 <tbody>
                     <tr ng-repeat="emp in persons">
                         <td>
-                            <a href="@LanCore.GetLanTypeUrl()/forms/app/{{emp.Key}}">{{emp.Key}}</a>
+                            <a href="@LanCore.GetLanTypeUrl("/forms/app")/{{emp.Key}}">{{emp.Key}}</a>
                         </td>
                         <td>
                             <span ng-show="emp.C101">@("c101_cert".KeyToWord())&nbsp;</span><span ng-show="emp.C102">@("c102_cert".KeyToWord())&nbsp;</span><span ng-show="emp.C103">@("c103_cert".KeyToWord())&nbsp;</span>
@@ -66,9 +66,9 @@
                         <td>{{emp.MerchantEmail}}</td>
                         <td>
                             <div class="btn-group">
-                                <a target="_blank" class="btn btn-sm btn-default" href="@LanCore.GetLanTypeUrl()/forms/app/print/{{emp.Key}}"><span class="glyphicon glyphicon-print"></span> @("print".KeyToWord())</a>
-                                <a ng-if="emp.Status=='新申请'" class="btn btn-sm btn-primary" href="@LanCore.GetLanTypeUrl()/forms/app/{{emp.Key}}">@("edit".KeyToWord())</a>
-                                <a ng-if="emp.Status!='新申请'" class="btn btn-sm btn-info" href="@LanCore.GetLanTypeUrl()/forms/app/{{emp.Key}}">@("view".KeyToWord())</a>
+                                <a target="_blank" class="btn btn-sm btn-default" href="@LanCore.GetLanTypeUrl("/forms/app/print/"){{emp.Key}}"><span class="glyphicon glyphicon-print"></span> @("print".KeyToWord())</a>
+                                <a ng-if="emp.Status=='新申请'" class="btn btn-sm btn-primary" href="@LanCore.GetLanTypeUrl("/forms/app/"){{emp.Key}}">@("edit".KeyToWord())</a>
+                                <a ng-if="emp.Status!='新申请'" class="btn btn-sm btn-info" href="@LanCore.GetLanTypeUrl("/forms/app/"){{emp.Key}}">@("view".KeyToWord())</a>
                             </div>
                         </td>
                     </tr>

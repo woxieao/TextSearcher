@@ -1075,7 +1075,7 @@
             <strong>@("information_prompt".KeyToWord())</strong>
             <p>{{resultMessage}}</p>
             <p>
-                <a href="@LanCore.GetLanTypeUrl()/forms/app" target="_self">@("apply_again".KeyToWord())</a>
+                <a href="@LanCore.GetLanTypeUrl("/forms/app")" target="_self">@("apply_again".KeyToWord())</a>
             </p>
         </div>
 
@@ -1126,7 +1126,7 @@
                                     <th>@("file".KeyToWord())</th>
                                     <td>
                                         <input ng-show="!item.CertFilePath" type="file" name="file{{$index}}" ng-model="item.CertFilePath" class="form-control autowidth-form-control" accept="{{allowType}}" />
-                                        <a ng-show="item.CertFilePath" href="@LanCore.GetLanTypeUrl()/file/viewfile?fileFullPath={{item.CertFilePath}}" target="_blank">@("view_file".KeyToWord()){{$index+1}}</a>
+                                        <a ng-show="item.CertFilePath" href="@LanCore.GetLanTypeUrl("/file/viewfile")?fileFullPath={{item.CertFilePath}}" target="_blank">@("view_file".KeyToWord()){{$index+1}}</a>
                                     </td>
                                 </tr>
                             </table>
