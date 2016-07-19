@@ -2,7 +2,7 @@
 app.filter('zcode_language', function () {
     return function (data) {
         var result = '';
-        if (window.location.pathname.split('/')[1].toLocaleLowerCase() === 'en') {
+        if ($giqci.getLanType() === 'en') {
             switch (data) {
                 case '实体码':
                     result = 'Entity code';
@@ -25,7 +25,7 @@ app.filter('zcode_language', function () {
 app.filter('trade_type_language', function () {
     return function (data) {
         var result = '';
-        if (window.location.pathname.split('/')[1].toLocaleLowerCase() === 'en') {
+        if ($giqci.getLanType() === 'en') {
             switch (data) {
                 case '一般贸易':
                     result = 'General trade';
@@ -48,7 +48,7 @@ app.filter('trade_type_language', function () {
 app.filter('TorF_language', function () {
     return function (data) {
         var result = '';
-        if (window.location.pathname.split('/')[1].toLocaleLowerCase() === 'en') {
+        if ($giqci.getLanType() === 'en') {
             switch (data) {
                 case '是':
                     result = 'Yes';
@@ -71,7 +71,7 @@ app.filter('TorF_language', function () {
 app.filter('application_status_language', function () {
         return function (data) {
             var result = '';
-            if (window.location.pathname.split('/')[1].toLocaleLowerCase() === 'en') {
+            if ($giqci.getLanType() === 'en') {
                 switch (data) {
                     case '已接受申请':
                         result = 'Application accepted';
@@ -103,22 +103,22 @@ app.filter('application_status_language', function () {
 app.filter('product_package_language', function () {
     return function (data) {
         var result = '';
-        if (window.location.pathname.split('/')[1].toLocaleLowerCase() === 'en') {
+        if ($giqci.getLanType() === 'en') {
             switch (data) {
                 case '盒装':
-                    result = 'Box';
+                    result = $giqci.KeyToWord('box');
                     break;
                 case '瓶装':
-                    result = 'Bottled';
+                    result = $giqci.KeyToWord('bottled');
                     break;
                 case '罐装':
-                    result = 'Canned';
+                    result = $giqci.KeyToWord('canned');
                     break;
                 case '袋装':
-                    result = 'Bag';
+                    result = $giqci.KeyToWord('bag');
                     break;
                 default:
-                    result = 'Box';
+                    result = '';
                     break;
             }
             return result;

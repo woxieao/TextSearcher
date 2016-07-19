@@ -16,7 +16,7 @@ app.directive("ajaxSelect", function ($timeout, $http) {
                         if (data.items.length >= 1) {
                             var newVal = '';
                             if (1 === data.items.length) {
-                                if (window.location.pathname.split('/')[1].toLocaleLowerCase() === 'en') {
+                                if ($giqci.getLanType() === 'en') {
                                     newVal = (url === "commonhscodes") ? data.items[0].Code + '-' + data.items[0].Name : data.items[0].Code + '-' + data.items[0].EnName;
                                 } else {
                                     newVal = (url === "commonhscodes") ? data.items[0].Code + '-' + data.items[0].Name : data.items[0].Code + '-' + data.items[0].CnName;
@@ -24,7 +24,7 @@ app.directive("ajaxSelect", function ($timeout, $http) {
                             } else {
                                 $.each(data.items, function (i, v) {
                                     if (v.Code == model.$viewValue) {
-                                        if (window.location.pathname.split('/')[1].toLocaleLowerCase() === 'en') {
+                                        if ($giqci.getLanType() === 'en') {
                                             newVal = (url === "commonhscodes") ? v.Code + '-' + v.Name : v.Code + '-' + v.EnName;
                                         } else {
                                             newVal = (url === "commonhscodes") ? v.Code + '-' + v.Name : v.Code + '-' + v.CnName;
@@ -58,7 +58,7 @@ app.directive("ajaxSelect", function ($timeout, $http) {
                         $.each(data.items, function (i, v) {
                             var o = {};
                             o.id = v.Code;
-                            if (window.location.pathname.split('/')[1].toLocaleLowerCase() === 'en') {
+                            if ($giqci.getLanType() === 'en') {
                                 o.name = (url === "commonhscodes") ? v.Code + '-' + v.Name : v.Code + '-' + v.EnName;
                             } else {
                                 o.name = (url === "commonhscodes") ? v.Code + '-' + v.Name : v.Code + '-' + v.CnName;
@@ -102,7 +102,7 @@ app.directive("ajaxLabel", function ($timeout, $http) {
                        { 'code': model.$viewValue }).success(function (data) {
                            if (data.items.length > 0) {
                                var newVal='';
-                               if (window.location.pathname.split('/')[1].toLocaleLowerCase() === 'en') {
+                               if ($giqci.getLanType() === 'en') {
                                    newVal = (url === "commonhscodes") ? data.items[0].Name : data.items[0].EnName;
                                } else {
                                    newVal = (url === "commonhscodes") ? data.items[0].Name : data.items[0].CnName;
@@ -531,7 +531,7 @@ app.directive("ajaxCountry", function ($timeout, $http) {
                         if (data.items.length >= 1) {
                             var newVal = '';
                             if (1 === data.items.length) {
-                                if (window.location.pathname.split('/')[1].toLocaleLowerCase() === 'en') {
+                                if ($giqci.getLanType() === 'en') {
                                     newVal = data.items[0].EnName;
                                 } else {
                                     newVal = data.items[0].CnName;
@@ -539,7 +539,7 @@ app.directive("ajaxCountry", function ($timeout, $http) {
                             } else {
                                 $.each(data.items, function (i, v) {
                                     if (v.Code == model.$viewValue) {
-                                        if (window.location.pathname.split('/')[1].toLocaleLowerCase() === 'en') {
+                                        if ($giqci.getLanType() === 'en') {
                                             newVal = v.EnName;
                                         } else {
                                             newVal = v.CnName;
@@ -573,7 +573,7 @@ app.directive("ajaxCountry", function ($timeout, $http) {
                         $.each(data.items, function (i, v) {
                             var o = {};
                             o.id = v.Code;
-                            if (window.location.pathname.split('/')[1].toLocaleLowerCase() === 'en') {
+                            if ($giqci.getLanType() === 'en') {
                                 o.name = v.EnName;
                             } else {
                                 o.name = v.CnName;
