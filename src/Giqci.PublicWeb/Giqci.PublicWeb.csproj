@@ -234,10 +234,9 @@
     <Content Include="Global\js\app.js" />
     <Content Include="Global\js\bootstrap-datetimepicker.min.js" />
     <Content Include="Global\js\directive.js" />
+    <Content Include="Global\js\filters.js" />
     <Content Include="Global\js\jquery.jqprint-0.3.js" />
     <Content Include="Global\js\locales\bootstrap-datetimepicker.zh-CN.js" />
-    <Content Include="Global\js\locales\select2.js" />
-    <Content Include="Global\js\locales\select2.zh-CN.js" />
     <Content Include="Global\js\ng-tip-validate.js" />
     <Content Include="Global\js\npm.js" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

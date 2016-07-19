@@ -251,6 +251,7 @@ app.controller('FormsListController', [
 app.controller('GoodsListController', [
     '$scope', '$http', 'alertService', function ($scope, $http, alertService) {
         $scope.alreadySubmit = false;
+        $scope.isEn = $giqci.getLanType() === 'en';
         $scope.list = function (postData) {
             $giqci.post('/api/goods/getproductlist', postData).success(function (response) {
                 $scope.merchantProductList = response.result;

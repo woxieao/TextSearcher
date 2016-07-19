@@ -68,7 +68,7 @@
                                     <td class="td-ellipsis" title="{{Product.Brand}}">{{Product.Brand}}</td>
                                     <td>
                                         @*<span ajax-label ajax-url="countries" ng-model="Product.ManufacturerCountry">{{Product.ManufacturerCountry}}</span>*@
-                                        {{Product.ManufacturerCountryCnName}}
+                                        {{isEn?Product.ManufacturerCountryEnName:Product.ManufacturerCountryCnName}}
                                     </td>
                                     <td class="td-ellipsis" title="{{Product.Manufacturer}}">{{Product.Manufacturer}}</td>
                                     <td>
@@ -122,9 +122,9 @@
                                     <td class="td-ellipsis" title="{{Product.Brand}}">{{Product.Brand}}</td>
                                     <td>
                                         @*<span ajax-label ajax-url="countries" ng-model="Product.ManufacturerCountry">{{Product.ManufacturerCountry}}</span>*@
-                                        {{Product.ManufacturerCountryCnName}}
+                                        {{isEn?Product.ManufacturerCountryEnName:Product.ManufacturerCountryCnName}}
                                     </td>
-                                    <td>{{Product.Package}}</td>
+                                    <td>{{Product.Package | product_package_language}}</td>
                                     <td class="td-ellipsis" title="{{Product.Manufacturer}}">{{Product.Manufacturer}}</td>
                                     <td>
                                         <div class="btn-group pull-right" role="group">

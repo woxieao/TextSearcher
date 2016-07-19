@@ -89,7 +89,7 @@
             <tr>
                 <td>@("business_purpose".KeyToWord()):</td>
                 <td colspan="3">
-                    {{model.Application.TradeType == 4?"一般贸易":"电商贸易"}}
+                    {{model.Application.TradeType == 4?"一般贸易":"电商贸易"| trade_type_language}}
                 </td>
             </tr>
             <tr>
@@ -332,7 +332,7 @@
                                     @("quality_restriction".KeyToWord())
                                 </td>
                                 <td>
-                                    {{item.C102?'是':'否'}}
+                                    {{item.C102?'是':'否' | TorF_language}}
                                 </td>
                                 <td>
                                     <span ng-if="item.C102">@("test_item".KeyToWord())</span>
