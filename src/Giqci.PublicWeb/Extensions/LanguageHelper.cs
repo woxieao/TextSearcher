@@ -69,9 +69,10 @@ namespace Giqci.PublicWeb.Extensions
             Enum.TryParse(GetCurrentLanTypeStr(), true, out languageType);
             return languageType;
         }
-        public static string GetLanTypeUrl()
+        public static string GetLanTypeUrl(string url)
         {
-            return string.Format("/{0}/", GetCurrentLanTypeStr());
+            url = url.IndexOf("/", StringComparison.Ordinal) == 0 ? url.Substring(1) : url;
+            return string.Format("/{0}/{1}", GetCurrentLanTypeStr(), url);
         }
     }
 }

@@ -309,12 +309,11 @@ $giqci.post = function (url, data) {
 
 $giqci.getLanUrl = function (url) {
     var lanType = $giqci.getLanType();
-    var lan = "/" + lanType + "/";
-    if (url != null) {
-        return lan + url;
-    } else {
-        return lan;
+    var lan = "/" + lanType;
+    if (url[0] !== "/") {
+        lan += "/";
     }
+    return lan + url;
 }
 $giqci.getLanType = function () {
     return window.location.pathname.split('/')[1].toLocaleLowerCase();

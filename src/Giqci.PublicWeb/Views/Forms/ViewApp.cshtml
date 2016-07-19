@@ -35,7 +35,7 @@
                                 <tr>
                                     <th>@("sample".KeyToWord()){{$index+1}}</th>
                                     <td>
-                                        <a href="@LanCore.GetLanTypeUrl()/file/viewfile?fileFullPath={{item.CertFilePath}}" target="_blank">@("view_file".KeyToWord())</a>
+                                        <a href="@LanCore.GetLanTypeUrl("/file/viewfile")?fileFullPath={{item.CertFilePath}}" target="_blank">@("view_file".KeyToWord())</a>
                                     </td>
                                 </tr>
                             </table>
