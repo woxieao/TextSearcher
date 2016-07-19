@@ -186,9 +186,26 @@ app.controller('FormsListController', [
             pageIndex: 1,
             pageSize: 10
         };
+
+        var application_language = $giqci.getLanType();
+        var lanType = '';
+        switch (application_language) {
+            case 'cn': {
+                lanType = 'zh-CN';
+                break;
+            }
+            case 'en': {
+                lanType = '';
+                break;
+            }
+            default:
+                lanType = 'zh-CN';
+                break;
+        }
+
         $(function () {
             $('.datetimepicker').datetimepicker({
-                language: 'zh-CN',
+                language: lanType,
                 format: 'yyyy/mm/dd',
                 autoclose: true,
                 minView: "month",
@@ -620,9 +637,25 @@ app.controller("BreathController", [
 
 app.controller("ZcodeApplyListController", [
     '$http', '$scope', function ($http, $scope) {
+        var application_language = $giqci.getLanType();
+        var lanType = '';
+        switch (application_language) {
+            case 'cn': {
+                lanType = 'zh-CN';
+                break;
+            }
+            case 'en': {
+                lanType = '';
+                break;
+            }
+            default:
+                lanType = 'zh-CN';
+                break;
+        }
+
         $(function () {
             $('.datetimepicker').datetimepicker({
-                language: 'zh-CN',
+                language: lanType,
                 format: 'yyyy/mm/dd',
                 autoclose: true,
                 minView: "month",

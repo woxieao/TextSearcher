@@ -734,7 +734,7 @@ ul,li,ol{
 /*表单必填项星号*/
 .input-require-color{color:red;}
 /*报验申请input组合框前缀*/
-.custom-input-group{min-width:8em !important;}
+.custom-input-group{min-width:10rem !important;}
 /*报验申请商品下拉搜索框*/
 .application-custom-select .select2-container--bootstrap .select2-selection--single .select2-selection__rendered{white-space: nowrap;text-overflow: ellipsis;overflow: hidden;max-width: 329px;}
 .application-custom-select .select2-container--bootstrap{width:auto !important;}
@@ -753,6 +753,9 @@ ul,li,ol{
 .custom-table>tbody>tr>td, .custom-table>tbody>tr>th, .custom-table>tfoot>tr>td, .custom-table>tfoot>tr>th, .custom-table>thead>tr>td, .custom-table>thead>tr>th {
      vertical-align: middle !important; 
 }
+/*列表文字换行*/
+.custom-table-break {word-break:break-all;}
+
 /*申请列表*/
 .custom-text-blue{color:#0095AD;}
 .custom-text-green{color:#4B923C;}
