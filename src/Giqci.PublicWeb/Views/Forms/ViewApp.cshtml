@@ -111,7 +111,7 @@
                                         <p class="form-control-static">@("common_goods".KeyToWord())</p>
                                     </th>
                                     <td colspan="3">
-                                        <p class="form-control-static">{{item.CiqCode}}</p>
+                                        <p class="form-control-static">{{item.CiqCode?item.CiqCode:item.ProductKey}}</p>
                                     </td>
                                 </tr>
                                 <tr>
