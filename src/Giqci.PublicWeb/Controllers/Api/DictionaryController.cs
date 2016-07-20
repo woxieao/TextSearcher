@@ -22,7 +22,7 @@ namespace Giqci.PublicWeb.Controllers.Api
         [HttpGet]
         public ActionResult GetCountries(string code)
         {
-            return new AjaxResult(new { items = _dict.GetCountries().Where(x => string.IsNullOrEmpty(code) || x.Code == code || x.CnName.Contains(code)) });
+            return new AjaxResult(new { items = _dict.GetCountries().Where(x => string.IsNullOrEmpty(code) || x.Code == code || x.CnName.Contains(code) || x.EnName.Contains(code)) });
         }
 
         [Route("dict/commonhscodes")]
